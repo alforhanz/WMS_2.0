@@ -1,0 +1,95 @@
+nav {
+  color: #1e1c1c;
+  background-color: #000;
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
+}
+
+html {
+  background-color: #f2f7f8;
+}
+#menu .nav-wrapper {
+  background-color: #fff;
+}
+#menu ul a {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+  color: #1e1c1c;
+  display: block;
+  padding: 0 15px;
+  cursor: pointer;
+}
+#menu i.material-icons {
+  display: block;
+  font-size: 24px;
+}
+@media only screen and (min-width: 601px) {
+  #menu i,
+  i.material-icons {
+    height: 0;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  main .container {
+    width: 95%;
+  }
+}
+@media only screen and (min-width: 601px) {
+  main .container {
+    width: 95%;
+  }
+}
+main .container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+  top: 60px;
+  background-color: #fff;
+  position: relative;
+}
+main nav {
+  color: #1e1c1c;
+  background-color: transparent;
+  border: 0;
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
+}
+#breadc .breadcrumb {
+  font-size: 18px;
+  color: #1e1c1c;
+  float: left;
+}
+#breadc .breadcrumb:before {
+  content: "\E5CC";
+  color: #1e1c1c;
+  vertical-align: top;
+  float: ;
+  display: inline-block;
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 25px;
+  margin: 0 10px 0 8px;
+  -webkit-font-smoothing: antialiased;
+}
+#breadc .z-depth-1,
+nav,
+.card-panel,
+.card,
+.toast,
+.btn,
+.btn-large,
+.btn-small,
+.btn-floating,
+.dropdown-content,
+.collapsible,
+.sidenav {
+  -webkit-box-shadow: 0 0px 0px 0 rgb(0 0 0 / 14%),
+    0 0px 0px 0px rgb(0 0 0 / 12%), 0 0px 0px 0 rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 2px 0rgba (0, 0, 0, 0.14),
+    0 3px 1px -2pxrgba (0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}

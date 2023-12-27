@@ -1,0 +1,11 @@
+#empresa-input-add-cliente{display: none;}
+.select-wrapper .caret{top: -35px;}
+.mtop-25{margin-top: 25px;}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after {
+    border: 2px solid #f80f00;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after {
+    background-color: #f80f00;
+}
+.contenedor-agregar-cliente{margin-bottom: 15px;}
+.email-cliente-p15{padding-top: 15px!important;}
