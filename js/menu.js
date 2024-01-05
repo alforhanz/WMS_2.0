@@ -1,78 +1,33 @@
 var ArrayMenu = [];
 let menuEnlaces = [
+  //WMS
   {
-    MODULO: 1,
+    MODULO: 10,
     SUBMODULO: 0,
-    ICON: "app_registration",
-    LINK: "#",
+    ICON: "apps",
+    LINK: "metas-vendedor.html",
   },
+  //WMS SUBMODULOS
+  //VERIFICACION DE PEDIDOS
   {
-    MODULO: 3,
-    SUBMODULO: 0,
-    ICON: "assignment",
-    LINK: "#",
+    MODULO: 10,
+    SUBMODULO: 1,
+    ICON: "remove",
+    LINK: "verificacionDePedidos.html",
   },
+  //VERIFICACION DE ORDENES DE COMPRA
   {
-    MODULO: 4,
-    SUBMODULO: 0,
-    ICON: "people_outline",
-    LINK: "#",
-  },
-  {
-    MODULO: 6,
-    SUBMODULO: 0,
-    ICON: "view_list",
-    LINK: "#",
-  },
-  {
-    MODULO: 7,
-    SUBMODULO: 0,
-    ICON: "manage_accounts",
-    LINK: "#",
-  },
-  {
-    MODULO: 1,
+    MODULO: 10,
     SUBMODULO: 2,
     ICON: "remove",
-    LINK: "pedidos.html",
+    LINK: "verificacionDeOrdenesDeCompra.html",
   },
+  //VERIFICACION DE CONTENEDORES
   {
-    MODULO: 1,
-    SUBMODULO: 4,
+    MODULO: 10,
+    SUBMODULO: 3,
     ICON: "remove",
-    LINK: "cotizacion.html",
-  },
-  {
-    MODULO: 3,
-    SUBMODULO: 4,
-    ICON: "remove",
-    LINK: "reportes.html",
-  },
-  {
-    MODULO: 7,
-    SUBMODULO: 1,
-    ICON: "remove",
-    LINK: "agregar-cliente.html",
-  },
-  {
-    MODULO: 9,
-    SUBMODULO: 0,
-    ICON: "Build",
-    LINK: "#",
-  },
-  //aqui se debe agregar el enlace a taller
-  {
-    MODULO: 9,
-    SUBMODULO: 1,
-    ICON: "remove",
-    LINK: "suite/taller/index.php",
-  },
-  //Metas Vendedor
-  {
-    MODULO: 3,
-    SUBMODULO: 18,
-    ICON: "remove",
-    LINK: "metas-vendedor.html",
+    LINK: "verificacionDeContenedor.html",
   },
 ];
 
@@ -148,6 +103,20 @@ var buildUL = function (items) {
     icono = "",
     icono2 = "",
     link = "";
+
+
+    //INICIO
+    htm += `<li><div class="collapsible-header" id="expand_morefather">
+    <span class="margen-pedido"><span class="material-symbols-outlined left"
+        style="margin-top: 13px;margin-right: 15px;">home</span>HOME</span>
+    </div>`;
+    //ARTICULOS
+    htm += `<li><div class="collapsible-header" id="expand_morefather">
+    <span class="margen-pedido"><span class="material-symbols-outlined left"
+        style="margin-top: 13px;margin-right: 15px;">home</span>ARTÍCULOS</span>
+    </div>`;
+
+    
   items.forEach(function (key, index) {
     //console.log(menuEnlaces);
     const m = menuEnlaces.find(
@@ -159,14 +128,27 @@ var buildUL = function (items) {
     } else {
       icono = "";
     }
+
+    
+
     if (key.label) {
       if (key.items && key.items.length > 0) {
-        htm += `<li><div class="collapsible-header" id="expand_morefather">
+        if (key.label == "WMS") {
+          htm += `<li><div class="collapsible-header" id="expand_morefather">
+                  <span class="margen-pedido"><span class="material-symbols-outlined left"
+                      style="margin-top: 13px;margin-right: 15px;">${icono}</span>PROCESOS</span>
+                  <span id="expand_more" class="material-icons red-text"
+                    style="position: absolute;margin-right: 0; top:13px;padding-right: 0;right: 21px;background: #000;color: white !important;border-radius: 50%;">expand_more</span>
+              </div>`;
+        }
+        else {
+          htm += `<li><div class="collapsible-header" id="expand_morefather">
                   <span class="margen-pedido"><span class="material-symbols-outlined left"
                       style="margin-top: 13px;margin-right: 15px;">${icono}</span> ${key.label}</span>
                   <span id="expand_more" class="material-icons red-text"
                     style="position: absolute;margin-right: 0; top:13px;padding-right: 0;right: 21px;background: #000;color: white !important;border-radius: 50%;">expand_more</span>
                 </div>`;
+        }
       } else {
         htm += `<li onclick="javascript:alert('En Desarrollo');">
                 <span class="material-symbols-outlined" style="position: relative;margin-right: 11px;top: 5px;">${icono}</span>

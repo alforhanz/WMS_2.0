@@ -5,8 +5,8 @@ const env = {
   //API_URL: "http://api.test/",
   //API_URL: "http://192.168.54.51:8087/",
   //API_URL: "http://" + Host + ":8097/", // URL API LOCAL SERVER
-  API_URL: "http://200.124.12.146:8097/", // URL API EXTERNO
-  API_IMAGE: "http://200.124.12.146:8097/" + "image",
+  API_URL: "http://200.124.12.146:8091/", // URL API EXTERNO
+  API_IMAGE: "http://200.124.12.146:8091/" + "image",
   //API_IMAGE: "http://192.168.54.51:8087"+ + "image",
   //API_IMAGE: "http://192.168.3.8:8087" + +"image",
   //API_IMAGE: "http://" + Host + ":8087" + +"image",

@@ -1921,3 +1921,12 @@ function logout() {
 }
 //-----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
+
+// function algo(){
+// <li class="">
+//     <div class="collapsible-header" id="expand_morefather" tabindex="0">
+//       <span class="margen-pedido"><span class="material-symbols-outlined left" style="margin-top: 13px;margin-right: 15px;">apps</span>PROCESOS</span>
+//       <span id="expand_more" class="material-icons red-text" style="position: absolute;margin-right: 0; top:13px;padding-right: 0;right: 21px;background: #000;color: white !important;border-radius: 50%;">expand_more</span>
+//     </div>
+// </li>
+// }

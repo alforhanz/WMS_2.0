@@ -3,9 +3,11 @@ $(document).ready(function () {
 });
 
 function getDataDash() {
+  var usuario = localStorage.getItem('username');
   const params =
     "?usuario=" +
-    "pruebapma";
+    usuario;
+    // "pruebapma";
   console.log("Estos son los parametros de busqueda General: " + params);
   // console.log(params);
   fetch(env.API_URL + "getdashinfo/1" + params, myInit)
@@ -15,13 +17,14 @@ function getDataDash() {
       if (result.msg === "SUCCESS") {
         if (result.data.length > 0) {
           ArrayData = result.data[0];
-          // console.log("RESULTADO");
-          // console.log(ArrayData);
+       
           // Actualizar elementos HTML
-          document.getElementById("pedidos_solicitados").innerText = ArrayData.PEDIDOS_SOLICITADOS;
-          document.getElementById("articulos_solicitados").innerText = ArrayData.CANT_ARTICULOS_SOLICITADOS;
-          document.getElementById("articulos_pendientes").innerText = ArrayData.CANT_ARTICULOS_PENDIENTES;
-          document.getElementById("articulos_prioridad").innerText = ArrayData.ARTICULOS_CON_PRIORIDAD;
+          document.getElementById("pedidos_solicitados").innerText = parseFloat(ArrayData.PEDIDOS_SOLICITADOS).toFixed(2);
+          document.getElementById("articulos_solicitados").innerText = parseFloat(ArrayData.CANT_ARTICULOS_SOLICITADOS).toFixed(2);
+          document.getElementById("articulos_pendientes").innerText = parseFloat(ArrayData.CANT_ARTICULOS_PENDIENTES).toFixed(2);
+          document.getElementById("articulos_prioridad").innerText = parseFloat(ArrayData.ARTICULOS_CON_PRIORIDAD).toFixed(2);
+
+     
 
           // Puedes seguir actualizando más elementos según necesites
 
