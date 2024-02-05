@@ -34,12 +34,12 @@ let menuEnlaces = [
 $(document).ready(function () {
   $("#expand_morefather").click(function () {
     let element = document.getElementById("expand_more");
-    //console.log(element.matches(".icon-up"));
+    ////console.log(element.matches(".icon-up"));
     if (element.matches(".icon-up") === false) {
       element.classList.remove("icon-down");
       element.classList.add("icon-up");
     } else {
-      //console.log("quitar class de girar");
+      ////console.log("quitar class de girar");
       element.classList.remove("icon-up");
       element.classList.add("icon-down");
     }
@@ -57,11 +57,11 @@ function cargarMenu() {
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error))
     .then((result) => {
-      console.log("Resultado de los modulos");
-      console.log(result);
+      //console.log("Resultado de los modulos");
+      //console.log(result);
       ArrayMenu = result.menu;
-      console.log("OPCIONES DE MENU");
-      console.log(result.menu);
+      //console.log("OPCIONES DE MENU");
+      //console.log(result.menu);
       var source = builddata();
       buildUL(source);
     });
@@ -104,32 +104,31 @@ var buildUL = function (items) {
     icono2 = "",
     link = "";
 
+  //INICIO
+  htm += `<li>
+    <div class="collapsible-header" id="expand_morefather">
+        <a href="home.html">
+            <span class="margen-pedido" style="color:black;">
+                <span class="material-symbols-outlined left" style="margin-top: 13px; margin-right: 15px;color:black;">home</span>
+                INICIO
+            </span>
+        </a>
+    </div>
+</li>`;
 
-    //INICIO
-    htm += `<li><div class="collapsible-header" id="expand_morefather">
-    <span class="margen-pedido"><span class="material-symbols-outlined left"
-        style="margin-top: 13px;margin-right: 15px;">home</span>HOME</span>
-    </div>`;
-    //ARTICULOS
-    htm += `<li><div class="collapsible-header" id="expand_morefather">
-    <span class="margen-pedido"><span class="material-symbols-outlined left"
-        style="margin-top: 13px;margin-right: 15px;">home</span>ARTÍCULOS</span>
-    </div>`;
-
-    
   items.forEach(function (key, index) {
-    //console.log(menuEnlaces);
+    ////console.log(menuEnlaces);
     const m = menuEnlaces.find(
       (x) => x.MODULO === key.item.MODULO && x.SUBMODULO === 0
     );
-    //console.log(m);
+    ////console.log(m);
     if (m) {
       icono = m.ICON;
     } else {
       icono = "";
     }
 
-    
+
 
     if (key.label) {
       if (key.items && key.items.length > 0) {

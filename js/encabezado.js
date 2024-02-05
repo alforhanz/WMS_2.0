@@ -91,12 +91,7 @@ class MyHeader extends HTMLElement {
           </div>
         </div>
       </div>
-      <ul class="collapsible" id="MenuL" style="font-size: 13px;">
-      <!-- HOME -->
-      
-      <!-- ARTICULOS -->
-      
-      </ul>
+      <ul class="collapsible" id="MenuL" style="font-size: 13px;"></ul>
     </div>
     <!-- FIN MENU LATERAL IZQUIERDO -->
 

@@ -713,6 +713,7 @@ th {
   text-align: left;
   vertical-align: middle;
   border-radius: 2px;
+  text-align: center;
 }
 #tblcotizacion .btnedit {
   position: relative;

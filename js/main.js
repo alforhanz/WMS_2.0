@@ -673,75 +673,7 @@ function getFiltro(id, txtInput) {
       $("#txtETV").val(valorETH);
     }
   }
-  //---------------------Clase-----------------------------------
-  /*if (id == "txtClase") {
-    chk = $("#" + txtInput).is(":checked");
-    if (chk == true) {
-      var clID = $("#" + txtInput).val();
-      var clH = $("#txtClaseV").val();
-      if (clH.length > 0) {
-        valorCLH += clH + "," + clID;
-      } else {
-        valorCLH += clID;
-      }
-      $("#txtClaseV").val(valorCLH);
-    } else {
-      var clID = $("#" + txtInput).val();
-      var clH = $("#txtClaseV").val();
-      if (clH.length > 0) {
-        valorCLH = BuscarBorrar(clH, clID);
-      } else {
-        valorCLH += "";
-      }
-      $("#txtClaseV").val(valorCLH);
-    }
-  }
-  //---------------------Tipo-----------------------------------
-  if (id == "txtTipo") {
-    chk = $("#" + txtInput).is(":checked");
-    if (chk == true) {
-      var tID = $("#" + txtInput).val();
-      var tH = $("#txtTipoV").val();
-      if (tH.length > 0) {
-        valorTH += tH + "," + tID;
-      } else {
-        valorTH += tID;
-      }
-      $("#txtTipoV").val(valorTH);
-    } else {
-      var tID = $("#" + txtInput).val();
-      var tH = $("#txtTipoV").val();
-      if (tH.length > 0) {
-        valorTH = BuscarBorrar(tH, tID);
-      } else {
-        valorTH += "";
-      }
-      $("#txtTipoV").val(valorTH);
-    }
-  }
-  //---------------------Sub Tipo----------------------------------------------------
-  if (id == "txtSubtipo") {
-    chk = $("#" + txtInput).is(":checked");
-    if (chk == true) {
-      var stID = $("#" + txtInput).val();
-      var stH = $("#txtSubtipoV").val();
-      if (stH.length > 0) {
-        valorSTH += stH + "," + stID;
-      } else {
-        valorSTH += stID;
-      }
-      $("#txtSubtipoV").val(valorSTH);
-    } else {
-      var stID = $("#" + txtInput).val();
-      var stH = $("#txtSubtipoV").val();
-      if (stH.length > 0) {
-        valorSTH = BuscarBorrar(stH, stID);
-      } else {
-        valorSTH += "";
-      }
-      $("#txtSubtipoV").val(valorSTH);
-    }
-  }*/
+
 }
 //------------------------------------------------------------------------------------
 function BuscarBorrar(cadena, value) {
@@ -969,6 +901,484 @@ function detalleFactura(tipoDocumento, stock) {
     window.location.href =
       "detalle-factura.html?tipodocumento=" + tipoDocumento;
   }
+}
+
+function busquedaGeneral(tiporpt, tipoclase) {
+  let tipobusqueda = $("#selectTipoBusqueda option:selected").val();
+  localStorage.setItem('tipobusqueda', tipobusqueda);
+
+  if (tipobusqueda == "V") {
+    tipoclase = "1040";
+    tiporpt = "C";
+  }
+
+  let params;
+  let nPag = 0,
+    htm = "";
+  let pag = 1;
+  let loader = `<div class="loading"></div>`;
+  let articulo = document.getElementById("articulo").value;
+  bodega = document.getElementById("bodega").value;
+  idCat = 1040;
+  if (articulo == "") {
+    Swal.fire({
+      icon: "warning",
+      text: "Por favor ingrese la palabra a buscar",
+      confirmButtonColor: "#f90f00",
+    });
+    document.getElementById("articulo").focus();
+  } else {
+    document.getElementById("carga").innerHTML = loader;
+    if (tipobusqueda != tiporpt) {
+      params =
+        "?ptiporpt=" +
+        tiporpt +
+        "&ptipoclase=" +
+        tipoclase +
+        "&articulo=" +
+        articulo +
+        "&bodega=" +
+        bodega +
+        "&ptipoprod=" +
+        tipobusqueda;
+    } else {
+      params =
+        "?ptiporpt=" +
+        tiporpt +
+        "&ptipoclase=" +
+        tipoclase +
+        "&articulo=" +
+        articulo +
+        "&bodega=" +
+        bodega;
+    }
+
+    console.log("Estos son los parametros de busqueda General: " + params);
+    // console.log(params);
+    fetch(env.API_URL + "busqueda/1" + params, myInit)
+      .then((response) => response.json())
+      .catch((error) => console.error("Error:", error))
+      .then((result) => {
+        if (result.msg === "SUCCESS") {
+          console.log(result.data.length);
+          if (result.data.length > 0) {
+            ArrayData = result.data;
+            ArrayDataFiltrado = result.data;
+            console.log("DATA DE BUSQUEDA GENERAL");
+            console.log(ArrayData);
+            let totales = ArrayDataFiltrado.length;
+            nPag = Math.ceil(totales / xPag);
+            if (tipoclase == "1040") {
+              mostrarResultadosBusquedaServicios(nPag, pag, idCat);
+            } else {
+              mostrarResultadosBusqueda(nPag, pag, idCat, "", tipobusqueda);
+            }
+          } else {
+            Swal.fire({
+              icon: "info",
+              title: "Información",
+              text: "No hay resultado para la busqueda " + articulo,
+              confirmButtonColor: "#f90f00",
+            });
+            document.getElementById("carga").innerHTML = "";
+            return false;
+          }
+        }
+      });
+  }
+}
+//-----------------------------------------------------------------------------------
+function mostrarResultadosBusqueda(nPag, pag, IDCategoria, ord, pTipoProd) {
+  //console.log("nPage:" + nPag + "- pag:" + pag);
+  //VARIABLE client no se esta usando
+  let client = existe_Cliente();
+  let htm = "";
+  let desde = (pag - 1) * xPag;
+  let hasta = pag * xPag;
+  // console.log("DESDE MOSTRARRESULTADOSBUSQUEDA");
+  // console.log(IDCategoria);
+  htm = mostrarResultados(desde, hasta, IDCategoria, ord, pTipoProd);
+  if (typeof IDCategoria == "undefined") IDCategoria = "";
+  htm += paginador(nPag, pag, IDCategoria, ord);
+  if (IDCategoria == "1040") {
+    document.getElementById("resultadoGeneral").innerHTML = htm;
+    $("html, body").animate(
+      {
+        scrollTop: $("#resultadoGeneral").offset().top - 140,
+      },
+      1000
+    );
+  } else {
+    document.getElementById("BusquedaResultado").innerHTML = htm;
+    $("html, body").animate(
+      {
+        scrollTop: $("#BusquedaResultado").offset().top - 140,
+      },
+      1000
+    );
+  }
+
+  document.getElementById("carga").innerHTML = "";
+  $("select").formSelect();
+  $(".dropdown-trigger").dropdown();
+}
+//-----------------------------------------------------------------------------------
+function mostrarResultados(desde, hasta, IDCategoria, ord, pTipoProd) {
+  var totalRegistros = 0, tipobusqueda = "";
+  tipobusqueda = pTipoProd;
+  console.log("TIPOBUSQUEDA: " + tipobusqueda);
+  //Para productos terminados(T), para KIT (K)
+  if (tipobusqueda == "W") {
+    tipobusqueda = "T";
+  }
+  //CONSULTA TOTAL DE REGISTROS
+  if (clearFiltros == false) {
+    if (viewImcompletos == true) {
+      totalRegistros = ArrayDataFiltrado.length;
+    } else {
+      if (IDCategoria == "1055") {
+        totalRegistros = contRinesCompletos();
+      } else {
+        //Conteo total de registros para todas las demas categorias y rines incompletos
+        var totalizador = 0;
+        for (var i = 0; i < ArrayDataFiltrado.length; i++) {
+          if (
+            ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+            +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+          ) {
+            totalizador++;
+          }
+        }
+
+        if (totalizador !== 0) {
+          totalRegistros = ArrayDataFiltrado.length - totalizador;
+        } else {
+          totalRegistros = ArrayDataFiltrado.length;
+        }
+      }
+    }
+  } else {
+    if (IDCategoria == "1055") {
+      //RESULTADO DE CONSULTA DESPUES DE LIMPIAR FILTROS
+      totalRegistros = contRinesCompletos();
+      clearFiltros = false;
+    } else {
+      //Conteo total de registros para todas las demas categorias y rines incompletos
+      var totalizador = 0;
+      for (var i = 0; i < ArrayDataFiltrado.length; i++) {
+        if (
+          ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+          +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+        ) {
+          totalizador++;
+        }
+      }
+
+      if (totalizador !== 0) {
+        totalRegistros = ArrayDataFiltrado.length - totalizador;
+        clearFiltros = false;
+      } else {
+        totalRegistros = ArrayDataFiltrado.length;
+        clearFiltros = false;
+      }
+    }
+  }
+
+  let client = existe_Cliente();
+  //DECLARACION DE VARIABLES
+  let htm = "",
+    selASC = "",
+    selDESC = "",
+    bodegaLabel = "",
+    remateLabel = "",
+    url = "",
+    precioL = "";
+  var pre = 1;
+  if (ord == "asc") {
+    selASC = "selected";
+  }
+  if (ord == "desc") {
+    selDESC = "selected";
+  }
+  htm += '<div id="lista-articulo">';
+  htm += `<div class="col s12">
+          <h5 class="sub-header"><b>Resultado de Busqueda </b></h5>
+        </div>`;
+  htm += `<div class="row" id="totalregistros">
+            <div class="col s6">
+              <span>Total de Registros: </span>
+              <span>${totalRegistros}</span>
+            </div></div>
+            <div class="row">
+            <div class="col s6">
+              <select class="btn browser-default" style="height: 45px;" onchange="ordenarResultado(this.value,${IDCategoria})">
+                <option value="">ORDENAR</option>
+                <option value="asc" ${selASC}>PRECIO MÁS BAJO</option>
+                <option value="desc" ${selDESC}>PRECIO MÁS ALTO</option>
+              </select>
+            </div>
+            <div class="col s6">
+                <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal('${IDCategoria}',0);">
+              <i class="material-icons right">filter_list</i>
+              FILTRAR </a>
+            </div></div>`;
+  htm += '<ul id="listas">';
+  //console.log(ArrayData);
+  for (let i = desde; i < hasta; i++) {
+    if (ArrayDataFiltrado[i]) {
+      switch (viewImcompletos) {
+        case false:
+          if (ArrayDataFiltrado[i].INCOMPLETO != "I") {
+            DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
+            //SI ENCUENTRA STOCK DEL ARTICULO EN BODEGA AGREGA ETIQUETA: EN TIENDA
+            if (ArrayDataFiltrado[i].BODEGA == "S") {
+              bodegaLabel = '<span class="mi-tienda">En Tienda</span>';
+            } else {
+              bodegaLabel = "";
+            }
+            if (ArrayDataFiltrado[i].PRECIOLISTA != null) {
+              url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}&IDCategoria=${ArrayDataFiltrado[i].ID_CLASE}&pTipoProd=${tipobusqueda}"`;
+              pre = `${parseFloat(ArrayDataFiltrado[i].PRECIOLISTA).toFixed(
+                2
+              )}`;
+            } else {
+              pre = parseFloat(0).toFixed(2);
+              url = ` onclick="error_precio();"`;
+            }
+
+            //SI ENCUENTRA STOCK CON DESCUENTO AGREGA ETIIQUETA: DESCUENTO Y PRECIO DESCUENTO
+            if (
+              ArrayDataFiltrado[i].PRECIO_DESCUENTO !== ".00" &&
+              ArrayDataFiltrado[i].PRECIO_DESCUENTO !== null &&
+              ArrayDataFiltrado[i].PRECIO_DESCUENTO !== undefined
+            ) {
+              remateLabel =
+                '<div class="descuentos new-top-left">Descuento</div>';
+              precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Descuento: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
+                ArrayDataFiltrado[i].PRECIO_DESCUENTO
+              ).toFixed(
+                2
+              )}</strong></span>&nbsp;<span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
+            } else {
+              //SI ENCUENTRA STOCK CON REMATE AGREGA ETIQUETA: REMATE Y PRECIO DE REMETE
+              if (ArrayDataFiltrado[i].REMATE == "R") {
+                remateLabel = '<div class="remates new-top-left">Remate </div>';
+                precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Remate: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
+                  ArrayDataFiltrado[i].PRECIOREMATE
+                ).toFixed(
+                  2
+                )}</strong></span>&nbsp;<span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
+              }
+              //AQUI COLOCA PRECIO NORMAL/REFERENCIA
+              else {
+                remateLabel = "";
+                precioL = `<span style=" font-size: 12px; color: #001; font-weight: bold!important;">Precio <br>Referencia:</span> B/.<strong>${pre}</strong></span>`;
+              }
+            }
+
+            //a ${url}---> a href="detalle.html?art=225/50R18%20K&IDCategoria=1010"
+            if (
+              ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+              +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+            ) {
+              //no muestra los articulos tipo 1055/rines que tengan cantidad menor a 4
+            } else {
+              htm += `
+          <li>
+            <div class="container-img">
+            <div id="envoltorio">
+              <a ${url}>
+                  ${remateLabel}
+                  <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
+                    data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+                  ${bodegaLabel}
+              </a>
+              <div class="flotante-acciones">
+                      <div class="link-flotante-acciones">
+                          <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende('${ArrayDataFiltrado[i].ARTICULO}','${i}')">
+                            <i class="left material-icons black-text" style="font-size: 24px;">monetization_on</i>
+                          </a>
+                      </div>
+                      <div class="link-flotante-acciones" style="padding-bottom: 5px;">
+                          <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende2('${ArrayDataFiltrado[i].ARTICULO}',2${i},'${tipobusqueda}')">
+                              <!--<i class="icon-inventory" style="font-size: 24px;"></i>-->
+                              <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                          </a>
+                          <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
+                      </div>
+                      <div class="link-flotante-acciones">`;
+              if (client.length > 0) {
+                htm += `<a id="dropbtn${i}" class="dropbtn3x" onclick="precioArticuloVende3('${ArrayDataFiltrado[i].ARTICULO}',3${i})">
+                    <i class="left material-icons black-text" style="font-size: 24px;">bar_chart</i>
+                </a>`;
+              } else {
+                htm += `<a id="dropbtn${i}" class="dropbtn3x">
+                    <i class="left material-icons grey-text" style="font-size: 24px;">bar_chart</i>
+                </a>`;
+              }
+              htm += `<div id="myDropdown3${i}" class="dropdown-content2" style="right: 15px; top: 65px;"></div>
+              </div>
+              </div>
+                      <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
+                      <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
+                      <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
+              </div>
+              <h3 class="articulo-titulo"> ${ArrayDataFiltrado[i].ARTICULO}</h3>
+              <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+              <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
+              ${precioL}</span>
+            </div>
+          </li>`;
+            }
+          }
+          break;
+        case true:
+          DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
+          //SI ENCUENTRA STOCK DEL ARTICULO EN BODEGA AGREGA ETIQUETA: EN TIENDA
+          if (ArrayDataFiltrado[i].BODEGA == "S") {
+            bodegaLabel = '<span class="mi-tienda">En Tienda</span>';
+          } else {
+            bodegaLabel = "";
+          }
+          if (ArrayDataFiltrado[i].PRECIOLISTA != null) {
+            url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}&IDCategoria=${ArrayDataFiltrado[i].ID_CLASE}"`;
+            pre = `${parseFloat(ArrayDataFiltrado[i].PRECIOLISTA).toFixed(2)}`;
+          } else {
+            pre = parseFloat(0).toFixed(2);
+            url = ` onclick="error_precio();"`;
+          }
+
+          //SI ENCUENTRA STOCK CON DESCUENTO AGREGA ETIIQUETA: DESCUENTO Y PRECIO DESCUENTO
+          if (
+            ArrayDataFiltrado[i].PRECIO_DESCUENTO !== ".00" &&
+            ArrayDataFiltrado[i].PRECIO_DESCUENTO !== null &&
+            ArrayDataFiltrado[i].PRECIO_DESCUENTO !== undefined
+          ) {
+            remateLabel =
+              '<div class="descuentos new-top-left">Descuento</div>';
+            precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Descuento: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
+              ArrayDataFiltrado[i].PRECIO_DESCUENTO
+            ).toFixed(
+              2
+            )}</strong></span>&nbsp;<span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
+          } else {
+            //SI ENCUENTRA STOCK CON REMATE AGREGA ETIQUETA: REMATE Y PRECIO DE REMETE
+            if (ArrayDataFiltrado[i].REMATE == "R") {
+              remateLabel = '<div class="remates new-top-left">Remate </div>';
+              precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Remate: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
+                ArrayDataFiltrado[i].PRECIOREMATE
+              ).toFixed(
+                2
+              )}</strong></span>&nbsp;<span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
+            }
+            //AQUI COLOCA PRECIO NORMAL/REFERENCIA
+            else {
+              remateLabel = "";
+              precioL = `<span style=" font-size: 12px; color: #001; font-weight: bold!important;">Precio <br>Referencia:</span> B/.<strong>${pre}</strong></span>`;
+            }
+          }
+
+          //a ${url}---> a href="detalle.html?art=225/50R18%20K&IDCategoria=1010"
+          htm += `
+          <li>
+            <div class="container-img">
+            <div id="envoltorio">
+              <a ${url}>
+                  ${remateLabel}
+                  <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
+                    data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+                  ${bodegaLabel}
+              </a>
+              <div class="flotante-acciones">
+                      <div class="link-flotante-acciones">
+                          <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende('${ArrayDataFiltrado[i].ARTICULO}','${i}')">
+                            <i class="left material-icons black-text" style="font-size: 24px;">monetization_on</i>
+                          </a>
+                      </div>
+                      <div class="link-flotante-acciones" style="padding-bottom: 5px;">
+                          <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende2('${ArrayDataFiltrado[i].ARTICULO}',2${i})">
+                              <!--<i class="icon-inventory" style="font-size: 24px;"></i>-->
+                              <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                          </a>
+                          <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
+                      </div>
+                      <div class="link-flotante-acciones">`;
+          if (client.length > 0) {
+            htm += `<a id="dropbtn${i}" class="dropbtn3x" onclick="precioArticuloVende3('${ArrayDataFiltrado[i].ARTICULO}',3${i})">
+                    <i class="left material-icons black-text" style="font-size: 24px;">bar_chart</i>
+                </a>`;
+          } else {
+            htm += `<a id="dropbtn${i}" class="dropbtn3x">
+                    <i class="left material-icons grey-text" style="font-size: 24px;">bar_chart</i>
+                </a>`;
+          }
+          htm += `<div id="myDropdown3${i}" class="dropdown-content2" style="right: 15px; top: 65px;"></div>
+              </div>
+              </div>
+                      <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
+                      <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
+                      <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
+              </div>
+              <h3 class="articulo-titulo"> ${ArrayDataFiltrado[i].ARTICULO}</h3>
+              <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+              <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
+              ${precioL}</span>
+            </div>
+          </li>`;
+          break;
+      }
+    }
+  }
+  htm += "</ul></div>";
+  return htm;
+}
+//-----------------------------------------------------------------------------------
+function paginador(nPag, pag, IDCategoria, ord) {
+  //MUESTRA LA CANTIDAD DE PAGINA
+  let selected = "";
+  sel = `<select class="browser-default" onchange="mostrarResultadosBusqueda(${nPag}, this.value,${IDCategoria},'${ord}')">
+        <option value="" disabled>Páginas</option>`;
+  for (var i = 0; i < nPag; i++) {
+    if (i + 1 == pag) {
+      selected = "selected";
+    } else {
+      selected = "";
+    }
+    if (nPag != 1) {
+      sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+        }</option>`;
+    }
+  }
+  sel += `</select>`;
+
+  if (pag <= 1) btnAtras = `<a style="color:#aba7a7;">❮ Anterior</a>`;
+  else
+    btnAtras = `<a onclick="mostrarResultadosBusqueda(${nPag} , ${parseInt(pag) - 1
+      }, ${IDCategoria},'${ord}');">❮ Anterior</a>`;
+
+  if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
+  else
+    btnSig = `<a onclick="mostrarResultadosBusqueda(${nPag},${parseInt(pag) + 1
+      },${IDCategoria},'${ord}')">Siguiente ❯</a>`;
+
+  return `<div id="paginador">
+        <div class="row">
+          <div class="col s4"></div>
+          <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
+          <div class="col s4"></div>
+        </div>
+        <div class="row" style="width:fit-content !important;">
+            <div class="col s4" id="btnAtras" style="width:fit-content !important;">
+              ${btnAtras}
+            </div>
+          <div class="col s4">
+            ${sel}
+          </div>
+          <div class="col s4" id="btnSig" style="width:fit-content !important;">
+            ${btnSig}
+          </div>
+        </div>
+      </div><br>`;
 }
 //-----------------------------------------------------------------------------------
 function InsertarPedidos(numcons, tipoDocumento, key, estadodocumento) {
@@ -1922,11 +2332,63 @@ function logout() {
 //-----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-// function algo(){
-// <li class="">
-//     <div class="collapsible-header" id="expand_morefather" tabindex="0">
-//       <span class="margen-pedido"><span class="material-symbols-outlined left" style="margin-top: 13px;margin-right: 15px;">apps</span>PROCESOS</span>
-//       <span id="expand_more" class="material-icons red-text" style="position: absolute;margin-right: 0; top:13px;padding-right: 0;right: 21px;background: #000;color: white !important;border-radius: 50%;">expand_more</span>
-//     </div>
-// </li>
-// }
+
+
+// Mostrar el loading antes de enviar la solicitud
+function mostrarLoading() {
+  $('.loading').show();
+  document.querySelector('.loading').style.display = 'block';
+}
+
+
+//------------FUNCION PAGINADOR PARA BUSQUEDA PEDIDOS/COTIZACIONES------------------
+function paginadorPedidos(nPag, pag, IDCategoria) {
+  console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
+  console.log("nPag:" + nPag + "- pag:" + pag);
+  //MUESTRA LA CANTIDAD DE PAGINA
+  let selected = "";
+  sel = `<select class="browser-default" onchange="mostrarResultadosBusquedaPedidos(${nPag}, this.value,${IDCategoria})">
+        <option value="" disabled>Páginas</option>`;
+  for (var i = 0; i < nPag; i++) {
+    if (i + 1 == pag) {
+      selected = "selected";
+    } else {
+      selected = "";
+    }
+    if (nPag != 1) {
+      sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+        }</option>`;
+    }
+  }
+  sel += `</select>`;
+
+  if (pag <= 1) btnAtras = `<a style="color:#aba7a7;">❮ Anterior</a>`;
+  else
+    btnAtras = `<a onclick="mostrarResultadosBusquedaPedidos(${nPag} , ${parseInt(pag) - 1
+      }, ${IDCategoria});">❮ Anterior</a>`;
+
+  if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
+  else
+    btnSig = `<a onclick="mostrarResultadosBusquedaPedidos(${nPag},${parseInt(pag) + 1
+      },${IDCategoria})">Siguiente ❯</a>`;
+
+  return `
+          <div id="paginador">
+        <div class="row">
+          <div class="col s4"></div>
+          <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
+          <div class="col s4"></div>
+        </div>
+        <div class="row" style="width:fit-content !important;">
+            <div class="col s4" id="btnAtras" style="width:fit-content !important;">
+              ${btnAtras}
+            </div>
+          <div class="col s4">
+            ${sel}
+          </div>
+          <div class="col s4" id="btnSig" style="width:fit-content !important;">
+            ${btnSig}
+          </div>
+        </div>
+      </div><br>`;
+}

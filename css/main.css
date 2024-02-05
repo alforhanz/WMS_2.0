@@ -49,13 +49,13 @@ a {
   text-decoration: none;
 }
 .green.darken-4 {
-  background-color: #000 !important;
+  background-color: #28a745 !important;
 }
 .green-text {
   color: #28a745 !important;
 }
 .datepicker-date-display {
-  background-color: #000;
+  background-color: #28a745;
 }
 .datepicker-table td.is-selected {
   background-color: #000;
@@ -225,6 +225,10 @@ svg[atributos] {
 .btn {
   width: 100%;
   height: 45px;
+  background-color: #28a745;
+}
+.btn:hover{
+  background-color: #1f8136 !important;
 }
 #btn2 {
   width: 42%;
@@ -763,7 +767,7 @@ svg[atributos] {
     position: relative;
     width: 75px;
     height: 34px;
-    background-color: #000;
+    background-color: #28a745;
     border-radius: 5px;
     margin-right: 10px;
     -webkit-transition: background 0.3s ease;
@@ -780,10 +784,10 @@ svg[atributos] {
     left: 0px;
   }
   .switch label input[type="checkbox"]:checked + .lever {
-    background-color: #000;
+    background-color: #28a745;
   }
   .switch label .lever:before {
-    background-color: rgb(248 15 0 / 0%);
+    background-color: rgba(14, 230, 61, 0);
   }
 
   #forms2 .select-wrapper input.select-dropdown {
@@ -1043,6 +1047,7 @@ textarea.materialize-textarea {
   display: table;
   border-collapse: collapse;
   border-spacing: 0;
+  margin-top: 15px;
 }
 
 #tblpedido tbody:nth-child(odd) {
@@ -1066,6 +1071,25 @@ textarea.materialize-textarea {
     width: 95%;
   }
 }
+
+#myTableLectura {
+  width: 100%;
+  font-size: 12px;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-top: 15px;
+}
+
+#tabla-lectura {
+ padding: 0 !important;
+}
+
+#tabla-verificacion {
+ padding: 0 !important;
+}
+
+
 
 .modal {
   display: none;
@@ -1664,6 +1688,7 @@ th {
   background-repeat: no-repeat;
 }
 .loading {
+
   width: 200px;
   height: 200px;
   top: 46%;
@@ -1675,7 +1700,7 @@ th {
 .loading:after {
   content: "";
   display: block;
-  color: #000;
+  color: #0f6824;
   font-size: 80px;
   text-indent: -9999em;
   overflow: hidden;
@@ -1768,7 +1793,7 @@ th {
   -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
   padding: 1rem;
-  background-color: #28a745;
+  background-color: #535162;
   border-bottom: 1px solid #ddd;
   color: #fff;
 }
@@ -1920,6 +1945,11 @@ th {
   font-size: 12px;
 }
 
+.codigo-barras-input
+{
+  border-bottom: 1px solid #48a013 !important;
+}
+
 /* .arrow {
   border: solid black;
   border-width: 0 3px 3px 0;
@@ -1945,4 +1975,15 @@ th {
 .down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+} */
+
+/* 
+.loading {
+	width: 200px;
+	height: 200px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	z-index: 9999;
 } */

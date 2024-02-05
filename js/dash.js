@@ -3,11 +3,12 @@ $(document).ready(function () {
 });
 
 function getDataDash() {
+  // var usuario = sessionStorage.getItem('user');
   var usuario = localStorage.getItem('username');
   const params =
     "?usuario=" +
     usuario;
-    // "pruebapma";
+  // "pruebapma";
   console.log("Estos son los parametros de busqueda General: " + params);
   // console.log(params);
   fetch(env.API_URL + "getdashinfo/1" + params, myInit)
@@ -17,14 +18,12 @@ function getDataDash() {
       if (result.msg === "SUCCESS") {
         if (result.data.length > 0) {
           ArrayData = result.data[0];
-       
+
           // Actualizar elementos HTML
           document.getElementById("pedidos_solicitados").innerText = parseFloat(ArrayData.PEDIDOS_SOLICITADOS).toFixed(2);
           document.getElementById("articulos_solicitados").innerText = parseFloat(ArrayData.CANT_ARTICULOS_SOLICITADOS).toFixed(2);
           document.getElementById("articulos_pendientes").innerText = parseFloat(ArrayData.CANT_ARTICULOS_PENDIENTES).toFixed(2);
           document.getElementById("articulos_prioridad").innerText = parseFloat(ArrayData.ARTICULOS_CON_PRIORIDAD).toFixed(2);
-
-     
 
           // Puedes seguir actualizando más elementos según necesites
 

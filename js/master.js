@@ -15,6 +15,7 @@ function login() {
     localStorage.username = "";
     localStorage.checkbox = "";
   }
+
   //-----------------user and pass validation--------------
   if (usuario == "") {
     Swal.fire({
@@ -47,6 +48,7 @@ function login() {
       .then((response) => response.json())
       .then((result) => {
         if (result.msg === "SUCCESS") {
+          localStorage.username = usuario;
           sessionStorage.setItem("tokens", JSON.stringify(result.access_token));
           sessionStorage.setItem("user", JSON.stringify(result.username));
           sessionStorage.setItem("compania", JSON.stringify(result.compania));
@@ -57,9 +59,6 @@ function login() {
           sessionStorage.setItem("bodega", JSON.stringify(result.bodega));
           //PRIVILEGIOS (MODULOS)
           sessionStorage.setItem("_priv", JSON.stringify(result.priv));
-
-          // Ejemplo de uso: Cambiar el color principal a negro(#ff0000)
-          // changePrimaryColor("#000");
 
           console.log("Resultado Usuario Login");
           console.log(result);
