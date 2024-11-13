@@ -1,0 +1,19 @@
+#contenedor_barcode video{
+max-width: 70%;
+width: 70%;
+margin: 0 auto;
+display: block;
+margin-top: 5%;
+}
+#contenedor_barcode{
+max-width: 100%;
+position:relative;
+}
+canvas{
+max-width: 100%;
+}
+canvas.drawingBuffer{
+position:absolute;
+top:0;
+left:0;
+}

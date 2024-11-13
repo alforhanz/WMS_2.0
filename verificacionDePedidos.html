@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--Import Materialize Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--Import Personalize css-->
+  <link type="text/css" rel="stylesheet" href="css/main.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <!-- FONTS -->
+  <style>   
+    @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&display=swap');
+  </style>
+  <!-- FONTS -->
+  <link rel="icon" href="/img/wms.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/encabezado.js" type="text/javascript"></script>
+  <!-- <meta name="theme-color" content=""> -->
+  <title>Verificación de Pedidos - WMS</title>
+</head>
+
+<!-- <body id="home" tabindex="-1"> -->
+  <body id="home">
+  <!-- HEADER -->
+  <my-header></my-header>
+  <!--HEADER-->
+  <main>
+    <div id="resultadoBusqueda">
+      <h2 class="titulo-vista"">Verificación de pedidos</h2>
+      <div id="contenedorLoader"></div>
+      <div id="carga"></div>
+      <div class="container">
+  
+        <div class="row">
+          <div id="menup">
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Ingrese número de pedido" id="pPedido" type="text" class="validate">
+              <label for="first_name">Número de Pedido</label>
+            </div>
+          </div>
+  
+          <div class="input-field col s6">
+            <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+            <label for="fecha_ini">Fecha Inicial</label>
+          </div>
+  
+          <div class="input-field col s6">
+            <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+            <label for="fecha_fin">Fecha Final</label>
+          </div>
+
+          <!-- Switch Pedidos acturados y finalizados-->  
+          <div class="row col s12 switch-button">
+            <div class="switch">
+              <label class="label-button-switch">
+                <input checked="false" type="checkbox" id="toggleSwitch">
+                <span class="lever"></span>
+                Pedidos facturados y finalizados
+              </label>
+            </div>
+          </div>
+        </div>
+          
+        <!-- Boton Buscar Pedidos-->
+        <div class="row col-md-12 S12">
+          <button class="btn waves-effect waves-light" type="submit" onclick="validarFormulario()">Buscar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+  
+        <!-- Tabla de resultados para listado de pedidos -->
+        <div class="row">
+          <div id="resultadoGeneral"></div>
+          <table id="tblpedido" class="display centered">
+            <thead>
+              <tr class="themeColor">
+                <th>DOC</th>
+                <th>DESC</th>
+                <th>TOTAL UN</th>
+                <th>L VERIF</th>
+                <th id="thLPrep">L PREP</th>
+                <th>VERIF</th>
+              </tr>
+            </thead>
+            <tbody class="striped"></tbody>
+          </table>
+          <div id="resultadoPaginador"></div>
+        </div>
+        <!-- Cierre de tabla de resultados para listado de pedidos -->
+      </div>
+    </div>
+  </main>
+
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/main.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/verificacionpedidos.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/loader.js"></script>
+  <script type="tex/javascript" src="js/paginacion.js"></script>
+  <!--JavaScript local-->
+
+  <script>
+    // Ejecutar la función mostrarLoader cuando el DOM esté listo
+    document.addEventListener("DOMContentLoaded", mostrarLoader);
+
+    // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar
+    // window.addEventListener("load", ocultarLoader);
+    // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar completamente
+    window.onload = function () {
+      // Llama a la función para ocultar el loader
+      ocultarLoader();
+    };
+
+
+  </script>
+</body>
+
+</html>

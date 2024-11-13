@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--Import Materialize Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <link type="text/css" rel="stylesheet" href="css/main.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+
+  <!-- FONTS -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&family=Roboto&display=swap');
+  </style>
+  <!-- FONTS -->
+  <link rel="icon" href="/img/wms.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/encabezado.js" type="text/javascript"></script>
+
+  <meta name="theme-color" content="">
+  <title>Detalle de las Lineas de Traslados Salida- WMS</title>
+
+</head>
+
+<body id="home" tabindex="-1">
+  <!-- HEADER -->
+  <my-header></my-header>
+  <!--HEADER-->
+  <main>
+    <div id="resultadoBusqueda"> 
+    <div id="carga" style="margin-top: -7px;"></div>
+    <div class="container">
+      <div>       
+        <i id="retornar" class="material-icons green-text" style="cursor: pointer;" onclick="confirmaRegresar()">keyboard_backspace</i>
+    </div>
+    
+      <h2 style="text-align:center ; text-transform: uppercase;">Detalle de Traslado de salida Preparados</h2>
+      <div class="row"><label id="documento"></label></div>
+      <!-- <div class="row"><label id="pedido"></label></div>
+      <div class="row"><label id="estadoPedido"></label></div> -->
+      <div class="row">
+        <ul id="tabs-swipe-demo" class="tabs">
+          <!-- <li class="tab col s3"><a class="active" href="#tabla-lectura" >LECTURA</a></li> -->
+          <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a></li>
+          <li class="tab col s3"><a href="#tabla-verificacion" onclick="verificacion()">VERFICACIÓN</a></li>
+        </ul>
+        <div id="tabla-lectura" class="col s12">     
+          <div class="row">
+            <div id="resultadoGeneral"></div>
+            <table id="myTableLectura" class="display">
+              <thead>
+                <tr class="themeColor">
+                  <th style="width: 30%;">ARTICULO</th>
+                  <th id="codigoBarrasHeader" style="width: 30%;">COD</th>
+                  <th style="width: 20%;">CANT</th>
+                  <th style="width: 10%;">CL</th>
+                </tr>
+              </thead>
+              <tbody id="tblbodyLectura">
+                <tr>
+                  <td>
+                    <span display: inline-block;"></span>
+                  </td>
+                  <td class="codigo-barras-cell">
+                    <input id="codigo-barras" type="text" class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" writingsuggestions="true" autofocus >                  
+                  </td>
+                  <td class="codigo-barras-cell2">
+                    <input id="cant-pedida" type="text" class="codigo-barras-input" value=""
+                      onchange="validarCantidadPedida(this)" style="text-align: center;" writingsuggestions="true">
+                  </td>
+                  <td class="codigo-barras-cell2">
+                    <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>         
+        </div>
+        <div id="tabla-verificacion" class="col s12">
+          <label id="cantidadDeRegistros"></label>
+          <div class="row">            
+            <div id="resultadoGeneral"></div>
+            <table id="myTableVerificacion" class="display centered ">
+              <thead>
+                <tr class="themeColor">
+                  <th style="width: 20%;">ARTICULO</th>
+                  <th id="codigoBarrasHeader" style="width: 20%;">COD</th>
+                  <th style="width: 10%;">CANT</th>
+                  <th style="width: 10%;">CANT PREP</th>
+                  <th style="width: 10%;">CANT LEIDA</th>
+                  <th style="width: 10%;">VERIF</th>
+                  <th class="width: 10%;" hidden>DEL</th>
+                </tr>
+              </thead>
+              <tbody id="tblbodyVerificacion">   
+                <tr>                             
+                </tr>             
+              </tbody>             
+            </table>
+          </div>    
+        
+          <!-- Botones para la verificación -->
+          <div id="contenedorBotones">
+            <button id="btnGuardar" style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;" onclick="confirmarGuardadoParcial()" hidden>Guardar</button>
+            <button id="btnProcesar" style="width: 105px; background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; height: 36px;" onclick="confirmaProcesar()" hidden>Procesar</button>
+            <button id="btnRegresar" style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;" onclick="confirmaRegresar()" hidden>Regresar</button>
+          </div>
+        </div>     
+      </div>
+      <!-- Tabla de resultados para listado de pedidos -->
+      <!-- Cierre de tabla de resultados para listado de pedidos -->
+
+    </div>
+  </div>
+     <!--Text area para los mensajes-->
+     <div id="mensajes" class="container">
+      <div class="centered col s12">
+        <textarea id="mensajeText" readonly></textarea>
+      </div>
+    </div>
+<!--Fin Text area para los mensajes-->
+<div class="row" id="observaciones-container" style="display:none;">
+  <!-- <div class="row" id="observaciones-container"></div> -->
+  <div class="input-field col s12">
+    <label id="lblObservaciones" for="observaciones" style="color: red;">Observaciones</label>
+    <textarea placeholder="Observaciones" id="observaciones" type="text" readonly></textarea>
+  </div>
+</div>
+  </main>
+
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/main.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/lineasTrasladoSalida.js" defer></script>
+  <!--JavaScript local-->
+</body>
+</html>
+
+
+
+

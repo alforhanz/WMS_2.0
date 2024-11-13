@@ -1,0 +1,111 @@
+#popupMenu-popup {
+  overflow-y: scroll;
+  height: 100%;
+  position: fixed;
+  left: 0 !important;
+  top: 0 !important;
+}
+#popupMenu .close-car,
+#popupMenu {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+.shop-bodegas {
+  background: #28a745;
+  border-top: solid 1px #ffffff70;
+  padding: 4px 0 !important ;
+}
+.shop-bodegas a {
+  color: #fff;
+}
+.shop-bodegas button {
+  margin-top: 0;
+}
+.shop-bodegas img {
+  width: 20px !important;
+}
+.shop-bodegas h6 {
+  font-size: 14px;
+  font-family: "Oswald";
+  font-weight: normal;
+  color: #fff !important;
+  margin-left: -31px;
+  position: relative;
+  left: 4px;
+  top: 6px;
+}
+.shop-bodegas .text-right {
+  text-align: right;
+}
+.shop-bodegas .img {
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 6px -6px #222;
+}
+.contenedor-sucursales {
+  border-width: 0;
+  overflow: visible;
+  overflow-x: hidden;
+  padding: 1em;
+}
+.contenedor-sucursales .sucursal {
+  border: solid 1px #ddd;
+  margin-top: 10px;
+}
+.contenedor-sucursales .header-sucursal {
+  background: #000;
+  color: #fff;
+  padding: 5px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+.contenedor-sucursales .description-sucursal {
+  padding: 5px 15px;
+}
+.contenedor-sucursales h6,
+.contenedor-sucursales span {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-family: arial;
+}
+.contenedor-sucursales h3 {
+  font-size: 17px;
+  margin: 0;
+  padding: 5px 0;
+  font-weight: bold;
+}
+.contenedor-sucursales .description-sucursal a {
+  background: #dcd7cc !important;
+  color: #000;
+  border: solid 1px #dcd7cc !important;
+  font-size: 13px !important;
+  text-align: center !important;
+}
+.contenedor-sucursales .sucursal-display {
+  color: #000;
+  font-family: arial;
+  font-size: 13px;
+}
+.reset-info-bodega {
+  padding-left: 0 !important;
+}
+/* .buscador input {
+  border: 1px solid #28a745 !important;
+  margin: 0 !important;
+  padding-left: 8px !important;
+  height: 44px !important;
+  border-radius: 5px 0px 0px 5px !important;
+  -moz-border-radius: 5px 0px 0px 5px !important;
+  -webkit-border-radius: 5px 0px 0px 5px !important;
+  border: 0px solid #28a745;
+  top: -1px; 
+  left: -10px;
+} */
+.shop-bodegas {
+  background: #28a745;
+  border-top: solid 1px #ffffff70;
+  padding: 5px 0;
+}

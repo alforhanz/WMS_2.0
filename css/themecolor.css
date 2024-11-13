@@ -1,0 +1,17 @@
+:root {
+  --color-primary: #000; /* Color principal predeterminado (rojo) */
+}
+
+
+.themeColor{
+  background-color:#28a745 !important;
+  color:white;
+}
+
+tr.themeColor {
+  align-content: center;
+}
+
+th.themeColor{
+  text-align: center;
+}
