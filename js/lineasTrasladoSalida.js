@@ -74,58 +74,111 @@ function armarTablaLectura(detalleTrasladoList) {
     tbody.innerHTML = '';
   
     // Recorrer el detalle del traslado y agregar filas si LINEAS_PREPARADAS tiene un valor
-    detalleTrasladoList.forEach(function (detalle) {
-      // if (detalle.LINEAS_PREPARADAS != null && detalle.LINEAS_PREPARADAS !== "" &&  detalle.LINEAS_PREPARADAS > 0) {
-        if (detalle.LINEAS_VERIFICADAS != null && detalle.LINEAS_VERIFICADAS !== ""  &&  detalle.LINEAS_VERIFICADAS > 0) {
-        var newRow = document.createElement('tr');
-        var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
-        var cursor = (disabled) ? 'default' : 'pointer';
-        var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
-  
-  
-        newRow.innerHTML = `
-          <td>
-            <span>${detalle.ARTICULO}</span>
-          </td>
-          <td class="codigo-barras-cell">
-            <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.CODIGO_BARRA || ''}" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
-          </td>
-          <td class="codigo-barras-cell2">
-            <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_VERIFICADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
-          </td>
-          <td class="codigo-barras-cell2">
-            <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
-          </td>
-        `;
-        tbody.appendChild(newRow);
-               // Crear una nueva fila vacía para permitir la entrada de más datos si es necesario
-      crearNuevaFila();
-      }else{
-        var newRow = document.createElement('tr');
-        var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
-        var cursor = (disabled) ? 'default' : 'pointer';
-        var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
-  
-  
-        newRow.innerHTML = `
-          <td>
-            <span></span>
-          </td>
-          <td class="codigo-barras-cell">
-            <input id="codigo-barras" type="text" class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
-          </td>
-          <td class="codigo-barras-cell2">
-            <input id="cant-pedida" type="text" class="codigo-barras-input" value="" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
-          </td>
-          <td class="codigo-barras-cell2">
-            <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
-          </td>
-        `;
-        tbody.appendChild(newRow);
 
+detalleTrasladoList.some(function (detalle) {
+  if (detalle.LINEAS_VERIFICADAS != null && detalle.LINEAS_VERIFICADAS !== "" && detalle.LINEAS_VERIFICADAS > 0) {
+    var newRow = document.createElement('tr');
+    var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
+    var cursor = (disabled) ? 'default' : 'pointer';
+    var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
 
-      } 
-    });
+    newRow.innerHTML = `
+      <td>
+        <span>${detalle.ARTICULO}</span>
+      </td>
+      <td class="codigo-barras-cell">
+        <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.CODIGO_BARRA || ''}" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
+      </td>
+      <td class="codigo-barras-cell2">
+        <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_VERIFICADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
+      </td>
+      <td class="codigo-barras-cell2">
+        <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
+      </td>
+    `;
+    tbody.appendChild(newRow);
+
+    // Crear una nueva fila vacía para permitir la entrada de más datos si es necesario
+    crearNuevaFila();
+
+  } else {
+    var newRow = document.createElement('tr');
+    var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
+    var cursor = (disabled) ? 'default' : 'pointer';
+    var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
+
+    newRow.innerHTML = `
+      <td>
+        <span></span>
+      </td>
+      <td class="codigo-barras-cell">
+        <input id="codigo-barras" type="text" class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
+      </td>
+      <td class="codigo-barras-cell2">
+        <input id="cant-pedida" type="text" class="codigo-barras-input" value="" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
+      </td>
+      <td class="codigo-barras-cell2">
+        <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
+      </td>
+    `;
+    tbody.appendChild(newRow);
+
+    // Detener el ciclo si cae en el else
+    return true;
+  }
+});
+
+    
+    // detalleTrasladoList.forEach(function (detalle) {
+    //   // if (detalle.LINEAS_PREPARADAS != null && detalle.LINEAS_PREPARADAS !== "" &&  detalle.LINEAS_PREPARADAS > 0) {
+    //     if (detalle.LINEAS_VERIFICADAS != null && detalle.LINEAS_VERIFICADAS !== ""  &&  detalle.LINEAS_VERIFICADAS > 0) {
+    //     var newRow = document.createElement('tr');
+    //     var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
+    //     var cursor = (disabled) ? 'default' : 'pointer';
+    //     var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
+  
+  
+    //     newRow.innerHTML = `
+    //       <td>
+    //         <span>${detalle.ARTICULO}</span>
+    //       </td>
+    //       <td class="codigo-barras-cell">
+    //         <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.CODIGO_BARRA || ''}" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
+    //       </td>
+    //       <td class="codigo-barras-cell2">
+    //         <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_VERIFICADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
+    //       </td>
+    //       <td class="codigo-barras-cell2">
+    //         <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
+    //       </td>
+    //     `;
+    //     tbody.appendChild(newRow);
+    //            // Crear una nueva fila vacía para permitir la entrada de más datos si es necesario
+    //   crearNuevaFila();
+    //   }else{
+    //     var newRow = document.createElement('tr');
+    //     var disabled = (estadoPreparacion !== 'A') ? 'disabled' : '';
+    //     var cursor = (disabled) ? 'default' : 'pointer';
+    //     var onclick = (disabled) ? '' : 'onclick="eliminarFila(this)"';
+  
+  
+    //     newRow.innerHTML = `
+    //       <td>
+    //         <span></span>
+    //       </td>
+    //       <td class="codigo-barras-cell">
+    //         <input id="codigo-barras" type="text" class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" autofocus ${disabled}>
+    //       </td>
+    //       <td class="codigo-barras-cell2">
+    //         <input id="cant-pedida" type="text" class="codigo-barras-input" value="" onchange="guardarTablaEnArray(this)" style="text-align: center;" ${disabled}>
+    //       </td>
+    //       <td class="codigo-barras-cell2">
+    //         <i class="material-icons red-text" style="cursor: ${cursor};" ${onclick}>clear</i>
+    //       </td>
+    //     `;
+    //     tbody.appendChild(newRow);
+    //   } 
+    // });
   
     // Guardar la tabla en el array
     guardarTablaEnArray();

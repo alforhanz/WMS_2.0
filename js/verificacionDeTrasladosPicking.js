@@ -134,7 +134,16 @@ function listadoTraslados(parametros) {
             <div class="col s12"><span>Total de Registros: </span><span>${result.traslados.length}</span></div>
           </div>`;
 
-          document.getElementById("resultadoGeneral").innerHTML = htm;
+          let resultadoGeneral = document.getElementById("resultadoGeneral");
+            if (resultadoGeneral) {
+              let htm = `<div class="row" id="totalregistros">
+                            <div class="col s12"><span>Total de Registros: </span><span>${result.traslados.length}</span></div>
+                         </div>`;
+              resultadoGeneral.innerHTML = htm;
+            } else {
+              console.error("El elemento #resultadoGeneral no existe en el DOM.");
+            }
+
           mostrarResultadosVerificacionTraslados(nPag, 1);
 
           document.getElementById("carga").innerHTML = "";

@@ -6,8 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <!--Import Personalize css-->
@@ -37,85 +36,85 @@
   <!-- HEADER -->
   <my-header></my-header>
   <!--HEADER-->
-  <main>
-    <div id="resultadoBusqueda">
-      <div id="contenedorLoader"></div>
-      <div id="carga"></div>
-      <div class="container">
-        <h2 class="titulo-vista">Verificación de Picking de traslados</h2>
-
+  <main>  
+    <div id="resultadoBusqueda"> 
+    <div id="contenedorLoader"></div>
+    <div id="carga"></div>
+    <div class="container">
+      <h2 class="titulo-vista">Verificación de Picking de traslados</h2>
+              
+      <div class="row">
+        <div id="menup">
+          <!-- <label>Busqueda de contenedores</label> -->
+        </div>
         <div class="row">
-          <div id="menup">
-            <!-- <label>Busqueda de contenedores</label> -->
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input placeholder="Ingrese el número de traslado" id="pContenedor" type="text" class="validate">
-              <!-- <label for="first_name">Número de Contenedor</label> -->
-              <label for="first_name"></label>
-            </div>
-          </div>
-
-          <div class="input-field col s6">
-            <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
-            <label for="fecha_ini">Fecha Inicial</label>
-          </div>
-
-          <div class="input-field col s6">
-            <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
-            <label for="fecha_fin">Fecha Final</label>
-          </div>
-          <!-- Switch traslados acturados y finalizados-->
-          <div class="row col s12 switch-button">
-            <div class="switch">
-              <label class="label-button-switch">
-                <input checked="false" type="checkbox" id="toggleSwitch">
-                <span class="lever"></span>
-                MOSTRAR PREPARADOS
-              </label>
-            </div>
+          <div class="input-field col s12">
+            <input placeholder="Ingrese el número de traslado" id="pContenedor" type="text" class="validate">
+            <!-- <label for="first_name">Número de Contenedor</label> -->
+            <label for="first_name"></label>
           </div>
         </div>
 
-        <!-- Boton Buscar traslados-->
-        <div class="row col-md-12 S12">
-          <button class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">Buscar
-            <i class="material-icons right">send</i>
-          </button>
+        <div class="input-field col s6">
+          <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+          <label for="fecha_ini">Fecha Inicial</label>
         </div>
 
-        <!-- Tabla de resultados para listado de pedidos -->
-        <div class="row tblcontenedor">
-          <div id="resultadoGeneral"></div>
-          <table id="tbltraslados" class="display centered">
-            <thead>
-              <tr class="themeColor">
-                <th>TRASLADO</th>
-                <th>BODEGA DESTINO</th>
-                <th>CANT VERIF</th>
-                <th>CANT PREP</th>
-                <th>FECHA</th>
-              </tr>
-            </thead>
-            <tbody class="striped"></tbody>
-          </table>
-          <div id="resultadoPaginador"></div>
+        <div class="input-field col s6">
+          <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+          <label for="fecha_fin">Fecha Final</label>
         </div>
-        <!-- Cierre de tabla de resultados para listado de pedidos -->
+        <!-- Switch traslados acturados y finalizados-->
+        <div class="row col s12 switch-button" >
+          <div class="switch">
+            <label class="label-button-switch">
+              <input checked="false" type="checkbox" id="toggleSwitch">
+              <span class="lever"></span>
+              MOSTRAR PREPARADOS
+            </label>
+          </div>
+        </div>
       </div>
+
+      <!-- Boton Buscar traslados-->
+      <div class="row col-md-12 S12">
+        <button class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">Buscar
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+      <!-- Tabla de resultados para listado de pedidos -->
+      <div class="row tblcontenedor">
+        <div id="resultadoGeneral"></div>
+        <table id="tbltraslados" class="display centered">
+          <thead>
+            <tr class="themeColor">
+              <th>TRASLADO</th>
+              <th>BODEGA DESTINO</th>
+              <th>CANT VERIF</th>
+              <th>CANT PREP</th>
+              <th>FECHA</th>
+            </tr>
+          </thead>
+          <tbody class="striped"></tbody>
+        </table>
+        <div id="resultadoPaginador"></div>
+      </div>
+      <!-- Cierre de tabla de resultados para listado de pedidos -->
     </div>
+  </div> 
   </main>
 
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/verificacionDeTrasladosPicking.js" defer></script>
   <script type="text/javascript" src="js/loader.js"></script>
   <script type="tex/javascript" src="js/paginacion.js"></script>
+    <script type="text/javascript" src="js/verificacionDeTrasladosPicking.js" defer></script>
   <!--JavaScript local-->
 
   <script>
