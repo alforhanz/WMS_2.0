@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  
+  <link rel="stylesheet"  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <!-- ESTRUCTURA DE LAS PAGINAS -->
@@ -41,39 +41,36 @@
   <my-header></my-header>
   <!--HEADER-->
   <main>
-    <!-- Dropdown Trigger -->
-
+     <!-- Dropdown Trigger -->
+      
     <div class="dash">
       <a id="dashboardselect" class='dropdown-trigger btn' href='#' data-target='dropdown1'>Dashboards</a>
       <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="#!" onclick="getDataDashOC()"><i class="material-symbols-outlined">dashboard_customize</i>Ordenes
-            de compras</a></li>
+        <li><a href="#!" onclick="getDataDashOC()"><i class="material-symbols-outlined">dashboard_customize</i>Ordenes de compras</a></li>
         <li><a href="#!"><i class="material-symbols-outlined">dashboard_customize</i>Contenedores</a></li>
       </ul>
     </div>
 
-    <div id="resultadoBusqueda">
+    <div id="resultadoBusqueda">      
 
       <!-- <div id="resultadoGeneral"></div> -->
-      <div id="carga" style="margin-top: -7px;"></div>
-      <div class="container">
-
+    <div id="carga" style="margin-top: -7px;"></div>
+    <div class="container">
+      
         <div class="row">
           <div id="menup">
             <div class="dash-style">
               <div class="col s12 m3 small-box">
                 <table class="card-info">
                   <tr>
-                    <td id="dash-img1">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="92" viewBox="0 0 24 24" fill="#4caf50"
-                        stroke="#ffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-archive">
+                    <td  id="dash-img1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="50" height="92" viewBox="0 0 24 24" fill="#4caf50" stroke="#ffff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive">
                         <!-- <rect width="24" height="24" fill="#4caf50"/> -->
                         <polyline points="20 8 20 23 6 23 6 5" />
-                        <rect x="6" y="5" width="14" height="6" />
-                        <line x1="10" y1="13" x2="14" y2="13" />
-                      </svg>
+                        <rect x="6" y="5" width="14" height="6"/>
+                        <line x1="10" y1="13" x2="14" y2="13"/>
+                      </svg>                     
                     </td>
                     <td>
                       <span>Pedidos<br>Solicitados</span>
@@ -86,18 +83,14 @@
                 <table class="card-info">
                   <tr>
                     <td id="dash-img2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="51" height="92" viewBox="0 0 24 24" fill="#5abef9"
-                        stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="feather feather-codesandbox">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="51" height="92" viewBox="0 0 24 24" fill="#5abef9" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-codesandbox">
                         <!-- <rect width="24" height="24" fill="#5abef9"/> -->
-                        <path
-                          d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-                          fill="none" stroke="#ffff" />
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="none" stroke="#ffff"/>
                         <polyline points="7.5 4.21 12 6.81 16.5 4.21" stroke="#ffff" />
-                        <polyline points="7.5 19.79 7.5 14.6 3 12" stroke="#ffff" />
-                        <polyline points="21 12 16.5 14.6 16.5 19.79" stroke="#ffff" />
-                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="#ffff" />
-                        <line x1="12" y1="22.08" x2="12" y2="12" stroke="#ffff" />
+                        <polyline points="7.5 19.79 7.5 14.6 3 12"  stroke="#ffff"/>
+                        <polyline points="21 12 16.5 14.6 16.5 19.79" stroke="#ffff"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="#ffff"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12" stroke="#ffff"/>
                       </svg>
                     </td>
                     <td>
@@ -113,11 +106,9 @@
                     <td id="dash-img3">
                       <svg xmlns="http://www.w3.org/2000/svg" width="50" height="94" viewBox="3 0 19 19">
                         <!-- <rect width="24" height="24" fill="#f6f779"/> -->
-                        <circle cx="12" cy="12" r="6" fill="none" stroke="#ffffff" stroke-width="2"
-                          stroke-linecap="round" stroke-linejoin="round" />
-                        <polyline points="12 6 12 12 16 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" />
-                      </svg>
+                        <circle cx="12" cy="12" r="6" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="12 6 12 12 16 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>                                
                     </td>
                     <td>
                       <span>Artículos <br>Pendientes</span>
@@ -125,18 +116,16 @@
                     </td>
                   </tr>
                 </table>
-              </div>
-              <div class="col s12 m3 small-box">
+              </div>                     
+               <div class="col s12 m3 small-box">
                 <table class="card-info">
                   <tr>
                     <td id="dash-img4">
-                      <!-- Reemplaza la etiqueta img con el código SVG modificado -->
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 24" width="50" height="92">
-                        <rect width="24" height="24" fill="#007bff" />
-                        <path
-                          d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.249 1.249 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004L9.503.429Zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006a.036.036 0 0 0-.004-.009l-.006-.006-.008-.001c-.003 0-.006.002-.009.004Z"
-                          fill="#ffffff" />
-                      </svg>
+                       <!-- Reemplaza la etiqueta img con el código SVG modificado -->
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 24" width="50" height="92">
+                        <rect width="24" height="24" fill="#007bff"/>
+                        <path d="M9.504.43a1.516 1.516 0 0 1 2.437 1.713L10.415 5.5h2.123c1.57 0 2.346 1.909 1.22 3.004l-7.34 7.142a1.249 1.249 0 0 1-.871.354h-.302a1.25 1.25 0 0 1-1.157-1.723L5.633 10.5H3.462c-1.57 0-2.346-1.909-1.22-3.004L9.503.429Zm1.047 1.074L3.286 8.571A.25.25 0 0 0 3.462 9H6.75a.75.75 0 0 1 .694 1.034l-1.713 4.188 6.982-6.793A.25.25 0 0 0 12.538 7H9.25a.75.75 0 0 1-.683-1.06l2.008-4.418.003-.006a.036.036 0 0 0-.004-.009l-.006-.006-.008-.001c-.003 0-.006.002-.009.004Z" fill="#ffffff"/>
+                      </svg>                      
                     </td>
                     <td>
                       <span class="align-self-md-center">Artículos <br>con Prioridad</span>
@@ -144,39 +133,38 @@
                     </td>
                   </tr>
                 </table>
-              </div>
+              </div> 
             </div>
           </div>
         </div>
-        <!-- GRAFICAS -->
-        <div id="graficas" class="row">
+          <!-- GRAFICAS -->
+        <div id="graficas" class="row">         
+        </div>       
         </div>
-      </div>
+      </div>   
     </div>
-    </div>
-  </main>
+  </main>  
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!--   <script src="https://cdn.jsdelivr.net/npm/d3.chart@0.3.0/+esm"></script> -->
+<!--   <script src="https://cdn.jsdelivr.net/npm/d3.chart@0.3.0/+esm"></script> -->
   <script type="text/javascript" src="js/dash.js?v2.1"></script>
   <!-- <script type="text/javascript" src="js/dash2.js?v2.1"></script> -->
   <script type="text/javascript" src="js/main.js?v2.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v2.1" defer></script>
   <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-      var elems = document.querySelectorAll('.dropdown-trigger');
-      var instances = M.Dropdown.init(elems, {});
-    });
+   document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {});
+  });
 
-    // Or with jQuery
-    $(document).ready(function () {
-      $('.dropdown-trigger').dropdown();
-    });  
-  </script>
+  // Or with jQuery
+  $(document).ready(function() {
+    $('.dropdown-trigger').dropdown();
+  });  
+  </script>  
 </body>
-
 </html>
