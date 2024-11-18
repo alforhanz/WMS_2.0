@@ -40,111 +40,115 @@
   <my-header></my-header>
   <!--HEADER-->
   <main>
-    <div id="resultadoBusqueda"> 
-    <div id="carga" style="margin-top: -7px;"></div>
-    <div class="container">
-      <h2 style="text-align:center ; text-transform: uppercase;">Lineas de preparación del Traslado</h2>
-      <div class="row"><label id="documento"></label></div>
-      <!-- <div class="row"><label id="pedido"></label></div>
+    <div id="resultadoBusqueda">
+      <div id="carga" style="margin-top: -7px;"></div>
+      <div class="container">
+        <h2 style="text-align:center ; text-transform: uppercase;">Lineas de preparación del Traslado</h2>
+        <div class="row"><label id="documento"></label></div>
+        <!-- <div class="row"><label id="pedido"></label></div>
       <div class="row"><label id="estadoPedido"></label></div> -->
-      <div class="row">
-        <ul id="tabs-swipe-demo" class="tabs">
-          <!-- <li class="tab col s3"><a class="active" href="#tabla-lectura" >LECTURA</a></li> -->
-          <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a></li>
-          <li class="tab col s3"><a href="#tabla-verificacion" onclick="verificacion()">VERFICACIÓN</a></li>
-        </ul>
-        <div id="tabla-lectura" class="col s12">     
-          <div class="row">
-            <div id="resultadoGeneral"></div>
-            <table id="myTableLectura" class="display">
-              <thead>
-                <tr class="themeColor">
-                  <th style="width: 30%;">ARTICULO</th>
-                  <th id="codigoBarrasHeader" style="width: 30%;">COD</th>
-                  <th style="width: 20%;">CANT</th>
-                  <th style="width: 10%;">CL</th>
-                </tr>
-              </thead>
-              <tbody id="tblbodyLectura">
-                <tr>
-                  <td>
-                    <span display: inline-block;"></span>
-                  </td>
-                  <td class="codigo-barras-cell">
-                    <input id="codigo-barras" type="text" class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" writingsuggestions="true" autofocus >                  
-                  </td>
-                  <td class="codigo-barras-cell2">
-                    <input id="cant-pedida" type="text" class="codigo-barras-input" value=""
-                      onchange="validarCantidadPedida(this)" style="text-align: center;" writingsuggestions="true">
-                  </td>
-                  <td class="codigo-barras-cell2">
-                    <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="row">
+          <ul id="tabs-swipe-demo" class="tabs">
+            <!-- <li class="tab col s3"><a class="active" href="#tabla-lectura" >LECTURA</a></li> -->
+            <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a></li>
+            <li class="tab col s3"><a href="#tabla-verificacion" onclick="verificacion()">VERFICACIÓN</a></li>
+          </ul>
+          <div id="tabla-lectura" class="col s12">
+            <div class="row">
+              <div id="resultadoGeneral"></div>
+              <table id="myTableLectura" class="display">
+                <thead>
+                  <tr class="themeColor">
+                    <th style="width: 30%;">ARTICULO</th>
+                    <th id="codigoBarrasHeader" style="width: 30%;">COD</th>
+                    <th style="width: 20%;">CANT</th>
+                    <th style="width: 10%;">CL</th>
+                  </tr>
+                </thead>
+                <tbody id="tblbodyLectura">
+                  <tr>
+                    <td>
+                      <span display: inline-block;"></span>
+                    </td>
+                    <td class="codigo-barras-cell">
+                      <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
+                        onchange="validarCodigoBarras(this)" writingsuggestions="true" autofocus>
+                    </td>
+                    <td class="codigo-barras-cell2">
+                      <input id="cant-pedida" type="text" class="codigo-barras-input" value=""
+                        onchange="validarCantidadPedida(this)" style="text-align: center;" writingsuggestions="true">
+                    </td>
+                    <td class="codigo-barras-cell2">
+                      <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="tabla-verificacion" class="col s12">
+            <label id="cantidadDeRegistros"></label>
+            <div class="row">
+              <div id="resultadoGeneral"></div>
+              <table id="myTableVerificacion" class="display centered ">
+                <thead>
+                  <tr class="themeColor">
+                    <th style="width: 20%;">ARTICULO</th>
+                    <th id="codigoBarrasHeader" style="width: 20%;">COD</th>
+                    <th style="width: 10%;">CANT</th>
+                    <th style="width: 10%;">CANT PREPARADA</th>
+                    <th style="width: 10%;">VERIF</th>
+                    <th class="width: 10%;" hidden>DEL</th>
+                  </tr>
+                </thead>
+                <tbody id="tblbodyVerificacion">
+                  <tr>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Botones para la verificación -->
+            <div id="contenedorBotones">
+              <button id="btnGuardar"
+                style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;"
+                onclick="confirmarGuardadoParcial()" hidden>Guardar</button>
+              <button id="btnPreparar"
+                style="width: 105px; background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; height: 36px;"
+                onclick="confirmaPreparar()" hidden>Preparar</button>
+              <button id="btnRegresar"
+                style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;"
+                onclick="confirmaRegresar()" hidden>Regresar</button>
+            </div>
           </div>
         </div>
-        <div id="tabla-verificacion" class="col s12">
-          <label id="cantidadDeRegistros"></label>
-          <div class="row">            
-            <div id="resultadoGeneral"></div>
-            <table id="myTableVerificacion" class="display centered ">
-              <thead>
-                <tr class="themeColor">
-                  <th style="width: 20%;">ARTICULO</th>
-                  <th id="codigoBarrasHeader" style="width: 20%;">COD</th>
-                  <th style="width: 10%;">CANT</th>
-                  <th style="width: 10%;">CANT PREPARADA</th>
-                  <th style="width: 10%;">VERIF</th>
-                  <th class="width: 10%;" hidden>DEL</th>
-                </tr>
-              </thead>
-              <tbody id="tblbodyVerificacion">   
-                <tr>                             
-                </tr>             
-              </tbody>             
-            </table>
-          </div>    
-        
-          <!-- Botones para la verificación -->
-          <div id="contenedorBotones">
-            <button id="btnGuardar" style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;" onclick="confirmarGuardadoParcial()" hidden>Guardar</button>
-            <button id="btnPreparar" style="width: 105px; background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; height: 36px;" onclick="confirmaPreparar()" hidden>Preparar</button>
-            <button id="btnRegresar" style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;" onclick="confirmaRegresar()" hidden>Regresar</button>
-          </div>
-        </div>     
-      </div>         
+      </div>
     </div>
-  </div>
 
-  <div id="mensajes" class="container">
-    <div class="centered col s12">
-      <textarea id="mensajeText" readonly></textarea>
+    <div id="mensajes" class="container">
+      <div class="centered col s12">
+        <textarea id="mensajeText" readonly></textarea>
+      </div>
     </div>
-  </div>
 
-  <div class="row" id="observaciones-container" style="display:none;">
-    <!-- <div class="row" id="observaciones-container"></div> -->
-    <div class="input-field col s12">
-      <label id="lblObservaciones" for="observaciones" style="color: red;">Observaciones</label>
-      <textarea placeholder="Observaciones" id="observaciones" type="text" readonly></textarea>
+    <div class="row" id="observaciones-container" style="display:none;">
+      <!-- <div class="row" id="observaciones-container"></div> -->
+      <div class="input-field col s12">
+        <label id="lblObservaciones" for="observaciones" style="color: red;">Observaciones</label>
+        <textarea placeholder="Observaciones" id="observaciones" type="text" readonly></textarea>
+      </div>
     </div>
-  </div>
   </main>
 
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0"></script>
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/lineasDePreparacionDeTraslados.js" defer></script>
   <!--JavaScript local-->
 </body>
+
 </html>
-
-
-
-
