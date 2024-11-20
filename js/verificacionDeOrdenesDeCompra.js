@@ -1,14 +1,4 @@
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    const checkbox = document.getElementById('toggleSwitch');  
-    /////////////// Agregar un evento de cambio al checkbox/////////////
-    checkbox.addEventListener('change', function () {
-      // Imprimir el valor del checkbox en la consola    
-      if (checkbox.checked === false) {
-        ordenesDeComprasProcesadas();
-        
-      } 
-     limpiarResultadoGeneral();
-    });
+
 
     document.addEventListener("DOMContentLoaded", function (){
       
@@ -40,6 +30,18 @@
             }        
         });
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    const checkbox = document.getElementById('toggleSwitch');  
+    /////////////// Agregar un evento de cambio al checkbox/////////////
+    checkbox.addEventListener('change', function () {
+      // Imprimir el valor del checkbox en la consola    
+      if (checkbox.checked === false) {
+        ordenesDeComprasProcesadas();
+        
+      } 
+     limpiarResultadoGeneral();
+    });
      /////////////////Fucnion que activa el toggleSwitch para ver las ordenes de compras procesados
   function ordenesDeComprasProcesadas() {
   
@@ -97,12 +99,18 @@ function ValidaOrdenesDeCompra() {
   function enviarDatosControlador(pBodega, pOrden, pOpcion, pUsuario, pFechaDesde, pFechaHasta) {
     mostrarLoader();
     const params =
-      "?pBodega=" + pBodega +
-      "&pUsuario=" + pUsuario +
-      "&pOrden=" + pOrden +
-      "&pOpcion=" + pOpcion +
-      "&pFechaDesde=" + pFechaDesde +
-      "&pFechaHasta=" + pFechaHasta;
+      "?pBodega=" +
+      pBodega +
+      "&pUsuario=" +
+      pUsuario +
+      "&pOrden=" +
+      pOrden +
+      "&pOpcion=" +
+      pOpcion +
+      "&pFechaDesde=" +
+      pFechaDesde +
+      "&pFechaHasta=" +
+      pFechaHasta;
   
     localStorage.setItem('parametrosBusquedaOrdenesDeCompraList', params);
     localStorage.setItem('autoSearchOrdenDeComprasList', 'false');

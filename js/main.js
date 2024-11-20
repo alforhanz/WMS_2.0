@@ -15,13 +15,7 @@ var promoToDelete = "";
 let acumToDelete = JSON.parse(sessionStorage.getItem("itemsToDelete"));
 
 document.addEventListener("DOMContentLoaded", function () {
-  // //------------------------------------------------
-  // let elems = document.querySelectorAll(".fixed-action-btn");
-  // let instances = M.FloatingActionButton.init(elems, {
-  //   direction: "left",
-  //   hoverEnabled: false,
-  // });
-  //--------------------------------------------------
+   //--------------------------------------------------
   validate_login();
   existeBodega();
 });
@@ -29,9 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function validate_login() {
   const user = sessionStorage.getItem("user");
   if (user) {
-    const usuario = existe_Usuario();
-    // const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-    //console.log(usuario);
+    const usuario = existe_Usuario();    
     document.getElementById("usuario").innerHTML = usuario;
     document.getElementById("hUsuario").value = usuario;
   } else {
@@ -377,12 +369,7 @@ $("#txtRuc").on("keypress", function (e) {
   }
 });
 //-----------------------------------------------------------------------------------
-// const inputCliente = document.getElementById("inputCliente");
-// //console.log(inputCliente);
-// inputCliente.addEventListener("click", (event) => {
-//   //console.log("Double-click detected");
-//   // Double-click detected
-// });
+
 //-----------------------------------------------------------------------------------
 $(document).ready(function () {
   $(".sidenav").sidenav();
@@ -2188,14 +2175,7 @@ function logout() {
   window.location.href = "index.html";
 }
 
-// function logout() {
-//   // Eliminar todas las variables de sessionStorage
-//   Object.keys(sessionStorage).forEach(function (key) {
-//     sessionStorage.removeItem(key);
-//     localStorage.removeItem(key);
-//   });
-//   document.location.href = "index.html";
-// }
+
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {
   $('.loading').show();
