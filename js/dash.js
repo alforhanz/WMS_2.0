@@ -1,6 +1,18 @@
-$(document).ready(function () {
-  getDataDash();  
+document.addEventListener('DOMContentLoaded', function() {
+  $('.dropdown-trigger').dropdown();
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  //var instances = M.Dropdown.init(elems, {});
+  getDataDash(); 
 });
+
+// Or with jQuery
+// $(document).ready(function() {
+//   $('.dropdown-trigger').dropdown();
+// }); 
+
+// $(document).ready(function () {
+//   getDataDash();  
+// });
 
       ////////////////////////////////////
 	   ////// 	DATOS PEDIDOS /////////////

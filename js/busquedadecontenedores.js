@@ -1,5 +1,26 @@
+document.addEventListener("DOMContentLoaded", function (){ 
+  console.log("DOM cargado...");
+  const busqueda = localStorage.getItem('SearchParameterFlag');
+  localStorage.setItem('switch_procesados', 'false');
+  if (busqueda === "true") {
+    
+    const parametrosBusqueda = localStorage.getItem('parametrosBusquedaContenedor');
+    
+    if(parametrosBusqueda){
+          const params = new URLSearchParams(parametrosBusqueda);
+          const pBodega = params.get('pBodega');
+          const pFechaDesde = params.get('pFechaDesde');
+          const pFechaHasta = params.get('pFechaHasta');
+          const pUsuario = params.get('pUsuario');
+          const pConsecutivo = params.get('pConsecutivo');
+          enviarDatosControlador(pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo );
+        }        
+    } 
+});
+
+
 //busquedadecontenedores functions
-function validarBodega() {
+function validarBusquedaContenedor() {
   //revisar como toma el valor
   // mostrarLoading();
   var bodega = document.getElementById("bodega").value;
@@ -13,19 +34,25 @@ function validarBodega() {
     return false; // Evita que se envíe el formulario
   }
   else {
-    enviarDatosControlador();
+    var pBodega = document.getElementById("bodega").value;
+    var pConsecutivo = $('#pContenedor').val();
+    var pFechaHasta = $('#fecha_fin').val();
+    var pFechaDesde = $('#fecha_ini').val();
+    var pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+    
+    enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo);
   }
 }
 
 
-function enviarDatosControlador() {
+function enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo) {
   // mostrarLoading();
   let pag = 1;
-  var pBodega = document.getElementById("bodega").value;
-  var pConsecutivo = $('#pContenedor').val();
-  var pFechaHasta = $('#fecha_fin').val();
-  var pFechaDesde = $('#fecha_ini').val();
-  var pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+  // var pBodega = document.getElementById("bodega").value;
+  // var pConsecutivo = $('#pContenedor').val();
+  // var pFechaHasta = $('#fecha_fin').val();
+  // var pFechaDesde = $('#fecha_ini').val();
+  // var pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
 
   const params =
     "?pBodega=" +
@@ -41,7 +68,9 @@ function enviarDatosControlador() {
 
   //Mostrar Loader
   mostrarLoader();
-console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
+//console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
+localStorage.setItem('parametrosBusquedaContenedor', params);
+localStorage.setItem('SearchParameterFlag', 'true');
 
   fetch(env.API_URL + "contenedor/E" + params, myInit)
     .then((response) => response.json())
@@ -122,38 +151,6 @@ function irDetalleContenedor(pTraslado, Bodega_Solicita) {
   window.location.href = 'lineasContenedor.html';
 }
 
-///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
-const checkbox = document.getElementById('toggleSwitch');
-
-/////////////// Agregar un evento de cambio al checkbox/////////////
-checkbox.addEventListener('change', function () {
-  if (checkbox.checked === false) {
-    pedidosFinalizados();
-  } else {
-  }
- // limpiarResultadoGeneral();
-});
-
-/////////////////Fucnion que activa el toggleSwitch para ver los contenedorers procesados
-function pedidosFinalizados() {
-
-  Swal.fire({
-    title: '¿Desea ver solo los pedidos finalizados?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sí',
-    cancelButtonText: 'No',
-    confirmButtonColor: "#28a745",
-    cancelButtonColor: "#6e7881",
-  }).then((result) => {
-    // Resultado de la acción
-    if (result.isConfirmed) {
-      $('#toggleSwitch').prop('checked', false);
-    } else {
-      $('#toggleSwitch').prop('checked', true);
-    }
-  });
-}
 
 
 ////////////////////se aplican estilos a las filas cuyos documentos comienzan con 'T'. /////////////////
@@ -170,7 +167,56 @@ function aplicarEstilosTablaPedidos() {
   });
 }
 
-// //limpiar el contenido de la busqueda
+// //limpiar el contenido de la busqueda cuando cambia la fecha
+
+const fecha_ini=document.getElementById('fecha_ini');
+fecha_ini.addEventListener('change', function(){
+  limpiarResultadoGeneral();
+  
+});
+
+const fecha_fin=document.getElementById('fecha_fin');
+fecha_ini.addEventListener('change', function(){
+  limpiarResultadoGeneral();
+  
+});
+
+
+///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
+const checkbox = document.getElementById('toggleSwitch');
+
+/////////////// Agregar un evento de cambio al checkbox/////////////
+checkbox.addEventListener('change', function () {
+  if (checkbox.checked === false) {
+    contenedoresProcesados();
+  } else {
+  }
+ limpiarResultadoGeneral();
+});
+
+
+/////////////////Fucnion que activa el toggleSwitch para ver los contenedorers procesados
+function contenedoresProcesados() {
+
+  Swal.fire({
+    title: '¿Desea ver solo los pedidos finalizados?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí',
+    cancelButtonText: 'No',
+    confirmButtonColor: "#28a745",
+    cancelButtonColor: "#6e7881",
+  }).then((result) => {
+    // Resultado de la acción
+    if (result.isConfirmed) {
+      $('#toggleSwitch').prop('checked', false);
+
+    } else {
+      $('#toggleSwitch').prop('checked', true);
+    }
+  });
+}
+
 function limpiarResultadoGeneral() {
   const tabla = document.getElementById("tblcontenedores");
   const resultadoPaginador = document.getElementById("resultadoPaginador");
@@ -193,14 +239,8 @@ if (tabla) {
     tbody.innerHTML = "";
   }
 }
+localStorage.removeItem('SearchParameterFlag');
+localStorage.removeItem('parametrosBusquedaContenedor');
+
 }
 
-const fecha_ini=document.getElementById('fecha_ini');
-fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
-});
-
-const fecha_fin=document.getElementById('fecha_fin');
-fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
-});
