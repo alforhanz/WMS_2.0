@@ -12,22 +12,29 @@ function validarCodigoBarras(input) {
     const cantLeidaInput = filaActual.querySelector('input[id^="cant-leida"]'); // Input de cantidad leída
 
     if (codBarra) {
-        // Asignar el código de barras al <span>
-        celdaArticulo.textContent = codBarra;
+        const params =
+        "?pCodigoLectura=" +
+        codBarra;
+        fetch(env.API_URL + "wmsverificacodigo" + params, myInit)  
+        .then((response) => response.json())
+        .then((result) => {
+                console.log(result.codigo[0].CodigoArticulo);
+            // Asignar el código de barras al <span>
+            celdaArticulo.textContent = result.codigo[0].CodigoArticulo;
 
-        // Incrementar o inicializar el valor de cantidad leída
-        let cantidadActual = parseInt(cantLeidaInput.value) || 0;
-        cantLeidaInput.value = cantidadActual + 1;
+            // Incrementar o inicializar el valor de cantidad leída
+            let cantidadActual = parseInt(cantLeidaInput.value) || 0;
+            cantLeidaInput.value = cantidadActual + 1;
 
-        // Bloquear el campo del código de barras actual
-       // input.setAttribute("readonly", "readonly");
+            // Bloquear el campo del código de barras actual
+            input.setAttribute("readonly", "readonly");
 
-        // Crear una nueva fila y guardar los datos
-        crearNuevaFila();
-        guardarTablaEnArray();
+            // Crear una nueva fila y guardar los datos
+            crearNuevaFila();
+            guardarTablaEnArray();
+        });    
     }
 }
-
 
   
   //////////////////////////////////////
@@ -49,7 +56,7 @@ function crearNuevaFila() {
             </td>
             <td class="codigo-barras-cell2" >
                 <input id="cant-leida-${uniqueId}" style="text-align: center;" 
-                    type="text" class="codigo-barras-input" value="" onchange="validarCantidadPedida(this)">
+                    type="text" class="codigo-barras-input" value="" onchange="validarCantidades(this)">
             </td>
             <td class="codigo-barras-cell2" >
                 <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
@@ -67,7 +74,7 @@ function crearNuevaFila() {
 
 
 ///////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO de la orden de comra./////////
-function validarCantidadPedida() {
+function validarCantidades() {
   //Llamado a guardar datos en la variable arrray en el LS
   guardarTablaEnArray();
 }
@@ -104,9 +111,7 @@ function guardarTablaEnArray() {
   }
 
   localStorage.setItem('dataArray', JSON.stringify(dataArray));
-
   agrupar();
-
   return dataArray;
 }
 
@@ -210,4 +215,100 @@ function eliminarFila(icon) {
     });    
 }
 
+function resumen() {
+    // Obtener el arreglo almacenado en localStorage
+    const dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
+    let ubicacion = document.getElementById('ubicacion').value;
 
+    // Obtener el cuerpo de la tabla resumen
+    const tablaResumenBody = document.getElementById("tblbodyRersumen");
+
+    // Limpiar la tabla antes de insertar nuevos datos
+    tablaResumenBody.innerHTML = "";
+
+    // Iterar sobre el dataArray y agregar filas a la tabla
+    dataArray.forEach((item) => {
+        const nuevaFilaHTML = `
+            <tr>
+                <td style="text-align: center;">${item.ARTICULO}</td>
+                <td style="text-align: center;">${item.CODIGO_BARRA}</td>
+                <td style="text-align: center;">${item.CANTIDAD_LEIDA}</td>
+                 <td style="text-align: center;">${item.CANTIDAD_LEIDA}</td>
+                <td style="text-align: center;  text-transform: uppercase;">${ubicacion}</td>
+            </tr>`;
+        tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
+    });
+
+    // Actualizar el contador de registros
+    const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
+    cantidadDeRegistros.textContent = `Registros: ${dataArray.length}`;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //Funcion de confirmación del guardado parcial
+ function confirmarGuardadoParcial() {
+    Swal.fire({
+        icon: 'info',
+        title: '¿A continuación se guardaran los datos leidos en el proceso de conteo...?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6e7881",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let usuario = localStorage.getItem('username'); 
+            let fecha = document.getElementById('fecha_ini').value
+            let ubicacion = document.getElementById('ubicacion').value;
+            let ubicacionUpperCase = ubicacion.toUpperCase();
+            let datosLecturaArray = localStorage.getItem('dataArray');
+            let bodega = document.getElementById('bodega').value
+            let opcion = 'G';
+            let pEstado = "I";
+
+             // Convertir el array de objetos a formato JSON
+            const chunkSize = 50; // Tamaño del bloque
+            const totalChunks = Math.ceil(datosLecturaArray.length / chunkSize);
+
+            const sendChunk = (chunk, index) => {
+                const params = 
+                    "?pUsuario=" + usuario +
+                    "&pOpcion="+ opcion +
+                    "&pBodega=" + bodega+
+                    "&pEstado=" + pEstado +
+                    "&pFechaIni=" + fecha +
+                    "&jsonDetalles=" + encodeURIComponent(JSON.stringify(chunk))+
+                    "&pUbicacion=" + ubicacionUpperCase ;
+                    
+    fetch(env.API_URL + "wmsguardaconteoinv/G" + params, myInit)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.msg === "SUCCESS") {
+                    console.log(`Chunk ${index + 1} guardado con éxito.`);
+                    // Manejar la respuesta de éxito de los chunks
+                    if (index === totalChunks - 1) { // Último chunk
+                        Swal.fire({
+                            icon: "success",
+                            title: "Datos guardados correctamente",
+                            confirmButtonText: "Aceptar",
+                            confirmButtonColor: "#28a745",
+                            cancelButtonColor: "#6e7881",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log('guardado correcto')
+                            }
+                        });
+                    }
+                } else {
+                    console.error(`Error al guardar chunk ${index + 1}:`, result);
+                }
+            });
+    };   
+// Dividir jsonDetalles en bloques y enviarlos
+for (let i = 0; i < totalChunks; i++) {
+    const chunk = datosLecturaArray.slice(i * chunkSize, (i + 1) * chunkSize);
+    sendChunk(chunk, i);
+}
+
+}});
+}
