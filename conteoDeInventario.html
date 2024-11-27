@@ -43,17 +43,29 @@
     <div id="resultadoBusqueda">
       <div id="carga" style="margin-top: -7px;"></div>
       <div class="container">
-
-       
-        <div class="row"><label id="OrdenDeCompra"></label></div>
-        <div class="row"><label id="bodega_solicita"></label></div>
+<!-- Ubicación -->
+        <div class="input-container-ubicacion">
+            <label for="ubicacion">Ubicación</label>
+            <input id="ubicacion" type="text" class="input-ubicacion" placeholder="Ingresa la ubicación">
+        </div>
+        <!-- Fecha -->
+        <div class="input-field col s6">
+            <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+            <label for="fecha_ini">Fecha Inicial</label>
+          </div>         
+      <!-- Contenedor del botón -->
+    <div class="btn-container-conteo">
+        <button id="btnGuardaConteo" class="btn-guardar-conteo" onclick="confirmarGuardadoParcial()">
+        Guardar</button>
+    </div>
+        
 
         <div class="row">
           <ul id="tabs-swipe-demo" class="tabs">
             <!-- <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a></li> -->
             <li class="tab col s3"><a class="active" href="#tabla-lectura">LECTURA</a></li>
-            <!-- <li class="tab col s3"><a href="#tabla-resumen" onclick="resumen()">VERFICACIÓN</a></li> -->
-            <li class="tab col s3"><a href="#tabla-resumen">Resumen</a></li>
+            <li class="tab col s3"><a href="#tabla-resumen" onclick="resumen()">Resumen</a></li>
+            <!-- <li class="tab col s3"><a href="#tabla-resumen">Resumen</a></li> -->
           </ul>
           <div id="tabla-lectura" class="col s12">
             <div class="row">
@@ -79,7 +91,7 @@
                   </td>
                   <td class="codigo-barras-cell2">
                     <input id="cant-leida" style="text-align: center;" type="text" class="codigo-barras-input" value=""
-                      onchange="validarCantidadPedida(this)">
+                      onchange="validarCantidades(this)">
                   </td>
                   <td class="codigo-barras-cell2">
                     <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
@@ -89,7 +101,8 @@
             </table>
           </div>
         </div>
-        <div id="tabla-resumen" class="col s12">
+        <!-- <div id="tabla-resumen" class="col s12" style="overflow: hidden;"> -->
+            <div id="tabla-resumen" class="col s12" >
           <label id="cantidadDeRegistros"> Registros:</label>
           <div class="row">
             <div id="resultadoGeneral"></div>
@@ -98,18 +111,31 @@
                 <tr class="themeColor">
                   <th style="width: 40%;">ARTICULO</th>
                   <th id="codigoBarrasHeader " style="width: 30%;">COD</th>
-                  <th style="width: 10%;">CANT</th>
-                  <!-- <th style="width: 10%;">CANT LEIDA</th>
-                  <th style="width: 10%;">VERIF</th>
-                  <th hidden>DEL</th> -->
+                  <th style="width: 10%;">LEC</th>
+                  <th style="width: 10%;">EXIST</th>
+                  <th style="width: 10%;">UBI</th>
+                 
+                 <!--  <th hidden>DEL</th> -->
                 </tr>
               </thead>
-              <tbody id="tblbodyLineasOrdenDeCompra">
+              <tbody id="tblbodyRersumen">
                 <tr>
                 </tr>
               </tbody>
             </table>
           </div>
+              <!-- Botones para la verificación -->
+              <div id="contenedorBotones">
+                <button id="btnGuardar"
+                  style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;"
+                  onclick="confirmarGuardadoParcial()" hidden>Guardar</button>
+                <button id="btnProcesar"
+                  style="width: 105px; background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; height: 36px;"
+                  onclick="confirmaProcesar()" hidden>Procesar</button>
+                <button id="btnRegresar"
+                  style="background-color: #28a745; border-radius: 5px; color: white; margin-top: 16px; margin-left: 16px; margin-right: 16px; height: 36px;"
+                  onclick="confirmaRegresar()" hidden>Regresar</button>
+              </div>
         </div>
       </div>
     </div>

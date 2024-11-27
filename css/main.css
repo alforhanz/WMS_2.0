@@ -2617,3 +2617,156 @@ h2 {
 #lblObservaciones{
   position: relative;
 }
+
+
+/* #myTableresumen {
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#myTableresumen td, #myTableresumen th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+#myTableresumen tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#myTableresumen tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+#myTableresumen th {
+  background-color: #4CAF50;
+  color: white;
+} */
+
+#myTableresumen {
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#myTableresumen td, #myTableresumen th {
+  border: 1px solid #e0e0e0; /* Bordes más claros */
+  text-align: center;
+  padding: 6px; /* Espaciado reducido */
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  font-weight: normal; /* Texto no enfatizado */
+}
+
+#myTableresumen tr:nth-child(even) {
+  background-color: #f2f2f2 /* Color de fondo suave */
+}
+
+#myTableresumen tr:nth-child(odd) {
+  background-color: #ffffff; /* Fondo blanco */
+}
+
+#myTableresumen th {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 15px; /* Tamaño de fuente más discreto */
+  font-weight: bold; /* Enfatizar encabezados */
+  border-bottom: 2px solid #dddddd; /* Línea de separación clara */
+}
+
+#myTableresumen tr:hover {
+  background-color: #eaf2f8; /* Suave color al pasar el mouse */
+}
+
+/*////////////// UBICACION*/
+
+/* Estilo del contenedor del input */
+.input-container-ubicacion {
+  display: flex;
+  flex-direction: column;
+ /* align-items: center;*/
+  margin: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilo del label */
+.input-container-ubicacion label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4CAF50; /* Verde suave */
+  margin-bottom: 5px;
+}
+
+/* Estilo del input */
+.input-ubicacion {
+  width: 100%;
+  max-width: 300px; /* Limita el ancho máximo */
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 16px;
+  border: 2px solid #ddd; /* Borde suave */
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase; /* Convierte el texto a mayúsculas */
+}
+
+/* Placeholder estilizado */
+.input-ubicacion::placeholder {
+  color: #bbb;
+  font-style: italic;
+}
+
+/* Efecto hover */
+.input-ubicacion:hover {
+  border-color: #4CAF50; /* Cambia el borde al pasar el mouse */
+}
+
+/* Efecto de enfoque */
+.input-ubicacion:focus {
+  border-color: #4CAF50; /* Verde suave */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Sombra alrededor */
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 768px) {
+  .input-ubicacion {
+    width: 90%; /* Ajuste el ancho en pantallas pequeñas */
+  }
+}
+
+/*/////////////////btn-guardado-copnteo inventario*/
+
+/* Contenedor del botón */
+.btn-container-conteo {
+  display: flex;
+  /*justify-content: center;*/ /* Centra el botón horizontalmente */
+  margin-top: 10px; /* Espaciado superior */
+  margin-bottom: 1em;
+}
+
+/* Estilo para el botón guardar */
+.btn-guardar-conteo {
+  background-color: #28a745;
+  border-radius: 5px;
+  color: white;
+  height: 36px;
+  border: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  width: 27%;
+}
+
+/* Hover para el botón */
+.btn-guardar-conteo:hover {
+  background-color: #218838;
+}
+
+/* Focus para el botón */
+.btn-guardar-conteor:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
