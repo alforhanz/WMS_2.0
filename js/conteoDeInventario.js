@@ -245,151 +245,6 @@ function resumen() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  //Funcion de confirmación del guardado parcial
-//  function confirmarGuardadoParcial() {
-//     Swal.fire({
-//         icon: 'info',
-//         title: '¿A continuación se guardaran los datos leidos en el proceso de conteo...?',
-//         showCancelButton: true,
-//         confirmButtonText: 'Continuar',
-//         cancelButtonText: 'Cancelar',
-//         confirmButtonColor: "#28a745",
-//         cancelButtonColor: "#6e7881",
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             let usuario = localStorage.getItem('username'); 
-//             let fecha = document.getElementById('fecha_ini').value
-//             let ubicacion = document.getElementById('ubicacion').value;
-//             let ubicacionUpperCase = ubicacion.toUpperCase();
-//             let datosLecturaArray = localStorage.getItem('dataArray');
-//             //let datosLecturaArray = JSON.parse(localStorage.getItem('dataArray') || '[]'); // Manejo de null o formato inválido
-//             console.log(datosLecturaArray);
-
-//             if (!Array.isArray(datosLecturaArray)) {
-//                     console.error('datosLecturaArray no es un array válido:', datosLecturaArray);
-//                     Swal.fire({
-//                         icon: 'error',
-//                         title: 'Error',
-//                         text: 'Los datos de lectura no son válidos.',
-//                     });
-//                     return;
-//                 }
-
-//                 if (datosLecturaArray.length === 0) {
-//                     console.error('No hay datos en datosLecturaArray.');
-//                     Swal.fire({
-//                         icon: 'warning',
-//                         title: 'Advertencia',
-//                         text: 'No hay datos para guardar.',
-//                     });
-//                     return;
-//                 }
-                
-
-//             let bodega = document.getElementById('bodega').value
-//             let opcion = 'G';
-//             let pEstado = "I";
-
-//              // Convertir el array de objetos a formato JSON
-//             const chunkSize = 50; // Tamaño del bloque
-//             const totalChunks = Math.ceil(datosLecturaArray.length / chunkSize);
-
-
-//             const sendChunk = (chunk, index) => {
-//                 const params = {
-//                     pUsuario: usuario,
-//                     pOpcion: opcion,
-//                     pBodega: bodega,
-//                     pEstado: pEstado,
-//                     pFecha: fecha,
-//                     jsonDetalles: chunk, // Enviar chunk directamente como JSON
-//                     pUbicacion: ubicacionUpperCase
-//                 };
-            
-//                 fetch(env.API_URL + "wmsguardaconteoinv/G", {
-//                     method: 'POST',
-//                     headers: {
-//                         'Content-Type': 'application/json',
-//                     },
-//                     body: JSON.stringify(params), // Parámetros como body JSON
-//                 })
-//                     .then((response) => response.json())
-//                     .then((result) => {
-//                         if (result.msg === "SUCCESS") {
-//                             console.log(`Chunk ${index + 1} guardado con éxito.`);
-//                             if (index === totalChunks - 1) {
-//                                 Swal.fire({
-//                                     icon: "success",
-//                                     title: "Datos guardados correctamente",
-//                                     confirmButtonText: "Aceptar",
-//                                     confirmButtonColor: "#28a745",
-//                                 });
-//                             }
-//                         } else {
-//                             console.error(`Error al guardar chunk ${index + 1}:`, result);
-//                         }
-//                     })
-//                     .catch((error) => {
-//                         console.error(`Error en el chunk ${index + 1}:`, error);
-//                     });
-//             };
-
-
-//             for (let i = 0; i < totalChunks; i++) {
-//                 const chunk = datosLecturaArray.slice(i * chunkSize, (i + 1) * chunkSize);
-//                 if (chunk.length > 0) {
-//                     sendChunk(chunk, i);
-//                 } else {
-//                     console.warn(`Chunk ${i + 1} está vacío.`);
-//                 }
-//             }
-            
-            
-//     //         const sendChunk = (chunk, index) => {
-//     //             const params = 
-//     //                 "?pUsuario=" + usuario +
-//     //                 "&pOpcion="+ opcion +
-//     //                 "&pBodega=" + bodega+
-//     //                 "&pEstado=" + pEstado +
-//     //                 "&pFechaIni=" + fecha +
-//     //                 "&jsonDetalles=" + encodeURIComponent(JSON.stringify(chunk))+
-//     //                 "&pUbicacion=" + ubicacionUpperCase ;
-//     //                console.log('PARAMETROS: '+ params); 
-//     // fetch(env.API_URL + "wmsguardaconteoinv/G" + params, myInit)
-//     //         .then((response) => response.json())
-//     //         .then((result) => {
-//     //             if (result.msg === "SUCCESS") {
-//     //                 console.log(`Chunk ${index + 1} guardado con éxito.`);
-//     //                 // Manejar la respuesta de éxito de los chunks
-//     //                 if (index === totalChunks - 1) { // Último chunk
-//     //                     Swal.fire({
-//     //                         icon: "success",
-//     //                         title: "Datos guardados correctamente",
-//     //                         confirmButtonText: "Aceptar",
-//     //                         confirmButtonColor: "#28a745",
-//     //                         cancelButtonColor: "#6e7881",
-//     //                     }).then((result) => {
-//     //                         if (result.isConfirmed) {
-//     //                             console.log('guardado correcto')
-//     //                         }
-//     //                     });
-//     //                 }
-//     //             } else {
-//     //                 console.error(`Error al guardar chunk ${index + 1}:`, result);
-//     //             }
-//     //         });
-//     // };   
-// // Dividir jsonDetalles en bloques y enviarlos
-// // for (let i = 0; i < totalChunks; i++) {
-// //     const chunk = datosLecturaArray.slice(i * chunkSize, (i + 1) * chunkSize);
-// //     sendChunk(chunk, i);
-// // }
-
-// }});
-// }
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
  //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
     Swal.fire({
@@ -456,40 +311,13 @@ function guardaParcialMenteLectura() {
 function limpiarResultadoGeneral() {
 
     const tabla = document.getElementById("myTableLectura");
-    const tbody = document.getElementById("tblbodyLectura");
+    const ubicacion = document.getElementById("ubicacion");
+    ubicacion ? (ubicacion.innerHTML = "") : null;
      // Limpiar el contenido del tbody de la tabla si la tabla existe
   if (tabla) {
     const tbody = document.getElementById("tblbodyLectura");
-    if (tbody) {
-      tbody.innerHTML = "";
-    }
+    tbody ? (tbody.innerHTML = "") : null;
+ 
   }
 
 }
-
-// function guardaParcialMenteLectura() {   
-  
-//     var jsonDetalles = localStorage.getItem('dataArray');
-//     console.log("jsonDetalles a enviar:", jsonDetalles);
- 
-//         let pUsuario = localStorage.getItem('username');
-//         let pBodega = document.getElementById('bodega').value;
-//         let pEstado = 'G';
-//         let pFecha = document.getElementById('fecha_ini').value;
-//         let pUbicacion = document.getElementById('ubicacion').value;      
-
-//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(jsonDetalles)}&pUbicacion=${pUbicacion}`;
-//         console.log('URL_PARAMETROS:', params);
-//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
-//             .then(response => response.json())
-//             .then(result => {
-//                 if (result.msg === "SUCCESS") {
-//                     console.log('Guardado exitoso');
-//                 } else {
-//                     console.error('Error en el guardado:', result.message);
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error('Error en la solicitud:', error);
-//             });       
-// }
