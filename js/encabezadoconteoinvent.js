@@ -12,7 +12,7 @@ class MyHeader extends HTMLElement {
           </div>
           <div class="s8 col center-align">
             <a href="home.html" class="brand-logo"></a>
-             <h2 style="text-align:center ; text-transform: uppercase; margin-left:2em;"><b>Conteo de Inventario</b></h2>
+             <h2 style="text-align:center ; text-transform: uppercase; margin-left:2em; font-size: 25px;"><b>Conteo de Inventario</b></h2>
           </div>
         </div>
       </nav>   
