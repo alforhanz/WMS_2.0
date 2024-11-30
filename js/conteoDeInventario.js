@@ -3,6 +3,7 @@ var detalleLineasOrdenDeCompra = "";
 
 document.addEventListener("DOMContentLoaded", function () {
 console.log("DOM cargado");
+fechasDeInventario();
 });
 
 function validarCodigoBarras(input) {
@@ -216,6 +217,13 @@ function eliminarFila(icon) {
 }
 
 function resumen() {
+       let btnFinalizar = document.getElementById('btnFinalizar');
+       let btnGuardaConteo = document.getElementById('btnGuardaConteo');
+       
+       if (btnFinalizar) btnFinalizar.hidden = false;
+       if (btnGuardaConteo) btnGuardaConteo.hidden = true;
+
+
     // Obtener el arreglo almacenado en localStorage
     const dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
     let ubicacion = document.getElementById('ubicacion').value;
@@ -230,9 +238,8 @@ function resumen() {
     dataArray.forEach((item) => {
         const nuevaFilaHTML = `
             <tr>
-                <td style="text-align: center;">${item.ARTICULO}</td>
-                <td style="text-align: center;">${item.CODIGO_BARRA}</td>
-                <td style="text-align: center;">${item.CANTIDAD_LEIDA}</td>
+                <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.CODIGO_BARRA}</h6></td>
+                <td style="text-align: center;">${item.CODIGO_BARRA}</td>               
                  <td style="text-align: center;">${item.CANTIDAD_LEIDA}</td>
                 <td style="text-align: center;  text-transform: uppercase;">${ubicacion}</td>
             </tr>`;
@@ -245,70 +252,209 @@ function resumen() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
- //Funcion de confirmación del guardado parcial
- function confirmarGuardadoParcial() {
+ //Funcion de confirmación del guardado parcial en la pestaña lectura
+ function confirmarGuardadoParcialLectura() {
     Swal.fire({
         icon: 'info',
-        title: '¿A continuación se guardaran los datos leidos en el proceso de conteo...?',
+        title: '¿A continuación se guardaran los datos leidos de la Orden De Compra...?',
         showCancelButton: true,
         confirmButtonText: 'Continuar',
         cancelButtonText: 'Cancelar',
         confirmButtonColor: "#28a745",
         cancelButtonColor: "#6e7881",
     }).then((result) => {
-        if (result.isConfirmed) {
-            let usuario = localStorage.getItem('username'); 
-            let fecha = document.getElementById('fecha_ini').value
-            let ubicacion = document.getElementById('ubicacion').value;
-            let ubicacionUpperCase = ubicacion.toUpperCase();
-            let datosLecturaArray = localStorage.getItem('dataArray');
-            let bodega = document.getElementById('bodega').value
-            let opcion = 'G';
-            let pEstado = "I";
+        if (result.isConfirmed) {                  
+            guardaParcialMenteLectura();    
+        }
+    });
+}
 
-             // Convertir el array de objetos a formato JSON
-            const chunkSize = 50; // Tamaño del bloque
-            const totalChunks = Math.ceil(datosLecturaArray.length / chunkSize);
+function guardaParcialMenteLectura() {   
+    const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
+    console.log("Data a enviar:", dataArray);
 
-            const sendChunk = (chunk, index) => {
-                const params = 
-                    "?pUsuario=" + usuario +
-                    "&pOpcion="+ opcion +
-                    "&pBodega=" + bodega+
-                    "&pEstado=" + pEstado +
-                    "&pFechaIni=" + fecha +
-                    "&jsonDetalles=" + encodeURIComponent(JSON.stringify(chunk))+
-                    "&pUbicacion=" + ubicacionUpperCase ;
-                    
-    fetch(env.API_URL + "wmsguardaconteoinv/G" + params, myInit)
-            .then((response) => response.json())
-            .then((result) => {
+    if (!dataArray || dataArray.length === 0) {
+        console.error("No hay datos en el localStorage para enviar.");
+        return;
+    }
+
+    const pUsuario = localStorage.getItem('username');
+    const pBodega = document.getElementById('bodega').value;
+    const pEstado = 'G';
+    const pFecha = document.getElementById('fecha_ini').value;
+    const pUbicacion = document.getElementById('ubicacion').value;      
+    const chunkSize = 50; // Tamaño del bloque
+    const totalChunks = Math.ceil(dataArray.length / chunkSize);
+
+    // Función para enviar cada bloque
+    const sendChunk = (chunk, index) => {
+        const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
+        
+        console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
+
+        fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
+            .then(response => response.json())
+            .then(result => {
                 if (result.msg === "SUCCESS") {
-                    console.log(`Chunk ${index + 1} guardado con éxito.`);
-                    // Manejar la respuesta de éxito de los chunks
-                    if (index === totalChunks - 1) { // Último chunk
-                        Swal.fire({
-                            icon: "success",
-                            title: "Datos guardados correctamente",
-                            confirmButtonText: "Aceptar",
-                            confirmButtonColor: "#28a745",
-                            cancelButtonColor: "#6e7881",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                console.log('guardado correcto')
-                            }
-                        });
-                    }
+                    console.log(`Bloque ${index + 1} guardado con éxito.`);
+                    limpiarResultadoGeneral();
+                    crearNuevaFila();
                 } else {
-                    console.error(`Error al guardar chunk ${index + 1}:`, result);
+                    console.error(`Error al guardar bloque ${index + 1}:`, result.message);
                 }
+            })
+            .catch(error => {
+                console.error(`Error en el envío del bloque ${index + 1}:`, error);
             });
-    };   
-// Dividir jsonDetalles en bloques y enviarlos
-for (let i = 0; i < totalChunks; i++) {
-    const chunk = datosLecturaArray.slice(i * chunkSize, (i + 1) * chunkSize);
-    sendChunk(chunk, i);
+    };
+
+    // Dividir y enviar en bloques
+    for (let i = 0; i < totalChunks; i++) {
+        const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
+        sendChunk(chunk, i);
+    }
 }
 
-}});
+
+///////FUNCION PARA Finalizar//////       
+function confirmaFinalizar() {  
+  
+      Swal.fire({
+          icon: 'warning',
+          title: '¿Desea Finalizar el conteo',
+          showCancelButton: true,
+          confirmButtonText: 'Continuar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: "#28a745",
+          cancelButtonColor: "#6e7881",
+      }).then((result) => {
+        if (result.isConfirmed) {             
+           console.log('LLama a finalizar conteo');
+           finalizaConteoInventario()
+        }
+      });    
+  }
+
+  function finalizaConteoInventario() {   
+    const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
+    console.log("Data a enviar:", dataArray);
+
+    if (!dataArray || dataArray.length === 0) {
+        console.error("No hay datos en el localStorage para enviar.");
+        return;
+    }
+
+    const pUsuario = localStorage.getItem('username');
+    const pBodega = document.getElementById('bodega').value;
+    const pEstado = 'P';
+    const pFecha = document.getElementById('fecha_ini').value;
+    const pUbicacion = document.getElementById('ubicacion').value;      
+    const chunkSize = 50; // Tamaño del bloque
+    const totalChunks = Math.ceil(dataArray.length / chunkSize);
+
+    // Función para enviar cada bloque
+    const sendChunk = (chunk, index) => {
+        const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
+        
+        console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
+
+        fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
+            .then(response => response.json())
+            .then(result => {
+                if (result.msg === "SUCCESS") {
+                    console.log(`Bloque ${index + 1} finalizado con éxito.`);
+                    limpiarResultadoGeneral();
+                    crearNuevaFila();
+                } else {
+                    console.error(`Error al guardar bloque ${index + 1}:`, result.message);
+                }
+            })
+            .catch(error => {
+                console.error(`Error en el envío del bloque ${index + 1}:`, error);
+            });
+    };
+
+    // Dividir y enviar en bloques
+    for (let i = 0; i < totalChunks; i++) {
+        const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
+        sendChunk(chunk, i);
+    }
 }
+
+
+function limpiarResultadoGeneral() {
+
+    const tabla = document.getElementById("myTableLectura");
+    const ubicacion = document.getElementById("ubicacion");
+    ubicacion ? (ubicacion.innerHTML = "") : null;
+     // Limpiar el contenido del tbody de la tabla si la tabla existe
+  if (tabla) {
+    const tbody = document.getElementById("tblbodyLectura");
+    tbody ? (tbody.innerHTML = "") : null;
+ 
+  }
+
+}
+
+function activabtnguardar()
+{
+    let btnFinalizar = document.getElementById('btnFinalizar');
+    let btnGuardaConteo = document.getElementById('btnGuardaConteo');
+    
+    if (btnFinalizar) btnFinalizar.hidden = true;
+    if (btnGuardaConteo) btnGuardaConteo.hidden = false;
+
+}
+
+function fechasDeInventario() {
+    const pBodega = document.getElementById('bodega').value;
+    const params = `?pBodega=${pBodega}`;
+
+    fetch(env.API_URL + "wmsfechainventario" + params, myInit)
+        .then((response) => response.json())
+        .then((result) => {
+            const resultado = result.fechainv; // Arreglo con las fechas
+            console.log(resultado);
+
+            const fechaSelect = document.getElementById('fecha_ini');
+
+            // Limpiar opciones previas
+            fechaSelect.innerHTML = '<option value="" disabled selected>Selecciona una fecha</option>';
+
+            // Agregar cada fecha como una opción formateada
+            resultado.forEach(item => {
+                const option = document.createElement('option');
+                
+                // Formatear la fecha para mostrar solo "YYYY-MM-DD"
+                const fechaFormateada = item.fecha.split(" ")[0];
+                
+                option.value = fechaFormateada; // Valor del atributo 'value'
+                option.textContent = fechaFormateada; // Texto visible en la lista
+                fechaSelect.appendChild(option);
+            });
+
+            // Actualizar el componente select de Materialize (si lo estás usando)
+            const elems = document.querySelectorAll('select');
+            M.FormSelect.init(elems); // Esto es necesario si usas Materialize
+        })
+        .catch(error => console.error("Error en la solicitud:", error));
+}
+
+
+
+
+// function fechasDeInventario(){
+//     const pBodega = document.getElementById('bodega').value;
+//     const params = `?pBodega=${pBodega}`;
+
+//     fetch(env.API_URL + "wmsfechainventario" + params, myInit)
+//         .then((response) => response.json())
+//         .then((result) => {
+//             // console.log('RESULTADO\n'+ result.fechainv[0].fecha );
+//             const resultado = result.fechainv;
+//             console.log(resultado);
+//             const fecha= document.getElementById('fecha_ini');
+
+     
+//         });
+// }
