@@ -1,10 +1,8 @@
-//Variable global que contiene el detalle del pedido
-var detalleLineasOrdenDeCompra = "";
-
 document.addEventListener("DOMContentLoaded", function () {
 console.log("DOM cargado");
 fechasDeInventario();
 });
+
 
 function validarCodigoBarras(input) {
     const codBarra = input.value.toUpperCase(); // Convertir a mayúsculas
@@ -414,6 +412,7 @@ function fechasDeInventario() {
         .then((response) => response.json())
         .then((result) => {
             const resultado = result.fechainv; // Arreglo con las fechas
+            console.log("Fechas programadas: ");
             console.log(resultado);
 
             const fechaSelect = document.getElementById('fecha_ini');
@@ -421,7 +420,8 @@ function fechasDeInventario() {
             // Limpiar opciones previas
             fechaSelect.innerHTML = '<option value="" disabled selected>Selecciona una fecha</option>';
 
-            // Agregar cada fecha como una opción formateada
+            if(resultado.length > 0){
+                          // Agregar cada fecha como una opción formateada
             resultado.forEach(item => {
                 const option = document.createElement('option');
                 
@@ -436,25 +436,18 @@ function fechasDeInventario() {
             // Actualizar el componente select de Materialize (si lo estás usando)
             const elems = document.querySelectorAll('select');
             M.FormSelect.init(elems); // Esto es necesario si usas Materialize
+            } else{
+                Swal.fire({
+                    title: "Información",
+                    text: "En este momento no cuenta con una fecha de inventario programada",
+                    confirmButtonText: "Cerrar",
+                    confirmButtonColor: "#28a745",
+                    icon: "warning"
+                });
+            }      
         })
         .catch(error => console.error("Error en la solicitud:", error));
 }
 
 
 
-
-// function fechasDeInventario(){
-//     const pBodega = document.getElementById('bodega').value;
-//     const params = `?pBodega=${pBodega}`;
-
-//     fetch(env.API_URL + "wmsfechainventario" + params, myInit)
-//         .then((response) => response.json())
-//         .then((result) => {
-//             // console.log('RESULTADO\n'+ result.fechainv[0].fecha );
-//             const resultado = result.fechainv;
-//             console.log(resultado);
-//             const fecha= document.getElementById('fecha_ini');
-
-     
-//         });
-// }

@@ -2555,5 +2555,11 @@ function sucursalbremen(tienda, id_tienda) {
     },
   ];
   sessionStorage.setItem("bodega", JSON.stringify(newbodega));
+ 
+  const bodegaChange = document.getElementById("bodega");
+ if(bodegaChange){
+  fechasDeInventario();
+ }
+  
 }
 
