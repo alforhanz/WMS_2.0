@@ -16,20 +16,32 @@ function validarCodigoBarras(input) {
         fetch(env.API_URL + "wmsverificacodigo" + params, myInit)  
         .then((response) => response.json())
         .then((result) => {
+                console.log('Verificacion de codigo');
                 console.log(result.codigo[0].CodigoArticulo);
-            // Asignar el código de barras al <span>
-            celdaArticulo.textContent = result.codigo[0].CodigoArticulo;
+            if(result.codigo[0].CodigoArticulo != 'ND'){
+                            // Asignar el código de barras al <span>
+                celdaArticulo.textContent = result.codigo[0].CodigoArticulo;
 
-            // Incrementar o inicializar el valor de cantidad leída
-            let cantidadActual = parseInt(cantLeidaInput.value) || 0;
-            cantLeidaInput.value = cantidadActual + 1;
+                // Incrementar o inicializar el valor de cantidad leída
+                let cantidadActual = parseInt(cantLeidaInput.value) || 0;
+                cantLeidaInput.value = cantidadActual + 1;
 
-            // Bloquear el campo del código de barras actual
-            input.setAttribute("readonly", "readonly");
+                // Bloquear el campo del código de barras actual
+                input.setAttribute("readonly", "readonly");
 
-            // Crear una nueva fila y guardar los datos
-            crearNuevaFila();
-            guardarTablaEnArray();
+                // Crear una nueva fila y guardar los datos
+                crearNuevaFila();
+                guardarTablaEnArray();
+            }else{
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'El código ingresado no es válido. Verifíquelo nuevamente o consulte a su supervisor.',               
+                    confirmButtonText: 'Cerrar',
+                    confirmButtonColor: "#28a745",                
+                });
+                 // Borrar el contenido del input de código de barras
+                 input.value = "";
+            }       
         });    
     }
 }
@@ -209,67 +221,99 @@ function eliminarFila(icon) {
 }
 
 function resumen() {
-       let btnFinalizar = document.getElementById('btnFinalizar');
-       let btnGuardaConteo = document.getElementById('btnGuardaConteo');       
-       if (btnFinalizar) btnFinalizar.hidden = false;
-       if (btnGuardaConteo) btnGuardaConteo.hidden = true;
-       const pSistema = 'WEB';
-       const pUsuario = localStorage.getItem('username');
-       const pBodega = document.getElementById('bodega').value;
-       const pFecha = document.getElementById('fecha_ini').value;
-       const pSoloContados = 'S';
-       const params = `?pSistema=${pSistema}&SpUsuario=${pUsuario}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
-       fetch(env.API_URL + "wmsresumeninventario"+ params, myInit)
-       .then((response) => response.json())
-       .then((result) => {
-         if (result.msg === "SUCCESS") {
-            console.log('RESUMEN');
-           console.log(result.resumen);
 
-        // Obtener el arreglo almacenado en localStorage
-            const dataArray = result.resumen || [];
+    let btnFinalizar = document.getElementById('btnFinalizar');
+    let btnGuardaConteo = document.getElementById('btnGuardaConteo');       
+    if (btnFinalizar) btnFinalizar.hidden = false;
+    if (btnGuardaConteo) btnGuardaConteo.hidden = true;
+    const tabla = document.getElementById('myTableLectura');
+    const ubicacion = document.getElementById('ubicacion').value;
+    const fechaInv = document.getElementById('fecha_ini').value;
 
-        // Obtener el cuerpo de la tabla resumen
-            const tablaResumenBody = document.getElementById("tblbodyRersumen");
+    if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
+      
+           
+           const pSistema = 'WEB';
+           const pUsuario = localStorage.getItem('username');
+           const pBodega = document.getElementById('bodega').value;
+           const pFecha = document.getElementById('fecha_ini').value;
+           const pSoloContados = 'S';
+           const params = `?pSistema=${pSistema}&SpUsuario=${pUsuario}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+    
+           fetch(env.API_URL + "wmsresumeninventario"+ params, myInit)
+           .then((response) => response.json())
+           .then((result) => {
+             if (result.msg === "SUCCESS") {
+                console.log('RESUMEN');
+               console.log(result.resumen);
+    
+            // Obtener el arreglo almacenado en localStorage
+                const dataArray = result.resumen || [];
+    
+            // Obtener el cuerpo de la tabla resumen
+                const tablaResumenBody = document.getElementById("tblbodyRersumen");
+    
+            // Limpiar la tabla antes de insertar nuevos datos
+                tablaResumenBody.innerHTML = "";
+    
+            // Iterar sobre el dataArray y agregar filas a la tabla
+                dataArray.forEach((item) => {
+                    const nuevaFilaHTML = `
+                        <tr>
+                            <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
+                            <td style="text-align: center;">${item.BARCODEQR}</td>               
+                            <td style="text-align: center;">${item.CONTEO}</td>
+                            <td style="text-align: center;  text-transform: uppercase;">${item.UBICACION}</td>
+                        </tr>`;
+                    tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
+                });
+    
+                // Actualizar el contador de registros
+                const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
+                cantidadDeRegistros.textContent = `Registros: ${dataArray.length}`;    
+             }
+           });
+    }else{
+        Swal.fire({
+            icon: 'warning',
+            title: 'Debe seleccionar una fecha programada de inventario',               
+            confirmButtonText: 'Cerrar',
+            confirmButtonColor: "#28a745",                
+        });
 
-        // Limpiar la tabla antes de insertar nuevos datos
-            tablaResumenBody.innerHTML = "";
-
-        // Iterar sobre el dataArray y agregar filas a la tabla
-            dataArray.forEach((item) => {
-                const nuevaFilaHTML = `
-                    <tr>
-                        <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
-                        <td style="text-align: center;">${item.ARTICULO}</td>               
-                        <td style="text-align: center;">${item.CONTEO}</td>
-                        <td style="text-align: center;  text-transform: uppercase;">${item.UBICACION}</td>
-                    </tr>`;
-                tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
-            });
-
-            // Actualizar el contador de registros
-            const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
-            cantidadDeRegistros.textContent = `Registros: ${dataArray.length}`;
-
-         }
-       });
+          // Actualizar el contador de registros
+          const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
+          cantidadDeRegistros.textContent =`Registros: 0`;  
+    } 
 }
-
  //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
-    Swal.fire({
-        icon: 'info',
-        title: '¿A continuación se guardaran los datos leidos de la Orden De Compra...?',
-        showCancelButton: true,
-        confirmButtonText: 'Continuar',
-        cancelButtonText: 'Cancelar',
-        confirmButtonColor: "#28a745",
-        cancelButtonColor: "#6e7881",
-    }).then((result) => {
-        if (result.isConfirmed) {                  
-            guardaParcialMenteLectura();    
+        const tabla = document.getElementById('myTableLectura');
+        const ubicacion = document.getElementById('ubicacion').value;
+        const fechaInv = document.getElementById('fecha_ini').value;
+
+        if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
+            Swal.fire({
+                icon: 'info',
+                title: '¿A continuación se guardaran los datos leidos?',
+                showCancelButton: true,
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#6e7881",
+            }).then((result) => {
+                if (result.isConfirmed) {                  
+                    guardaParcialMenteLectura();    
+                }
+            });
+        }else{
+            Swal.fire({
+                icon: 'warning',
+                title: 'Está intentando guardar sin antes realizar una lectura válida del inventario. Recuerde verificar la ubicación y la fecha asignadas al inventario.',               
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: "#28a745",                
+            });
         }
-    });
 }
 
 function guardaParcialMenteLectura() {   
@@ -323,7 +367,7 @@ function confirmaFinalizar() {
   
       Swal.fire({
           icon: 'warning',
-          title: '¿Desea Finalizar el conteo',
+          title: '¿Desea Finalizar el conteo del inventario',
           showCancelButton: true,
           confirmButtonText: 'Continuar',
           cancelButtonText: 'Cancelar',
@@ -445,7 +489,7 @@ function fechasDeInventario() {
 
                 Swal.fire({
                     title: "Información",
-                    text: "En este momento no cuenta con una fecha de inventario programada",
+                    text: "En este momento no cuenta con una fecha de inventario programada, Comuniquese con su supervisor.",
                     confirmButtonText: "Cerrar",
                     confirmButtonColor: "#28a745",
                     icon: "warning"
