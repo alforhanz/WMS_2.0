@@ -259,8 +259,7 @@ function resumen() {
             // Iterar sobre el dataArray y agregar filas a la tabla
                 dataArray.forEach((item) => {
                     const nuevaFilaHTML = `
-                        <tr>
-                            <td style="text-align: center;" hidden>${item.ITEM}</td>
+                        <tr>                            
                             <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
                             <td style="text-align: center;">${item.BARCODEQR}</td>               
                             <td style="text-align: center;">${item.CONTEO}</td>
@@ -521,27 +520,35 @@ function fechasDeInventario() {
 
 
 function eliminarFilaResumen(icon) {
+    let usuario = localStorage.getItem('username');
+    let bodega = document.getElementById('bodega').value;
+    let fechaSelect = document.getElementById('fecha_ini').value;
     let row = icon.closest('tr'); // Obtiene la fila más cercana
     let celsConten = row.getElementsByTagName('td'); // Obtiene las celdas de la fila
 
-    // Extrae los valores de las celdas
-    let indice = celsConten[0].innerText.trim(); // Primer columna
-    let articulo = celsConten[2].innerText.trim(); // Segunda columna
-    let cantidad = parseFloat(celsConten[3].innerText.trim()); // Tercera columna (como número)
-    let ubicacion = celsConten[4].innerText.trim(); // Cuarta columna
+    // Extrae los valores de las celdas  
+    let celdaArticulo = row.getElementsByTagName('td')[0];  
+    let articulo = celdaArticulo.querySelector('h5').innerText;
+    let cantidad = parseFloat(celsConten[2].innerText.trim()); // Tercera columna (como número)
+    let ubicacion = celsConten[3].innerText.trim(); // Cuarta columna
 
+
+// console.log(articulo);
+// console.log(cantidad);
+// console.log(ubicacion);
     // Agrupa los datos en un objeto JSON
     let filaDatos = {
-        indice: indice,
+       //indice: indice,
         articulo: articulo,       
         cantidad: cantidad,
         ubicacion: ubicacion
     };
 
+    let jsonCadena = JSON.stringify(filaDatos);
     // Mostrar alerta de confirmación
     Swal.fire({
         title: '¿Estás seguro?',
-        text: 'A continuación se va a eliminar una fila de la pestaña lectura',
+        text: 'A continuación se va a eliminar una fila del resumen del conteo del inventario',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: "#28a745",
@@ -549,11 +556,34 @@ function eliminarFilaResumen(icon) {
         confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Envía los datos JSON como parámetro (por ejemplo, en un POST)
-            console.log('Datos JSON:', filaDatos);
-
             // Elimina la fila de la tabla
             row.remove();
+            
+            // Envía los datos JSON como parámetro (por ejemplo, en un POST)
+          
+            console.log('Enviar los Parametros')
+            const params = `?pUsuario=${usuario}&pBodega=${bodega}&pFecha=${fechaSelect}&jsonDetalles=${jsonCadena}`;
+            console.log('Datos al API:', params);
+            fetch(env.API_URL + "wmseliminadatosinventario" + params, myInit)
+            .then((response) => response.json())    
+            .then((result) => {
+            console.log(result.msg);      
+            console.log(result.message);
+            console.log(result.respuesta);
+              if (result.msg === "SUCCESS") {
+                if (result.respuesta.length != 0) {
+                  // Resto del código de éxito
+                  Swal.fire({
+                    icon: "success",
+                    title: "Datos eliminados correctamente",
+                    confirmButtonText: "Cerrar",
+                    confirmButtonColor: "#28a745",
+
+                  }); 
+                  resumen();                 
+                }
+              }            
+            });           
         }
     });
 }
