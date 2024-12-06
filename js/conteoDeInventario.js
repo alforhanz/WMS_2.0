@@ -227,11 +227,11 @@ function resumen() {
     if (btnFinalizar) btnFinalizar.hidden = false;
     if (btnGuardaConteo) btnGuardaConteo.hidden = true;
     const tabla = document.getElementById('myTableLectura');
-    const ubicacion = document.getElementById('ubicacion').value;
+    //const ubicacion = document.getElementById('ubicacion').value;
     const fechaInv = document.getElementById('fecha_ini').value;
 
-    if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
-      
+    // if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
+        if(tabla && tabla.rows.length > 0 && fechaInv.length>0){
            
            const pSistema = 'WEB';
            const pUsuario = localStorage.getItem('username');
@@ -260,10 +260,14 @@ function resumen() {
                 dataArray.forEach((item) => {
                     const nuevaFilaHTML = `
                         <tr>
+                            <td style="text-align: center;" hidden>${item.ITEM}</td>
                             <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
                             <td style="text-align: center;">${item.BARCODEQR}</td>               
                             <td style="text-align: center;">${item.CONTEO}</td>
                             <td style="text-align: center;  text-transform: uppercase;">${item.UBICACION}</td>
+                            <td>
+                            <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
+                            </td>
                         </tr>`;
                     tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
                 });
@@ -289,10 +293,16 @@ function resumen() {
  //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
         const tabla = document.getElementById('myTableLectura');
+        //const tbody = document.getElementById("tblbodyLectura");
         const ubicacion = document.getElementById('ubicacion').value;
         const fechaInv = document.getElementById('fecha_ini').value;
 
-        if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
+        // console.log(tabla.rows);
+        // console.log('tamaño de la tabla: ');
+        // console.log(tabla.rows.length);
+       // console.log(tbody);
+
+        if(tabla && tabla.rows.length > 2 && ubicacion.length > 0 && fechaInv.length>0){
             Swal.fire({
                 icon: 'info',
                 title: '¿A continuación se guardaran los datos leidos?',
@@ -410,7 +420,7 @@ function confirmaFinalizar() {
                 if (result.msg === "SUCCESS") {
                     console.log(`Bloque ${index + 1} finalizado con éxito.`);
                     limpiarResultadoGeneral();
-                    crearNuevaFila();
+                    // crearNuevaFila();
                 } else {
                     console.error(`Error al guardar bloque ${index + 1}:`, result.message);
                 }
@@ -428,17 +438,27 @@ function confirmaFinalizar() {
 }
 
 function limpiarResultadoGeneral() {
-
     const tabla = document.getElementById("myTableLectura");
-    const ubicacion = document.getElementById("ubicacion");
-    ubicacion ? (ubicacion.innerHTML = "") : null;
-     // Limpiar el contenido del tbody de la tabla si la tabla existe
-  if (tabla) {
-    const tbody = document.getElementById("tblbodyLectura");
-    tbody ? (tbody.innerHTML = "") : null;
- 
-  }
 
+    if (tabla) {
+        const tbody = document.getElementById("tblbodyLectura");
+
+        if (tbody) {
+            // Removemos todas las filas del tbody directamente
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+        }
+    }
+
+    // Limpieza del campo de ubicación (opcional)
+    const ubicacion = document.getElementById("ubicacion");
+    if (ubicacion) {
+        ubicacion.value = ""; // Limpia el input
+    }
+
+    console.log("Tabla de lectura y campos relacionados limpiados correctamente.");
+    crearNuevaFila();
 }
 
 function activabtnguardar()
@@ -497,6 +517,45 @@ function fechasDeInventario() {
             }      
         })
         .catch(error => console.error("Error en la solicitud:", error));
+}
+
+
+function eliminarFilaResumen(icon) {
+    let row = icon.closest('tr'); // Obtiene la fila más cercana
+    let celsConten = row.getElementsByTagName('td'); // Obtiene las celdas de la fila
+
+    // Extrae los valores de las celdas
+    let indice = celsConten[0].innerText.trim(); // Primer columna
+    let articulo = celsConten[2].innerText.trim(); // Segunda columna
+    let cantidad = parseFloat(celsConten[3].innerText.trim()); // Tercera columna (como número)
+    let ubicacion = celsConten[4].innerText.trim(); // Cuarta columna
+
+    // Agrupa los datos en un objeto JSON
+    let filaDatos = {
+        indice: indice,
+        articulo: articulo,       
+        cantidad: cantidad,
+        ubicacion: ubicacion
+    };
+
+    // Mostrar alerta de confirmación
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'A continuación se va a eliminar una fila de la pestaña lectura',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6e7881",
+        confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Envía los datos JSON como parámetro (por ejemplo, en un POST)
+            console.log('Datos JSON:', filaDatos);
+
+            // Elimina la fila de la tabla
+            row.remove();
+        }
+    });
 }
 
 

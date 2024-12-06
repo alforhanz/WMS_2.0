@@ -24,6 +24,7 @@ function InsertaCodigoBarra() {
                     showConfirmButton: false,
                     timer: 2000
                 });
+                clearScreen();
             }
         });
 }
@@ -54,4 +55,16 @@ function handleSwitchChange() {
             localStorage.setItem('arti_Kit', originalCheckedState);
         }
     });
+}
+
+
+function clearScreen(){
+    const contrasena = document.getElementById('autorizacion');
+    const articulo = document.getElementById('pArticulo');
+    const codigoBarra = document.getElementById('pCodigoBarra');
+
+      contrasena.value="";
+      articulo.value=""  ;
+      codigoBarra.value="";
+
 }
