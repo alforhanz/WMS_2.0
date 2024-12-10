@@ -235,10 +235,11 @@ function resumen() {
            
            const pSistema = 'WEB';
            const pUsuario = localStorage.getItem('username');
+           const pOpcion = 'D';
            const pBodega = document.getElementById('bodega').value;
            const pFecha = document.getElementById('fecha_ini').value;
            const pSoloContados = 'S';
-           const params = `?pSistema=${pSistema}&SpUsuario=${pUsuario}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+           const params = `?pSistema=${pSistema}&SpUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
     
            fetch(env.API_URL + "wmsresumeninventario"+ params, myInit)
            .then((response) => response.json())
@@ -390,15 +391,94 @@ function confirmaFinalizar() {
       });    
   }
 
-  function finalizaConteoInventario() {   
-    const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
-    console.log("Data a enviar:", dataArray);
+//   function finalizaConteoInventario() {   
+//     const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
+//     console.log("Data a enviar:", dataArray);
 
-    if (!dataArray || dataArray.length === 0) {
-        console.error("No hay datos en el localStorage para enviar.");
+//     if (!dataArray || dataArray.length === 0) {
+//         console.error("No hay datos en el localStorage para enviar.");
+//         return;
+//     }
+
+//     const pUsuario = localStorage.getItem('username');
+//     const pBodega = document.getElementById('bodega').value;
+//     const pEstado = 'P';
+//     const pFecha = document.getElementById('fecha_ini').value;
+//     const pUbicacion = document.getElementById('ubicacion').value;      
+//     const chunkSize = 50; // Tamaño del bloque
+//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
+
+//     // Función para enviar cada bloque
+//     const sendChunk = (chunk, index) => {
+//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
+        
+//         console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
+
+//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
+//             .then(response => response.json())
+//             .then(result => {
+//                 if (result.msg === "SUCCESS") {
+//                     console.log(`Bloque ${index + 1} finalizado con éxito.`);
+//                     limpiarResultadoGeneral();
+//                     // crearNuevaFila();
+//                 } else {
+//                     console.error(`Error al guardar bloque ${index + 1}:`, result.message);
+//                 }
+//             })
+//             .catch(error => {
+//                 console.error(`Error en el envío del bloque ${index + 1}:`, error);
+//             });
+//     };
+
+//     // Dividir y enviar en bloques
+//     for (let i = 0; i < totalChunks; i++) {
+//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
+//         sendChunk(chunk, i);
+//     }
+// }
+
+function finalizaConteoInventario() {   
+    const tabla = document.getElementById('myTableresumen');
+    const filas = tabla.querySelectorAll('tbody tr'); // Obtiene todas las filas del cuerpo de la tabla
+
+    // Crear el arreglo para almacenar los datos
+    const dataArray = [];
+
+    // Recorrer las filas de la tabla
+    filas.forEach(fila => {
+        const columnas = fila.getElementsByTagName('td');
+
+        // Extraer los datos de cada columna
+        const articulo = columnas[0].querySelector('h5').innerText; // Artículo está en el <h5>
+        const descripcion = columnas[0].querySelector('h6').innerText; // Descripción está en el <h6>
+        const barcodeqr = columnas[1].innerText; // Código de barras
+        const conteo = parseInt(columnas[2].innerText); // Cantidad
+        const ubicacion = columnas[3].innerText.trim(); // Ubicación
+
+        // Crear un objeto con los datos de la fila
+        const filaDatos = {
+            ARTICULO: articulo,
+            DESCRIPCION: descripcion,
+            BARCODEQR: barcodeqr,
+            CONTEO: conteo,
+            UBICACION: ubicacion
+        };
+
+        // Agregar la fila al arreglo
+        dataArray.push(filaDatos);
+    });
+
+    // Verificar si hay datos en el arreglo
+    if (dataArray.length === 0) {
+        console.error("No hay datos en la tabla para enviar.");
         return;
     }
 
+    // Transformar el arreglo en JSON
+    const jsonDetalles = JSON.stringify(dataArray);
+    console.log("JSON Detalles a enviar:", jsonDetalles);
+
+    // Parámetros adicionales
     const pUsuario = localStorage.getItem('username');
     const pBodega = document.getElementById('bodega').value;
     const pEstado = 'P';
@@ -410,7 +490,8 @@ function confirmaFinalizar() {
     // Función para enviar cada bloque
     const sendChunk = (chunk, index) => {
         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
-        
+        console.log('params: ');
+        console.log(params);
         console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
 
         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
@@ -419,7 +500,6 @@ function confirmaFinalizar() {
                 if (result.msg === "SUCCESS") {
                     console.log(`Bloque ${index + 1} finalizado con éxito.`);
                     limpiarResultadoGeneral();
-                    // crearNuevaFila();
                 } else {
                     console.error(`Error al guardar bloque ${index + 1}:`, result.message);
                 }
@@ -435,6 +515,8 @@ function confirmaFinalizar() {
         sendChunk(chunk, i);
     }
 }
+
+
 
 function limpiarResultadoGeneral() {
     const tabla = document.getElementById("myTableLectura");
