@@ -2771,3 +2771,8 @@ h2 {
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
+
+.fila-no-consiliada {
+  background-color: #f8d7da;
+  color: #f56108;
+}

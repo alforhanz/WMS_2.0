@@ -266,8 +266,6 @@ function resumen() {
             // Obtener el arreglo del API
                 const dataArray = result.resumen || [];
 
- 
-
     
             // Obtener el cuerpo de la tabla resumen
                 const tablaResumenBody = document.getElementById("tblbodyRersumen");
@@ -355,11 +353,15 @@ async function resumenGeneral() {
         if (result.msg === "SUCCESS") {
             const datos = result.resumen || []; // Asumimos que el API devuelve un array de objetos
             console.log('RESULTADO FINAL');           
-            console.log(datos.length);
+            console.log(datos);
             labelCantidadRegistros.textContent = `Cantidad de registros: ${datos.length}`;
             datos.forEach(dato => {
                 const fila = document.createElement('tr');
-
+                
+                 // Aplicar estilo si CONSILIADO es 'N'
+                 if (dato.CONCILIADO === 'N') {
+                    fila.classList.add('fila-no-consiliada'); // Clase personalizada para estilos
+                }
                 // Crear celdas con los datos de cada fila
                 const celdaArticulo = document.createElement('td');
                 celdaArticulo.textContent = dato.ARTICULO || 'N/A';
