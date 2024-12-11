@@ -220,199 +220,50 @@ function eliminarFila(icon) {
     });    
 }
 
-// function resumen() {
 
-//     let btnFinalizar = document.getElementById('btnFinalizar');
-//     let btnResumenGeneral =document.getElementById('btnResumenGeneral');
-//     let btnGuardaConteo = document.getElementById('btnGuardaConteo');       
-//     if (btnFinalizar) btnFinalizar.hidden = false;
-//     if (btnResumenGeneral) btnResumenGeneral.hidden= false;
-//     if (btnGuardaConteo) btnGuardaConteo.hidden = true;
-//     const tabla = document.getElementById('myTableresumen');
-//     //const ubicacion = document.getElementById('ubicacion').value;
-//     const fechaInv = document.getElementById('fecha_ini').value;
+function ordenarTabla(index) {
+    const tabla = document.getElementById('myTableresumen');
+    const filas = Array.from(tabla.rows).slice(1); // Excluye el encabezado
 
+    // Recupera los datos originales desde localStorage
+    const originalData = JSON.parse(localStorage.getItem('originalData'));
     
-//         if(tabla && tabla.rows.length > 0 && fechaInv.length>0){
-//                            // Actualizar los encabezados de la tabla
-//             const encabezado = ['ARTICULO', 'COD', 'CANT', 'UBI', 'CL']; // Nuevas columnas de la tabla
-//             const thead = tabla.querySelector('thead');
-//             thead.innerHTML = ''; // Limpiar encabezados previos
+    // Ordena los datos según el índice de la columna
+    originalData.sort((a, b) => {
+        const aText = a[index];
+        const bText = b[index];
 
-//             const filaEncabezado = document.createElement('tr');
-//             filaEncabezado.className = 'themeColor';
-//             encabezado.forEach(columna => {
-//                 const th = document.createElement('th');
-//                 th.textContent = columna;
-//                 filaEncabezado.appendChild(th);
-//             });
-//             thead.appendChild(filaEncabezado);
+        if (isNaN(aText) && isNaN(bText)) {
+            return aText.localeCompare(bText);
+        } else {
+            return parseFloat(aText) - parseFloat(bText);
+        }
+    });
 
-//            const pSistema = 'WMS';
-//            const pUsuario = localStorage.getItem('username');
-//            const pOpcion = 'D';
-//            const pBodega = document.getElementById('bodega').value;
-//            const pFecha = document.getElementById('fecha_ini').value;
-//            const pSoloContados = 'S';
-//            const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
-    
-//            fetch(env.API_URL + "wmsresumeninventario"+ params, myInit)
-//            .then((response) => response.json())
-//            .then((result) => {
-//              if (result.msg === "SUCCESS") {
-//                 console.log('RESUMEN');
-//                console.log(result.resumen);
-    
-//             // Obtener el arreglo del API
-//                 const dataArray = result.resumen || [];
+    // Limpia la tabla
+    tabla.querySelector('tbody').innerHTML = '';
 
-    
-//             // Obtener el cuerpo de la tabla resumen
-//                 const tablaResumenBody = document.getElementById("tblbodyRersumen");
-    
-//             // Limpiar la tabla antes de insertar nuevos datos
-//                 tablaResumenBody.innerHTML = "";
-    
-//             // Iterar sobre el dataArray y agregar filas a la tabla
-//                 dataArray.forEach((item) => {
-//                     const nuevaFilaHTML = `
-//                         <tr>                            
-//                             <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
-//                             <td style="text-align: center;">${item.BARCODEQR}</td>               
-//                             <td style="text-align: center;">${item.CONTEO}</td>
-//                             <td style="text-align: center;  text-transform: uppercase;">${item.UBICACION}</td>
-//                             <td>
-//                             <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
-//                             </td>
-//                         </tr>`;
-//                     tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
-//                 });
-    
-//                 // Actualizar el contador de registros
-//                 const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
-//                 cantidadDeRegistros.textContent = `Registros: ${dataArray.length}`;    
-//              }
-//            });
-//     }else{
-//         Swal.fire({
-//             icon: 'warning',
-//             title: 'Debe seleccionar una fecha programada de inventario',               
-//             confirmButtonText: 'Cerrar',
-//             confirmButtonColor: "#28a745",                
-//         });
+    // Vuelve a insertar las filas ordenadas
+    originalData.forEach(item => {
+        const nuevaFilaHTML = `
+            <tr>
+                <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
+                <td style="text-align: center;">${item.BARCODEQR}</td>
+                <td style="text-align: center;">${item.CONTEO}</td>
+                <td style="text-align: center; text-transform: uppercase;">${item.UBICACION}</td>
+                <td>
+                    <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
+                </td>
+            </tr>`;
+        tabla.querySelector('tbody').insertAdjacentHTML("beforeend", nuevaFilaHTML);
+    });
 
-//           // Actualizar el contador de registros
-//           const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
-//           cantidadDeRegistros.textContent =`Registros: 0`;  
-//     } 
-// }
+    // Llamada para actualizar la paginación
+    updatePagination(1); // Resetear a la primera página tras ordenar
+}
 
-// // Función que genera y actualiza la tabla myTableresumen usando datos de un API
-// async function resumenGeneral() {
-//     // Obtener la tabla y sus elementos
-//     const tablaResumen = document.getElementById('myTableresumen');
-//     const tblBodyResumen = document.getElementById('tblbodyRersumen');
-//     const labelCantidadRegistros = document.getElementById('cantidadDeRegistros'); // Obtener el label
-//     // Limpiar el contenido previo del cuerpo de la tabla
-//     tblBodyResumen.innerHTML = '';
 
-//     // Actualizar los encabezados de la tabla
-//     const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF']; // Nuevas columnas de la tabla
-//     const thead = tablaResumen.querySelector('thead');
-//     thead.innerHTML = ''; // Limpiar encabezados previos
-
-//     const filaEncabezado = document.createElement('tr');
-//     filaEncabezado.className = 'themeColor';
-//     encabezado.forEach(columna => {
-//         const th = document.createElement('th');
-//         th.textContent = columna;
-//         filaEncabezado.appendChild(th);
-//     });
-//     thead.appendChild(filaEncabezado);
-
-//     try {
-//         // Obtener parámetros para la llamada al API
-//         const pSistema = 'WMS';
-//         const pUsuario = localStorage.getItem('username');
-//         const pOpcion = 'R'; // Parámetro específico para resumen general
-//         const pBodega = document.getElementById('bodega').value;
-//         const pFecha = document.getElementById('fecha_ini').value;
-//         const pSoloContados = 'S';
-//         const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
-//             console.log('PARAMETROS');
-//             console.log(params);
-//         // Realizar la llamada al API
-//         const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
-
-//         if (!response.ok) {
-//             throw new Error(`Error en la solicitud: ${response.status}`);
-//         }
-
-//         const result = await response.json();
-
-//         if (result.msg === "SUCCESS") {
-//             const datos = result.resumen || []; // Asumimos que el API devuelve un array de objetos
-//             console.log('RESULTADO FINAL');           
-//             console.log(datos);
-//             labelCantidadRegistros.textContent = `Cantidad de registros: ${datos.length}`;
-//             datos.forEach(dato => {
-//                 const fila = document.createElement('tr');
-                
-//                  // Aplicar estilo si CONSILIADO es 'N'
-//                  if (dato.CONCILIADO === 'N') {
-//                     fila.classList.add('fila-no-consiliada'); // Clase personalizada para estilos
-//                 }
-//                 // Crear celdas con los datos de cada fila
-//                 const celdaArticulo = document.createElement('td');
-//                 celdaArticulo.textContent = dato.ARTICULO || 'N/A';
-//                 fila.appendChild(celdaArticulo);
-
-//                 const celdaCod = document.createElement('td');
-//                 celdaCod.textContent = dato.BARCODEQR || 'N/A';
-//                 fila.appendChild(celdaCod);
-
-//                 const celdaCant = document.createElement('td');
-//                 celdaCant.textContent = dato.CONTEO || 'N/A';
-//                 fila.appendChild(celdaCant);
-
-//                 const celdaExist = document.createElement('td');
-//                 celdaExist.textContent = dato.EXISTENCIA || 'N/A';
-//                 fila.appendChild(celdaExist);
-
-//                 const celdaDif = document.createElement('td');
-//                 celdaDif.textContent = dato.DIFERENCIA || 'N/A';
-//                 fila.appendChild(celdaDif);
-
-//                 // Agregar la fila al cuerpo de la tabla
-//                 tblBodyResumen.appendChild(fila);
-//             });
-            
-//         } else {
-           
-//             const mensajeError = document.createElement('tr');
-//             const celdaError = document.createElement('td');
-//             celdaError.colSpan = encabezado.length;
-//             celdaError.textContent = 'No se encontraron datos para mostrar.';
-//             mensajeError.appendChild(celdaError);
-//             tblBodyResumen.appendChild(mensajeError);
-//             labelCantidadRegistros.textContent = `Cantidad de registros: 0`;
-//             return;
-//         }
-
-//     } catch (error) {
-//         console.error('Error al generar la tabla:', error);
-//         const mensajeError = document.createElement('tr');
-//         const celdaError = document.createElement('td');
-//         celdaError.colSpan = encabezado.length;
-//         celdaError.textContent = 'Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.';
-//         mensajeError.appendChild(celdaError);
-//         tblBodyResumen.appendChild(mensajeError);
-//         labelCantidadRegistros.textContent = `Cantidad de registros: 0`;
-//         return;
-//     }
-// }
-
-function resumen() {
+async function resumen() {
     let btnFinalizar = document.getElementById('btnFinalizar');
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
     let btnGuardaConteo = document.getElementById('btnGuardaConteo');
@@ -424,10 +275,9 @@ function resumen() {
     const fechaInv = document.getElementById('fecha_ini').value;
 
     if (tabla && tabla.rows.length > 0 && fechaInv.length > 0) {
-        // Actualizar los encabezados de la tabla
-        const encabezado = ['ARTICULO', 'COD', 'CANT', 'UBI', 'CL']; // Nuevas columnas de la tabla
+        const encabezado = ['ARTICULO', 'COD', 'CANT', 'UBI', 'CL'];
         const thead = tabla.querySelector('thead');
-        thead.innerHTML = ''; // Limpiar encabezados previos
+        thead.innerHTML = '';
 
         const filaEncabezado = document.createElement('tr');
         filaEncabezado.className = 'themeColor';
@@ -435,8 +285,8 @@ function resumen() {
             const th = document.createElement('th');
             th.textContent = columna;
             th.dataset.index = index; // Almacenar el índice de la columna
-            th.style.cursor = 'pointer'; // Mostrar cursor de puntero
-            th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de clic
+            th.style.cursor = 'pointer';
+            th.addEventListener('click', () => ordenarTabla(index));
             filaEncabezado.appendChild(th);
         });
         thead.appendChild(filaEncabezado);
@@ -453,36 +303,72 @@ function resumen() {
             .then((response) => response.json())
             .then((result) => {
                 if (result.msg === "SUCCESS") {
-                    console.log('RESUMEN');
-                    console.log(result.resumen);
-
-                    // Obtener el arreglo del API
                     const dataArray = result.resumen || [];
+                    localStorage.setItem('originalData', JSON.stringify(dataArray)); // Guardar datos originales
 
-                    // Obtener el cuerpo de la tabla resumen
-                    const tablaResumenBody = document.getElementById("tblbodyRersumen");
+                    const recordsPerPage = 10; // Número de registros por página
+                    const totalRecords = dataArray.length;
+                    const totalPages = Math.ceil(totalRecords / recordsPerPage);
+                    let currentPage = 1; // Página actual
 
-                    // Limpiar la tabla antes de insertar nuevos datos
-                    tablaResumenBody.innerHTML = "";
+                    // Función para actualizar la tabla con una página de datos
+                    function updateTable(page) {
+                        const tablaResumenBody = document.getElementById("tblbodyRersumen");
+                        tablaResumenBody.innerHTML = "";
+                        const start = (page - 1) * recordsPerPage;
+                        const end = start + recordsPerPage;
 
-                    // Iterar sobre el dataArray y agregar filas a la tabla
-                    dataArray.forEach((item) => {
-                        const nuevaFilaHTML = `
-                            <tr>
-                                <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
-                                <td style="text-align: center;">${item.BARCODEQR}</td>
-                                <td style="text-align: center;">${item.CONTEO}</td>
-                                <td style="text-align: center; text-transform: uppercase;">${item.UBICACION}</td>
-                                <td>
-                                    <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
-                                </td>
-                            </tr>`;
-                        tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
-                    });
+                        const pageData = dataArray.slice(start, end);
+                        pageData.forEach((item) => {
+                            const nuevaFilaHTML = `
+                                <tr>
+                                    <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
+                                    <td style="text-align: center;">${item.BARCODEQR}</td>
+                                    <td style="text-align: center;">${item.CONTEO}</td>
+                                    <td style="text-align: center; text-transform: uppercase;">${item.UBICACION}</td>
+                                    <td>
+                                        <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
+                                    </td>
+                                </tr>`;
+                            tablaResumenBody.insertAdjacentHTML("beforeend", nuevaFilaHTML);
+                        });
 
-                    // Actualizar el contador de registros
-                    const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
-                    cantidadDeRegistros.textContent = `Registros: ${dataArray.length}`;
+                        const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
+                        cantidadDeRegistros.textContent = `Registros: ${totalRecords} (Página ${page} de ${totalPages})`;
+
+                        // Actualizar botones de paginación
+                        updatePagination(page);
+                    }
+
+                    function updatePagination(page) {
+                        const paginationContainer = document.getElementById('pagination');
+                        paginationContainer.innerHTML = '';
+
+                        const prevButton = document.createElement('button');
+                        prevButton.textContent = 'Anterior';
+                        prevButton.disabled = page === 1;
+                        prevButton.addEventListener('click', () => {
+                            if (page > 1) {
+                                currentPage--;
+                                updateTable(currentPage);
+                            }
+                        });
+                        paginationContainer.appendChild(prevButton);
+
+                        const nextButton = document.createElement('button');
+                        nextButton.textContent = 'Siguiente';
+                        nextButton.disabled = page === totalPages;
+                        nextButton.addEventListener('click', () => {
+                            if (page < totalPages) {
+                                currentPage++;
+                                updateTable(currentPage);
+                            }
+                        });
+                        paginationContainer.appendChild(nextButton);
+                    }
+
+                    // Inicializar la tabla con la primera página
+                    updateTable(currentPage);
                 }
             });
     } else {
@@ -493,36 +379,20 @@ function resumen() {
             confirmButtonColor: "#28a745",
         });
 
-        // Actualizar el contador de registros
         const cantidadDeRegistros = document.getElementById("cantidadDeRegistros");
         cantidadDeRegistros.textContent = `Registros: 0`;
-    }
-
-    // Función para ordenar la tabla
-    function ordenarTabla(index) {
-        const tablaBody = document.getElementById("tblbodyRersumen");
-        const filas = Array.from(tablaBody.rows);
-
-        // Determinar si la columna es numérica o alfabética
-        const tipo = typeof filas[0].cells[index].textContent.trim() === 'number' ? 'num' : 'str';
-
-        // Ordenar las filas
-        filas.sort((a, b) => {
-            const cellA = a.cells[index].textContent.trim();
-            const cellB = b.cells[index].textContent.trim();
-            return tipo === 'num' 
-                ? parseFloat(cellA) - parseFloat(cellB) 
-                : cellA.localeCompare(cellB);
-        });
-
-        // Volver a agregar las filas ordenadas al cuerpo de la tabla
-        filas.forEach(fila => tablaBody.appendChild(fila));
     }
 }
 
 
-async function resumenGeneral() {
+// Declaración de registrosPorPagina fuera de la función resumenGeneral
+const registrosPorPagina = 10; // Número de registros por página
+let paginaActual = 1; // Página actual
+let totalPaginas = 1; // Total de páginas
 
+let datosResumen = [];  // Definir la variable global para almacenar los datos del resumen
+
+async function resumenGeneral() {
     let btnFinalizar = document.getElementById('btnFinalizar');
     if (btnFinalizar) btnFinalizar.hidden = true;
     const tablaResumen = document.getElementById('myTableresumen');
@@ -560,9 +430,9 @@ async function resumenGeneral() {
 
         const result = await response.json();
         if (result.msg === "SUCCESS") {
-            const datos = result.resumen || [];
-            labelCantidadRegistros.textContent = `Cantidad de registros: ${datos.length}`;
-            renderizarDatos(datos);
+            datosResumen = result.resumen || [];  // Asignar los datos a la variable global
+            labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;
+            renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
@@ -575,10 +445,16 @@ async function resumenGeneral() {
 
     function renderizarDatos(datos) {
         tblBodyResumen.innerHTML = '';
-        datos.forEach(dato => {
+        totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
+
+        // Mostrar los datos de la página actual
+        const start = (paginaActual - 1) * registrosPorPagina;
+        const end = start + registrosPorPagina;
+        const paginaDatos = datos.slice(start, end);
+
+        paginaDatos.forEach(dato => {
             const fila = document.createElement('tr');
             if (dato.CONCILIADO === 'N') {
-                //fila.style.backgroundColor = '#f8d7da';
                 fila.style.color = '#f56108';
                 fila.style.fontWeight = 'bold';
             }
@@ -589,6 +465,47 @@ async function resumenGeneral() {
             });
             tblBodyResumen.appendChild(fila);
         });
+
+        // Actualizar los controles de paginación
+        actualizarPaginacion();
+    }
+
+    function actualizarPaginacion() {
+        const paginacion = document.getElementById('pagination');
+        if (!paginacion) {
+            console.error("No se encontró el contenedor de paginación.");
+            return;
+        }
+
+        paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
+
+        // Crear botones de paginación
+        const btnAnterior = document.createElement('button');
+        btnAnterior.textContent = 'Anterior';
+        btnAnterior.disabled = paginaActual === 1;
+        btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
+        paginacion.appendChild(btnAnterior);
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.addEventListener('click', () => cambiarPagina(i));
+            paginacion.appendChild(btnPagina);
+        }
+
+        const btnSiguiente = document.createElement('button');
+        btnSiguiente.textContent = 'Siguiente';
+        btnSiguiente.disabled = paginaActual === totalPaginas;
+        btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
+        paginacion.appendChild(btnSiguiente);
+    }
+
+    function cambiarPagina(pagina) {
+        if (pagina >= 1 && pagina <= totalPaginas) {
+            paginaActual = pagina;
+            renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
+        }
     }
 
     function ordenarTabla(indiceColumna) {
@@ -617,8 +534,110 @@ async function resumenGeneral() {
 }
 
 
+////////////////////////FUNCIONA//////////////////////////////////
+// async function resumenGeneral() {
 
- //Funcion de confirmación del guardado parcial en la pestaña lectura
+//     let btnFinalizar = document.getElementById('btnFinalizar');
+//     if (btnFinalizar) btnFinalizar.hidden = true;
+//     const tablaResumen = document.getElementById('myTableresumen');
+//     const tblBodyResumen = document.getElementById('tblbodyRersumen');
+//     const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
+//     tblBodyResumen.innerHTML = '';
+
+//     const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF'];
+//     const thead = tablaResumen.querySelector('thead');
+//     thead.innerHTML = '';
+
+//     const filaEncabezado = document.createElement('tr');
+//     filaEncabezado.className = 'themeColor';
+//     encabezado.forEach((columna, index) => {
+//         const th = document.createElement('th');
+//         th.textContent = columna;
+//         th.setAttribute('data-column', index); // Asignar índice para identificar la columna
+//         th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
+//         th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
+//         filaEncabezado.appendChild(th);
+//     });
+//     thead.appendChild(filaEncabezado);
+
+//     try {
+//         const pSistema = 'WMS';
+//         const pUsuario = localStorage.getItem('username');
+//         const pOpcion = 'R';
+//         const pBodega = document.getElementById('bodega').value;
+//         const pFecha = document.getElementById('fecha_ini').value;
+//         const pSoloContados = 'S';
+//         const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+
+//         const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
+//         if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
+
+//         const result = await response.json();
+//         if (result.msg === "SUCCESS") {
+//             const datos = result.resumen || [];
+//             labelCantidadRegistros.textContent = `Cantidad de registros: ${datos.length}`;
+//             renderizarDatos(datos);
+//         } else {
+//             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
+//             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+//         }
+//     } catch (error) {
+//         console.error('Error al generar la tabla:', error);
+//         mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
+//         labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+//     }
+
+//     function renderizarDatos(datos) {
+//         tblBodyResumen.innerHTML = '';
+//         datos.forEach(dato => {
+//             const fila = document.createElement('tr');
+//             if (dato.CONCILIADO === 'N') {
+//                 //fila.style.backgroundColor = '#f8d7da';
+//                 fila.style.color = '#f56108';
+//                 fila.style.fontWeight = 'bold';
+//             }
+//             ['ARTICULO', 'BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
+//                 const celda = document.createElement('td');
+//                 celda.textContent = dato[campo] || 'N/A';
+//                 fila.appendChild(celda);
+//             });
+//             tblBodyResumen.appendChild(fila);
+//         });
+//     }
+
+//     function ordenarTabla(indiceColumna) {
+//         const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
+//         const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
+//         filas.sort((a, b) => {
+//             const valorA = a.children[indiceColumna].textContent.trim();
+//             const valorB = b.children[indiceColumna].textContent.trim();
+//             if (!isNaN(valorA) && !isNaN(valorB)) {
+//                 return ordenAscendente ? valorA - valorB : valorB - valorA;
+//             }
+//             return ordenAscendente ? valorA.localeCompare(valorB) : valorB.localeCompare(valorA);
+//         });
+//         filas.forEach(fila => tblBodyResumen.appendChild(fila));
+//         thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
+//     }
+
+//     function mostrarMensajeError(mensaje, columnas) {
+//         const mensajeError = document.createElement('tr');
+//         const celdaError = document.createElement('td');
+//         celdaError.colSpan = columnas;
+//         celdaError.textContent = mensaje;
+//         mensajeError.appendChild(celdaError);
+//         tblBodyResumen.appendChild(mensajeError);
+//     }
+// }
+
+//////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
         const tabla = document.getElementById('myTableLectura');
         //const tbody = document.getElementById("tblbodyLectura");
@@ -798,150 +817,6 @@ function finalizaConteoInventario() {
         sendChunk(chunk, i);
     }
 }
-
-// function finalizaConteoInventario() {   
-//     const tabla = document.getElementById('myTableresumen');
-//     const filas = tabla.querySelectorAll('tbody tr'); 
-
-//     // Crear el arreglo para almacenar los datos
-//     const dataArray = [];
-
-//     filas.forEach(fila => {
-//         const columnas = fila.getElementsByTagName('td');
-
-//         // Extraer los datos de cada columna
-//         const articulo = columnas[0].querySelector('h5')?.innerText || ''; 
-//         const descripcion = columnas[0].querySelector('h6')?.innerText || '';
-//         const barcodeqr = columnas[1]?.innerText || ''; 
-//         const conteo = parseInt(columnas[2]?.innerText || 0); 
-//         const ubicacion = columnas[3]?.innerText.trim() || '';
-
-//         if (articulo && descripcion && barcodeqr) {
-//             dataArray.push({ ARTICULO: articulo, DESCRIPCION: descripcion, BARCODEQR: barcodeqr, CONTEO: conteo, UBICACION: ubicacion });
-//         }
-//     });
-
-//     if (dataArray.length === 0) {
-//         console.error("No hay datos en la tabla para enviar.");
-//         return;
-//     }
-
-//     const jsonDetalles = JSON.stringify(dataArray);
-//     console.log("JSON Detalles a enviar:", jsonDetalles);
-
-//     const pUsuario = localStorage.getItem('username');
-//     const pBodega = document.getElementById('bodega')?.value || '';
-//     const pEstado = 'P';
-//     const pFecha = document.getElementById('fecha_ini')?.value || '';
-//     const pUbicacion = document.getElementById('ubicacion')?.value || '';
-//     const chunkSize = 50;
-//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
-
-//     if (!pUsuario || !pBodega || !pFecha || !pUbicacion) {
-//         console.error("Faltan parámetros necesarios para enviar la solicitud.");
-//         return;
-//     }
-
-//     const sendChunk = (chunk, index) => {
-//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&pUbicacion=${pUbicacion}`;
-//         const body = JSON.stringify(chunk);
-
-//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: body
-//         })
-//         .then(response => response.json())
-//         .then(result => {
-//             if (result.msg === "SUCCESS") {
-//                 console.log(`Bloque ${index + 1}/${totalChunks} guardado con éxito.`);
-//                 limpiarResultadoGeneral();
-
-//                 // Cambiar a la pestaña "Lectura" si el último bloque fue exitoso
-//                 if (index === totalChunks - 1) {
-//                     const tabsInstance = M.Tabs.getInstance(document.querySelector('.tabs'));
-//                     tabsInstance.select('tabla-lectura');
-//                 }
-//             } else {
-//                 console.error(`Error en el bloque ${index + 1}: ${result.message}`);
-//             }
-//         })
-//         .catch(error => {
-//             console.error(`Error en el envío del bloque ${index + 1}:`, error);
-//         });
-//     };
-
-//     for (let i = 0; i < totalChunks; i++) {
-//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
-//         sendChunk(chunk, i);
-//     }
-// }
-// function finalizaConteoInventario() {   
-//     const tabla = document.getElementById('myTableresumen');
-//     const filas = tabla.querySelectorAll('tbody tr'); 
-
-//     // Crear el arreglo para almacenar los datos
-//     const dataArray = [];
-
-//     filas.forEach(fila => {
-//         const columnas = fila.getElementsByTagName('td');
-
-//         const articulo = columnas[0].querySelector('h5')?.innerText || ''; 
-//         const descripcion = columnas[0].querySelector('h6')?.innerText || '';
-//         const barcodeqr = columnas[1]?.innerText || ''; 
-//         const conteo = parseInt(columnas[2]?.innerText || 0); 
-//         const ubicacion = columnas[3]?.innerText.trim() || '';
-
-//         if (articulo && descripcion && barcodeqr) {
-//             dataArray.push({ ARTICULO: articulo, DESCRIPCION: descripcion, BARCODEQR: barcodeqr, CONTEO: conteo, UBICACION: ubicacion });
-//         }
-//     });
-
-//     if (dataArray.length === 0) {
-//         console.error("No hay datos en la tabla para enviar.");
-//         return;
-//     }
-
-//     const pUsuario = localStorage.getItem('username');
-//     const pBodega = document.getElementById('bodega')?.value || '';
-//     const pEstado = 'P';
-//     const pFecha = document.getElementById('fecha_ini')?.value || '';
-//     const pUbicacion = document.getElementById('ubicacion')?.value || '';
-//     const chunkSize = 20; // Reduce el tamaño de cada bloque para evitar exceder los límites de URL
-//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
-
-//     if (!pUsuario || !pBodega || !pFecha || !pUbicacion) {
-//         console.error("Faltan parámetros necesarios para enviar la solicitud.");
-//         return;
-//     }
-
-//     const sendChunk = (chunk, index) => {
-//         const jsonChunk = encodeURIComponent(JSON.stringify(chunk));
-//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${jsonChunk}&pUbicacion=${pUbicacion}`;
-
-//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, { method: 'GET' })
-//             .then(response => response.json())
-//             .then(result => {
-//                 if (result.msg === "SUCCESS") {
-//                     console.log(`Bloque ${index + 1}/${totalChunks} guardado con éxito.`);
-//                     if (index === totalChunks - 1) {
-//                         const tabsInstance = M.Tabs.getInstance(document.querySelector('.tabs'));
-//                         tabsInstance.select('tabla-lectura');
-//                     }
-//                 } else {
-//                     console.error(`Error en el bloque ${index + 1}: ${result.message}`);
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error(`Error en el envío del bloque ${index + 1}:`, error);
-//             });
-//     };
-
-//     for (let i = 0; i < totalChunks; i++) {
-//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
-//         sendChunk(chunk, i);
-//     }
-// }
 
 
 function limpiarResultadoGeneral() {
