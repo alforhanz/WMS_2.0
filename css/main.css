@@ -2758,6 +2758,7 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   width: 27%;
+  margin-right: 52px;
 }
 
 /* Hover para el botón */

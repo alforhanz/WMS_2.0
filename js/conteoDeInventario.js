@@ -223,16 +223,31 @@ function eliminarFila(icon) {
 function resumen() {
 
     let btnFinalizar = document.getElementById('btnFinalizar');
+    let btnResumenGeneral =document.getElementById('btnResumenGeneral');
     let btnGuardaConteo = document.getElementById('btnGuardaConteo');       
     if (btnFinalizar) btnFinalizar.hidden = false;
+    if (btnResumenGeneral) btnResumenGeneral.hidden= false;
     if (btnGuardaConteo) btnGuardaConteo.hidden = true;
-    const tabla = document.getElementById('myTableLectura');
+    const tabla = document.getElementById('myTableresumen');
     //const ubicacion = document.getElementById('ubicacion').value;
     const fechaInv = document.getElementById('fecha_ini').value;
 
-    // if(tabla && tabla.rows.length > 0 && ubicacion.length > 0 && fechaInv.length>0){
+    
         if(tabla && tabla.rows.length > 0 && fechaInv.length>0){
-           
+                           // Actualizar los encabezados de la tabla
+            const encabezado = ['ARTICULO', 'COD', 'CANT', 'UBI', 'CL']; // Nuevas columnas de la tabla
+            const thead = tabla.querySelector('thead');
+            thead.innerHTML = ''; // Limpiar encabezados previos
+
+            const filaEncabezado = document.createElement('tr');
+            filaEncabezado.className = 'themeColor';
+            encabezado.forEach(columna => {
+                const th = document.createElement('th');
+                th.textContent = columna;
+                filaEncabezado.appendChild(th);
+            });
+            thead.appendChild(filaEncabezado);
+
            const pSistema = 'WEB';
            const pUsuario = localStorage.getItem('username');
            const pOpcion = 'D';
@@ -248,8 +263,11 @@ function resumen() {
                 console.log('RESUMEN');
                console.log(result.resumen);
     
-            // Obtener el arreglo almacenado en localStorage
+            // Obtener el arreglo del API
                 const dataArray = result.resumen || [];
+
+ 
+
     
             // Obtener el cuerpo de la tabla resumen
                 const tablaResumenBody = document.getElementById("tblbodyRersumen");
@@ -290,17 +308,115 @@ function resumen() {
           cantidadDeRegistros.textContent =`Registros: 0`;  
     } 
 }
+
+// Función que genera y actualiza la tabla myTableresumen usando datos de un API
+async function resumenGeneral() {
+    // Obtener la tabla y sus elementos
+    const tablaResumen = document.getElementById('myTableresumen');
+    const tblBodyResumen = document.getElementById('tblbodyRersumen');
+    const labelCantidadRegistros = document.getElementById('cantidadDeRegistros'); // Obtener el label
+    // Limpiar el contenido previo del cuerpo de la tabla
+    tblBodyResumen.innerHTML = '';
+
+    // Actualizar los encabezados de la tabla
+    const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF']; // Nuevas columnas de la tabla
+    const thead = tablaResumen.querySelector('thead');
+    thead.innerHTML = ''; // Limpiar encabezados previos
+
+    const filaEncabezado = document.createElement('tr');
+    filaEncabezado.className = 'themeColor';
+    encabezado.forEach(columna => {
+        const th = document.createElement('th');
+        th.textContent = columna;
+        filaEncabezado.appendChild(th);
+    });
+    thead.appendChild(filaEncabezado);
+
+    try {
+        // Obtener parámetros para la llamada al API
+        const pSistema = 'WMS';
+        const pUsuario = localStorage.getItem('username');
+        const pOpcion = 'R'; // Parámetro específico para resumen general
+        const pBodega = document.getElementById('bodega').value;
+        const pFecha = document.getElementById('fecha_ini').value;
+        const pSoloContados = 'S';
+        const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+            console.log('PARAMETROS');
+            console.log(params);
+        // Realizar la llamada al API
+        const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
+
+        if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.msg === "SUCCESS") {
+            const datos = result.resumen || []; // Asumimos que el API devuelve un array de objetos
+            console.log('RESULTADO FINAL');           
+            console.log(datos.length);
+            labelCantidadRegistros.textContent = `Cantidad de registros: ${datos.length}`;
+            datos.forEach(dato => {
+                const fila = document.createElement('tr');
+
+                // Crear celdas con los datos de cada fila
+                const celdaArticulo = document.createElement('td');
+                celdaArticulo.textContent = dato.ARTICULO || 'N/A';
+                fila.appendChild(celdaArticulo);
+
+                const celdaCod = document.createElement('td');
+                celdaCod.textContent = dato.BARCODEQR || 'N/A';
+                fila.appendChild(celdaCod);
+
+                const celdaCant = document.createElement('td');
+                celdaCant.textContent = dato.CONTEO || 'N/A';
+                fila.appendChild(celdaCant);
+
+                const celdaExist = document.createElement('td');
+                celdaExist.textContent = dato.EXISTENCIA || 'N/A';
+                fila.appendChild(celdaExist);
+
+                const celdaDif = document.createElement('td');
+                celdaDif.textContent = dato.DIFERENCIA || 'N/A';
+                fila.appendChild(celdaDif);
+
+                // Agregar la fila al cuerpo de la tabla
+                tblBodyResumen.appendChild(fila);
+            });
+            
+        } else {
+           
+            const mensajeError = document.createElement('tr');
+            const celdaError = document.createElement('td');
+            celdaError.colSpan = encabezado.length;
+            celdaError.textContent = 'No se encontraron datos para mostrar.';
+            mensajeError.appendChild(celdaError);
+            tblBodyResumen.appendChild(mensajeError);
+            labelCantidadRegistros.textContent = `Cantidad de registros: 0`;
+            return;
+        }
+
+    } catch (error) {
+        console.error('Error al generar la tabla:', error);
+        const mensajeError = document.createElement('tr');
+        const celdaError = document.createElement('td');
+        celdaError.colSpan = encabezado.length;
+        celdaError.textContent = 'Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.';
+        mensajeError.appendChild(celdaError);
+        tblBodyResumen.appendChild(mensajeError);
+        labelCantidadRegistros.textContent = `Cantidad de registros: 0`;
+        return;
+    }
+}
+
  //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
         const tabla = document.getElementById('myTableLectura');
         //const tbody = document.getElementById("tblbodyLectura");
         const ubicacion = document.getElementById('ubicacion').value;
         const fechaInv = document.getElementById('fecha_ini').value;
-
-        // console.log(tabla.rows);
-        // console.log('tamaño de la tabla: ');
-        // console.log(tabla.rows.length);
-       // console.log(tbody);
+       
 
         if(tabla && tabla.rows.length > 2 && ubicacion.length > 0 && fechaInv.length>0){
             Swal.fire({
@@ -391,52 +507,6 @@ function confirmaFinalizar() {
       });    
   }
 
-//   function finalizaConteoInventario() {   
-//     const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
-//     console.log("Data a enviar:", dataArray);
-
-//     if (!dataArray || dataArray.length === 0) {
-//         console.error("No hay datos en el localStorage para enviar.");
-//         return;
-//     }
-
-//     const pUsuario = localStorage.getItem('username');
-//     const pBodega = document.getElementById('bodega').value;
-//     const pEstado = 'P';
-//     const pFecha = document.getElementById('fecha_ini').value;
-//     const pUbicacion = document.getElementById('ubicacion').value;      
-//     const chunkSize = 50; // Tamaño del bloque
-//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
-
-//     // Función para enviar cada bloque
-//     const sendChunk = (chunk, index) => {
-//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
-        
-//         console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
-
-//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
-//             .then(response => response.json())
-//             .then(result => {
-//                 if (result.msg === "SUCCESS") {
-//                     console.log(`Bloque ${index + 1} finalizado con éxito.`);
-//                     limpiarResultadoGeneral();
-//                     // crearNuevaFila();
-//                 } else {
-//                     console.error(`Error al guardar bloque ${index + 1}:`, result.message);
-//                 }
-//             })
-//             .catch(error => {
-//                 console.error(`Error en el envío del bloque ${index + 1}:`, error);
-//             });
-//     };
-
-//     // Dividir y enviar en bloques
-//     for (let i = 0; i < totalChunks; i++) {
-//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
-//         sendChunk(chunk, i);
-//     }
-// }
-
 function finalizaConteoInventario() {   
     const tabla = document.getElementById('myTableresumen');
     const filas = tabla.querySelectorAll('tbody tr'); // Obtiene todas las filas del cuerpo de la tabla
@@ -484,22 +554,27 @@ function finalizaConteoInventario() {
     const pEstado = 'P';
     const pFecha = document.getElementById('fecha_ini').value;
     const pUbicacion = document.getElementById('ubicacion').value;      
-    const chunkSize = 50; // Tamaño del bloque
+    const chunkSize = 20; // Tamaño del bloque
     const totalChunks = Math.ceil(dataArray.length / chunkSize);
 
     // Función para enviar cada bloque
     const sendChunk = (chunk, index) => {
         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${encodeURIComponent(JSON.stringify(chunk))}&pUbicacion=${pUbicacion}`;
-        console.log('params: ');
-        console.log(params);
-        console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
+        // console.log('params: ');
+        // console.log(params);
+        // console.log(`Enviando bloque ${index + 1}/${totalChunks}:`, chunk);
 
         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, myInit)
             .then(response => response.json())
             .then(result => {
+                console.log('Resultado del API: ');
+                console.log(result.conteoguardado[0].Mensaje);
                 if (result.msg === "SUCCESS") {
-                    console.log(`Bloque ${index + 1} finalizado con éxito.`);
+                    //console.log(`Bloque ${index + 1} finalizado con éxito.`);
                     limpiarResultadoGeneral();
+                    // Cambiar automáticamente a la pestaña "Lectura"
+                    const tabsInstance = M.Tabs.getInstance(document.querySelector('.tabs'));
+                    tabsInstance.select('tabla-lectura');
                 } else {
                     console.error(`Error al guardar bloque ${index + 1}:`, result.message);
                 }
@@ -516,6 +591,149 @@ function finalizaConteoInventario() {
     }
 }
 
+// function finalizaConteoInventario() {   
+//     const tabla = document.getElementById('myTableresumen');
+//     const filas = tabla.querySelectorAll('tbody tr'); 
+
+//     // Crear el arreglo para almacenar los datos
+//     const dataArray = [];
+
+//     filas.forEach(fila => {
+//         const columnas = fila.getElementsByTagName('td');
+
+//         // Extraer los datos de cada columna
+//         const articulo = columnas[0].querySelector('h5')?.innerText || ''; 
+//         const descripcion = columnas[0].querySelector('h6')?.innerText || '';
+//         const barcodeqr = columnas[1]?.innerText || ''; 
+//         const conteo = parseInt(columnas[2]?.innerText || 0); 
+//         const ubicacion = columnas[3]?.innerText.trim() || '';
+
+//         if (articulo && descripcion && barcodeqr) {
+//             dataArray.push({ ARTICULO: articulo, DESCRIPCION: descripcion, BARCODEQR: barcodeqr, CONTEO: conteo, UBICACION: ubicacion });
+//         }
+//     });
+
+//     if (dataArray.length === 0) {
+//         console.error("No hay datos en la tabla para enviar.");
+//         return;
+//     }
+
+//     const jsonDetalles = JSON.stringify(dataArray);
+//     console.log("JSON Detalles a enviar:", jsonDetalles);
+
+//     const pUsuario = localStorage.getItem('username');
+//     const pBodega = document.getElementById('bodega')?.value || '';
+//     const pEstado = 'P';
+//     const pFecha = document.getElementById('fecha_ini')?.value || '';
+//     const pUbicacion = document.getElementById('ubicacion')?.value || '';
+//     const chunkSize = 50;
+//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
+
+//     if (!pUsuario || !pBodega || !pFecha || !pUbicacion) {
+//         console.error("Faltan parámetros necesarios para enviar la solicitud.");
+//         return;
+//     }
+
+//     const sendChunk = (chunk, index) => {
+//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&pUbicacion=${pUbicacion}`;
+//         const body = JSON.stringify(chunk);
+
+//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: body
+//         })
+//         .then(response => response.json())
+//         .then(result => {
+//             if (result.msg === "SUCCESS") {
+//                 console.log(`Bloque ${index + 1}/${totalChunks} guardado con éxito.`);
+//                 limpiarResultadoGeneral();
+
+//                 // Cambiar a la pestaña "Lectura" si el último bloque fue exitoso
+//                 if (index === totalChunks - 1) {
+//                     const tabsInstance = M.Tabs.getInstance(document.querySelector('.tabs'));
+//                     tabsInstance.select('tabla-lectura');
+//                 }
+//             } else {
+//                 console.error(`Error en el bloque ${index + 1}: ${result.message}`);
+//             }
+//         })
+//         .catch(error => {
+//             console.error(`Error en el envío del bloque ${index + 1}:`, error);
+//         });
+//     };
+
+//     for (let i = 0; i < totalChunks; i++) {
+//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
+//         sendChunk(chunk, i);
+//     }
+// }
+// function finalizaConteoInventario() {   
+//     const tabla = document.getElementById('myTableresumen');
+//     const filas = tabla.querySelectorAll('tbody tr'); 
+
+//     // Crear el arreglo para almacenar los datos
+//     const dataArray = [];
+
+//     filas.forEach(fila => {
+//         const columnas = fila.getElementsByTagName('td');
+
+//         const articulo = columnas[0].querySelector('h5')?.innerText || ''; 
+//         const descripcion = columnas[0].querySelector('h6')?.innerText || '';
+//         const barcodeqr = columnas[1]?.innerText || ''; 
+//         const conteo = parseInt(columnas[2]?.innerText || 0); 
+//         const ubicacion = columnas[3]?.innerText.trim() || '';
+
+//         if (articulo && descripcion && barcodeqr) {
+//             dataArray.push({ ARTICULO: articulo, DESCRIPCION: descripcion, BARCODEQR: barcodeqr, CONTEO: conteo, UBICACION: ubicacion });
+//         }
+//     });
+
+//     if (dataArray.length === 0) {
+//         console.error("No hay datos en la tabla para enviar.");
+//         return;
+//     }
+
+//     const pUsuario = localStorage.getItem('username');
+//     const pBodega = document.getElementById('bodega')?.value || '';
+//     const pEstado = 'P';
+//     const pFecha = document.getElementById('fecha_ini')?.value || '';
+//     const pUbicacion = document.getElementById('ubicacion')?.value || '';
+//     const chunkSize = 20; // Reduce el tamaño de cada bloque para evitar exceder los límites de URL
+//     const totalChunks = Math.ceil(dataArray.length / chunkSize);
+
+//     if (!pUsuario || !pBodega || !pFecha || !pUbicacion) {
+//         console.error("Faltan parámetros necesarios para enviar la solicitud.");
+//         return;
+//     }
+
+//     const sendChunk = (chunk, index) => {
+//         const jsonChunk = encodeURIComponent(JSON.stringify(chunk));
+//         const params = `?pUsuario=${pUsuario}&pBodega=${pBodega}&pEstado=${pEstado}&pFecha=${pFecha}&jsonDetalles=${jsonChunk}&pUbicacion=${pUbicacion}`;
+
+//         fetch(env.API_URL + "wmsguardaconteoinv/I" + params, { method: 'GET' })
+//             .then(response => response.json())
+//             .then(result => {
+//                 if (result.msg === "SUCCESS") {
+//                     console.log(`Bloque ${index + 1}/${totalChunks} guardado con éxito.`);
+//                     if (index === totalChunks - 1) {
+//                         const tabsInstance = M.Tabs.getInstance(document.querySelector('.tabs'));
+//                         tabsInstance.select('tabla-lectura');
+//                     }
+//                 } else {
+//                     console.error(`Error en el bloque ${index + 1}: ${result.message}`);
+//                 }
+//             })
+//             .catch(error => {
+//                 console.error(`Error en el envío del bloque ${index + 1}:`, error);
+//             });
+//     };
+
+//     for (let i = 0; i < totalChunks; i++) {
+//         const chunk = dataArray.slice(i * chunkSize, (i + 1) * chunkSize);
+//         sendChunk(chunk, i);
+//     }
+// }
 
 
 function limpiarResultadoGeneral() {
@@ -546,8 +764,10 @@ function activabtnguardar()
 {
     let btnFinalizar = document.getElementById('btnFinalizar');
     let btnGuardaConteo = document.getElementById('btnGuardaConteo');
+    let btnResumenGeneral =document.getElementById('btnResumenGeneral');
     
     if (btnFinalizar) btnFinalizar.hidden = true;
+    if (btnResumenGeneral) btnResumenGeneral.hidden= true;
     if (btnGuardaConteo) btnGuardaConteo.hidden = false;
 
 }
