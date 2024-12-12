@@ -383,13 +383,13 @@ const tablaResumen = document.getElementById('myTableresumen');
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
         paginacion.appendChild(btnAnterior);
 
-        // for (let i = 1; i <= totalPaginas; i++) {
-        //     const btnPagina = document.createElement('button');
-        //     btnPagina.textContent = i;
-        //     btnPagina.disabled = i === paginaActual;
-        //     btnPagina.addEventListener('click', () => cambiarPagina(i));
-        //     paginacion.appendChild(btnPagina);
-        // }
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.addEventListener('click', () => cambiarPagina(i));
+            paginacion.appendChild(btnPagina);
+        }
 
         const btnSiguiente = document.createElement('button');
         btnSiguiente.textContent = 'Siguiente';
@@ -529,13 +529,13 @@ async function resumenGeneral() {
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
         paginacion.appendChild(btnAnterior);
 
-        // for (let i = 1; i <= totalPaginas; i++) {
-        //     const btnPagina = document.createElement('button');
-        //     btnPagina.textContent = i;
-        //     btnPagina.disabled = i === paginaActual;
-        //     btnPagina.addEventListener('click', () => cambiarPagina(i));
-        //     paginacion.appendChild(btnPagina);
-        // }
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.addEventListener('click', () => cambiarPagina(i));
+            paginacion.appendChild(btnPagina);
+        }
 
         const btnSiguiente = document.createElement('button');
         btnSiguiente.textContent = 'Siguiente';
