@@ -16,7 +16,10 @@ let menuEnlaces = [
     { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"},  
   { MODULO: 13, SUBMODULO: 0, ICON: "rocket", LINK: ""},//Operacion
    { MODULO: 13, SUBMODULO: 1, ICON: "", LINK: "ingresaCodigoBarra.html"},//ingresa cod barras
+
   { MODULO: 3, SUBMODULO: 0, ICON: "monitoring", LINK: ""}, //REPORTES
+   { MODULO: 3, SUBMODULO: 23, ICON: "", LINK: "resumenConteoDeInventario.html"}, //REPORTES
+   
   { MODULO: 4, SUBMODULO: 0, ICON: "manage_accounts", LINK: ""},//ADMINISTRACION
   // { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "ingresaCodigoBarra.html"},//ingresa cod barras 
 ];
@@ -46,14 +49,14 @@ function cargarMenu() {
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error))
     .then((result) => {
-      //console.log("Resultado de los modulos");
-      //console.log(result);
+      console.log("Resultado de los modulos");
+      console.log(result);
       ArrayMenu = result.menu;
-      //console.log("OPCIONES DE MENU");
-      //console.log(ArrayMenu);
+      console.log("OPCIONES DE MENU");
+      console.log(ArrayMenu);
       var source = builddata();
-      // //console.log("MENU");
-      // //console.log(source);
+      console.log("MENU");
+      console.log(source);
       buildUL(source);
     });
 }

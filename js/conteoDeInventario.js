@@ -268,15 +268,177 @@ let paginaActual = 1; // Página actual
 let totalPaginas = 1; // Total de páginas
 let datosResumen = [];  // Definir la variable global para almacenar los datos del resumen
 
-async function resumen() {
+// async function resumen() {
 
+//     let btnFinalizar = document.getElementById('btnFinalizar');
+//     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
+//     let btnGuardaConteo = document.getElementById('btnGuardaConteo');
+//     if (btnFinalizar) btnFinalizar.hidden = false;
+//     if (btnResumenGeneral) btnResumenGeneral.hidden = false;
+//     if (btnGuardaConteo) btnGuardaConteo.hidden = true;
+// const tablaResumen = document.getElementById('myTableresumen');
+//     const tblBodyResumen = document.getElementById('tblbodyRersumen');
+//     const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
+//     tblBodyResumen.innerHTML = '';
+
+//     const encabezado = ['ARTICULO', 'COD', 'CANT', 'UBI', 'CL'];
+//     const thead = tablaResumen.querySelector('thead');
+//     thead.innerHTML = '';
+
+//     const filaEncabezado = document.createElement('tr');
+//     filaEncabezado.className = 'themeColor';
+//     encabezado.forEach((columna, index) => {
+//         const th = document.createElement('th');
+//         th.textContent = columna;
+//         th.setAttribute('data-column', index); // Asignar índice para identificar la columna
+//         th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
+//         th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
+//         filaEncabezado.appendChild(th);
+//     });
+//     thead.appendChild(filaEncabezado);
+
+//     try {
+//         const pSistema = 'WMS';
+//         const pUsuario = localStorage.getItem('username');
+//         const pOpcion = 'D';
+//         const pBodega = document.getElementById('bodega').value;
+//         const pFecha = document.getElementById('fecha_ini').value;
+//         const pSoloContados = 'S';
+//         const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+
+//         const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
+//         if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
+
+//         const result = await response.json();
+//         if (result.msg === "SUCCESS") {
+//             datosResumen = result.resumen || [];  // Asignar los datos a la variable global
+//             labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;
+//             renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
+//         } else {
+//             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
+//             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+//         }
+//     } catch (error) {
+//         console.error('Error al generar la tabla:', error);
+//         mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
+//         labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+//     }
+
+
+//     function renderizarDatos(datos) {
+
+//         console.log(datos);
+//         tblBodyResumen.innerHTML = ''; // Limpiar el contenido actual
+//         totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
+    
+//         // Mostrar los datos de la página actual
+//         const start = (paginaActual - 1) * registrosPorPagina;
+//         const end = start + registrosPorPagina;
+//         const paginaDatos = datos.slice(start, end);
+    
+//         // Iterar sobre los datos de la página actual y crear las filas HTML
+//         paginaDatos.forEach(dato => {
+//             // Definir el estilo de la fila
+//             let filaHTML = `
+//                 <tr>
+//                     <td style="text-align: center;">
+//                         <h5 style="color: #f56108">${dato.ARTICULO}</h5>
+//                         <h6>${dato.DESCRIPCION || 'N/A'}</h6>
+//                     </td>
+//                     <td style="text-align: center;">${dato.BARCODEQR || 'N/A'}</td>
+//                     <td style="text-align: center;">${dato.CONTEO || 'N/A'}</td>
+//                     <td style="text-align: center; text-transform: uppercase;">${dato.UBICACION || 'N/A'}</td>
+//                     <td>
+//                         <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
+//                     </td>
+//                 </tr>
+//             `;
+            
+//             // Verificar si el artículo no está conciliado, para aplicar el estilo correspondiente
+//             if (dato.CONCILIADO === 'N') {
+//                 filaHTML = filaHTML.replace('<tr>', '<tr style="color: #f56108; font-weight: bold;">');
+//             }
+    
+//             // Insertar la fila HTML generada en el cuerpo de la tabla
+//             tblBodyResumen.insertAdjacentHTML("beforeend", filaHTML);
+//         });
+    
+//         // Actualizar los controles de paginación
+//         actualizarPaginacion();
+//     }
+
+//     function actualizarPaginacion() {
+//         const paginacion = document.getElementById('pagination');
+//         if (!paginacion) {
+//             console.error("No se encontró el contenedor de paginación.");
+//             return;
+//         }
+
+//         paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
+
+//         // Crear botones de paginación
+//         const btnAnterior = document.createElement('button');
+//         btnAnterior.textContent = 'Anterior';
+//         btnAnterior.disabled = paginaActual === 1;
+//         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
+//         paginacion.appendChild(btnAnterior);
+
+//         for (let i = 1; i <= totalPaginas; i++) {
+//             const btnPagina = document.createElement('button');
+//             btnPagina.textContent = i;
+//             btnPagina.disabled = i === paginaActual;
+//             btnPagina.addEventListener('click', () => cambiarPagina(i));
+//             paginacion.appendChild(btnPagina);
+//         }
+
+//         const btnSiguiente = document.createElement('button');
+//         btnSiguiente.textContent = 'Siguiente';
+//         btnSiguiente.disabled = paginaActual === totalPaginas;
+//         btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
+//         paginacion.appendChild(btnSiguiente);
+//     }
+
+//     function cambiarPagina(pagina) {
+//         if (pagina >= 1 && pagina <= totalPaginas) {
+//             paginaActual = pagina;
+//             renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
+//         }
+//     }
+
+//     function ordenarTabla(indiceColumna) {
+//         const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
+//         const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
+//         filas.sort((a, b) => {
+//             const valorA = a.children[indiceColumna].textContent.trim();
+//             const valorB = b.children[indiceColumna].textContent.trim();
+//             if (!isNaN(valorA) && !isNaN(valorB)) {
+//                 return ordenAscendente ? valorA - valorB : valorB - valorA;
+//             }
+//             return ordenAscendente ? valorA.localeCompare(valorB) : valorB.localeCompare(valorA);
+//         });
+//         filas.forEach(fila => tblBodyResumen.appendChild(fila));
+//         thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
+//     }
+
+//     function mostrarMensajeError(mensaje, columnas) {
+//         const mensajeError = document.createElement('tr');
+//         const celdaError = document.createElement('td');
+//         celdaError.colSpan = columnas;
+//         celdaError.textContent = mensaje;
+//         mensajeError.appendChild(celdaError);
+//         tblBodyResumen.appendChild(mensajeError);
+//     }
+// }
+
+async function resumen() {
     let btnFinalizar = document.getElementById('btnFinalizar');
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
     let btnGuardaConteo = document.getElementById('btnGuardaConteo');
     if (btnFinalizar) btnFinalizar.hidden = false;
     if (btnResumenGeneral) btnResumenGeneral.hidden = false;
     if (btnGuardaConteo) btnGuardaConteo.hidden = true;
-const tablaResumen = document.getElementById('myTableresumen');
+
+    const tablaResumen = document.getElementById('myTableresumen');
     const tblBodyResumen = document.getElementById('tblbodyRersumen');
     const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
     tblBodyResumen.innerHTML = '';
@@ -290,9 +452,9 @@ const tablaResumen = document.getElementById('myTableresumen');
     encabezado.forEach((columna, index) => {
         const th = document.createElement('th');
         th.textContent = columna;
-        th.setAttribute('data-column', index); // Asignar índice para identificar la columna
-        th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
-        th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
+        th.setAttribute('data-column', index);
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', () => ordenarTabla(index));
         filaEncabezado.appendChild(th);
     });
     thead.appendChild(filaEncabezado);
@@ -311,9 +473,9 @@ const tablaResumen = document.getElementById('myTableresumen');
 
         const result = await response.json();
         if (result.msg === "SUCCESS") {
-            datosResumen = result.resumen || [];  // Asignar los datos a la variable global
+            datosResumen = result.resumen || [];
             labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;
-            renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
+            renderizarDatos(datosResumen);
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
@@ -324,21 +486,15 @@ const tablaResumen = document.getElementById('myTableresumen');
         labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
     }
 
-
     function renderizarDatos(datos) {
+        tblBodyResumen.innerHTML = '';
+        totalPaginas = Math.ceil(datos.length / registrosPorPagina);
 
-        console.log(datos);
-        tblBodyResumen.innerHTML = ''; // Limpiar el contenido actual
-        totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
-    
-        // Mostrar los datos de la página actual
         const start = (paginaActual - 1) * registrosPorPagina;
         const end = start + registrosPorPagina;
         const paginaDatos = datos.slice(start, end);
-    
-        // Iterar sobre los datos de la página actual y crear las filas HTML
+
         paginaDatos.forEach(dato => {
-            // Definir el estilo de la fila
             let filaHTML = `
                 <tr>
                     <td style="text-align: center;">
@@ -353,17 +509,12 @@ const tablaResumen = document.getElementById('myTableresumen');
                     </td>
                 </tr>
             `;
-            
-            // Verificar si el artículo no está conciliado, para aplicar el estilo correspondiente
             if (dato.CONCILIADO === 'N') {
                 filaHTML = filaHTML.replace('<tr>', '<tr style="color: #f56108; font-weight: bold;">');
             }
-    
-            // Insertar la fila HTML generada en el cuerpo de la tabla
             tblBodyResumen.insertAdjacentHTML("beforeend", filaHTML);
         });
-    
-        // Actualizar los controles de paginación
+
         actualizarPaginacion();
     }
 
@@ -374,22 +525,19 @@ const tablaResumen = document.getElementById('myTableresumen');
             return;
         }
 
-        paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
+        paginacion.innerHTML = '';
 
-        // Crear botones de paginación
         const btnAnterior = document.createElement('button');
         btnAnterior.textContent = 'Anterior';
         btnAnterior.disabled = paginaActual === 1;
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
         paginacion.appendChild(btnAnterior);
 
-        for (let i = 1; i <= totalPaginas; i++) {
-            const btnPagina = document.createElement('button');
-            btnPagina.textContent = i;
-            btnPagina.disabled = i === paginaActual;
-            btnPagina.addEventListener('click', () => cambiarPagina(i));
-            paginacion.appendChild(btnPagina);
-        }
+        const btnPaginaActual = document.createElement('button');
+        btnPaginaActual.textContent = `Página ${paginaActual}`;
+        btnPaginaActual.style.margin = '0 10px';
+        btnPaginaActual.addEventListener('click', () => mostrarModalPaginas());
+        paginacion.appendChild(btnPaginaActual);
 
         const btnSiguiente = document.createElement('button');
         btnSiguiente.textContent = 'Siguiente';
@@ -398,10 +546,57 @@ const tablaResumen = document.getElementById('myTableresumen');
         paginacion.appendChild(btnSiguiente);
     }
 
+    function mostrarModalPaginas() {
+        let modal = document.getElementById('modalPaginas');
+        if (!modal) {
+            crearModalPaginas();
+            modal = document.getElementById('modalPaginas');
+        }
+
+        const modalBody = modal.querySelector('.modal-body');
+        if (!modalBody) {
+            console.error("El cuerpo del modal no existe en el DOM.");
+            return;
+        }
+
+        modalBody.innerHTML = '';
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.style.margin = '5px';
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.addEventListener('click', () => {
+                cambiarPagina(i);
+                modal.style.display = 'none';
+            });
+            modalBody.appendChild(btnPagina);
+        }
+
+        modal.style.display = 'block';
+    }
+
+    function crearModalPaginas() {
+        const modal = document.createElement('div');
+        modal.id = 'modalPaginas';
+        modal.className = 'modal';
+        modal.style.display = 'none';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Selecciona una página</h5>
+                    <span class="close" onclick="document.getElementById('modalPaginas').style.display='none'">&times;</span>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
     function cambiarPagina(pagina) {
         if (pagina >= 1 && pagina <= totalPaginas) {
             paginaActual = pagina;
-            renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
+            renderizarDatos(datosResumen);
         }
     }
 
@@ -430,13 +625,12 @@ const tablaResumen = document.getElementById('myTableresumen');
     }
 }
 
-async function resumenGeneral() {
-    let btnFinalizar = document.getElementById('btnFinalizar');
+
+
+async function resumenGeneral() {    
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
-    let btnGuardaConteo = document.getElementById('btnGuardaConteo');
-    if (btnFinalizar) btnFinalizar.hidden = true;
     if (btnResumenGeneral) btnResumenGeneral.hidden = false;
-    if (btnGuardaConteo) btnGuardaConteo.hidden = true;
+    
 
     const tablaResumen = document.getElementById('myTableresumen');
     const tblBodyResumen = document.getElementById('tblbodyRersumen');
@@ -513,37 +707,126 @@ async function resumenGeneral() {
         actualizarPaginacion();
     }
 
+    // function actualizarPaginacion() {
+    //     const paginacion = document.getElementById('pagination');
+    //     if (!paginacion) {
+    //         console.error("No se encontró el contenedor de paginación.");
+    //         return;
+    //     }
+
+    //     paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
+
+    //     // Crear botones de paginación
+    //     const btnAnterior = document.createElement('button');
+    //     btnAnterior.textContent = 'Anterior';
+    //     btnAnterior.disabled = paginaActual === 1;
+    //     btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
+    //     paginacion.appendChild(btnAnterior);
+
+    //     for (let i = 1; i <= totalPaginas; i++) {
+    //         const btnPagina = document.createElement('button');
+    //         btnPagina.textContent = i;
+    //         btnPagina.disabled = i === paginaActual;
+    //         btnPagina.addEventListener('click', () => cambiarPagina(i));
+    //         paginacion.appendChild(btnPagina);
+    //     }
+
+    //     const btnSiguiente = document.createElement('button');
+    //     btnSiguiente.textContent = 'Siguiente';
+    //     btnSiguiente.disabled = paginaActual === totalPaginas;
+    //     btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
+    //     paginacion.appendChild(btnSiguiente);
+    // }
+
     function actualizarPaginacion() {
         const paginacion = document.getElementById('pagination');
         if (!paginacion) {
             console.error("No se encontró el contenedor de paginación.");
             return;
         }
-
-        paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
-
-        // Crear botones de paginación
+    
+        paginacion.innerHTML = ''; // Limpiar la paginación antes de renderizar
+    
+          
+        // Botón Anterior
         const btnAnterior = document.createElement('button');
         btnAnterior.textContent = 'Anterior';
         btnAnterior.disabled = paginaActual === 1;
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
         paginacion.appendChild(btnAnterior);
+    
 
-        for (let i = 1; i <= totalPaginas; i++) {
-            const btnPagina = document.createElement('button');
-            btnPagina.textContent = i;
-            btnPagina.disabled = i === paginaActual;
-            btnPagina.addEventListener('click', () => cambiarPagina(i));
-            paginacion.appendChild(btnPagina);
-        }
+         // Botón para abrir el modal de números de página
+         const btnVerPaginas = document.createElement('button');
+        //  btnVerPaginas.textContent = 'página';
+       // let pag = paginaActual.toString();
+        btnVerPaginas.textContent =  `Pagina ${paginaActual}`;
+         btnVerPaginas.addEventListener('click', () => {
+             mostrarModalPaginacion();
+         });
+         paginacion.appendChild(btnVerPaginas);
 
+        // Botón Siguiente
         const btnSiguiente = document.createElement('button');
         btnSiguiente.textContent = 'Siguiente';
         btnSiguiente.disabled = paginaActual === totalPaginas;
         btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
         paginacion.appendChild(btnSiguiente);
     }
-
+    
+    function mostrarModalPaginacion() {
+        // Crear o seleccionar el modal
+        let modal = document.getElementById('modalPaginacion');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modalPaginacion';
+            modal.style.position = 'fixed';
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%)';
+            modal.style.padding = '20px';
+            modal.style.backgroundColor = 'white';
+            modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            modal.style.borderRadius = '8px';
+            modal.style.zIndex = '1000';
+    
+            // Botón para cerrar el modal
+            const closeButton = document.createElement('button');
+            closeButton.textContent = 'Cerrar';
+            closeButton.style.marginBottom = '10px';
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            modal.appendChild(closeButton);
+    
+            // Contenedor para los botones de números de página
+            const paginationContainer = document.createElement('div');
+            paginationContainer.id = 'modalPaginationContainer';
+            modal.appendChild(paginationContainer);
+    
+            document.body.appendChild(modal);
+        }
+    
+        // Mostrar el modal
+        modal.style.display = 'block';
+    
+        // Actualizar los números de página en el modal
+        const paginationContainer = document.getElementById('modalPaginationContainer');
+        paginationContainer.innerHTML = ''; // Limpiar contenido anterior
+    
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.style.margin = '5px';
+            btnPagina.addEventListener('click', () => {
+                cambiarPagina(i);
+                modal.style.display = 'none'; // Cerrar el modal al seleccionar una página
+            });
+            paginationContainer.appendChild(btnPagina);
+        }
+    }
+   
     function cambiarPagina(pagina) {
         if (pagina >= 1 && pagina <= totalPaginas) {
             paginaActual = pagina;
@@ -578,10 +861,6 @@ async function resumenGeneral() {
 
 //////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
@@ -794,7 +1073,13 @@ function activabtnguardar()
     let btnFinalizar = document.getElementById('btnFinalizar');
     let btnGuardaConteo = document.getElementById('btnGuardaConteo');
     let btnResumenGeneral =document.getElementById('btnResumenGeneral');
-    
+    const paginacion = document.getElementById('pagination');
+    if (!paginacion) {
+        console.error("No se encontró el contenedor de paginación.");
+        return;
+    }
+
+    paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
     if (btnFinalizar) btnFinalizar.hidden = true;
     if (btnResumenGeneral) btnResumenGeneral.hidden= true;
     if (btnGuardaConteo) btnGuardaConteo.hidden = false;

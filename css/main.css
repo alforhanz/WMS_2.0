@@ -2776,3 +2776,10 @@ h2 {
   background-color: #f8d7da;
   color: #f56108;
 }
+
+
+@media only screen and (max-width: 992px){
+  .select-wrapper + label {
+    top: -36px;  
+}
+}
