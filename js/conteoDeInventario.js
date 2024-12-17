@@ -579,19 +579,30 @@ async function resumen() {
     function crearModalPaginas() {
         const modal = document.createElement('div');
         modal.id = 'modalPaginas';
-        modal.className = 'modal';
+        modal.className = 'modal-conteo';
         modal.style.display = 'none';
         modal.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Selecciona una página</h5>
-                    <span class="close" onclick="document.getElementById('modalPaginas').style.display='none'">&times;</span>
+                    <button class="close-button" style="background: none; border: none; cursor: pointer; color: red; font-size: 24px;">
+                        <span class="material-icons">close</span>
+                    </button>
                 </div>
                 <div class="modal-body"></div>
             </div>
         `;
+    
+        // Añadir evento al botón de cerrar
+        const closeButton = modal.querySelector('.close-button');
+        closeButton.style.marginLeft = '14em';
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+            
+        });
+    
         document.body.appendChild(modal);
-    }
+    }   
+
 
     function cambiarPagina(pagina) {
         if (pagina >= 1 && pagina <= totalPaginas) {
@@ -624,8 +635,6 @@ async function resumen() {
         tblBodyResumen.appendChild(mensajeError);
     }
 }
-
-
 
 async function resumenGeneral() {    
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
@@ -683,60 +692,68 @@ async function resumenGeneral() {
     function renderizarDatos(datos) {
         tblBodyResumen.innerHTML = '';
         totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
-
+    
         // Mostrar los datos de la página actual
         const start = (paginaActual - 1) * registrosPorPagina;
         const end = start + registrosPorPagina;
         const paginaDatos = datos.slice(start, end);
-
+    
         paginaDatos.forEach(dato => {
             const fila = document.createElement('tr');
             if (dato.CONCILIADO === 'N') {
                 fila.style.color = '#f56108';
                 fila.style.fontWeight = 'bold';
             }
-            ['ARTICULO', 'BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
+    
+            // Crear celda personalizada para ARTICULO y DESCRIPCION
+            const celdaArticulo = document.createElement('td');
+            celdaArticulo.innerHTML = `
+                <h5 style="margin: 0;">${dato.ARTICULO || 'N/A'}</h5>
+                <h6 style="margin: 0;">${dato.DESCRIPCION || 'N/A'}</h6>
+            `;
+            fila.appendChild(celdaArticulo);
+    
+            // Crear celdas para los demás campos
+            ['BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
                 const celda = document.createElement('td');
                 celda.textContent = dato[campo] || 'N/A';
                 fila.appendChild(celda);
             });
+    
             tblBodyResumen.appendChild(fila);
         });
-
+    
         // Actualizar los controles de paginación
         actualizarPaginacion();
     }
+    
 
-    // function actualizarPaginacion() {
-    //     const paginacion = document.getElementById('pagination');
-    //     if (!paginacion) {
-    //         console.error("No se encontró el contenedor de paginación.");
-    //         return;
-    //     }
+    // function renderizarDatos(datos) {
+    //     tblBodyResumen.innerHTML = '';
+    //     totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
 
-    //     paginacion.innerHTML = '';  // Limpiar la paginación antes de renderizar
+    //     // Mostrar los datos de la página actual
+    //     const start = (paginaActual - 1) * registrosPorPagina;
+    //     const end = start + registrosPorPagina;
+    //     const paginaDatos = datos.slice(start, end);
 
-    //     // Crear botones de paginación
-    //     const btnAnterior = document.createElement('button');
-    //     btnAnterior.textContent = 'Anterior';
-    //     btnAnterior.disabled = paginaActual === 1;
-    //     btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
-    //     paginacion.appendChild(btnAnterior);
+    //     paginaDatos.forEach(dato => {
+    //         const fila = document.createElement('tr');
+    //         if (dato.CONCILIADO === 'N') {
+    //             fila.style.color = '#f56108';
+    //             fila.style.fontWeight = 'bold';
+    //         }
+    //         ['ARTICULO', 'BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
+    //             const celda = document.createElement('td');
+    //             celda.textContent = dato[campo] || 'N/A';
+    //             fila.appendChild(celda);
+    //         });
+    //         tblBodyResumen.appendChild(fila);
+    //     });
 
-    //     for (let i = 1; i <= totalPaginas; i++) {
-    //         const btnPagina = document.createElement('button');
-    //         btnPagina.textContent = i;
-    //         btnPagina.disabled = i === paginaActual;
-    //         btnPagina.addEventListener('click', () => cambiarPagina(i));
-    //         paginacion.appendChild(btnPagina);
-    //     }
-
-    //     const btnSiguiente = document.createElement('button');
-    //     btnSiguiente.textContent = 'Siguiente';
-    //     btnSiguiente.disabled = paginaActual === totalPaginas;
-    //     btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
-    //     paginacion.appendChild(btnSiguiente);
-    // }
+    //     // Actualizar los controles de paginación
+    //     actualizarPaginacion();
+    // }   
 
     function actualizarPaginacion() {
         const paginacion = document.getElementById('pagination');
@@ -790,18 +807,29 @@ async function resumenGeneral() {
             modal.style.borderRadius = '8px';
             modal.style.zIndex = '1000';
     
-            // Botón para cerrar el modal
-            const closeButton = document.createElement('button');
-            closeButton.textContent = 'Cerrar';
-            closeButton.style.marginBottom = '10px';
+
+            // Crear el botón de cierre como un icono
+            const closeButton = document.createElement('span');
+            closeButton.className = 'material-icons';
+            closeButton.textContent = 'close';
+            closeButton.style.cursor = 'pointer'; // Cambia el cursor a mano para indicar que es interactivo
+            closeButton.style.color = 'red'; // Aplica color rojo al icono
+            closeButton.style.position = 'absolute'; // Posición absoluta para colocarlo en la esquina del modal
+            closeButton.style.top = '10px'; // Ajusta la posición superior
+            closeButton.style.right = '10px'; // Ajusta la posición derecha
+
+            // Agregar el evento para cerrar el modal
             closeButton.addEventListener('click', () => {
                 modal.style.display = 'none';
             });
+
+            // Agregar el botón al modal
             modal.appendChild(closeButton);
     
             // Contenedor para los botones de números de página
             const paginationContainer = document.createElement('div');
             paginationContainer.id = 'modalPaginationContainer';
+            paginationContainer.style.marginTop = '19px';
             modal.appendChild(paginationContainer);
     
             document.body.appendChild(modal);
@@ -809,6 +837,7 @@ async function resumenGeneral() {
     
         // Mostrar el modal
         modal.style.display = 'block';
+        // modal.style.top = '10em'
     
         // Actualizar los números de página en el modal
         const paginationContainer = document.getElementById('modalPaginationContainer');
@@ -819,6 +848,7 @@ async function resumenGeneral() {
             btnPagina.textContent = i;
             btnPagina.disabled = i === paginaActual;
             btnPagina.style.margin = '5px';
+         
             btnPagina.addEventListener('click', () => {
                 cambiarPagina(i);
                 modal.style.display = 'none'; // Cerrar el modal al seleccionar una página

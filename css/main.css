@@ -2783,3 +2783,19 @@ h2 {
     top: -36px;  
 }
 }
+
+.modal-conteo {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: #fafafa;
+  padding: 0;
+  top: 50em !important;
+  max-height: 86%;
+  width: 98%;
+  margin: auto;
+  overflow-y: auto;
+  border-radius: 2px;
+  will-change: top, opacity;
+}
