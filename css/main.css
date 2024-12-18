@@ -2619,31 +2619,6 @@ h2 {
 }
 
 
-/* #myTableresumen {
-  font-family: Arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#myTableresumen td, #myTableresumen th {
-  border: 1px solid #dddddd;
-  text-align: center;
-  padding: 8px;
-}
-
-#myTableresumen tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-#myTableresumen tr:nth-child(odd) {
-  background-color: #ffffff;
-}
-
-#myTableresumen th {
-  background-color: #4CAF50;
-  color: white;
-} */
-
 #myTableresumen {
   font-family: Arial, sans-serif;
   border-collapse: collapse;
@@ -2654,7 +2629,7 @@ h2 {
   border: 1px solid #e0e0e0; /* Bordes más claros */
   text-align: center;
   padding: 6px; /* Espaciado reducido */
-  font-size: 11px; /* Tamaño de fuente más pequeño */
+  font-size: 14px; /* Tamaño de fuente más pequeño */
   font-weight: normal; /* Texto no enfatizado */
 }
 
