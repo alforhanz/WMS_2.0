@@ -541,14 +541,13 @@ async function resumenGeneral() {
             datosResumen = result.resumen || [];  // Asignar los datos a la variable global
             labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
             renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
-            const inicializabtnDowload = document.getElementById('btnDescargarExcel');
-            if(!inicializabtnDowload){
-                    inicializarBotonesDescarga();
-            }
+            inicializarBotonesDescarga();             
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
         }
+
+
     } catch (error) {
         console.error('Error al generar la tabla:', error);
         mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
@@ -661,12 +660,12 @@ async function resumenGeneral() {
 
         // Botón para abrir el modal de números de página
         const btnVerPaginas = document.createElement('button');
-        btnVerPaginas.textContent = `Página ${paginaActual}`;
+        btnVerPaginas.textContent = `Página ${paginaActual}/${totalPaginas}`;
         btnVerPaginas.addEventListener('click', () => {
             mostrarModalPaginacion();
         });
-        btnVerPaginas.style.backgroundColor = '#28a745';
-        btnVerPaginas.style.color = 'white';
+        btnVerPaginas.style.backgroundColor = 'transparent';
+        btnVerPaginas.style.color = '#28a745';
         btnVerPaginas.style.border = 'none';
         btnVerPaginas.style.borderRadius = '5px';
         btnVerPaginas.style.padding = '10px 15px';
@@ -674,10 +673,9 @@ async function resumenGeneral() {
         btnVerPaginas.style.margin = '0 5px';
         btnVerPaginas.style.fontSize = '14px';
         btnVerPaginas.style.fontWeight = 'bold';
-        btnVerPaginas.style.transition = '0.3s';
-        btnVerPaginas.onmouseover = () => btnVerPaginas.style.backgroundColor = '#218838';
-        btnVerPaginas.onmouseleave = () => btnVerPaginas.style.backgroundColor = '#28a745';
+        btnVerPaginas.style.transition = '0.3s';       
         paginacion.appendChild(btnVerPaginas);
+
 
         // Botón Siguiente
         const btnSiguiente = document.createElement('button');
@@ -791,6 +789,8 @@ async function resumenGeneral() {
         mensajeError.appendChild(celdaError);
         tblBodyResumen.appendChild(mensajeError);
     }
+
+   
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -1133,45 +1133,29 @@ function eliminarFilaResumen(icon) {
 
 //////////////////////////////////////DESGARGAR DATOS/////////////////////
 
-// /// Inicializa los botones para descargar Excel y PDF
-// function inicializarBotonesDescarga() {
-//     // Crear botón para descargar Excel
-//     const btnDescargarExcel = document.createElement('button');
-//     btnDescargarExcel.id = 'btnDescargarExcel'; // Asignar id
-//     btnDescargarExcel.textContent = 'Descargar Excel';
-//     btnDescargarExcel.classList.add('btn-descarga', 'btn-excel'); // Opcional: añadir clases para estilos
-//     btnDescargarExcel.addEventListener('click', descargarExcel);
-//     document.body.appendChild(btnDescargarExcel);
 
-//     // Crear botón para descargar PDF
-//     const btnDescargarPDF = document.createElement('button');
-//     btnDescargarPDF.id = 'btnDescargarPDF'; // Asignar id
-//     btnDescargarPDF.textContent = 'Descargar PDF';
-//     btnDescargarPDF.classList.add('btn-descarga', 'btn-pdf'); // Opcional: añadir clases para estilos
-//     btnDescargarPDF.addEventListener('click', descargarPDF);
-//     document.body.appendChild(btnDescargarPDF);
-// }
+function inicializarBotonesDescarga() {    
+    const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
+    const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF 
 
-
-
-
-
-
-
+    // Usar operador ternario para establecer la visibilidad de los botones
+    btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
+    btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
+}
 
 
 function descargarExcel() {
-       // Obtener los datos de la tabla
-    const jsonData = obtenerDatosTabla(); 
+    // Obtener los datos de la tabla
+    const jsonData = obtenerDatosTabla();
 
-    // Definir los encabezados para la tabla (sin incluir encabezados de los datos)
+    // Definir los encabezados para la tabla
     const encabezado = ["Artículo", "Código de Barra", "Descripción", "Conteo", "Existencia", "Diferencia"];
 
     // Calcular los totales generales
     const totales = {
-        CONTEO: jsonData.reduce((sum, item) => sum + parseFloat(item.CONTEO || 0), 0),
-        EXISTENCIA: jsonData.reduce((sum, item) => sum + parseFloat(item.EXISTENCIA || 0), 0),
-        DIFERENCIA: jsonData.reduce((sum, item) => sum + parseFloat(item.DIFERENCIA || 0), 0),
+        CONTEO: jsonData.reduce((sum, item) => sum + (parseFloat(item.CONTEO) || 0), 0),
+        EXISTENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.EXISTENCIA) || 0), 0),
+        DIFERENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.DIFERENCIA) || 0), 0),
     };
 
     // Crear una fila para los totales
@@ -1187,15 +1171,14 @@ function descargarExcel() {
     // Añadir la fila de totales al final de los datos
     jsonData.push(filaTotales);
 
-
-    // Crear la hoja de Excel, comenzando con la fila de título
+    // Crear la hoja de Excel, asegurando que las columnas de Conteo, Existencia y Diferencia sean numéricas
     const worksheetData = [encabezado, ...jsonData.map(item => [
         item.ARTICULO, 
         item.BARCODEQR, 
         item.DESCRIPCION, 
-        item.CONTEO, 
-        item.EXISTENCIA, 
-        item.DIFERENCIA
+        parseFloat(item.CONTEO) || 0, // Asegurar que sea numérico
+        parseFloat(item.EXISTENCIA) || 0, // Asegurar que sea numérico
+        parseFloat(item.DIFERENCIA) || 0 // Asegurar que sea numérico
     ])];
 
     // Convertir los datos a una hoja de Excel
@@ -1210,28 +1193,14 @@ function descargarExcel() {
 }
 
 
-
-
-
-// // Función para descargar datos en Excel
-// function descargarExcel() {
-//     const jsonData = obtenerDatosTabla(); // Reemplaza con tu lógica para obtener los datos
-//     const worksheet = XLSX.utils.json_to_sheet(jsonData);
-//     const workbook = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
-//     XLSX.writeFile(workbook, "datos.xlsx");
-// }
-
-
-
-function descargarPDF() {    
+function descargarPDF() {
     const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
     const doc = new jsPDF();
 
     // Título, subtítulo, fechas
-    const titulo = "REPORTE DE CONTEO DE INVENTARIO";
+    const titulo = "Reporte de conteo de inventario";
     const pBodega = document.getElementById('bodega-sucursal').textContent;
-    const subtitulo = `B-${pBodega}`;
+    const subtitulo = `Bodega: B-${pBodega}`;
     const fechaInventario = document.getElementById('fecha_ini').value;
     const fechaDescarga = new Date().toLocaleDateString();
 
@@ -1265,13 +1234,13 @@ function descargarPDF() {
         const subtituloWidth = doc.getTextWidth(subtitulo);
 
         doc.setFontSize(16);
-        doc.text(titulo, (pageWidth - tituloWidth) / 2, 15);
+        doc.text(titulo, (pageWidth - tituloWidth) / 2, 10);
 
         doc.setFontSize(12);
-        doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 25);
+        doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 20);
 
         doc.setFontSize(10);
-        doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 35);
+        doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 30);
         doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
     };
 
@@ -1283,17 +1252,19 @@ function descargarPDF() {
         doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
     };
 
-    // Dibujar encabezado en la primera página
-   // dibujarEncabezado();
-
     // Crear la tabla
     doc.autoTable({
         head: [columnas.map(col => col.header)],
         body: filas,
         startY: 40,
         styles: { fontSize: 10 },
-        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
+        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], halign: 'center' }, // Encabezados centrados
         margin: { top: 40 },
+        columnStyles: {
+            3: { halign: 'right' }, // Conteo alineado a la derecha
+            4: { halign: 'right' }, // Existencia alineado a la derecha
+            5: { halign: 'right' }  // Diferencia alineado a la derecha
+        },
         didDrawPage: (data) => {
             dibujarEncabezado(data);
             agregarPiePagina(data);
@@ -1301,26 +1272,26 @@ function descargarPDF() {
     });
 
     // Agregar totales generales en la última página
-    const pageHeight = doc.internal.pageSize.getHeight();
     doc.addPage(); // Nueva página para los totales
     dibujarEncabezado(); // Agregar encabezado en la nueva página
     doc.setFontSize(12);
     doc.text("Totales Generales", 14, 50);
     doc.autoTable({
         body: [
-            ["Total Contado", totales.CONTEO],
-            ["Total Existencia", totales.EXISTENCIA],
-            ["Total Diferencia", totales.DIFERENCIA],
+            ["Total Conteo", totales.CONTEO.toFixed(2)],
+            ["Total Existencia", totales.EXISTENCIA.toFixed(2)],
+            ["Total Diferencia", totales.DIFERENCIA.toFixed(2)],
         ],
         startY: 60,
         styles: { fontSize: 10 },
-        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
-        bodyStyles: { fontSize: 10 },
+        columnStyles: { 1: { halign: 'right' } }, // Totales alineados a la derecha
     });
 
     // Guardar el archivo
     doc.save("Reporte_Conteo_Inventario.pdf");
 }
+
+
 
 // Función para obtener datos de la tabla (personaliza según tu tabla)
 function obtenerDatosTabla() {
