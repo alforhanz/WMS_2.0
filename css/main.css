@@ -2774,3 +2774,30 @@ h2 {
   border-radius: 2px;
   will-change: top, opacity;
 }
+
+/* Estilos para los botones de descarga */
+.btn-container-conteo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px; /* Espaciado entre los botones */
+  margin-bottom: 20px;
+}
+
+.btn-descarga {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn-descarga:hover {
+  background-color: #f0f0f0; /* Color al pasar el ratón */
+}
+
+.btn-icon {
+  width: 40px; /* Tamaño adecuado para el icono */
+  height: 40px;
+  object-fit: contain; /* Mantiene la proporción de la imagen */
+}

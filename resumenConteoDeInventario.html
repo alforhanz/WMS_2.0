@@ -51,12 +51,30 @@
           <label for="fecha_ini" style="color: #4CAF50; top: -36px">Fecha</label>
         </div>  
 
+
         <div class="row" style=" margin-top: 36px;">         
           <!-- Contenedor del botónes -->
           <div class="btn-container-conteo">     
               <button id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
                 Mostrar Reporte</button>
+                <div class="row" style="margin-top: 36px;">
+                  <div class="col s12">
+                      <div class="btn-container-conteo">
+                          <!-- Botón de Excel (ícono en formato PNG) -->
+                          <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()">
+                              <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                          </button>
+                          <!-- Botón de PDF (ícono en formato PNG) -->
+                          <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()">
+                              <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              
+
           </div>
+          
         </div>
         <!-- <div id="tabla-resumen" class="col s12" style="overflow: hidden;"> -->
         <div id="tabla-resumen" class="col s12">

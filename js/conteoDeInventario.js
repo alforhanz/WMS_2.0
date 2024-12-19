@@ -1133,24 +1133,24 @@ function eliminarFilaResumen(icon) {
 
 //////////////////////////////////////DESGARGAR DATOS/////////////////////
 
-/// Inicializa los botones para descargar Excel y PDF
-function inicializarBotonesDescarga() {
-    // Crear botón para descargar Excel
-    const btnDescargarExcel = document.createElement('button');
-    btnDescargarExcel.id = 'btnDescargarExcel'; // Asignar id
-    btnDescargarExcel.textContent = 'Descargar Excel';
-    btnDescargarExcel.classList.add('btn-descarga', 'btn-excel'); // Opcional: añadir clases para estilos
-    btnDescargarExcel.addEventListener('click', descargarExcel);
-    document.body.appendChild(btnDescargarExcel);
+// /// Inicializa los botones para descargar Excel y PDF
+// function inicializarBotonesDescarga() {
+//     // Crear botón para descargar Excel
+//     const btnDescargarExcel = document.createElement('button');
+//     btnDescargarExcel.id = 'btnDescargarExcel'; // Asignar id
+//     btnDescargarExcel.textContent = 'Descargar Excel';
+//     btnDescargarExcel.classList.add('btn-descarga', 'btn-excel'); // Opcional: añadir clases para estilos
+//     btnDescargarExcel.addEventListener('click', descargarExcel);
+//     document.body.appendChild(btnDescargarExcel);
 
-    // Crear botón para descargar PDF
-    const btnDescargarPDF = document.createElement('button');
-    btnDescargarPDF.id = 'btnDescargarPDF'; // Asignar id
-    btnDescargarPDF.textContent = 'Descargar PDF';
-    btnDescargarPDF.classList.add('btn-descarga', 'btn-pdf'); // Opcional: añadir clases para estilos
-    btnDescargarPDF.addEventListener('click', descargarPDF);
-    document.body.appendChild(btnDescargarPDF);
-}
+//     // Crear botón para descargar PDF
+//     const btnDescargarPDF = document.createElement('button');
+//     btnDescargarPDF.id = 'btnDescargarPDF'; // Asignar id
+//     btnDescargarPDF.textContent = 'Descargar PDF';
+//     btnDescargarPDF.classList.add('btn-descarga', 'btn-pdf'); // Opcional: añadir clases para estilos
+//     btnDescargarPDF.addEventListener('click', descargarPDF);
+//     document.body.appendChild(btnDescargarPDF);
+// }
 
 
 
@@ -1229,9 +1229,9 @@ function descargarPDF() {
     const doc = new jsPDF();
 
     // Título, subtítulo, fechas
-    const titulo = "Reporte de conteo de inventario";
-    const pBodega = document.getElementById('bodega').value;
-    const subtitulo = `Bodega Sucursal: ${pBodega}`;
+    const titulo = "REPORTE DE CONTEO DE INVENTARIO";
+    const pBodega = document.getElementById('bodega-sucursal').textContent;
+    const subtitulo = `B-${pBodega}`;
     const fechaInventario = document.getElementById('fecha_ini').value;
     const fechaDescarga = new Date().toLocaleDateString();
 
