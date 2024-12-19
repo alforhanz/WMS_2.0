@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
 //console.log("DOM cargado");
 fechasDeInventario();
+
+//inicializarBotonesDescarga();
 });
 
 function validarCodigoBarras(input) {
@@ -501,17 +503,6 @@ async function resumenGeneral() {
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
     if (btnResumenGeneral) btnResumenGeneral.hidden = false;
 
-    // Botones de descarga
-    const btnDescargarExcel = document.createElement('button');
-    btnDescargarExcel.textContent = 'Descargar Excel';
-    btnDescargarExcel.addEventListener('click', descargarExcel);
-    document.body.appendChild(btnDescargarExcel);
-
-    const btnDescargarPDF = document.createElement('button');
-    btnDescargarPDF.textContent = 'Descargar PDF';
-    btnDescargarPDF.addEventListener('click', descargarPDF);
-    document.body.appendChild(btnDescargarPDF);
-
     const tablaResumen = document.getElementById('myTableresumen');
     const tblBodyResumen = document.getElementById('tblbodyRersumen');
     const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
@@ -548,10 +539,12 @@ async function resumenGeneral() {
         const result = await response.json();
         if (result.msg === "SUCCESS") {
             datosResumen = result.resumen || [];  // Asignar los datos a la variable global
-            labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;
-            //console.log('Tabla')
-            //console.log(datosResumen);
+            labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
             renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
+            const inicializabtnDowload = document.getElementById('btnDescargarExcel');
+            if(!inicializabtnDowload){
+                    inicializarBotonesDescarga();
+            }
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
@@ -637,19 +630,6 @@ async function resumenGeneral() {
     
         // Actualizar los controles de paginación
         actualizarPaginacion();
-    }
-    function descargarExcel() {
-        // Generar y exportar el archivo Excel con todos los datos
-        const worksheet = XLSX.utils.table_to_sheet(tablaResumen);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, worksheet, 'Resumen Inventario');
-        XLSX.writeFile(wb, 'ResumenInventario.xlsx');
-    }
-    function descargarPDF() {
-        // Generar y exportar el archivo PDF con todos los datos
-        const doc = new jsPDF();
-        doc.autoTable({ html: tablaResumen });
-        doc.save('ResumenInventario.pdf');
     }
     function actualizarPaginacion() {
         const paginacion = document.getElementById('pagination');
@@ -1151,5 +1131,206 @@ function eliminarFilaResumen(icon) {
     });
 }
 
+//////////////////////////////////////DESGARGAR DATOS/////////////////////
+
+/// Inicializa los botones para descargar Excel y PDF
+function inicializarBotonesDescarga() {
+    // Crear botón para descargar Excel
+    const btnDescargarExcel = document.createElement('button');
+    btnDescargarExcel.id = 'btnDescargarExcel'; // Asignar id
+    btnDescargarExcel.textContent = 'Descargar Excel';
+    btnDescargarExcel.classList.add('btn-descarga', 'btn-excel'); // Opcional: añadir clases para estilos
+    btnDescargarExcel.addEventListener('click', descargarExcel);
+    document.body.appendChild(btnDescargarExcel);
+
+    // Crear botón para descargar PDF
+    const btnDescargarPDF = document.createElement('button');
+    btnDescargarPDF.id = 'btnDescargarPDF'; // Asignar id
+    btnDescargarPDF.textContent = 'Descargar PDF';
+    btnDescargarPDF.classList.add('btn-descarga', 'btn-pdf'); // Opcional: añadir clases para estilos
+    btnDescargarPDF.addEventListener('click', descargarPDF);
+    document.body.appendChild(btnDescargarPDF);
+}
+
+
+
+
+
+
+
+
+
+function descargarExcel() {
+       // Obtener los datos de la tabla
+    const jsonData = obtenerDatosTabla(); 
+
+    // Definir los encabezados para la tabla (sin incluir encabezados de los datos)
+    const encabezado = ["Artículo", "Código de Barra", "Descripción", "Conteo", "Existencia", "Diferencia"];
+
+    // Calcular los totales generales
+    const totales = {
+        CONTEO: jsonData.reduce((sum, item) => sum + parseFloat(item.CONTEO || 0), 0),
+        EXISTENCIA: jsonData.reduce((sum, item) => sum + parseFloat(item.EXISTENCIA || 0), 0),
+        DIFERENCIA: jsonData.reduce((sum, item) => sum + parseFloat(item.DIFERENCIA || 0), 0),
+    };
+
+    // Crear una fila para los totales
+    const filaTotales = {
+        ARTICULO: "Totales Generales", // Nombre en la primera columna
+        BARCODEQR: "", // Dejar vacío
+        DESCRIPCION: "", // Dejar vacío
+        CONTEO: totales.CONTEO,
+        EXISTENCIA: totales.EXISTENCIA,
+        DIFERENCIA: totales.DIFERENCIA,
+    };
+
+    // Añadir la fila de totales al final de los datos
+    jsonData.push(filaTotales);
+
+
+    // Crear la hoja de Excel, comenzando con la fila de título
+    const worksheetData = [encabezado, ...jsonData.map(item => [
+        item.ARTICULO, 
+        item.BARCODEQR, 
+        item.DESCRIPCION, 
+        item.CONTEO, 
+        item.EXISTENCIA, 
+        item.DIFERENCIA
+    ])];
+
+    // Convertir los datos a una hoja de Excel
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+    // Crear un nuevo libro de trabajo y agregar la hoja con los datos
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+
+    // Escribir y descargar el archivo Excel
+    XLSX.writeFile(workbook, "Reporte_Conteo_Inventario.xlsx");
+}
+
+
+
+
+
+// // Función para descargar datos en Excel
+// function descargarExcel() {
+//     const jsonData = obtenerDatosTabla(); // Reemplaza con tu lógica para obtener los datos
+//     const worksheet = XLSX.utils.json_to_sheet(jsonData);
+//     const workbook = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+//     XLSX.writeFile(workbook, "datos.xlsx");
+// }
+
+
+
+function descargarPDF() {    
+    const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
+    const doc = new jsPDF();
+
+    // Título, subtítulo, fechas
+    const titulo = "Reporte de conteo de inventario";
+    const pBodega = document.getElementById('bodega').value;
+    const subtitulo = `Bodega Sucursal: ${pBodega}`;
+    const fechaInventario = document.getElementById('fecha_ini').value;
+    const fechaDescarga = new Date().toLocaleDateString();
+
+    // Datos y columnas a incluir
+    const columnas = [
+        { header: "Artículo", key: "ARTICULO" },
+        { header: "Código de Barra", key: "BARCODEQR" },
+        { header: "Descripción", key: "DESCRIPCION" },
+        { header: "Conteo", key: "CONTEO" },
+        { header: "Existencia", key: "EXISTENCIA" },
+        { header: "Diferencia", key: "DIFERENCIA" }
+    ];
+    const datosOriginales = obtenerDatosTabla(); // Debe devolver un arreglo de objetos
+
+    // Filtra los datos para incluir solo las columnas necesarias
+    const filas = datosOriginales.map(item => 
+        columnas.map(col => item[col.key])
+    );
+
+    // Calcular totales generales de las columnas específicas
+    const totales = {
+        CONTEO: datosOriginales.reduce((sum, item) => sum + parseFloat(item.CONTEO || 0), 0),
+        EXISTENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.EXISTENCIA || 0), 0),
+        DIFERENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.DIFERENCIA || 0), 0),
+    };
+
+    // Función para dibujar encabezado en cada página
+    const dibujarEncabezado = (data) => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const tituloWidth = doc.getTextWidth(titulo);
+        const subtituloWidth = doc.getTextWidth(subtitulo);
+
+        doc.setFontSize(16);
+        doc.text(titulo, (pageWidth - tituloWidth) / 2, 15);
+
+        doc.setFontSize(12);
+        doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 25);
+
+        doc.setFontSize(10);
+        doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 35);
+        doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+    };
+
+    // Agregar pie de página con número de página
+    const agregarPiePagina = (data) => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        doc.setFontSize(10);
+        doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+    };
+
+    // Dibujar encabezado en la primera página
+   // dibujarEncabezado();
+
+    // Crear la tabla
+    doc.autoTable({
+        head: [columnas.map(col => col.header)],
+        body: filas,
+        startY: 40,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
+        margin: { top: 40 },
+        didDrawPage: (data) => {
+            dibujarEncabezado(data);
+            agregarPiePagina(data);
+        }
+    });
+
+    // Agregar totales generales en la última página
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.addPage(); // Nueva página para los totales
+    dibujarEncabezado(); // Agregar encabezado en la nueva página
+    doc.setFontSize(12);
+    doc.text("Totales Generales", 14, 50);
+    doc.autoTable({
+        body: [
+            ["Total Contado", totales.CONTEO],
+            ["Total Existencia", totales.EXISTENCIA],
+            ["Total Diferencia", totales.DIFERENCIA],
+        ],
+        startY: 60,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255] },
+        bodyStyles: { fontSize: 10 },
+    });
+
+    // Guardar el archivo
+    doc.save("Reporte_Conteo_Inventario.pdf");
+}
+
+// Función para obtener datos de la tabla (personaliza según tu tabla)
+function obtenerDatosTabla() {
+    // Asegúrate de que datosResumen esté definido y sea un arreglo
+    if (Array.isArray(datosResumen)) {
+        return datosResumen; // Devuelve el arreglo directamente
+    } else {
+        console.error("datosResumen no está definido o no es un arreglo.");
+        return [];
+    }
+}
 
 
