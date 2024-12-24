@@ -61,16 +61,24 @@
                   <div class="col s12">
                       <div class="btn-container-conteo">
                           <!-- Botón de Excel (ícono en formato PNG) -->
-                          <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
-                              <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                          </button>
+                          <div style="text-align: center; display: inline-block;">
+                              <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                                  <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                              </button>
+                              <label id="lblExcel" for="btnDescargarExcel" style="display: none; margin-top: 8px; font-size: 14px;" >Descargar Excel</label>
+                          </div>
+              
                           <!-- Botón de PDF (ícono en formato PNG) -->
-                          <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
-                              <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                          </button>
+                          <div style="text-align: center; display: inline-block; margin-left: 16px;">
+                              <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                                  <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                              </button>
+                              <label id="lblPDF" for="btnDescargarPDF" style="display: none; margin-top: 8px; font-size: 14px;" >Descargar PDF</label>
+                          </div>
                       </div>
                   </div>
               </div>
+              
               
 
           </div>

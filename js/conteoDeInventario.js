@@ -1137,11 +1137,16 @@ function eliminarFilaResumen(icon) {
 function inicializarBotonesDescarga() {    
     const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
     const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF 
+    const lblExcel = document.getElementById('lblExcel').style.display = 'block';
+    const lblPDF = document.getElementById('lblPDF').style.display = 'block';
 
     // Usar operador ternario para establecer la visibilidad de los botones
     btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
     btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
-}
+   // Usar operador ternario para establecer la propiedad hidden
+//    lblExcel.style.display = lblExcel.hidden ? 'block' : 'none';
+//    lblPDF.style.display = lblPDF.hidden ? 'block' : 'none';
+ }
 
 
 function descargarExcel() {
@@ -1167,9 +1172,6 @@ function descargarExcel() {
         EXISTENCIA: totales.EXISTENCIA,
         DIFERENCIA: totales.DIFERENCIA,
     };
-
-    // Añadir la fila de totales al final de los datos
-    jsonData.push(filaTotales);
 
     // Crear la hoja de Excel, asegurando que las columnas de Conteo, Existencia y Diferencia sean numéricas
     const worksheetData = [encabezado, ...jsonData.map(item => [
