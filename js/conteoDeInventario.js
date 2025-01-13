@@ -1143,9 +1143,6 @@ function inicializarBotonesDescarga() {
     // Usar operador ternario para establecer la visibilidad de los botones
     btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
     btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
-   // Usar operador ternario para establecer la propiedad hidden
-//    lblExcel.style.display = lblExcel.hidden ? 'block' : 'none';
-//    lblPDF.style.display = lblPDF.hidden ? 'block' : 'none';
  }
 
 

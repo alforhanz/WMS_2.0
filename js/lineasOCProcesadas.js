@@ -173,6 +173,7 @@ document.addEventListener('input', function (event) {
         autoResizeTextArea(event.target);
     }
 }, false);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //FUNCION QUE VERIFICA LAS CANTIDASDES LEIDAS Y DEL PEDIDO PÁRA ACTIVAR EL BOTON DE GUARDADO PARCIAL
 function activaVolver() {
@@ -338,8 +339,7 @@ function validaCambioBodegaDestino(){
                     cancelButtonText: 'No',
                     confirmButtonColor: "#28a745",
                     cancelButtonColor: "#6e7881",
-                }).then((result) => {
-                    // Resultado de la acción
+                }).then((result) => {                   
                     if (result.isConfirmed) {  
                         ordenDeCompra="";          
                         cambiarBodegaDestino(bodDestino,embarque,ordenDeCompra);
@@ -361,43 +361,134 @@ function validaCambioBodegaDestino(){
             }  
 }
 
-function cambiarBodegaDestino(bodDestino, embarque, ordenDeCompra){
+
+function cambiarBodegaDestino(bodDestino, embarque, ordenDeCompra) {
     const params =
         "?Bodega=" +
         bodDestino +
         "&Embarque=" +      
-        embarque+
-        "&OrdenCompra="+
+        embarque +
+        "&OrdenCompra=" +
         ordenDeCompra;
-  
+
     fetch(env.API_URL + "wmscambiaboddestinooc" + params, myInit)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.msg === "SUCCESS") {
-                //  console.log(result.message);   
-                //  console.log(result.respuesta);  
-                if(result.respuesta[0].mensaje != 'Cambio de bodega de destino exitoso.'){
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.msg === "SUCCESS") {
+                // console.log('API-Message:');
+                // console.log(result.message);
+                // console.log('BD-Respuesta:');
+                // console.log(result.respuesta[0].mensaje);
+                // console.log('Respuesta Tamaño: ');
+                // console.log(result.respuesta.length);
+
+
+                if(result.respuesta[0].mensaje === "OK"){
+                    Swal.fire({
+                                icon: 'success',
+                                title: 'Cambio de bodega exitoso',
+                                text: 'Cambio de bodega de destino Exitoso',
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor: "#28a745"
+                            });
+                }else{
+                     if (result.respuesta.length > 0) {
+                    // Construir el contenido del mensaje como una tabla
+                    let contenidoHTML = `
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr>
+                                   <th style="border: 1px solid #ccc; padding: 8px;">Item</th>
+                                    <th style="border: 1px solid #ccc; padding: 8px;">Artículo</th>
+                                   <!-- <th style="border: 1px solid #ccc; padding: 8px;">Descripción</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    result.respuesta.forEach(ref => {
+                        contenidoHTML += `
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 8px;">${ref.ITEM}</td>
+                                <td style="border: 1px solid #ccc; padding: 8px;">${ref.ARTICULO}</td>
+                              <!--  <td style="border: 1px solid #ccc; padding: 8px;">${ref.DESCRIPCION}</td>-->
+                            </tr>
+                        `;
+                    });
+
+                    contenidoHTML += `
+                            </tbody>
+                        </table>
+                    `;
+
                     Swal.fire({
                         icon: 'warning',
                         title: 'Aviso',
-                        text: result.respuesta[0].mensaje,
-                      //   text: 'La bodega de destino ha sido cambiada con éxito',
+                        html: `
+                            <p>Existen ${result.respuesta.length} referencias que no están asociadas a la bodega de destino seleccionada:</p>
+                            ${contenidoHTML}
+                        `,
                         confirmButtonText: 'Aceptar',
                         confirmButtonColor: "#28a745"
                     });
-                }else{              
+                }else {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Cambio de bodega exitoso',
-                        text: result.respuesta[0].mensaje,
-                      //   text: 'La bodega de destino ha sido cambiada con éxito',
+                        icon: 'warning',
+                        title: 'Aviso',
+                        text: 'Mensaje:'+ result.respuesta[0].mensaje ,
                         confirmButtonText: 'Aceptar',
                         confirmButtonColor: "#28a745"
                     });
                 }
+                }
+            }
+        });
+}
 
 
-
-          
-        }});
-  }
+// function cambiarBodegaDestino(bodDestino, embarque, ordenDeCompra){
+//     const params =
+//         "?Bodega=" +
+//         bodDestino +
+//         "&Embarque=" +      
+//         embarque+
+//         "&OrdenCompra="+
+//         ordenDeCompra;
+  
+//     fetch(env.API_URL + "wmscambiaboddestinooc" + params, myInit)
+//       .then((response) => response.json())
+//       .then((result) => {
+//         if (result.msg === "SUCCESS") {
+//                  console.log(result.message);   
+//                  console.log(result.respuesta); 
+//                  console.log(result.respuesta.length); 
+//                  if (result.respuesta.length > 0) {
+//                     // Construir el contenido del mensaje como una lista o tabla
+//                     let contenidoHTML = '<ul>';
+//                     result.respuesta.forEach(ref => {
+//                         // contenidoHTML += `<li><strong>Item:</strong> ${ref.ITEM}, <strong>Artículo:</strong> ${ref.ARTICULO}, <strong>Descripción:</strong> ${ref.DESCRIPCION}</li>`;
+//                         contenidoHTML += `<li><strong>${ref.ITEM}:</strong> ${ref.ARTICULO}</li>`;
+//                     });
+//                     contenidoHTML += '</ul>';
+                
+//                     Swal.fire({
+//                         icon: 'warning',
+//                         title: 'Aviso',
+//                         html: `
+//                             <p>Existen ${result.respuesta.length} referencias que no están asociadas a la bodega de destino seleccionada:</p>
+//                             ${contenidoHTML}
+//                         `,
+//                         confirmButtonText: 'Aceptar',
+//                         confirmButtonColor: "#28a745"
+//                     });
+//                 }else{              
+//                     Swal.fire({
+//                         icon: 'success',
+//                         title: 'Cambio de bodega exitoso',
+//                         text: 'Cambio de bodega Exitoso',                     
+//                         confirmButtonText: 'Aceptar',
+//                         confirmButtonColor: "#28a745"
+//                     });
+//                 }          
+//         }});
+//   }
