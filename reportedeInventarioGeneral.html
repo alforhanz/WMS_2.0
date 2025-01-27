@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+  <!--Import Materialize Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  
+  <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
+
+  <!-- FONTS -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&family=Roboto&display=swap');
+  </style>
+  <!-- FONTS -->
+  <link rel="icon" type="image/x-icon" href="/img/wms.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/encabezadoReporteInventrarioGeneral.js" type="text/javascript"></script>
+
+  <!-- <meta name="theme-color" content=""> -->
+  <title>Reporte de Conteo de Inventario General - WMS</title>
+
+</head>
+
+<body id="home" tabindex="-1">
+  <!-- HEADER -->
+  <my-header></my-header>
+  <!--HEADER-->
+  <main>
+    <div id="resultadoBusqueda">     
+      <div id="carga" class="carga-style"></div>
+      <div class="container">
+
+        <!-- Fecha -->
+        <div class="input-field col s3">
+          <select id="fecha_ini"></select>        
+          <label for="fecha_ini" class="inventario-fecha-estilo">Fecha</label>
+        </div>      
+
+        <ul id="tabs-swipe-demo" class="tabs">
+          <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
+          <li class="tab col s3"><a href="#tab-clasificacion" >Clasificación</a></li>
+        </ul>
+
+       <!-- Contenedor de los elementos de la pestaña de Datos básicos -->
+        <div id="tab-datos-basicos" class="row btnReportes">  
+          <div class="container">
+            <!-- Títulos -->
+            <div class="row">
+              <div class="col s4">
+                <h5>Tipo de Búsqueda:</h5>
+              </div>
+              <div class="col s4">
+                <strong>Agrupado por:</strong>
+              </div>
+              <div class="col s4">
+                <strong>Según artículos:</strong>
+              </div>
+            </div>
+          
+            <!-- Radio Buttons -->
+            <div class="row">
+              <!-- Tipo de Búsqueda -->
+              <div class="col s4">
+                <label>
+                  <input type="radio" name="tipoBusqueda" id="tipoResumido" value="resumido" />
+                  <span>Resumido</span>
+                </label>
+                <br />
+                <label>
+                  <input type="radio" name="tipoBusqueda" id="tipoDetallado" value="detallado" />
+                  <span>Detallado</span>
+                </label>
+              </div>
+          
+              <!-- Agrupado por -->
+              <div class="col s4">
+                <label>
+                  <input type="radio" name="agrupadoPor" id="agrupadoClase" value="clase" />
+                  <span>Clase</span>
+                </label>
+                <br />
+                <label>
+                  <input type="radio" name="agrupadoPor" id="agrupadoMarca" value="marca" />
+                  <span>Marca</span>
+                </label>
+              </div>
+          
+              <!-- Según artículos -->
+              <div class="col s4">
+                <label>
+                  <input type="radio" name="segunArticulos" id="articulosContados" value="contados" />
+                  <span>Contados</span>
+                </label>
+                <br />
+                <label>
+                  <input type="radio" name="segunArticulos" id="articulosTodos" value="todos" />
+                  <span>Todos</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contenedor del botónes de descarga -->
+          <div class="btn-container-conteo">                     
+                <div class="row btnReportes">
+                  <div class="col s12">
+                      <div class="btn-container-conteo">
+                          <!-- Botón de Excel (ícono en formato PNG) -->
+                          <div class="impexcel">
+                              <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                                  <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                              </button>
+                              <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
+                          </div>
+              
+                          <!-- Botón de PDF (ícono en formato PNG) -->
+                          <div class="imppdf">
+                              <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                                  <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                              </button>
+                              <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>   
+        </div>
+      
+        <!-- Contenedor de los elementos de la pestaña de Clasificación -->
+        <div id="tab-clasificacion" class="row btnReportes">
+            <div class="container">
+              <div class="row">
+                <!-- Fila 1 -->
+                 
+                 <!-- Clase -->
+                <div class="input-field col s3">
+                  <select id="claseReporte">
+                    <option value="null" disabled selected>Seleccionar Clase</option>                   
+                  </select>
+                  <label for="claseReporte">Clase</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="clase-todas"  checked/>
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Marca -->
+                <div class="input-field col s3">
+                  <select id="marcaReporte">
+                    <option value="" disabled selected>Seleccionar Marca</option>                   
+                  </select>
+                  <label for="marcaReporte">Marca</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="marca-todas" checked/>
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Tipo -->
+                <div class="input-field col s3">
+                  <select id="tipoReporte">
+                    <option value="" disabled selected>Seleccionar Tipo</option>                   
+                  </select>
+                  <label for="tipoReporte">Tipo</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="tipo-todas"  checked/>
+                    <span>Todas</span>
+                  </label>
+                </div> 
+              </div>
+      
+              <!-- Fila 2 -->               
+              <div class="row">
+                <!-- Ventas -->
+                <div class="input-field col s3">
+                  <select id="ventasReporte">
+                    <option value="" disabled selected>Seleccionar Ventas</option>
+                  </select>
+                  <label for="ventasReporte">Ventas</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="ventas-todas" checked />
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Envase -->
+                <div class="input-field col s3">
+                  <select id="envaseReporte">
+                    <option value="" disabled selected>Seleccionar Envase</option>                   
+                  </select>
+                  <label for="envaseReporte">Envase</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="envase-todas" checked />
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Seis -->
+                <div class="input-field col s3">
+                  <select id="seisReporte">
+                    <option value="" disabled selected>Seleccionar 6</option>                  
+                  </select>
+                  <label for="seisReporte">6</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="seis-todas" checked />
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+              </div>
+      
+              <!-- Fila 3 -->
+              <div class="row">
+                <!-- Contenedor del botónes -->
+                <div class="btn-container-conteo"> 
+                  <div class="row btnReportes">
+                    <div class="col s12">
+                        <div class="btn-container-conteo">
+                            <!-- Botón de Excel (ícono en formato PNG) -->
+                            <div class="impexcel">
+                                <button id="btnDescargarExcelClas" class="btn-descarga" onclick="descargarExcel()" hidden>
+                                    <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                                </button>
+                                <label id="lblExcelclass" for="btnDescargarExcelClas" class="btnimpexcel" hidden>Descargar Excel</label>
+                            </div>
+                
+                            <!-- Botón de PDF (ícono en formato PNG) -->
+                            <div class="imppdf">
+                                <button id="btnDescargarPDFClas" class="btn-descarga" onclick="descargarPDF()" hidden>
+                                    <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                                </button>
+                                <label id="lblPDFclass" for="btnDescargarPDFClas" class="btnimppdf" hidden>Descargar PDF</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+              </div>
+
+            </div>
+        </div>
+
+        <!-- <div class="resumen-general input-field col s6">
+          <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
+            Mostrar Reporte
+        </button>
+        </div> -->
+
+        <!-- btn para probar -->
+        <div class="resumen-general input-field col s6">
+          <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="selectClase()">
+            Mostrar Reporte
+        </button>
+        </div>
+    
+        <div id="tabla-resumen" class="col s12">
+          <label id="cantidadDeRegistros"></label>
+          <div class="row">
+            <div id="resultadoGeneral"></div>
+            <table id="myTableresumen" class="display centered">
+              <thead></thead>
+              <tbody id="tblbodyRersumen">
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="resumen-paginador">
+        <div id="pagination" class="invPagination"></div>   <!-- Los botones de paginación se agregarán aquí dinámicamente -->
+        </div>
+
+
+
+ 
+
+      </div>
+    </div>
+   
+      <div class="row obs-container" id="observaciones-container">
+      <div class="input-field col s12">
+        <label id="lblObservaciones" for="observaciones">Observaciones</label>
+        <textarea placeholder="Observaciones" id="observaciones" type="text"></textarea>
+      </div>
+    </div>
+  </main>
+   
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Incluir la biblioteca de XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <!-- Incluir la biblioteca de jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
+  <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/main.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/reportedeInventarioGeneral.js" defer></script>
+   
+</body>
+</html>

@@ -2734,6 +2734,7 @@ h2 {
   transition: background-color 0.3s ease-in-out;
   width: 27%;
   margin-right: 52px;
+  margin-top: 3rem !important;
 }
 
 /* Hover para el botón */
@@ -2742,7 +2743,7 @@ h2 {
 }
 
 /* Focus para el botón */
-.btn-guardar-conteor:focus {
+.btn-guardar-conteo:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
@@ -2768,7 +2769,7 @@ h2 {
   padding: 0;
   top: 50em !important;
   max-height: 86%;
-  width: 98%;
+  width: 20%;
   margin: auto;
   overflow-y: auto;
   border-radius: 2px;
@@ -2800,4 +2801,26 @@ h2 {
   width: 40px; /* Tamaño adecuado para el icono */
   height: 40px;
   object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+
+.inventario-fecha-estilo{
+color: #28a745 !important;
+margin-top: -35px;
+}
+
+.btnimpexcel{
+    font-size: 11px !important;
+}
+
+.btnimppdf{
+  font-size: 11px !important;
+}
+
+.resumen-paginador{
+  margin-left: 31em;
+  margin-bottom: 20px;
+}
+
+.resumen-general{
+  margin-bottom: 2em;;
 }

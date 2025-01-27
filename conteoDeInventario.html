@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet"
@@ -11,7 +11,7 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-  <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
@@ -20,6 +20,7 @@
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/main.css?v2.02" media="screen,projection" />
 
   <!-- FONTS -->
   <style>
@@ -30,7 +31,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="js/encabezadoconteoinvent.js" type="text/javascript"></script>
 
-  <meta name="theme-color" content="">
+  
   <title>Conteo de Inventario- WMS</title>
 
 </head>
@@ -41,15 +42,15 @@
   <!--HEADER-->
   <main>
     <div id="resultadoBusqueda">
-      <div id="carga" style="margin-top: -7px;"></div>
+      <div id="carga" class="carga-style"></div>
       <div class="container">
 
         <!-- Fecha -->
         <div class="input-field col s6">
           <select id="fecha_ini">
-            <!-- <option value="" disabled selected>Selecciona una fecha</option> -->
+           
           </select>
-          <label for="fecha_ini" style="color: #4CAF50;">Fecha</label>
+          <label for="fecha_ini" class="inventario-fecha-estilo">Fecha</label>
         </div>
         <!-- Ubicación -->
         <div class="input-container-ubicacion">
@@ -70,10 +71,8 @@
 
             <button id="btnFinalizar" class="btn-guardar-conteo" onclick="confirmaFinalizar()" hidden>
               Finalizar</button>
-             <!--  <button id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()" hidden>
-                Resumen Final</button> -->
-
           </div>
+
           <div id="tabla-lectura" class="col s12">
             <div class="row">
               <div id="resultadoGeneral"></div>
@@ -94,7 +93,7 @@
                   </td>
                   <td class="codigo-barras-cell">
                     <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
-                      onchange="validarCodigoBarras(this)" autofocus>
+                      oninput="validarCodigoBarras(this)" autofocus>
                   </td>
                   <td class="codigo-barras-cell2">
                     <input id="cant-leida" style="text-align: center;" type="text" class="codigo-barras-input" value=""
@@ -106,30 +105,38 @@
                 </tr>
               </tbody>
             </table>
-            <!-- <div class="btn-container-conteo">
-              <button id="btnGuardaConteo" class="btn-guardar-conteo" onclick="limpiarResultadoGeneral()">
-                Limpiar</button>
-            </div> -->
           </div>
-
         </div>
-        <!-- <div id="tabla-resumen" class="col s12" style="overflow: hidden;"> -->
+      
+        <div class="row btnReportes">
+          <div class="col s12">
+              <div class="btn-container-conteo">
+                  <!-- Botón de Excel (ícono en formato PNG) -->
+                  <div class="impexcel">
+                      <button id="btnDescargarExcel" class="btn-descarga" onclick="resumen_descargarExcel()" hidden>
+                          <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                      </button>
+                      <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel"  hidden>Descargar Excel</label>
+                  </div>
+      
+                  <!-- Botón de PDF (ícono en formato PNG) -->
+                  <div class="imppdf">
+                      <button id="btnDescargarPDF" class="btn-descarga" onclick="resumen_descargarPDF()" hidden>
+                          <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                      </button>
+                      <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
         <div id="tabla-resumen" class="col s12">
           <label id="cantidadDeRegistros"></label>
           <div class="row">
             <div id="resultadoGeneral"></div>
             <table id="myTableresumen" class="display centered">
-              <thead>
-                <!-- <tr class="themeColor">
-                  <th style="width: 40%;">ARTICULO</th>
-                  <th id="codigoBarrasHeader " style="width: 30%;">COD</th>
-                  <th style="width: 10%;">CANT</th>
-                  <th style="width: 10%;">UBI</th>
-                  <th style="width: 10%;">CL</th> -->
-
-                  <!--  <th hidden>DEL</th> -->
-                <!-- </tr> -->
-              </thead>
+              <thead></thead>
               <tbody id="tblbodyRersumen">
                 <tr>
                 </tr>
@@ -158,15 +165,15 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/conteoDeInventario.js" defer></script>
-  <!-- Incluir la biblioteca de XLSX -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-  <!-- Incluir la biblioteca de jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <!--JavaScript local-->
 </body>
 

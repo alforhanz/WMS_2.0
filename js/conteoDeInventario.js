@@ -59,7 +59,7 @@ function crearNuevaFila() {
             </td>
             <td class="codigo-barras-cell">
                 <input type="text" style="text-align: center;" id="codigo-barras-${uniqueId}" 
-                    class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" autofocus>
+                    class="codigo-barras-input" value="" oninput="validarCodigoBarras(this)" autofocus>
             </td>
             <td class="codigo-barras-cell2" >
                 <input id="cant-leida-${uniqueId}" style="text-align: center;" 
@@ -304,7 +304,12 @@ async function resumen() {
         if (result.msg === "SUCCESS") {
             datosResumen = result.resumen || [];
             labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;
+            console.log(datosResumen);
             renderizarDatos(datosResumen);
+            if(datosResumen.length > 0){
+                inicializarBotonesDescarga();
+            }
+            
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
@@ -541,7 +546,10 @@ async function resumenGeneral() {
             datosResumen = result.resumen || [];  // Asignar los datos a la variable global
             labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
             renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
+           if(datosResumen.length > 0){
             inicializarBotonesDescarga();             
+           }
+            
         } else {
             mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
             labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
@@ -1143,6 +1151,7 @@ function inicializarBotonesDescarga() {
     // Usar operador ternario para establecer la visibilidad de los botones
     btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
     btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
+    
  }
 
 
@@ -1288,6 +1297,153 @@ function descargarPDF() {
 
     // Guardar el archivo
     doc.save("Reporte_Conteo_Inventario.pdf");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function resumen_descargarExcel() {
+    // Obtener los datos de la tabla
+    const jsonData = obtenerDatosTabla();
+
+    // Definir los encabezados para la tabla
+    const encabezado = ["Artículo", "Código de Barra", "Cantidad", "UBicacion"];
+
+    // // Calcular los totales generales
+    // const totales = {
+    //     CONTEO: jsonData.reduce((sum, item) => sum + (parseFloat(item.CONTEO) || 0), 0),
+    //     EXISTENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.EXISTENCIA) || 0), 0),
+    //     DIFERENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.DIFERENCIA) || 0), 0),
+    // };
+
+    // // Crear una fila para los totales
+    // const filaTotales = {
+    //     ARTICULO: "Totales Generales", // Nombre en la primera columna
+    //     BARCODEQR: "", // Dejar vacío
+    //     DESCRIPCION: "", // Dejar vacío
+    //     CONTEO: totales.CONTEO,
+    //     EXISTENCIA: totales.EXISTENCIA,
+    //     DIFERENCIA: totales.DIFERENCIA,
+    // };
+
+    // Crear la hoja de Excel, asegurando que las columnas de Conteo, Existencia y Diferencia sean numéricas
+    const worksheetData = [encabezado, ...jsonData.map(item => [
+        item.ARTICULO, 
+        item.BARCODEQR, 
+        // item.DESCRIPCION, 
+        parseFloat(item.CONTEO) || 0, // Asegurar que sea numérico
+        item.UBICACION
+        // parseFloat(item.EXISTENCIA) || 0, // Asegurar que sea numérico
+        // parseFloat(item.DIFERENCIA) || 0 // Asegurar que sea numérico
+    ])];
+
+    // Convertir los datos a una hoja de Excel
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+    // Crear un nuevo libro de trabajo y agregar la hoja con los datos
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+
+    // Escribir y descargar el archivo Excel
+    XLSX.writeFile(workbook, "Resumen_Conteo_Inventario.xlsx");
+}
+
+
+function resumen_descargarPDF() {
+    const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
+    const doc = new jsPDF();
+
+    // Título, subtítulo, fechas
+    const titulo = "Reporte de conteo de inventario";
+    const pBodega = document.getElementById('bodega-sucursal').textContent;
+    const subtitulo = `Bodega: B-${pBodega}`;
+    const fechaInventario = document.getElementById('fecha_ini').value;
+    const fechaDescarga = new Date().toLocaleDateString();
+
+    // Datos y columnas a incluir
+    const columnas = [
+        { header: "Artículo", key: "ARTICULO" },
+        { header: "Código de Barra", key: "BARCODEQR" },
+        { header: "Descripción", key: "DESCRIPCION" },
+        { header: "Conteo", key: "CONTEO" },
+        { header: "Existencia", key: "EXISTENCIA" },
+        { header: "Ubicación", key: "UBICACION" }
+    ];
+    const datosOriginales = obtenerDatosTabla(); // Debe devolver un arreglo de objetos
+
+    // Filtra los datos para incluir solo las columnas necesarias
+    const filas = datosOriginales.map(item => 
+        columnas.map(col => item[col.key])
+    );
+
+    // // Calcular totales generales de las columnas específicas
+    // const totales = {
+    //     CONTEO: datosOriginales.reduce((sum, item) => sum + parseFloat(item.CONTEO || 0), 0),
+    //     EXISTENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.EXISTENCIA || 0), 0),
+    //     DIFERENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.DIFERENCIA || 0), 0),
+    // };
+
+    // Función para dibujar encabezado en cada página
+    const dibujarEncabezado = (data) => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const tituloWidth = doc.getTextWidth(titulo);
+        const subtituloWidth = doc.getTextWidth(subtitulo);
+
+        doc.setFontSize(16);
+        doc.text(titulo, (pageWidth - tituloWidth) / 2, 10);
+
+        doc.setFontSize(12);
+        doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 20);
+
+        doc.setFontSize(10);
+        doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 30);
+        doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+    };
+
+    // Agregar pie de página con número de página
+    const agregarPiePagina = (data) => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        doc.setFontSize(10);
+        doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+    };
+
+    // Crear la tabla
+    doc.autoTable({
+        head: [columnas.map(col => col.header)],
+        body: filas,
+        startY: 40,
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], halign: 'center' }, // Encabezados centrados
+        margin: { top: 40 },
+        columnStyles: {
+            3: { halign: 'right' }, // Conteo alineado a la derecha
+            4: { halign: 'right' }, // Existencia alineado a la derecha
+            5: { halign: 'right' }  // Diferencia alineado a la derecha
+        },
+        didDrawPage: (data) => {
+            dibujarEncabezado(data);
+            agregarPiePagina(data);
+        }
+    });
+
+    // // Agregar totales generales en la última página
+    // doc.addPage(); // Nueva página para los totales
+    // dibujarEncabezado(); // Agregar encabezado en la nueva página
+    // doc.setFontSize(12);
+    // doc.text("Totales Generales", 14, 50);
+    // doc.autoTable({
+    //     body: [
+    //         ["Total Conteo", totales.CONTEO.toFixed(2)],
+    //         ["Total Existencia", totales.EXISTENCIA.toFixed(2)],
+    //         ["Total Diferencia", totales.DIFERENCIA.toFixed(2)],
+    //     ],
+    //     startY: 60,
+    //     styles: { fontSize: 10 },
+    //     columnStyles: { 1: { halign: 'right' } }, // Totales alineados a la derecha
+    // });
+
+    // Guardar el archivo
+    doc.save("Resumen_Conteo_Inventario.pdf");
 }
 
 

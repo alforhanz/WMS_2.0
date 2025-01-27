@@ -19,6 +19,7 @@ let menuEnlaces = [
 
   { MODULO: 3, SUBMODULO: 0, ICON: "monitoring", LINK: ""}, //REPORTES
    { MODULO: 3, SUBMODULO: 23, ICON: "", LINK: "resumenConteoDeInventario.html"}, //REPORTES
+   { MODULO: 3, SUBMODULO: 24, ICON: "", LINK: "reportedeInventarioGeneral.html"}, //Resumen de Conteo de Inventario General
    
   { MODULO: 4, SUBMODULO: 0, ICON: "manage_accounts", LINK: ""},//ADMINISTRACION
   // { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "ingresaCodigoBarra.html"},//ingresa cod barras 

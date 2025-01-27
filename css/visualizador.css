@@ -1,5 +1,5 @@
-.image-viewer {
-  width: 500px; /* Ajusta el tamaño según tus necesidades */
+/* .image-viewer {
+  width: 500px; 
   height: 500px;
   position: relative;
   perspective: 1000px;
@@ -28,4 +28,4 @@
   100% {
     transform: rotateY(360deg);
   }
-}
+} */

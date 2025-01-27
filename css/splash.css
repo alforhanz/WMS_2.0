@@ -1,5 +1,5 @@
 /* Variables */
-:root {
+/* :root {
   --yellow: #f5d300;
   --black: #292929;
   --bg: #191919;
@@ -28,10 +28,10 @@ canvas {
 
 .text button {
   border: 0;
-  /* background: var(--bg); */
+ 
   background: none;
   color: var(--yellow);
-  /* border: 1px solid var(--bg); */
+ 
   letter-spacing: 2px;
   padding: 0.5rem 2.5rem;
   font-size: 40px;
@@ -57,4 +57,4 @@ canvas {
   background: var(--white);
   color: var(--bg);
   border: 1px solid var(--bg);
-}
+} */
