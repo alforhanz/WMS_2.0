@@ -2824,3 +2824,7 @@ margin-top: -35px;
 .resumen-general{
   margin-bottom: 2em;;
 }
+
+.select-wrapper+label {   
+  top: -41px;   
+}

@@ -537,300 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //     }
     // }
     
-async function resumenGeneral() {    
-    
-        let btnResumenGeneral = document.getElementById('btnResumenGeneral');
-        if (btnResumenGeneral) btnResumenGeneral.hidden = false;
-    
-        const tablaResumen = document.getElementById('myTableresumen');
-        const tblBodyResumen = document.getElementById('tblbodyRersumen');
-        const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
-        tblBodyResumen.innerHTML = '';
-    
-        const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF'];
-        const thead = tablaResumen.querySelector('thead');
-        thead.innerHTML = '';
-    
-        const filaEncabezado = document.createElement('tr');
-        filaEncabezado.className = 'themeColor';
-        encabezado.forEach((columna, index) => {
-            const th = document.createElement('th');
-            th.textContent = columna;
-            th.setAttribute('data-column', index); // Asignar índice para identificar la columna
-            th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
-            th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
-            filaEncabezado.appendChild(th);
-        });
-        thead.appendChild(filaEncabezado);
-    
-        try {
-            const pSistema = 'WMS';
-            const pUsuario = localStorage.getItem('username');
-            const pOpcion = 'R';
-            const pBodega = document.getElementById('bodega').value;
-            const pFecha = document.getElementById('fecha_ini').value;
-            const pSoloContados = 'S';
-            const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
-    
-            const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
-            if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
-    
-            const result = await response.json();
-            if (result.msg === "SUCCESS") {
-                datosResumen = result.resumen || [];  // Asignar los datos a la variable global
-                labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
-                renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
-                inicializarBotonesDescarga();             
-            } else {
-                mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
-                labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
-            }
-    
-    
-        } catch (error) {
-            console.error('Error al generar la tabla:', error);
-            mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
-            labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
-        }
-        
-        function renderizarDatos(datos) {
-            let registrosPorPagina = 20;  // Establecer 20 filas por página
-            tblBodyResumen.innerHTML = '';
-            totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
-        
-            // Obtener los datos solo de la página actual
-            const start = (paginaActual - 1) * registrosPorPagina;
-            const end = start + registrosPorPagina;
-            const pageData = datos.slice(start, end);
-        
-            // Calcular los totales generales del arreglo completo
-            let totalGeneralCant = 0;
-            let totalGeneralExist = 0;
-            let totalGeneralDif = 0;
-        
-            datos.forEach(dato => {
-                totalGeneralCant += parseFloat(dato.CONTEO || 0);
-                totalGeneralExist += parseFloat(dato.EXISTENCIA || 0);
-                totalGeneralDif += parseFloat(dato.DIFERENCIA || 0);
-            });
-        
-            pageData.forEach(dato => {
-                const fila = document.createElement('tr');
-        
-                if (dato.CONCILIADO === 'N') {
-                    fila.style.color = '#f56108';
-                    fila.style.fontWeight = 'bold';
-                }
-        
-                // Crear celda personalizada para ARTICULO y DESCRIPCION
-                const celdaArticulo = document.createElement('td');
-                celdaArticulo.innerHTML = `
-                    <h5 style="margin: 0; text-align: left;">${dato.ARTICULO || 'N/A'}</h5>
-                    <h6 style="margin: 0; text-align: left; color: #000000de">${dato.DESCRIPCION || 'N/A'}</h6>
-                `;
-                fila.appendChild(celdaArticulo);
-        
-                // Crear celdas para los demás campos
-                ['BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
-                    const celda = document.createElement('td');
-                    celda.style.fontSize = '14px';
-                    celda.textContent = dato[campo] || 'N/A';
-                    fila.appendChild(celda);
-                });
-        
-                tblBodyResumen.appendChild(fila);
-            });
-        
-            // Agregar la fila de totales generales solamente en la última página
-            if (paginaActual === totalPaginas) {
-                const filaTotalesGenerales = document.createElement('tr');
-                filaTotalesGenerales.className = 'themeColor';
-                filaTotalesGenerales.style.fontWeight = 'bold';
-        
-                const celdaTotalesGenerales = document.createElement('td');
-                celdaTotalesGenerales.textContent = 'TOTALES (GENERAL)';
-                celdaTotalesGenerales.style.fontSize = '14px';
-                celdaTotalesGenerales.style.fontWeight = 'bold';
-                celdaTotalesGenerales.colSpan = 2; // Combinar columnas para ARTICULO y COD
-                filaTotalesGenerales.appendChild(celdaTotalesGenerales);
-        
-                // Agregar los totales generales
-                [totalGeneralCant, totalGeneralExist, totalGeneralDif].forEach(total => {
-                    const celdaTotal = document.createElement('td');
-                    celdaTotal.textContent = total.toFixed(2);
-                    celdaTotal.style.fontSize = '14px';
-                    celdaTotal.style.fontWeight = 'bold';
-                    filaTotalesGenerales.appendChild(celdaTotal);
-                });
-        
-                tblBodyResumen.appendChild(filaTotalesGenerales);
-            }
-        
-            // Actualizar los controles de paginación
-            actualizarPaginacion();
-        }
-        function actualizarPaginacion() {
-            const paginacion = document.getElementById('pagination');
-            if (!paginacion) {
-                console.error("No se encontró el contenedor de paginación.");
-                return;
-            }
-        
-            paginacion.innerHTML = ''; // Limpiar la paginación antes de renderizar
-        
-                    // Botón Anterior
-            const btnAnterior = document.createElement('button');     
-            btnAnterior.textContent = 'Anterior';
-            btnAnterior.disabled = paginaActual === 1;
-            btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
-            btnAnterior.style.backgroundColor = '#28a745'; // Color de fondo
-            btnAnterior.style.color = 'white';            // Color del texto
-            btnAnterior.style.border = 'none';            // Sin bordes
-            btnAnterior.style.borderRadius = '5px';       // Bordes redondeados
-            btnAnterior.style.padding = '10px 15px';      // Espaciado interno
-            btnAnterior.style.cursor = 'pointer';         // Cambiar cursor
-            btnAnterior.style.margin = '0 5px';           // Margen entre botones
-            btnAnterior.style.fontSize = '14px';          // Tamaño de fuente
-            btnAnterior.style.fontWeight = 'bold';        // Negrita
-            btnAnterior.style.transition = '0.3s';        // Animación suave
-            btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#218838'; // Hover
-            btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#28a745'; // Volver al original
-            paginacion.appendChild(btnAnterior);
-    
-            // Botón para abrir el modal de números de página
-            const btnVerPaginas = document.createElement('button');
-            btnVerPaginas.textContent = `Página ${paginaActual}/${totalPaginas}`;
-            btnVerPaginas.addEventListener('click', () => {
-                mostrarModalPaginacion();
-            });
-            btnVerPaginas.style.backgroundColor = 'transparent';
-            btnVerPaginas.style.color = '#28a745';
-            btnVerPaginas.style.border = 'none';
-            btnVerPaginas.style.borderRadius = '5px';
-            btnVerPaginas.style.padding = '10px 15px';
-            btnVerPaginas.style.cursor = 'pointer';
-            btnVerPaginas.style.margin = '0 5px';
-            btnVerPaginas.style.fontSize = '14px';
-            btnVerPaginas.style.fontWeight = 'bold';
-            btnVerPaginas.style.transition = '0.3s';       
-            paginacion.appendChild(btnVerPaginas);
-    
-    
-            // Botón Siguiente
-            const btnSiguiente = document.createElement('button');
-            btnSiguiente.textContent = 'Siguiente';
-            btnSiguiente.disabled = paginaActual === totalPaginas;
-            btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
-            btnSiguiente.style.backgroundColor = '#28a745';
-            btnSiguiente.style.color = 'white';
-            btnSiguiente.style.border = 'none';
-            btnSiguiente.style.borderRadius = '5px';
-            btnSiguiente.style.padding = '10px 15px';
-            btnSiguiente.style.cursor = 'pointer';
-            btnSiguiente.style.margin = '0 5px';
-            btnSiguiente.style.fontSize = '14px';
-            btnSiguiente.style.fontWeight = 'bold';
-            btnSiguiente.style.transition = '0.3s';
-            btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
-            btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#28a745';
-            paginacion.appendChild(btnSiguiente); 
-        }    
-        function mostrarModalPaginacion() {
-            // Crear o seleccionar el modal
-            let modal = document.getElementById('modalPaginacion');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'modalPaginacion';
-                modal.style.position = 'fixed';
-                modal.style.top = '50%';
-                modal.style.left = '50%';
-                modal.style.transform = 'translate(-50%, -50%)';
-                modal.style.padding = '20px';
-                modal.style.backgroundColor = 'white';
-                modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-                modal.style.borderRadius = '8px';
-                modal.style.zIndex = '1000';
-        
-    
-                // Crear el botón de cierre como un icono
-                const closeButton = document.createElement('span');
-                closeButton.className = 'material-icons';
-                closeButton.textContent = 'close';
-                closeButton.style.cursor = 'pointer'; // Cambia el cursor a mano para indicar que es interactivo
-                closeButton.style.color = 'red'; // Aplica color rojo al icono
-                closeButton.style.position = 'absolute'; // Posición absoluta para colocarlo en la esquina del modal
-                closeButton.style.top = '10px'; // Ajusta la posición superior
-                closeButton.style.right = '10px'; // Ajusta la posición derecha
-    
-                // Agregar el evento para cerrar el modal
-                closeButton.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                });
-    
-                // Agregar el botón al modal
-                modal.appendChild(closeButton);
-        
-                // Contenedor para los botones de números de página
-                const paginationContainer = document.createElement('div');
-                paginationContainer.id = 'modalPaginationContainer';
-                paginationContainer.style.marginTop = '19px';
-                modal.appendChild(paginationContainer);
-        
-                document.body.appendChild(modal);
-            }
-        
-            // Mostrar el modal
-            modal.style.display = 'block';
-            // modal.style.top = '10em'
-        
-            // Actualizar los números de página en el modal
-            const paginationContainer = document.getElementById('modalPaginationContainer');
-            paginationContainer.innerHTML = ''; // Limpiar contenido anterior
-        
-            for (let i = 1; i <= totalPaginas; i++) {
-                const btnPagina = document.createElement('button');
-                btnPagina.textContent = i;
-                btnPagina.disabled = i === paginaActual;
-                btnPagina.style.margin = '5px';
-             
-                btnPagina.addEventListener('click', () => {
-                    cambiarPagina(i);
-                    modal.style.display = 'none'; // Cerrar el modal al seleccionar una página
-                });
-                paginationContainer.appendChild(btnPagina);
-            }
-        }   
-        function cambiarPagina(pagina) {
-            if (pagina >= 1 && pagina <= totalPaginas) {
-                paginaActual = pagina;
-                renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
-            }
-        }
-        function ordenarTabla(indiceColumna) {
-            const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
-            const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
-            filas.sort((a, b) => {
-                const valorA = a.children[indiceColumna].textContent.trim();
-                const valorB = b.children[indiceColumna].textContent.trim();
-                if (!isNaN(valorA) && !isNaN(valorB)) {
-                    return ordenAscendente ? valorA - valorB : valorB - valorA;
-                }
-                return ordenAscendente ? valorA.localeCompare(valorB) : valorB.localeCompare(valorA);
-            });
-            filas.forEach(fila => tblBodyResumen.appendChild(fila));
-            thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
-        }
-        function mostrarMensajeError(mensaje, columnas) {
-            const mensajeError = document.createElement('tr');
-            const celdaError = document.createElement('td');
-            celdaError.colSpan = columnas;
-            celdaError.textContent = mensaje;
-            mensajeError.appendChild(celdaError);
-            tblBodyResumen.appendChild(mensajeError);
-        }
-    
-       
-    }
+
     
     //////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -913,7 +620,7 @@ function guardaParcialMenteLectura() {
         }
     }
     
-    ///////FUNCION PARA Finalizar//////       
+///////FUNCION PARA Finalizar//////       
 function confirmaFinalizar() {  
       
           Swal.fire({
@@ -1176,18 +883,18 @@ function confirmaFinalizar() {
     function inicializarBotonesDescarga() {    
         const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
         const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF 
-        const btnDescargarExcelClas = document.getElementById('btnDescargarExcelClas'); // Obtener el botón de Excel
-        const btnDescargarPDFClas = document.getElementById('btnDescargarPDFClas'); // Crear el botón de PDF 
+        // const btnDescargarExcelClas = document.getElementById('btnDescargarExcelClas'); // Obtener el botón de Excel
+        // const btnDescargarPDFClas = document.getElementById('btnDescargarPDFClas'); // Crear el botón de PDF 
         const lblExcel = document.getElementById('lblExcel').style.display = 'block';
         const lblPDF = document.getElementById('lblPDF').style.display = 'block';
-        const lblExcelclass = document.getElementById('lblExcel').style.display = 'block';
-        const lblPDFclass = document.getElementById('lblPDF').style.display = 'block';
+        // const lblExcelclass = document.getElementById('lblExcel').style.display = 'block';
+        // const lblPDFclass = document.getElementById('lblPDF').style.display = 'block';
     
         // Usar operador ternario para establecer la visibilidad de los botones
         btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
         btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
-        btnDescargarExcelClas ? btnDescargarExcelClas.hidden = false : btnDescargarExcelClas.hidden = true;
-        btnDescargarPDFClas ? btnDescargarPDFClas.hidden = false : btnDescargarPDFClas.hidden = true;
+ // btnDescargarExcelClas ? btnDescargarExcelClas.hidden = false : btnDescargarExcelClas.hidden = true;
+        // btnDescargarPDFClas ? btnDescargarPDFClas.hidden = false : btnDescargarPDFClas.hidden = true;       
      }
     
     
@@ -1346,7 +1053,8 @@ function confirmaFinalizar() {
         }
     }
 
-//FUNCIONES QUE CARGAN LAS CLASIFICACIONES A LOS SELECT 
+    //FUNCIONES QUE CARGAN LAS CLASIFICACIONES A LOS SELECT 
+
 async function cargarClasificacionesCLase() {
     const checkClase = document.getElementById("clase-todas");
     const selectClase = document.getElementById("claseReporte"); 
@@ -1355,25 +1063,18 @@ async function cargarClasificacionesCLase() {
     checkClase.checked = isChecked;
     selectClase.disabled = isDisabled;
 
-
-    const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "1";
-
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
+fetch(env.API_URL + "filtroswms", myInit)
 .then((response) => response.json())
 .then((result) => {
   if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
+    if (result.filtros.length != 0) {
          // Limpiar el select antes de agregar opciones
          selectClase.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
 
          // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
+         result.filtros.forEach((item) => {
            const option = document.createElement("option");
-           option.value = item.CLASIFICACION;
+           option.value = item.CLASIFICACION_1;
            option.textContent = item.DESCRIPCION;
            selectClase.appendChild(option);
          });
@@ -1386,23 +1087,18 @@ fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
     console.log("Error en el SP");
   }
 });
-}
-async function cargarClasificacionesMarca() {
+} 
+async function cargarClasificacionesMarca() {    
+    const clase= document.getElementById('claseReporte').value;
     const checkMarca = document.getElementById("marca-todas"); 
     const selectMArca = document.getElementById("marcaReporte");
     
     const isChecked = localStorage.getItem('ckeck_Marca') === 'true';
     const isDisabled = localStorage.getItem('Selector_de_Marca') === 'true';
     checkMarca.checked = isChecked;
-    selectMArca.disabled = isDisabled;
-
-
-
-    const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "2";
+    selectMArca.disabled = isDisabled;   
+  
+   const params ="?clase="+clase;
 
 try{
 
@@ -1410,18 +1106,18 @@ try{
     console.error("Error al cargar clasificaciones:", error.message);
 }
 
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
+return fetch(env.API_URL + "filtroswms" + params, myInit)
 .then((response) => response.json())
 .then((result) => {
   if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
+    if (result.filtros.length != 0) {
          // Limpiar el select antes de agregar opciones
          selectMArca.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
 
          // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
+         result.filtros.forEach((item) => {
            const option = document.createElement("option");
-           option.value = item.CLASIFICACION;
+           option.value = item.CLASIFICACION_2;
            option.textContent = item.DESCRIPCION;
            selectMArca.appendChild(option);
          });
@@ -1434,23 +1130,17 @@ fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
     console.log("Error en el SP");
   }
 });
-
 }  
 async function cargarClasificacionesTipo() {
+    const clase= document.getElementById('claseReporte').value;
+    const marca= document.getElementById('marcaReporte').value;
     const checkTipo = document.getElementById("tipo-todas");
     const selectTipo = document.getElementById("tipoReporte");
     const isChecked = localStorage.getItem('ckeck_Tipo') === 'true';
     const isDisabled = localStorage.getItem('Selector_de_Tipo') === 'true';
     checkTipo.checked = isChecked;
     selectTipo.disabled = isDisabled;
-
-
-
-    const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "3";
+    const params = "?clase="+clase+"&marca="+marca ;
 
 try{
 
@@ -1458,18 +1148,18 @@ try{
     console.error("Error al cargar clasificaciones:", error.message);
 }
 
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
+fetch(env.API_URL + "filtroswms" + params, myInit)
 .then((response) => response.json())
 .then((result) => {
   if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
+    if (result.filtros.length != 0) {
          // Limpiar el select antes de agregar opciones
          selectTipo.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
 
          // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
+         result.filtros.forEach((item) => {
            const option = document.createElement("option");
-           option.value = item.CLASIFICACION;
+           option.value = item.CLASIFICACION_3;
            option.textContent = item.DESCRIPCION;
            selectTipo.appendChild(option);
          });
@@ -1484,97 +1174,109 @@ fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
 });
 }
 async function cargarClasificacionesVenta() {
+    const clase= document.getElementById('claseReporte').value;
+    const marca= document.getElementById('marcaReporte').value;
+    const tipo= document.getElementById('tipoReporte').value;
+  const selectVenta = document.getElementById("ventasReporte");
+  const checkVentas = document.getElementById("ventas-todas");
+  const isChecked = localStorage.getItem("ckeck_Ventas") === "true";
+  const isDisabled = localStorage.getItem("Selector_de_Ventas") === "true";
+  checkVentas.checked = isChecked;
+  selectVenta.disabled = isDisabled;
 
-    const selectVenta = document.getElementById("ventasReporte");
-    const checkVentas = document.getElementById("ventas-todas"); 
-    const isChecked = localStorage.getItem('ckeck_Ventas') === 'true';
-    const isDisabled = localStorage.getItem('Selector_de_Ventas') === 'true';
-    checkVentas.checked = isChecked;
-    selectVenta.disabled = isDisabled;
+  const params = "?clase=" + clase + "&marca=" + marca + "&tipo=" + tipo;
 
-    const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "4";
-
-try{
-
-}catch(error){
+  try {
+  } catch (error) {
     console.error("Error al cargar clasificaciones:", error.message);
-}
-
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
-.then((response) => response.json())
-.then((result) => {
-  if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
-         // Limpiar el select antes de agregar opciones
-         selectVenta.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
-
-         // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
-           const option = document.createElement("option");
-           option.value = item.CLASIFICACION;
-           option.textContent = item.DESCRIPCION;
-           selectVenta.appendChild(option);
-         });
-   
-         // Inicializar el select (si usas Materialize)
-         M.FormSelect.init(selectVenta);
-         habilitaVenta();
-    } 
-  } else {
-    console.log("Error en el SP");
   }
-});
+
+  fetch(env.API_URL + "filtroswms" + params, myInit)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.msg === "SUCCESS") {
+        if (result.filtros.length != 0) {
+          // Limpiar el select antes de agregar opciones
+          selectVenta.innerHTML =
+            '<option value="" disabled selected>Seleccionar Clase</option>';
+
+          // Agregar opciones al select
+          result.filtros.forEach((item) => {
+            const option = document.createElement("option");
+            option.value = item.CLASIFICACION_4;
+            option.textContent = item.DESCRIPCION;
+            selectVenta.appendChild(option);
+          });
+
+          // Inicializar el select (si usas Materialize)
+          M.FormSelect.init(selectVenta);
+          habilitaVenta();
+        }
+      } else {
+        console.log("Error en el SP");
+      }
+    });
 }
 async function cargarClasificacionesEnvase() {
-    const selectEnvase = document.getElementById("envaseReporte");    
-    const checkEnvase = document.getElementById("envase-todas"); 
-    const isChecked = localStorage.getItem('ckeck_Envase') === 'true';
-    const isDisabled = localStorage.getItem('Selector_de_Envase') === 'true';
-    checkEnvase.checked = isChecked;
-    selectEnvase.disabled = isDisabled;
+    const clase= document.getElementById('claseReporte').value;
+    const marca= document.getElementById('marcaReporte').value;
+    const tipo= document.getElementById('tipoReporte').value;
+    const subtipo= document.getElementById('ventasReporte').value;
+  const selectEnvase = document.getElementById("envaseReporte");
+  const checkEnvase = document.getElementById("envase-todas");
+  const isChecked = localStorage.getItem("ckeck_Envase") === "true";
+  const isDisabled = localStorage.getItem("Selector_de_Envase") === "true";
+  checkEnvase.checked = isChecked;
+  selectEnvase.disabled = isDisabled;
 
-    const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "5";
+  const params =
+    "?clase=" +
+    clase +
+    "&marca=" +
+    marca +
+    "&tipo=" +
+    tipo +
+    "&subtipo=" +
+    subtipo;
 
-try{
-
-}catch(error){
+  try {
+  } catch (error) {
     console.error("Error al cargar clasificaciones:", error.message);
-}
-
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
-.then((response) => response.json())
-.then((result) => {
-  if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
-         // Limpiar el select antes de agregar opciones
-         selectEnvase.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
-
-         // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
-           const option = document.createElement("option");
-           option.value = item.CLASIFICACION;
-           option.textContent = item.DESCRIPCION;
-           selectEnvase.appendChild(option);
-         });
-   
-         // Inicializar el select (si usas Materialize)
-         M.FormSelect.init(selectEnvase);
-         habilitaEnvase();
-    } 
-  } else {
-    console.log("Error en el SP");
   }
-});
+
+  fetch(env.API_URL + "filtroswms" + params, myInit)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.msg === "SUCCESS") {
+        if (result.filtros.length != 0) {
+          // Limpiar el select antes de agregar opciones
+          selectEnvase.innerHTML =
+            '<option value="" disabled selected>Seleccionar Clase</option>';
+
+          // Agregar opciones al select
+          result.filtros.forEach((item) => {
+            const option = document.createElement("option");
+            option.value = item.CLASIFICACION_5;
+            option.textContent = item.DESCRIPCION;
+            selectEnvase.appendChild(option);
+          });
+
+          // Inicializar el select (si usas Materialize)
+          M.FormSelect.init(selectEnvase);
+          habilitaEnvase();
+        }
+      } else {
+        console.log("Error en el SP");
+      }
+    });
 }
 async function cargarClasificacionesSeis() {
+    const clase= document.getElementById('claseReporte').value;
+    const marca= document.getElementById('marcaReporte').value;
+    const tipo= document.getElementById('tipoReporte').value;
+    const subtipo= document.getElementById('ventasReporte').value;
+    const subtipo2= document.getElementById('envaseReporte').value;
+
     const selectSeis = document.getElementById("seisReporte");     
     const checkSeis = document.getElementById("envase-todas"); 
     const isChecked = localStorage.getItem('ckeck_Seis') === 'true';
@@ -1583,10 +1285,16 @@ async function cargarClasificacionesSeis() {
     selectSeis.disabled = isDisabled;
 
     const params =
-"?pUsuario=" + 'sa' +
-"&pSistema=" + "wms" +
-"&pTipoConsulta=" + "1" +
-"&pGrupo=" + "6";
+      "?clase=" +
+      clase +
+      "&marca=" +
+      marca +
+      "&tipo=" +
+      tipo +
+      "&subtipo=" +
+      subtipo +
+      "&subtipo2=" +
+      subtipo2;
 
 try{
 
@@ -1594,16 +1302,16 @@ try{
     console.error("Error al cargar clasificaciones:", error.message);
 }
 
-fetch(env.API_URL + "wmsclasificacionesreporteinventario" + params, myInit)
+fetch(env.API_URL + "filtroswms" + params, myInit)
 .then((response) => response.json())
 .then((result) => {
   if (result.msg === "SUCCESS") {
-    if (result.clasificacion.length != 0) {
+    if (result.filtros.length != 0) {
          // Limpiar el select antes de agregar opciones
          selectSeis.innerHTML = '<option value="" disabled selected>Seleccionar Clase</option>';
 
          // Agregar opciones al select
-         result.clasificacion.forEach((item) => {
+         result.filtros.forEach((item) => {
            const option = document.createElement("option");
            option.value = item.CLASIFICACION;
            option.textContent = item.DESCRIPCION;
@@ -1804,3 +1512,297 @@ function selectClase(){
     
 }
 
+async function resumenGeneral() {    
+    
+    let btnResumenGeneral = document.getElementById('btnResumenGeneral');
+    if (btnResumenGeneral) btnResumenGeneral.hidden = false;
+
+    const tablaResumen = document.getElementById('myTableresumen');
+    const tblBodyResumen = document.getElementById('tblbodyRersumen');
+    const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
+    tblBodyResumen.innerHTML = '';
+
+    const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF'];
+    const thead = tablaResumen.querySelector('thead');
+    thead.innerHTML = '';
+
+    const filaEncabezado = document.createElement('tr');
+    filaEncabezado.className = 'themeColor';
+    encabezado.forEach((columna, index) => {
+        const th = document.createElement('th');
+        th.textContent = columna;
+        th.setAttribute('data-column', index); // Asignar índice para identificar la columna
+        th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
+        th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
+        filaEncabezado.appendChild(th);
+    });
+    thead.appendChild(filaEncabezado);
+
+    try {
+        const pSistema = 'WMS';
+        const pUsuario = localStorage.getItem('username');
+        const pOpcion = 'R';
+        const pBodega = document.getElementById('bodega').value;
+        const pFecha = document.getElementById('fecha_ini').value;
+        const pSoloContados = 'S';
+        const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
+
+        const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
+        if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
+
+        const result = await response.json();
+        if (result.msg === "SUCCESS") {
+            datosResumen = result.resumen || [];  // Asignar los datos a la variable global
+            labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
+            renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
+            inicializarBotonesDescarga();             
+        } else {
+            mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
+            labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+        }
+
+
+    } catch (error) {
+        console.error('Error al generar la tabla:', error);
+        mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
+        labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
+    }
+    
+    function renderizarDatos(datos) {
+        let registrosPorPagina = 20;  // Establecer 20 filas por página
+        tblBodyResumen.innerHTML = '';
+        totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
+    
+        // Obtener los datos solo de la página actual
+        const start = (paginaActual - 1) * registrosPorPagina;
+        const end = start + registrosPorPagina;
+        const pageData = datos.slice(start, end);
+    
+        // Calcular los totales generales del arreglo completo
+        let totalGeneralCant = 0;
+        let totalGeneralExist = 0;
+        let totalGeneralDif = 0;
+    
+        datos.forEach(dato => {
+            totalGeneralCant += parseFloat(dato.CONTEO || 0);
+            totalGeneralExist += parseFloat(dato.EXISTENCIA || 0);
+            totalGeneralDif += parseFloat(dato.DIFERENCIA || 0);
+        });
+    
+        pageData.forEach(dato => {
+            const fila = document.createElement('tr');
+    
+            if (dato.CONCILIADO === 'N') {
+                fila.style.color = '#f56108';
+                fila.style.fontWeight = 'bold';
+            }
+    
+            // Crear celda personalizada para ARTICULO y DESCRIPCION
+            const celdaArticulo = document.createElement('td');
+            celdaArticulo.innerHTML = `
+                <h5 style="margin: 0; text-align: left;">${dato.ARTICULO || 'N/A'}</h5>
+                <h6 style="margin: 0; text-align: left; color: #000000de">${dato.DESCRIPCION || 'N/A'}</h6>
+            `;
+            fila.appendChild(celdaArticulo);
+    
+            // Crear celdas para los demás campos
+            ['BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
+                const celda = document.createElement('td');
+                celda.style.fontSize = '14px';
+                celda.textContent = dato[campo] || 'N/A';
+                fila.appendChild(celda);
+            });
+    
+            tblBodyResumen.appendChild(fila);
+        });
+    
+        // Agregar la fila de totales generales solamente en la última página
+        if (paginaActual === totalPaginas) {
+            const filaTotalesGenerales = document.createElement('tr');
+            filaTotalesGenerales.className = 'themeColor';
+            filaTotalesGenerales.style.fontWeight = 'bold';
+    
+            const celdaTotalesGenerales = document.createElement('td');
+            celdaTotalesGenerales.textContent = 'TOTALES (GENERAL)';
+            celdaTotalesGenerales.style.fontSize = '14px';
+            celdaTotalesGenerales.style.fontWeight = 'bold';
+            celdaTotalesGenerales.colSpan = 2; // Combinar columnas para ARTICULO y COD
+            filaTotalesGenerales.appendChild(celdaTotalesGenerales);
+    
+            // Agregar los totales generales
+            [totalGeneralCant, totalGeneralExist, totalGeneralDif].forEach(total => {
+                const celdaTotal = document.createElement('td');
+                celdaTotal.textContent = total.toFixed(2);
+                celdaTotal.style.fontSize = '14px';
+                celdaTotal.style.fontWeight = 'bold';
+                filaTotalesGenerales.appendChild(celdaTotal);
+            });
+    
+            tblBodyResumen.appendChild(filaTotalesGenerales);
+        }
+    
+        // Actualizar los controles de paginación
+        actualizarPaginacion();
+    }
+    function actualizarPaginacion() {
+        const paginacion = document.getElementById('pagination');
+        if (!paginacion) {
+            console.error("No se encontró el contenedor de paginación.");
+            return;
+        }
+    
+        paginacion.innerHTML = ''; // Limpiar la paginación antes de renderizar
+    
+                // Botón Anterior
+        const btnAnterior = document.createElement('button');     
+        btnAnterior.textContent = 'Anterior';
+        btnAnterior.disabled = paginaActual === 1;
+        btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
+        btnAnterior.style.backgroundColor = '#28a745'; // Color de fondo
+        btnAnterior.style.color = 'white';            // Color del texto
+        btnAnterior.style.border = 'none';            // Sin bordes
+        btnAnterior.style.borderRadius = '5px';       // Bordes redondeados
+        btnAnterior.style.padding = '10px 15px';      // Espaciado interno
+        btnAnterior.style.cursor = 'pointer';         // Cambiar cursor
+        btnAnterior.style.margin = '0 5px';           // Margen entre botones
+        btnAnterior.style.fontSize = '14px';          // Tamaño de fuente
+        btnAnterior.style.fontWeight = 'bold';        // Negrita
+        btnAnterior.style.transition = '0.3s';        // Animación suave
+        btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#218838'; // Hover
+        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#28a745'; // Volver al original
+        paginacion.appendChild(btnAnterior);
+
+        // Botón para abrir el modal de números de página
+        const btnVerPaginas = document.createElement('button');
+        btnVerPaginas.textContent = `Página ${paginaActual}/${totalPaginas}`;
+        btnVerPaginas.addEventListener('click', () => {
+            mostrarModalPaginacion();
+        });
+        btnVerPaginas.style.backgroundColor = 'transparent';
+        btnVerPaginas.style.color = '#28a745';
+        btnVerPaginas.style.border = 'none';
+        btnVerPaginas.style.borderRadius = '5px';
+        btnVerPaginas.style.padding = '10px 15px';
+        btnVerPaginas.style.cursor = 'pointer';
+        btnVerPaginas.style.margin = '0 5px';
+        btnVerPaginas.style.fontSize = '14px';
+        btnVerPaginas.style.fontWeight = 'bold';
+        btnVerPaginas.style.transition = '0.3s';       
+        paginacion.appendChild(btnVerPaginas);
+
+
+        // Botón Siguiente
+        const btnSiguiente = document.createElement('button');
+        btnSiguiente.textContent = 'Siguiente';
+        btnSiguiente.disabled = paginaActual === totalPaginas;
+        btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
+        btnSiguiente.style.backgroundColor = '#28a745';
+        btnSiguiente.style.color = 'white';
+        btnSiguiente.style.border = 'none';
+        btnSiguiente.style.borderRadius = '5px';
+        btnSiguiente.style.padding = '10px 15px';
+        btnSiguiente.style.cursor = 'pointer';
+        btnSiguiente.style.margin = '0 5px';
+        btnSiguiente.style.fontSize = '14px';
+        btnSiguiente.style.fontWeight = 'bold';
+        btnSiguiente.style.transition = '0.3s';
+        btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
+        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#28a745';
+        paginacion.appendChild(btnSiguiente); 
+    }    
+    function mostrarModalPaginacion() {
+        // Crear o seleccionar el modal
+        let modal = document.getElementById('modalPaginacion');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modalPaginacion';
+            modal.style.position = 'fixed';
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%)';
+            modal.style.padding = '20px';
+            modal.style.backgroundColor = 'white';
+            modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            modal.style.borderRadius = '8px';
+            modal.style.zIndex = '1000';
+    
+
+            // Crear el botón de cierre como un icono
+            const closeButton = document.createElement('span');
+            closeButton.className = 'material-icons';
+            closeButton.textContent = 'close';
+            closeButton.style.cursor = 'pointer'; // Cambia el cursor a mano para indicar que es interactivo
+            closeButton.style.color = 'red'; // Aplica color rojo al icono
+            closeButton.style.position = 'absolute'; // Posición absoluta para colocarlo en la esquina del modal
+            closeButton.style.top = '10px'; // Ajusta la posición superior
+            closeButton.style.right = '10px'; // Ajusta la posición derecha
+
+            // Agregar el evento para cerrar el modal
+            closeButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Agregar el botón al modal
+            modal.appendChild(closeButton);
+    
+            // Contenedor para los botones de números de página
+            const paginationContainer = document.createElement('div');
+            paginationContainer.id = 'modalPaginationContainer';
+            paginationContainer.style.marginTop = '19px';
+            modal.appendChild(paginationContainer);
+    
+            document.body.appendChild(modal);
+        }
+    
+        // Mostrar el modal
+        modal.style.display = 'block';
+        // modal.style.top = '10em'
+    
+        // Actualizar los números de página en el modal
+        const paginationContainer = document.getElementById('modalPaginationContainer');
+        paginationContainer.innerHTML = ''; // Limpiar contenido anterior
+    
+        for (let i = 1; i <= totalPaginas; i++) {
+            const btnPagina = document.createElement('button');
+            btnPagina.textContent = i;
+            btnPagina.disabled = i === paginaActual;
+            btnPagina.style.margin = '5px';
+         
+            btnPagina.addEventListener('click', () => {
+                cambiarPagina(i);
+                modal.style.display = 'none'; // Cerrar el modal al seleccionar una página
+            });
+            paginationContainer.appendChild(btnPagina);
+        }
+    }   
+    function cambiarPagina(pagina) {
+        if (pagina >= 1 && pagina <= totalPaginas) {
+            paginaActual = pagina;
+            renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
+        }
+    }
+    function ordenarTabla(indiceColumna) {
+        const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
+        const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
+        filas.sort((a, b) => {
+            const valorA = a.children[indiceColumna].textContent.trim();
+            const valorB = b.children[indiceColumna].textContent.trim();
+            if (!isNaN(valorA) && !isNaN(valorB)) {
+                return ordenAscendente ? valorA - valorB : valorB - valorA;
+            }
+            return ordenAscendente ? valorA.localeCompare(valorB) : valorB.localeCompare(valorA);
+        });
+        filas.forEach(fila => tblBodyResumen.appendChild(fila));
+        thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
+    }
+    function mostrarMensajeError(mensaje, columnas) {
+        const mensajeError = document.createElement('tr');
+        const celdaError = document.createElement('td');
+        celdaError.colSpan = columnas;
+        celdaError.textContent = mensaje;
+        mensajeError.appendChild(celdaError);
+        tblBodyResumen.appendChild(mensajeError);
+    }
+
+   
+}

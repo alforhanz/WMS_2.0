@@ -362,6 +362,7 @@ $("#articulo").on("keypress", function (e) {
   }
 });
 //-----------------------------------------------------------------------------------
+// Busqueda de clientes
 $("#txtRuc").on("keypress", function (e) {
   if (e.keyCode == 13 || e.keyCode == 9) {
     e.preventDefault();

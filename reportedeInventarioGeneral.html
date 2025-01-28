@@ -116,20 +116,20 @@
           </div>
           
           <!-- Contenedor del botónes de descarga -->
-          <div class="btn-container-conteo">                     
+          <!-- <div class="btn-container-conteo">                     
                 <div class="row btnReportes">
                   <div class="col s12">
-                      <div class="btn-container-conteo">
+                      <div class="btn-container-conteo"> -->
                           <!-- Botón de Excel (ícono en formato PNG) -->
-                          <div class="impexcel">
+                          <!-- <div class="impexcel">
                               <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
                                   <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
                               </button>
                               <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
-                          </div>
+                          </div> -->
               
                           <!-- Botón de PDF (ícono en formato PNG) -->
-                          <div class="imppdf">
+                          <!-- <div class="imppdf">
                               <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
                                   <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
                               </button>
@@ -138,7 +138,7 @@
                       </div>
                   </div>
               </div>
-          </div>   
+          </div>    -->
         </div>
       
         <!-- Contenedor de los elementos de la pestaña de Clasificación -->
@@ -149,7 +149,7 @@
                  
                  <!-- Clase -->
                 <div class="input-field col s3">
-                  <select id="claseReporte">
+                  <select id="claseReporte" onchange="cargarClasificacionesMarca()">
                     <option value="null" disabled selected>Seleccionar Clase</option>                   
                   </select>
                   <label for="claseReporte">Clase</label>
@@ -163,7 +163,7 @@
 
                 <!-- Marca -->
                 <div class="input-field col s3">
-                  <select id="marcaReporte">
+                  <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
                     <option value="" disabled selected>Seleccionar Marca</option>                   
                   </select>
                   <label for="marcaReporte">Marca</label>
@@ -177,7 +177,7 @@
 
                 <!-- Tipo -->
                 <div class="input-field col s3">
-                  <select id="tipoReporte">
+                  <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
                     <option value="" disabled selected>Seleccionar Tipo</option>                   
                   </select>
                   <label for="tipoReporte">Tipo</label>
@@ -194,7 +194,7 @@
               <div class="row">
                 <!-- Ventas -->
                 <div class="input-field col s3">
-                  <select id="ventasReporte">
+                  <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
                     <option value="" disabled selected>Seleccionar Ventas</option>
                   </select>
                   <label for="ventasReporte">Ventas</label>
@@ -208,7 +208,7 @@
 
                 <!-- Envase -->
                 <div class="input-field col s3">
-                  <select id="envaseReporte">
+                  <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
                     <option value="" disabled selected>Seleccionar Envase</option>                   
                   </select>
                   <label for="envaseReporte">Envase</label>
@@ -238,48 +238,48 @@
       
               <!-- Fila 3 -->
               <div class="row">
-                <!-- Contenedor del botónes -->
-                <div class="btn-container-conteo"> 
-                  <div class="row btnReportes">
-                    <div class="col s12">
-                        <div class="btn-container-conteo">
-                            <!-- Botón de Excel (ícono en formato PNG) -->
-                            <div class="impexcel">
-                                <button id="btnDescargarExcelClas" class="btn-descarga" onclick="descargarExcel()" hidden>
-                                    <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                                </button>
-                                <label id="lblExcelclass" for="btnDescargarExcelClas" class="btnimpexcel" hidden>Descargar Excel</label>
-                            </div>
-                
-                            <!-- Botón de PDF (ícono en formato PNG) -->
-                            <div class="imppdf">
-                                <button id="btnDescargarPDFClas" class="btn-descarga" onclick="descargarPDF()" hidden>
-                                    <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                                </button>
-                                <label id="lblPDFclass" for="btnDescargarPDFClas" class="btnimppdf" hidden>Descargar PDF</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-
+                   <!-- Contenedor del botónes -->
+                   <!-- <div class="btn-container-conteo"> 
+                    <div class="row btnReportes">
+                      <div class="col s12">
+                          <div class="btn-container-conteo"> -->
+                              <!-- Botón de Excel (ícono en formato PNG) -->
+                              <!-- <div class="impexcel">
+                                  <button id="btnDescargarExcelClas" class="btn-descarga" onclick="descargarExcel()" hidden>
+                                      <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                                  </button>
+                                  <label id="lblExcelclass" for="btnDescargarExcelClas" class="btnimpexcel" hidden>Descargar Excel</label>
+                              </div> -->
+                  
+                              <!-- Botón de PDF (ícono en formato PNG) -->
+                              <!-- <div class="imppdf">
+                                  <button id="btnDescargarPDFClas" class="btn-descarga" onclick="descargarPDF()" hidden>
+                                      <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                                  </button>
+                                  <label id="lblPDFclass" for="btnDescargarPDFClas" class="btnimppdf" hidden>Descargar PDF</label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>  -->
+          
               </div>
 
             </div>
         </div>
 
-        <!-- <div class="resumen-general input-field col s6">
+        <div class="resumen-general input-field col s6">
           <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
             Mostrar Reporte
         </button>
-        </div> -->
+        </div>
 
         <!-- btn para probar -->
-        <div class="resumen-general input-field col s6">
+        <!-- <div class="resumen-general input-field col s6">
           <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="selectClase()">
             Mostrar Reporte
         </button>
-        </div>
+        </div> -->
     
         <div id="tabla-resumen" class="col s12">
           <label id="cantidadDeRegistros"></label>
@@ -293,18 +293,43 @@
               </tbody>
             </table>
           </div>
+
+
+             
         </div>
 
         <div class="resumen-paginador">
         <div id="pagination" class="invPagination"></div>   <!-- Los botones de paginación se agregarán aquí dinámicamente -->
-        </div>
-
-
-
- 
+        </div> 
 
       </div>
     </div>
+    <div class="row container">
+      <div class="btn-container-conteo">                     
+        <div class="row btnReportes">
+          <div class="col s12">
+              <div class="btn-container-conteo">
+                  <!-- Botón de Excel (ícono en formato PNG) -->
+                  <div class="impexcel">
+                      <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                          <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                      </button>
+                      <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
+                  </div>
+      
+                  <!-- Botón de PDF (ícono en formato PNG) -->
+                  <div class="imppdf">
+                      <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                          <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                      </button>
+                      <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+    </div>
+
    
       <div class="row obs-container" id="observaciones-container">
       <div class="input-field col s12">
@@ -318,11 +343,11 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Incluir la biblioteca de XLSX -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-    <!-- Incluir la biblioteca de jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
+  <!-- Incluir la biblioteca de XLSX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+  <!-- Incluir la biblioteca de jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
