@@ -12,16 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const checkSeis = document.getElementById("seis-todas");
     localStorage.setItem('ckeck_Seis', checkSeis.checked);
     
+    fechasDeInventario();   
 
-
-    
-    fechasDeInventario();  
     cargarClasificacionesCLase();
     cargarClasificacionesMarca();
     cargarClasificacionesTipo();
     cargarClasificacionesVenta();
     cargarClasificacionesEnvase();
-    cargarClasificacionesSeis();    
+    cargarClasificacionesSeis();      
 
      // Inicializar los selects de Materialize
      var elems = document.querySelectorAll('select');
@@ -35,7 +33,35 @@ document.addEventListener("DOMContentLoaded", function () {
      checkEnvase.addEventListener("change", habilitaEnvase);
      checkSeis.addEventListener("change", habilitaSeis);
 
-     console.log('DOM del reporte caRGADO...')
+     console.log('DOM del reporte caRGADO...');
+
+     const tipoDetallado = document.getElementById("tipoDetallado");
+     const tipoResumido = document.getElementById("tipoResumido");
+     const agrupadoClase = document.getElementById("agrupadoClase");
+     const agrupadoMarca = document.getElementById("agrupadoMarca");
+ 
+     function actualizarEstadoAgrupado() {
+         const deshabilitar = tipoDetallado.checked;
+         agrupadoClase.disabled = deshabilitar;
+         agrupadoMarca.disabled = deshabilitar;
+         agrupadoClase.checked = false;
+         agrupadoMarca.checked = false;
+     }
+ 
+     // Agregar eventos de cambio
+     tipoDetallado.addEventListener("change", actualizarEstadoAgrupado);
+     tipoResumido.addEventListener("change", actualizarEstadoAgrupado);
+ 
+     // Llamar a la función una vez al inicio para asegurarse de que el estado sea correcto
+     actualizarEstadoAgrupado();
+
+        habilitaclase();
+        habilitamarca();
+        habilitatipo();
+        habilitaVenta();
+        habilitaEnvase();
+        habilitaSeis();
+        limpiarTabla();    
     }); 
 
     
@@ -878,180 +904,8 @@ function confirmaFinalizar() {
     }
     
 //////////////////////////////////////DESGARGAR DATOS/////////////////////
-    
-    
-    function inicializarBotonesDescarga() {    
-        const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
-        const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF 
-        // const btnDescargarExcelClas = document.getElementById('btnDescargarExcelClas'); // Obtener el botón de Excel
-        // const btnDescargarPDFClas = document.getElementById('btnDescargarPDFClas'); // Crear el botón de PDF 
-        const lblExcel = document.getElementById('lblExcel').style.display = 'block';
-        const lblPDF = document.getElementById('lblPDF').style.display = 'block';
-        // const lblExcelclass = document.getElementById('lblExcel').style.display = 'block';
-        // const lblPDFclass = document.getElementById('lblPDF').style.display = 'block';
-    
-        // Usar operador ternario para establecer la visibilidad de los botones
-        btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
-        btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
- // btnDescargarExcelClas ? btnDescargarExcelClas.hidden = false : btnDescargarExcelClas.hidden = true;
-        // btnDescargarPDFClas ? btnDescargarPDFClas.hidden = false : btnDescargarPDFClas.hidden = true;       
-     }
-    
-    
-    function descargarExcel() {
-        // Obtener los datos de la tabla
-        const jsonData = obtenerDatosTabla();
-    
-        // Definir los encabezados para la tabla
-        const encabezado = ["Artículo", "Código de Barra", "Descripción", "Conteo", "Existencia", "Diferencia"];
-    
-        // Calcular los totales generales
-        const totales = {
-            CONTEO: jsonData.reduce((sum, item) => sum + (parseFloat(item.CONTEO) || 0), 0),
-            EXISTENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.EXISTENCIA) || 0), 0),
-            DIFERENCIA: jsonData.reduce((sum, item) => sum + (parseFloat(item.DIFERENCIA) || 0), 0),
-        };
-    
-        // Crear una fila para los totales
-        const filaTotales = {
-            ARTICULO: "Totales Generales", // Nombre en la primera columna
-            BARCODEQR: "", // Dejar vacío
-            DESCRIPCION: "", // Dejar vacío
-            CONTEO: totales.CONTEO,
-            EXISTENCIA: totales.EXISTENCIA,
-            DIFERENCIA: totales.DIFERENCIA,
-        };
-    
-        // Crear la hoja de Excel, asegurando que las columnas de Conteo, Existencia y Diferencia sean numéricas
-        const worksheetData = [encabezado, ...jsonData.map(item => [
-            item.ARTICULO, 
-            item.BARCODEQR, 
-            item.DESCRIPCION, 
-            parseFloat(item.CONTEO) || 0, // Asegurar que sea numérico
-            parseFloat(item.EXISTENCIA) || 0, // Asegurar que sea numérico
-            parseFloat(item.DIFERENCIA) || 0 // Asegurar que sea numérico
-        ])];
-    
-        // Convertir los datos a una hoja de Excel
-        const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-    
-        // Crear un nuevo libro de trabajo y agregar la hoja con los datos
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
-    
-        // Escribir y descargar el archivo Excel
-        XLSX.writeFile(workbook, "Reporte_Conteo_Inventario_General.xlsx");
-    }
-    
-    
-    function descargarPDF() {
-        const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
-        const doc = new jsPDF();
-    
-        // Título, subtítulo, fechas
-        const titulo = "Reporte de conteo de inventario General";
-        const pBodega = document.getElementById('bodega-sucursal').textContent;
-        const subtitulo = `Bodega: B-${pBodega}`;
-        const fechaInventario = document.getElementById('fecha_ini').value;
-        const fechaDescarga = new Date().toLocaleDateString();
-    
-        // Datos y columnas a incluir
-        const columnas = [
-            { header: "Artículo", key: "ARTICULO" },
-            { header: "Código de Barra", key: "BARCODEQR" },
-            { header: "Descripción", key: "DESCRIPCION" },
-            { header: "Conteo", key: "CONTEO" },
-            { header: "Existencia", key: "EXISTENCIA" },
-            { header: "Diferencia", key: "DIFERENCIA" }
-        ];
-        const datosOriginales = obtenerDatosTabla(); // Debe devolver un arreglo de objetos
-    
-        // Filtra los datos para incluir solo las columnas necesarias
-        const filas = datosOriginales.map(item => 
-            columnas.map(col => item[col.key])
-        );
-    
-        // Calcular totales generales de las columnas específicas
-        const totales = {
-            CONTEO: datosOriginales.reduce((sum, item) => sum + parseFloat(item.CONTEO || 0), 0),
-            EXISTENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.EXISTENCIA || 0), 0),
-            DIFERENCIA: datosOriginales.reduce((sum, item) => sum + parseFloat(item.DIFERENCIA || 0), 0),
-        };
-    
-        // Función para dibujar encabezado en cada página
-        const dibujarEncabezado = (data) => {
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const tituloWidth = doc.getTextWidth(titulo);
-            const subtituloWidth = doc.getTextWidth(subtitulo);
-    
-            doc.setFontSize(16);
-            doc.text(titulo, (pageWidth - tituloWidth) / 2, 10);
-    
-            doc.setFontSize(12);
-            doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 20);
-    
-            doc.setFontSize(10);
-            doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 30);
-            doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
-        };
-    
-        // Agregar pie de página con número de página
-        const agregarPiePagina = (data) => {
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            doc.setFontSize(10);
-            doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
-        };
-    
-        // Crear la tabla
-        doc.autoTable({
-            head: [columnas.map(col => col.header)],
-            body: filas,
-            startY: 40,
-            styles: { fontSize: 10 },
-            headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], halign: 'center' }, // Encabezados centrados
-            margin: { top: 40 },
-            columnStyles: {
-                3: { halign: 'right' }, // Conteo alineado a la derecha
-                4: { halign: 'right' }, // Existencia alineado a la derecha
-                5: { halign: 'right' }  // Diferencia alineado a la derecha
-            },
-            didDrawPage: (data) => {
-                dibujarEncabezado(data);
-                agregarPiePagina(data);
-            }
-        });
-    
-        // Agregar totales generales en la última página
-        doc.addPage(); // Nueva página para los totales
-        dibujarEncabezado(); // Agregar encabezado en la nueva página
-        doc.setFontSize(12);
-        doc.text("Totales Generales", 14, 50);
-        doc.autoTable({
-            body: [
-                ["Total Conteo", totales.CONTEO.toFixed(2)],
-                ["Total Existencia", totales.EXISTENCIA.toFixed(2)],
-                ["Total Diferencia", totales.DIFERENCIA.toFixed(2)],
-            ],
-            startY: 60,
-            styles: { fontSize: 10 },
-            columnStyles: { 1: { halign: 'right' } }, // Totales alineados a la derecha
-        });
-    
-        // Guardar el archivo
-        doc.save("Reporte_Conteo_Inventario_General.pdf");
-    }
-    
-// Función para obtener datos de la tabla (personaliza según tu tabla)
-    function obtenerDatosTabla() {
-        // Asegúrate de que datosResumen esté definido y sea un arreglo
-        if (Array.isArray(datosResumen)) {
-            return datosResumen; // Devuelve el arreglo directamente
-        } else {
-            console.error("datosResumen no está definido o no es un arreglo.");
-            return [];
-        }
-    }
+
+
 
     //FUNCIONES QUE CARGAN LAS CLASIFICACIONES A LOS SELECT 
 
@@ -1082,6 +936,7 @@ fetch(env.API_URL + "filtroswms", myInit)
          // Inicializar el select (si usas Materialize)
          M.FormSelect.init(selectClase);
          habilitaclase();
+         limpiarTabla();
     } 
   } else {
     console.log("Error en el SP");
@@ -1125,6 +980,7 @@ return fetch(env.API_URL + "filtroswms" + params, myInit)
          // Inicializar el select (si usas Materialize)
          M.FormSelect.init(selectMArca);
          habilitamarca();
+         limpiarTabla();
     } 
   } else {
     console.log("Error en el SP");
@@ -1167,6 +1023,7 @@ fetch(env.API_URL + "filtroswms" + params, myInit)
          // Inicializar el select (si usas Materialize)
          M.FormSelect.init(selectTipo);
          habilitatipo();
+         limpiarTabla();
     } 
   } else {
     console.log("Error en el SP");
@@ -1211,6 +1068,7 @@ async function cargarClasificacionesVenta() {
           // Inicializar el select (si usas Materialize)
           M.FormSelect.init(selectVenta);
           habilitaVenta();
+          limpiarTabla();
         }
       } else {
         console.log("Error en el SP");
@@ -1264,6 +1122,7 @@ async function cargarClasificacionesEnvase() {
           // Inicializar el select (si usas Materialize)
           M.FormSelect.init(selectEnvase);
           habilitaEnvase();
+          limpiarTabla();
         }
       } else {
         console.log("Error en el SP");
@@ -1321,6 +1180,7 @@ fetch(env.API_URL + "filtroswms" + params, myInit)
          // Inicializar el select (si usas Materialize)
          M.FormSelect.init(selectSeis);
          habilitaSeis();
+         limpiarTabla();
     } 
   } else {
     console.log("Error en el SP");
@@ -1512,297 +1372,265 @@ function selectClase(){
     
 }
 
-async function resumenGeneral() {    
-    
-    let btnResumenGeneral = document.getElementById('btnResumenGeneral');
-    if (btnResumenGeneral) btnResumenGeneral.hidden = false;
 
-    const tablaResumen = document.getElementById('myTableresumen');
-    const tblBodyResumen = document.getElementById('tblbodyRersumen');
-    const labelCantidadRegistros = document.getElementById('cantidadDeRegistros');
-    tblBodyResumen.innerHTML = '';
+async function resumenGeneral(){
 
-    const encabezado = ['ARTICULO', 'COD', 'CANT', 'EXIST', 'DIF'];
-    const thead = tablaResumen.querySelector('thead');
-    thead.innerHTML = '';
+            const pSistema = 'WMS';
+            const pUsuario = localStorage.getItem('username');
+            const pTipoRpt = document.getElementById('tipoResumido').checked ? 'R' : 'D';
+            const pSoloContados = document.getElementById('articulosContados').checked?'S' : 'N';
+            const pFecha = document.getElementById('fecha_ini').value;
+            const pBodega = document.getElementById('bodega').value;
 
-    const filaEncabezado = document.createElement('tr');
-    filaEncabezado.className = 'themeColor';
-    encabezado.forEach((columna, index) => {
-        const th = document.createElement('th');
-        th.textContent = columna;
-        th.setAttribute('data-column', index); // Asignar índice para identificar la columna
-        th.style.cursor = 'pointer'; // Cambiar el cursor para indicar que es clicable
-        th.addEventListener('click', () => ordenarTabla(index)); // Agregar evento de click
-        filaEncabezado.appendChild(th);
-    });
-    thead.appendChild(filaEncabezado);
+            const pAgrupadoClase = document.getElementById('agrupadoClase').checked ? 'S' : 'N';
+            const pAgrupadoMarca = document.getElementById('agrupadoMarca').checked ? 'S' : 'N';
 
-    try {
-        const pSistema = 'WMS';
-        const pUsuario = localStorage.getItem('username');
-        const pOpcion = 'R';
-        const pBodega = document.getElementById('bodega').value;
-        const pFecha = document.getElementById('fecha_ini').value;
-        const pSoloContados = 'S';
-        const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pOpcion=${pOpcion}&pBodega=${pBodega}&pFecha=${pFecha}&pSoloContados=${pSoloContados}`;
-
-        const response = await fetch(env.API_URL + "wmsresumeninventario" + params, myInit);
-        if (!response.ok) throw new Error(`Error en la solicitud: ${response.status}`);
-
-        const result = await response.json();
-        if (result.msg === "SUCCESS") {
-            datosResumen = result.resumen || [];  // Asignar los datos a la variable global
-            labelCantidadRegistros.textContent = `Cantidad de registros: ${datosResumen.length}`;           
-            renderizarDatos(datosResumen);  // Aquí pasamos los datos a la función de renderizado
-            inicializarBotonesDescarga();             
-        } else {
-            mostrarMensajeError('No se encontraron datos para mostrar.', encabezado.length);
-            labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
-        }
-
-
-    } catch (error) {
-        console.error('Error al generar la tabla:', error);
-        mostrarMensajeError('Hubo un error al cargar los datos. Inténtalo de nuevo más tarde.', encabezado.length);
-        labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
-    }
-    
-    function renderizarDatos(datos) {
-        let registrosPorPagina = 20;  // Establecer 20 filas por página
-        tblBodyResumen.innerHTML = '';
-        totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
-    
-        // Obtener los datos solo de la página actual
-        const start = (paginaActual - 1) * registrosPorPagina;
-        const end = start + registrosPorPagina;
-        const pageData = datos.slice(start, end);
-    
-        // Calcular los totales generales del arreglo completo
-        let totalGeneralCant = 0;
-        let totalGeneralExist = 0;
-        let totalGeneralDif = 0;
-    
-        datos.forEach(dato => {
-            totalGeneralCant += parseFloat(dato.CONTEO || 0);
-            totalGeneralExist += parseFloat(dato.EXISTENCIA || 0);
-            totalGeneralDif += parseFloat(dato.DIFERENCIA || 0);
-        });
-    
-        pageData.forEach(dato => {
-            const fila = document.createElement('tr');
-    
-            if (dato.CONCILIADO === 'N') {
-                fila.style.color = '#f56108';
-                fila.style.fontWeight = 'bold';
-            }
-    
-            // Crear celda personalizada para ARTICULO y DESCRIPCION
-            const celdaArticulo = document.createElement('td');
-            celdaArticulo.innerHTML = `
-                <h5 style="margin: 0; text-align: left;">${dato.ARTICULO || 'N/A'}</h5>
-                <h6 style="margin: 0; text-align: left; color: #000000de">${dato.DESCRIPCION || 'N/A'}</h6>
-            `;
-            fila.appendChild(celdaArticulo);
-    
-            // Crear celdas para los demás campos
-            ['BARCODEQR', 'CONTEO', 'EXISTENCIA', 'DIFERENCIA'].forEach(campo => {
-                const celda = document.createElement('td');
-                celda.style.fontSize = '14px';
-                celda.textContent = dato[campo] || 'N/A';
-                fila.appendChild(celda);
+            const pclase = document.getElementById('claseReporte').value.trim() === "" ? null : document.getElementById('claseReporte').value;
+            const pmarca = document.getElementById('marcaReporte').value.trim() === "" ? null : document.getElementById('marcaReporte').value;
+            const ptipo = document.getElementById('tipoReporte').value.trim() === "" ? null : document.getElementById('tipoReporte').value;
+            const penvase = document.getElementById('envaseReporte').value.trim() === "" ? null : document.getElementById('envaseReporte').value;
+            const pventa = document.getElementById('ventasReporte').value.trim() === "" ? null : document.getElementById('ventasReporte').value;
+            const pseis = document.getElementById('seisReporte').value.trim() === "" ? null : document.getElementById('seisReporte').value;
+     
+           
+            // const params = `?pSistema=${pSistema}&pUsuario=${pUsuario}&pTipoRpt=${pTipoRpt}&pSoloContados=${pSoloContados}&pFecha=${pFecha}&pBodega=${pBodega}&pAgrupadoClase=${pAgrupadoClase}&pAgrupadoMarca=${pAgrupadoMarca}&pclase=${pclase}&pmarca=${pmarca},&ptipo=${ptipo}&pEnvase=${penvase}&pVentas=${pventa}&pT6=${pseis}`;
+            const params = new URLSearchParams({
+                pSistema,
+                pUsuario,
+                pTipoRpt,
+                pSoloContados,
+                pFecha,
+                pBodega,
+                pAgrupadoClase,
+                pAgrupadoMarca,
+                pclase: pclase ?? '',
+                pmarca: pmarca ?? '',
+                ptipo: ptipo ?? '',
+                pEnvase: penvase ?? '',
+                pVentas: pventa ?? '',
+                pT6: pseis ?? ''
+            }).toString();
+            mostrarLoader();
+            fetch(`${env.API_URL}wmsreporteinventariogeneral?${params}`)
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.msg === "SUCCESS") {
+                    // console.log('Reporte');
+                    if(result.resultado.length > 0){
+                        datosResumen=result.resultado;
+                        // console.log(datosResumen);
+                        const labelCantidad = document.getElementById("cantidadDeRegistros");
+                        if (labelCantidad) {
+                            labelCantidad.textContent = `Cantidad de Registros: ${datosResumen.length}`;
+                        }
+                        generarTabla(datosResumen); 
+                    }else{
+                        Swal.fire({
+                            icon: "info",
+                            title: "Información",
+                            text: "No hay registros en este momento verifique los filtros de búsqueda",
+                            confirmButtonColor: "#28a745",
+                          });
+                          ocultarLoader();
+                    }
+                                 
+              } else {
+                console.log("Error en el SP");
+              }
             });
-    
-            tblBodyResumen.appendChild(fila);
-        });
-    
-        // Agregar la fila de totales generales solamente en la última página
-        if (paginaActual === totalPaginas) {
-            const filaTotalesGenerales = document.createElement('tr');
-            filaTotalesGenerales.className = 'themeColor';
-            filaTotalesGenerales.style.fontWeight = 'bold';
-    
-            const celdaTotalesGenerales = document.createElement('td');
-            celdaTotalesGenerales.textContent = 'TOTALES (GENERAL)';
-            celdaTotalesGenerales.style.fontSize = '14px';
-            celdaTotalesGenerales.style.fontWeight = 'bold';
-            celdaTotalesGenerales.colSpan = 2; // Combinar columnas para ARTICULO y COD
-            filaTotalesGenerales.appendChild(celdaTotalesGenerales);
-    
-            // Agregar los totales generales
-            [totalGeneralCant, totalGeneralExist, totalGeneralDif].forEach(total => {
-                const celdaTotal = document.createElement('td');
-                celdaTotal.textContent = total.toFixed(2);
-                celdaTotal.style.fontSize = '14px';
-                celdaTotal.style.fontWeight = 'bold';
-                filaTotalesGenerales.appendChild(celdaTotal);
-            });
-    
-            tblBodyResumen.appendChild(filaTotalesGenerales);
-        }
-    
-        // Actualizar los controles de paginación
-        actualizarPaginacion();
-    }
-    function actualizarPaginacion() {
-        const paginacion = document.getElementById('pagination');
-        if (!paginacion) {
-            console.error("No se encontró el contenedor de paginación.");
-            return;
-        }
-    
-        paginacion.innerHTML = ''; // Limpiar la paginación antes de renderizar
-    
-                // Botón Anterior
-        const btnAnterior = document.createElement('button');     
-        btnAnterior.textContent = 'Anterior';
-        btnAnterior.disabled = paginaActual === 1;
-        btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
-        btnAnterior.style.backgroundColor = '#28a745'; // Color de fondo
-        btnAnterior.style.color = 'white';            // Color del texto
-        btnAnterior.style.border = 'none';            // Sin bordes
-        btnAnterior.style.borderRadius = '5px';       // Bordes redondeados
-        btnAnterior.style.padding = '10px 15px';      // Espaciado interno
-        btnAnterior.style.cursor = 'pointer';         // Cambiar cursor
-        btnAnterior.style.margin = '0 5px';           // Margen entre botones
-        btnAnterior.style.fontSize = '14px';          // Tamaño de fuente
-        btnAnterior.style.fontWeight = 'bold';        // Negrita
-        btnAnterior.style.transition = '0.3s';        // Animación suave
-        btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#218838'; // Hover
-        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#28a745'; // Volver al original
-        paginacion.appendChild(btnAnterior);
-
-        // Botón para abrir el modal de números de página
-        const btnVerPaginas = document.createElement('button');
-        btnVerPaginas.textContent = `Página ${paginaActual}/${totalPaginas}`;
-        btnVerPaginas.addEventListener('click', () => {
-            mostrarModalPaginacion();
-        });
-        btnVerPaginas.style.backgroundColor = 'transparent';
-        btnVerPaginas.style.color = '#28a745';
-        btnVerPaginas.style.border = 'none';
-        btnVerPaginas.style.borderRadius = '5px';
-        btnVerPaginas.style.padding = '10px 15px';
-        btnVerPaginas.style.cursor = 'pointer';
-        btnVerPaginas.style.margin = '0 5px';
-        btnVerPaginas.style.fontSize = '14px';
-        btnVerPaginas.style.fontWeight = 'bold';
-        btnVerPaginas.style.transition = '0.3s';       
-        paginacion.appendChild(btnVerPaginas);
-
-
-        // Botón Siguiente
-        const btnSiguiente = document.createElement('button');
-        btnSiguiente.textContent = 'Siguiente';
-        btnSiguiente.disabled = paginaActual === totalPaginas;
-        btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
-        btnSiguiente.style.backgroundColor = '#28a745';
-        btnSiguiente.style.color = 'white';
-        btnSiguiente.style.border = 'none';
-        btnSiguiente.style.borderRadius = '5px';
-        btnSiguiente.style.padding = '10px 15px';
-        btnSiguiente.style.cursor = 'pointer';
-        btnSiguiente.style.margin = '0 5px';
-        btnSiguiente.style.fontSize = '14px';
-        btnSiguiente.style.fontWeight = 'bold';
-        btnSiguiente.style.transition = '0.3s';
-        btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
-        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#28a745';
-        paginacion.appendChild(btnSiguiente); 
-    }    
-    function mostrarModalPaginacion() {
-        // Crear o seleccionar el modal
-        let modal = document.getElementById('modalPaginacion');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'modalPaginacion';
-            modal.style.position = 'fixed';
-            modal.style.top = '50%';
-            modal.style.left = '50%';
-            modal.style.transform = 'translate(-50%, -50%)';
-            modal.style.padding = '20px';
-            modal.style.backgroundColor = 'white';
-            modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-            modal.style.borderRadius = '8px';
-            modal.style.zIndex = '1000';
-    
-
-            // Crear el botón de cierre como un icono
-            const closeButton = document.createElement('span');
-            closeButton.className = 'material-icons';
-            closeButton.textContent = 'close';
-            closeButton.style.cursor = 'pointer'; // Cambia el cursor a mano para indicar que es interactivo
-            closeButton.style.color = 'red'; // Aplica color rojo al icono
-            closeButton.style.position = 'absolute'; // Posición absoluta para colocarlo en la esquina del modal
-            closeButton.style.top = '10px'; // Ajusta la posición superior
-            closeButton.style.right = '10px'; // Ajusta la posición derecha
-
-            // Agregar el evento para cerrar el modal
-            closeButton.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-
-            // Agregar el botón al modal
-            modal.appendChild(closeButton);
-    
-            // Contenedor para los botones de números de página
-            const paginationContainer = document.createElement('div');
-            paginationContainer.id = 'modalPaginationContainer';
-            paginationContainer.style.marginTop = '19px';
-            modal.appendChild(paginationContainer);
-    
-            document.body.appendChild(modal);
-        }
-    
-        // Mostrar el modal
-        modal.style.display = 'block';
-        // modal.style.top = '10em'
-    
-        // Actualizar los números de página en el modal
-        const paginationContainer = document.getElementById('modalPaginationContainer');
-        paginationContainer.innerHTML = ''; // Limpiar contenido anterior
-    
-        for (let i = 1; i <= totalPaginas; i++) {
-            const btnPagina = document.createElement('button');
-            btnPagina.textContent = i;
-            btnPagina.disabled = i === paginaActual;
-            btnPagina.style.margin = '5px';
-         
-            btnPagina.addEventListener('click', () => {
-                cambiarPagina(i);
-                modal.style.display = 'none'; // Cerrar el modal al seleccionar una página
-            });
-            paginationContainer.appendChild(btnPagina);
-        }
-    }   
-    function cambiarPagina(pagina) {
-        if (pagina >= 1 && pagina <= totalPaginas) {
-            paginaActual = pagina;
-            renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
-        }
-    }
-    function ordenarTabla(indiceColumna) {
-        const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
-        const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
-        filas.sort((a, b) => {
-            const valorA = a.children[indiceColumna].textContent.trim();
-            const valorB = b.children[indiceColumna].textContent.trim();
-            if (!isNaN(valorA) && !isNaN(valorB)) {
-                return ordenAscendente ? valorA - valorB : valorB - valorA;
-            }
-            return ordenAscendente ? valorA.localeCompare(valorB) : valorB.localeCompare(valorA);
-        });
-        filas.forEach(fila => tblBodyResumen.appendChild(fila));
-        thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
-    }
-    function mostrarMensajeError(mensaje, columnas) {
-        const mensajeError = document.createElement('tr');
-        const celdaError = document.createElement('td');
-        celdaError.colSpan = columnas;
-        celdaError.textContent = mensaje;
-        mensajeError.appendChild(celdaError);
-        tblBodyResumen.appendChild(mensajeError);
-    }
-
-   
 }
+
+function generarTabla(datos) {
+    const tabla = document.getElementById("myTableresumen");
+    const thead = tabla.querySelector("thead");
+    const tbody = tabla.querySelector("#tblbodyRersumen");
+
+    // Asegúrate de que la tabla y los elementos existen
+    if (!tabla || !thead || !tbody) {
+        console.error("La tabla o los elementos no fueron encontrados en el DOM.");
+        return;
+    }
+
+    // Limpiar contenido previo
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+
+    if (datos.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='100%'>No hay datos disponibles</td></tr>";
+        return;
+    }
+
+    // Crear encabezados de la tabla basados en las claves del primer objeto
+    const headers = Object.keys(datos[0]);
+    const trHead = document.createElement("tr");
+
+    headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header.replace(/_/g, " "); // Reemplazar guiones bajos por espacios si los hay
+        trHead.appendChild(th);
+    });
+
+    thead.appendChild(trHead);
+
+    // Crear filas de datos
+    datos.forEach(item => {
+        const tr = document.createElement("tr");
+
+        headers.forEach(header => {
+            const td = document.createElement("td");
+            td.textContent = item[header];
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+
+    inicializarBotonesDescarga();   
+    ocultarLoader();
+}
+function inicializarBotonesDescarga() {    
+    const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
+    const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF    
+    const lblExcel = document.getElementById('lblExcel').style.display = 'block';
+    const lblPDF = document.getElementById('lblPDF').style.display = 'block';
+    btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
+    btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
+     
+ }     
+// Función para obtener datos de la tabla (personaliza según tu tabla)
+function obtenerDatosTabla() {
+    // Asegúrate de que datosResumen esté definido y sea un arreglo
+    if (Array.isArray(datosResumen)) {
+        return datosResumen; // Devuelve el arreglo directamente
+    } else {
+        console.error("datosResumen no está definido o no es un arreglo.");
+        return [];
+    }
+}   
+
+function descargarPDF() {
+    const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
+    const doc = new jsPDF();
+
+    // Título, subtítulo, fechas
+    const titulo = "Reporte de conteo de inventario General";
+    const pBodega = document.getElementById('bodega-sucursal').textContent;
+    const subtitulo = `Bodega: B-${pBodega}`;
+    const fechaInventario = document.getElementById('fecha_ini').value;
+    const fechaDescarga = new Date().toLocaleDateString();
+
+    // Obtener las cabeceras de la tabla dinámica
+    const tabla = document.getElementById("myTableresumen");
+    const thead = tabla.querySelector("thead");
+    const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
+
+    // Obtener los datos de la tabla dinámica
+    const rows = Array.from(tabla.querySelectorAll("tbody tr"));
+    const filas = rows.map(row => {
+        return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
+    });
+
+    // Función para dibujar encabezado en cada página
+    const dibujarEncabezado = () => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const tituloWidth = doc.getTextWidth(titulo);
+        const subtituloWidth = doc.getTextWidth(subtitulo);
+
+        doc.setFontSize(14);
+        doc.text(titulo, (pageWidth - tituloWidth) / 2, 10);
+
+        doc.setFontSize(9);
+        doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 20);
+
+        doc.setFontSize(8);
+        doc.text(`Fecha del inventario: ${fechaInventario}`, 10, 30);
+        doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+    };
+
+    // Agregar pie de página con número de página
+    const agregarPiePagina = (data) => {
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        doc.setFontSize(7);
+        doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+    };
+
+    // Crear la tabla en el PDF
+    doc.autoTable({
+        head: [headers], // Encabezado de la tabla
+        body: filas,     // Filas de la tabla
+        startY: 40,      // Posición inicial de la tabla
+        styles: { fontSize: 8 }, // Estilo de texto
+        headStyles: { 
+            fillColor: [0, 0, 0], 
+            textColor: [255, 255, 255], 
+            halign: 'center' 
+        }, // Estilo para los encabezados
+        margin: { top: 40 }, // Margen superior
+        columnStyles: {
+            3: { halign: 'right' }, // Conteo alineado a la derecha
+            4: { halign: 'right' }, // Existencia alineado a la derecha
+            5: { halign: 'right' }  // Diferencia alineado a la derecha
+        },
+        didDrawPage: (data) => {
+            dibujarEncabezado();
+            agregarPiePagina(data);
+        }
+    });
+
+    // Guardar el archivo PDF
+    doc.save("Reporte_Conteo_Inventario_General.pdf");
+}
+
+
+function descargarExcel() {
+    // Obtener los datos de la tabla generada dinámicamente
+    const jsonData = obtenerDatosTabla();
+
+    // Obtener los encabezados dinámicos (del mismo modo que en generarTabla)
+    const headers = Object.keys(jsonData[0]);
+    const encabezado = headers.map(header => header.replace(/_/g, " ")); // Reemplazar guiones bajos por espacios
+
+    // Crear las filas con los datos
+    const rows = jsonData.map(item => 
+        headers.map(header => parseFloat(item[header]) || item[header]) // Asegurar que los valores numéricos sean correctos
+    );
+
+    // Crear la hoja de Excel
+    const worksheetData = [encabezado, ...rows];
+
+    // Crear la hoja de Excel a partir de los datos
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+
+    // Crear un nuevo libro de trabajo y agregar la hoja con los datos
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+
+    // Escribir y descargar el archivo Excel
+    XLSX.writeFile(workbook, "Reporte_Conteo_Inventario_General.xlsx");
+}
+
+  // Función para borrar la tabla
+  function limpiarTabla() {
+    const tabla = document.getElementById("myTableresumen");
+    const thead = tabla.querySelector("thead");
+    const tbody = tabla.querySelector("#tblbodyRersumen");
+    const labelCantidad = document.getElementById("cantidadDeRegistros");
+    
+    if(labelCantidad){
+            labelCantidad.innerHTML="";
+    }
+
+    // Asegúrate de que la tabla y los elementos existen
+    if (!tabla || !thead || !tbody) {
+        console.error("La tabla o los elementos no fueron encontrados en el DOM.");
+        return;
+    }
+
+    // Limpiar contenido previo
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+  }
+
+
+
