@@ -38,22 +38,16 @@ document.addEventListener("DOMContentLoaded", function () {
      const tipoDetallado = document.getElementById("tipoDetallado");
      const tipoResumido = document.getElementById("tipoResumido");
      const agrupadoClase = document.getElementById("agrupadoClase");
-     const agrupadoMarca = document.getElementById("agrupadoMarca");
+     agrupadoClase.checked = true;
  
-     function actualizarEstadoAgrupado() {
-         const deshabilitar = tipoDetallado.checked;
-         agrupadoClase.disabled = deshabilitar;
-         agrupadoMarca.disabled = deshabilitar;
-         agrupadoClase.checked = false;
-         agrupadoMarca.checked = false;
-     }
+ 
  
      // Agregar eventos de cambio
      tipoDetallado.addEventListener("change", actualizarEstadoAgrupado);
-     tipoResumido.addEventListener("change", actualizarEstadoAgrupado);
+     tipoResumido.addEventListener("change", actualizarEstadoAgrupadodefault);
  
      // Llamar a la función una vez al inicio para asegurarse de que el estado sea correcto
-     actualizarEstadoAgrupado();
+     //actualizarEstadoAgrupado();
 
         habilitaclase();
         habilitamarca();
@@ -64,255 +58,273 @@ document.addEventListener("DOMContentLoaded", function () {
         limpiarTabla();    
     }); 
 
-    
-    function validarCodigoBarras(input) {
-        const codBarra = input.value.toUpperCase(); // Convertir a mayúsculas
-        const filaActual = input.closest('tr'); // Obtener la fila actual
-        const celdaArticulo = filaActual.querySelector('td span'); // Seleccionar el span para el artículo
-        const cantLeidaInput = filaActual.querySelector('input[id^="cant-leida"]'); // Input de cantidad leída
-    
-        if (codBarra) {
-            const params =
-            "?pCodigoLectura=" +
-            codBarra;
-            fetch(env.API_URL + "wmsverificacodigo" + params, myInit)  
-            .then((response) => response.json())
-            .then((result) => {          
-                if(result.codigo[0].CodigoArticulo != 'ND'){
-                                // Asignar el código de barras al <span>
-                    celdaArticulo.textContent = result.codigo[0].CodigoArticulo;
-    
-                    // Incrementar o inicializar el valor de cantidad leída
-                    let cantidadActual = parseInt(cantLeidaInput.value) || 0;
-                    cantLeidaInput.value = cantidadActual + 1;
-    
-                    // Bloquear el campo del código de barras actual
-                    input.setAttribute("readonly", "readonly");
-    
-                    // Crear una nueva fila y guardar los datos
-                    crearNuevaFila();
-                    guardarTablaEnArray();
-                }else{
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'El código ingresado no es válido. Verifíquelo nuevamente o consulte a su supervisor.',               
-                        confirmButtonText: 'Cerrar',
-                        confirmButtonColor: "#28a745",                
-                    });
-                     // Borrar el contenido del input de código de barras
-                     input.value = "";
-                }       
-            });    
-        }
-    }
-    
-     ///////// CREAR NUEVA FILA /////////
-    
-    function crearNuevaFila() {
-        const tableBody = document.querySelector('#tblbodyLectura');
-        const uniqueId = Date.now(); // Generar un ID único para los elementos
-    
-        const nuevaFilaHTML =
-            `<tr>
-                <td class="sticky-column" style="text-align: center;" style="user-select: none;">
-                    <span display: inline-block;"></span>
-                </td>
-                <td class="codigo-barras-cell">
-                    <input type="text" style="text-align: center;" id="codigo-barras-${uniqueId}" 
-                        class="codigo-barras-input" value="" oninput="validarCodigoBarras(this)" autofocus>
-                </td>
-                <td class="codigo-barras-cell2" >
-                    <input id="cant-leida-${uniqueId}" style="text-align: center;" 
-                        type="text" class="codigo-barras-input" value="" onchange="validarCantidades(this)">
-                </td>
-                <td class="codigo-barras-cell2" >
-                    <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
-                </td>
-            </tr>`;
-    
-        tableBody.insertAdjacentHTML('beforeend', nuevaFilaHTML);
-    
-        // Enfocar el nuevo campo del código de barras
-        const nuevoCodigoBarrasInput = tableBody.querySelector(`#codigo-barras-${uniqueId}`);
-        if (nuevoCodigoBarrasInput) {
-            nuevoCodigoBarrasInput.focus();
-        }
-    }
-    
-    /////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO de la orden de comra./////////
-    function validarCantidades() {
-      //Llamado a guardar datos en la variable arrray en el LS
-      guardarTablaEnArray();
-    }
-    
-    function guardarTablaEnArray() {
-      var dataArray = [];
-    
-      var table = document.getElementById('myTableLectura');
-      var rows = table.getElementsByTagName('tr');
-    
-      for (var i = 1; i < rows.length; i++) { // Comenzamos desde 1 para omitir la fila de encabezado
-          var row = rows[i];
-          var cells = row.getElementsByTagName('td');
-          //aqui se seleccionan los elemendos de las columnas de la tabla lectura
-          
-          var articulo = cells[0].querySelector('span').textContent.trim();        
-          var codigoBarraInput = cells[1].querySelector('.codigo-barras-input');
-          var cantidadLeidaInput = cells[2].querySelector('.codigo-barras-input');
-    
-          var codigoBarra = codigoBarraInput.value;
-         
-          var cantidadLeida = parseFloat(cantidadLeidaInput.value);
-          // Verificar si los valores no son nulos ni vacíos antes de almacenarlos
-          
-          if (articulo !== null && articulo !== "" && !isNaN(cantidadLeida)) {
-              var rowData = {
-                  ARTICULO: articulo,
-                  CODIGO_BARRA: codigoBarra,
-                  CANTIDAD_LEIDA: cantidadLeida
-              };
-    
-              dataArray.push(rowData);
-          }
-      }
-    
-      localStorage.setItem('dataArray', JSON.stringify(dataArray));
-      agrupar();
-      return dataArray;
-    }
-    
-    ///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
-    function agrupar() {
-        // Obtener el arreglo almacenado en localStorage
-        var dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
-          // Objeto para almacenar las cantidades consolidadas y el código de barra
-        var cantidadesConsolidadas = {};
-          // Recorrer el arreglo dataArray
-        dataArray.forEach(function (item) {
-            let articulo = item.ARTICULO;
-            let codBarra = item.CODIGO_BARRA;
-            let cantidad = item.CANTIDAD_LEIDA;
-         // Verificar si ya existe una entrada para este artículo
-            if (cantidadesConsolidadas.hasOwnProperty(articulo)) {
-                // Si existe, sumar la cantidad
-                cantidadesConsolidadas[articulo].CANTIDAD_LEIDA += cantidad;
-            } else {
-                // Si no existe, agregar una nueva entrada
-                cantidadesConsolidadas[articulo] = {
-                    CODIGO_BARRA: codBarra,
-                    CANTIDAD_LEIDA: cantidad,
-                };
-            }
-        });
-      // Crear un nuevo arreglo con los resultados consolidados
-        var newArray = [];
-        for (var articulo in cantidadesConsolidadas) {
-            if (cantidadesConsolidadas.hasOwnProperty(articulo)) {
-                newArray.push({
-                    ARTICULO: articulo,
-                    CODIGO_BARRA: cantidadesConsolidadas[articulo].CODIGO_BARRA,
-                    CANTIDAD_LEIDA: cantidadesConsolidadas[articulo].CANTIDAD_LEIDA,
-                });
-            }
-        }  
-        // Actualizar el arreglo en localStorage con los resultados consolidados
-        localStorage.setItem("dataArray", JSON.stringify(newArray));
-      }
-      
-    // Funcion que elimina filas en la pestaña lectura
-    function eliminarFila(icon) {
-        var row = icon.closest('tr');
-        //var articuloEliminado = row.querySelector('.sticky-column').innerText.trim();
-        // Mostrar un SweetAlert antes de eliminar la fila
-        Swal.fire({
-                  title: '¿Estás seguro?',
-                  text: 'A continuación se va a eliminar una fila de la pestaña lectura',
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: "#28a745",
-                  cancelButtonColor: "#6e7881",
-                  confirmButtonText: 'Sí, eliminar',             
-        }).then((result) => {
-            if (result.isConfirmed) {
-    
-                // Verificar si la fila está vacía
-                var isEmptyRow = true;
-                var cells = row.querySelectorAll('.codigo-barras-input');
-                var artic = row.querySelector
-                cells.forEach(function (cell) {
-                    if (cell.value.trim() !== '') {
-                        isEmptyRow = false;
-                    }
-                });
-    
-                // Elimina la fila solo si no está vacía
-                if (isEmptyRow) {
-                    // Llamar función que guarda artículos en la tabla
-                    var dataFromTable = guardarTablaEnArray();
-    
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Está intentando borrar una fila vacia",
-                        confirmButtonText: "Cerrar"
-                    });
-                } else {
-                    row.remove();
-    
-                    // Después de eliminar la fila, establecer el enfoque en el último campo de entrada en la columna COD
-                    const tableBody = document.querySelector('#tblbodyLectura');
-                    const ultimoCodigoBarrasInput = tableBody.querySelector('tr:last-child .codigo-barras-input');
-    
-                    // Establecer el enfoque en el último campo de entrada
-                    if (ultimoCodigoBarrasInput) {
-                        ultimoCodigoBarrasInput.focus();
-                    }
-                    // Llamar a la función para actualizar filas eliminadas con el artículo eliminado como parámetro                
-                    guardarTablaEnArray();
-                }            
-            }
-        });    
-    }
+        function actualizarEstadoAgrupado() {
+            const agrupadoClase = document.getElementById("agrupadoClase");
+            const agrupadoMarca = document.getElementById("agrupadoMarca");
+         const deshabilitar = tipoDetallado.checked;
+         agrupadoClase.disabled = deshabilitar;
+         agrupadoMarca.disabled = deshabilitar;
+         agrupadoClase.checked = false;
+         agrupadoMarca.checked = false;
+     }
 
-    function ordenarTabla(index) {
-        const tabla = document.getElementById('myTableresumen');
-       // const filas = Array.from(tabla.rows).slice(1); // Excluye el encabezado
+     function actualizarEstadoAgrupadodefault() {
+        const agrupadoClase = document.getElementById("agrupadoClase");
+        const agrupadoMarca = document.getElementById("agrupadoMarca");
+     const deshabilitar = tipoDetallado.checked;
+     agrupadoClase.disabled = deshabilitar;
+     agrupadoMarca.disabled = deshabilitar;
+     agrupadoClase.checked = true;
+     agrupadoMarca.checked = false;
+ }
+    // // function validarCodigoBarras(input) {
+    // //     const codBarra = input.value.toUpperCase(); // Convertir a mayúsculas
+    // //     const filaActual = input.closest('tr'); // Obtener la fila actual
+    // //     const celdaArticulo = filaActual.querySelector('td span'); // Seleccionar el span para el artículo
+    // //     const cantLeidaInput = filaActual.querySelector('input[id^="cant-leida"]'); // Input de cantidad leída
     
-        // Recupera los datos originales desde localStorage
-        const originalData = JSON.parse(localStorage.getItem('originalData'));
+    // //     if (codBarra) {
+    // //         const params =
+    // //         "?pCodigoLectura=" +
+    // //         codBarra;
+    // //         fetch(env.API_URL + "wmsverificacodigo" + params, myInit)  
+    // //         .then((response) => response.json())
+    // //         .then((result) => {          
+    // //             if(result.codigo[0].CodigoArticulo != 'ND'){
+    // //                             // Asignar el código de barras al <span>
+    // //                 celdaArticulo.textContent = result.codigo[0].CodigoArticulo;
+    
+    // //                 // Incrementar o inicializar el valor de cantidad leída
+    // //                 let cantidadActual = parseInt(cantLeidaInput.value) || 0;
+    // //                 cantLeidaInput.value = cantidadActual + 1;
+    
+    // //                 // Bloquear el campo del código de barras actual
+    // //                 input.setAttribute("readonly", "readonly");
+    
+    // //                 // Crear una nueva fila y guardar los datos
+    // //                 crearNuevaFila();
+    // //                 guardarTablaEnArray();
+    // //             }else{
+    // //                 Swal.fire({
+    // //                     icon: 'warning',
+    // //                     title: 'El código ingresado no es válido. Verifíquelo nuevamente o consulte a su supervisor.',               
+    // //                     confirmButtonText: 'Cerrar',
+    // //                     confirmButtonColor: "#28a745",                
+    // //                 });
+    // //                  // Borrar el contenido del input de código de barras
+    // //                  input.value = "";
+    // //             }       
+    // //         });    
+    // //     }
+    // // }
+    
+    // //  ///////// CREAR NUEVA FILA /////////
+    
+    // // function crearNuevaFila() {
+    // //     const tableBody = document.querySelector('#tblbodyLectura');
+    // //     const uniqueId = Date.now(); // Generar un ID único para los elementos
+    
+    // //     const nuevaFilaHTML =
+    // //         `<tr>
+    // //             <td class="sticky-column" style="text-align: center;" style="user-select: none;">
+    // //                 <span display: inline-block;"></span>
+    // //             </td>
+    // //             <td class="codigo-barras-cell">
+    // //                 <input type="text" style="text-align: center;" id="codigo-barras-${uniqueId}" 
+    // //                     class="codigo-barras-input" value="" oninput="validarCodigoBarras(this)" autofocus>
+    // //             </td>
+    // //             <td class="codigo-barras-cell2" >
+    // //                 <input id="cant-leida-${uniqueId}" style="text-align: center;" 
+    // //                     type="text" class="codigo-barras-input" value="" onchange="validarCantidades(this)">
+    // //             </td>
+    // //             <td class="codigo-barras-cell2" >
+    // //                 <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
+    // //             </td>
+    // //         </tr>`;
+    
+    // //     tableBody.insertAdjacentHTML('beforeend', nuevaFilaHTML);
+    
+    // //     // Enfocar el nuevo campo del código de barras
+    // //     const nuevoCodigoBarrasInput = tableBody.querySelector(`#codigo-barras-${uniqueId}`);
+    // //     if (nuevoCodigoBarrasInput) {
+    // //         nuevoCodigoBarrasInput.focus();
+    // //     }
+    // // }
+    
+    // // /////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO de la orden de comra./////////
+    // // function validarCantidades() {
+    // //   //Llamado a guardar datos en la variable arrray en el LS
+    // //   guardarTablaEnArray();
+    // // }
+    
+    // // function guardarTablaEnArray() {
+    // //   var dataArray = [];
+    
+    // //   var table = document.getElementById('myTableLectura');
+    // //   var rows = table.getElementsByTagName('tr');
+    
+    // //   for (var i = 1; i < rows.length; i++) { // Comenzamos desde 1 para omitir la fila de encabezado
+    // //       var row = rows[i];
+    // //       var cells = row.getElementsByTagName('td');
+    // //       //aqui se seleccionan los elemendos de las columnas de la tabla lectura
+          
+    // //       var articulo = cells[0].querySelector('span').textContent.trim();        
+    // //       var codigoBarraInput = cells[1].querySelector('.codigo-barras-input');
+    // //       var cantidadLeidaInput = cells[2].querySelector('.codigo-barras-input');
+    
+    // //       var codigoBarra = codigoBarraInput.value;
+         
+    // //       var cantidadLeida = parseFloat(cantidadLeidaInput.value);
+    // //       // Verificar si los valores no son nulos ni vacíos antes de almacenarlos
+          
+    // //       if (articulo !== null && articulo !== "" && !isNaN(cantidadLeida)) {
+    // //           var rowData = {
+    // //               ARTICULO: articulo,
+    // //               CODIGO_BARRA: codigoBarra,
+    // //               CANTIDAD_LEIDA: cantidadLeida
+    // //           };
+    
+    // //           dataArray.push(rowData);
+    // //       }
+    // //   }
+    
+    // //   localStorage.setItem('dataArray', JSON.stringify(dataArray));
+    // //   agrupar();
+    // //   return dataArray;
+    // // }
+    
+    // ///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
+    // function agrupar() {
+    //     // Obtener el arreglo almacenado en localStorage
+    //     var dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
+    //       // Objeto para almacenar las cantidades consolidadas y el código de barra
+    //     var cantidadesConsolidadas = {};
+    //       // Recorrer el arreglo dataArray
+    //     dataArray.forEach(function (item) {
+    //         let articulo = item.ARTICULO;
+    //         let codBarra = item.CODIGO_BARRA;
+    //         let cantidad = item.CANTIDAD_LEIDA;
+    //      // Verificar si ya existe una entrada para este artículo
+    //         if (cantidadesConsolidadas.hasOwnProperty(articulo)) {
+    //             // Si existe, sumar la cantidad
+    //             cantidadesConsolidadas[articulo].CANTIDAD_LEIDA += cantidad;
+    //         } else {
+    //             // Si no existe, agregar una nueva entrada
+    //             cantidadesConsolidadas[articulo] = {
+    //                 CODIGO_BARRA: codBarra,
+    //                 CANTIDAD_LEIDA: cantidad,
+    //             };
+    //         }
+    //     });
+    //   // Crear un nuevo arreglo con los resultados consolidados
+    //     var newArray = [];
+    //     for (var articulo in cantidadesConsolidadas) {
+    //         if (cantidadesConsolidadas.hasOwnProperty(articulo)) {
+    //             newArray.push({
+    //                 ARTICULO: articulo,
+    //                 CODIGO_BARRA: cantidadesConsolidadas[articulo].CODIGO_BARRA,
+    //                 CANTIDAD_LEIDA: cantidadesConsolidadas[articulo].CANTIDAD_LEIDA,
+    //             });
+    //         }
+    //     }  
+    //     // Actualizar el arreglo en localStorage con los resultados consolidados
+    //     localStorage.setItem("dataArray", JSON.stringify(newArray));
+    //   }
+      
+    // // Funcion que elimina filas en la pestaña lectura
+    // function eliminarFila(icon) {
+    //     var row = icon.closest('tr');
+    //     //var articuloEliminado = row.querySelector('.sticky-column').innerText.trim();
+    //     // Mostrar un SweetAlert antes de eliminar la fila
+    //     Swal.fire({
+    //               title: '¿Estás seguro?',
+    //               text: 'A continuación se va a eliminar una fila de la pestaña lectura',
+    //               icon: 'warning',
+    //               showCancelButton: true,
+    //               confirmButtonColor: "#28a745",
+    //               cancelButtonColor: "#6e7881",
+    //               confirmButtonText: 'Sí, eliminar',             
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    
+    //             // Verificar si la fila está vacía
+    //             var isEmptyRow = true;
+    //             var cells = row.querySelectorAll('.codigo-barras-input');
+    //             var artic = row.querySelector
+    //             cells.forEach(function (cell) {
+    //                 if (cell.value.trim() !== '') {
+    //                     isEmptyRow = false;
+    //                 }
+    //             });
+    
+    //             // Elimina la fila solo si no está vacía
+    //             if (isEmptyRow) {
+    //                 // Llamar función que guarda artículos en la tabla
+    //                 var dataFromTable = guardarTablaEnArray();
+    
+    //                 Swal.fire({
+    //                     icon: "warning",
+    //                     title: "Está intentando borrar una fila vacia",
+    //                     confirmButtonText: "Cerrar"
+    //                 });
+    //             } else {
+    //                 row.remove();
+    
+    //                 // Después de eliminar la fila, establecer el enfoque en el último campo de entrada en la columna COD
+    //                 const tableBody = document.querySelector('#tblbodyLectura');
+    //                 const ultimoCodigoBarrasInput = tableBody.querySelector('tr:last-child .codigo-barras-input');
+    
+    //                 // Establecer el enfoque en el último campo de entrada
+    //                 if (ultimoCodigoBarrasInput) {
+    //                     ultimoCodigoBarrasInput.focus();
+    //                 }
+    //                 // Llamar a la función para actualizar filas eliminadas con el artículo eliminado como parámetro                
+    //                 guardarTablaEnArray();
+    //             }            
+    //         }
+    //     });    
+    // }
+
+    // function ordenarTabla(index) {
+    //     const tabla = document.getElementById('myTableresumen');
+    //    // const filas = Array.from(tabla.rows).slice(1); // Excluye el encabezado
+    
+    //     // Recupera los datos originales desde localStorage
+    //     const originalData = JSON.parse(localStorage.getItem('originalData'));
         
-        // Ordena los datos según el índice de la columna
-        originalData.sort((a, b) => {
-            const aText = a[index];
-            const bText = b[index];
+    //     // Ordena los datos según el índice de la columna
+    //     originalData.sort((a, b) => {
+    //         const aText = a[index];
+    //         const bText = b[index];
     
-            if (isNaN(aText) && isNaN(bText)) {
-                return aText.localeCompare(bText);
-            } else {
-                return parseFloat(aText) - parseFloat(bText);
-            }
-        });
+    //         if (isNaN(aText) && isNaN(bText)) {
+    //             return aText.localeCompare(bText);
+    //         } else {
+    //             return parseFloat(aText) - parseFloat(bText);
+    //         }
+    //     });
     
-        // Limpia la tabla
-        tabla.querySelector('tbody').innerHTML = '';
+    //     // Limpia la tabla
+    //     tabla.querySelector('tbody').innerHTML = '';
     
-        // Vuelve a insertar las filas ordenadas
-        originalData.forEach(item => {
-            const nuevaFilaHTML = `
-                <tr>
-                    <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
-                    <td style="text-align: center;">${item.BARCODEQR}</td>
-                    <td style="text-align: center;">${item.CONTEO}</td>
-                    <td style="text-align: center; text-transform: uppercase;">${item.UBICACION}</td>
-                    <td>
-                        <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
-                    </td>
-                </tr>`;
-            tabla.querySelector('tbody').insertAdjacentHTML("beforeend", nuevaFilaHTML);
-        });
+    //     // Vuelve a insertar las filas ordenadas
+    //     originalData.forEach(item => {
+    //         const nuevaFilaHTML = `
+    //             <tr>
+    //                 <td style="text-align: center;"><h5 style="color: #f56108 ">${item.ARTICULO}</h5><h6>${item.DESCRIPCION}</h6></td>
+    //                 <td style="text-align: center;">${item.BARCODEQR}</td>
+    //                 <td style="text-align: center;">${item.CONTEO}</td>
+    //                 <td style="text-align: center; text-transform: uppercase;">${item.UBICACION}</td>
+    //                 <td>
+    //                     <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFilaResumen(this)">clear</i>
+    //                 </td>
+    //             </tr>`;
+    //         tabla.querySelector('tbody').insertAdjacentHTML("beforeend", nuevaFilaHTML);
+    //     });
     
-        // Llamada para actualizar la paginación
-        updatePagination(1); // Resetear a la primera página tras ordenar
-    }
+    //     // Llamada para actualizar la paginación
+    //     updatePagination(1); // Resetear a la primera página tras ordenar
+    // }
      /////////////////////////////////////////////////////////////////////////////////////// 
     ///////////////////////////RESUMEN DEL INVENTARIO /////////////////////////////////////
    ///////////////////////////////////////////////////////////////////////////////////////
@@ -1372,7 +1384,6 @@ function selectClase(){
     
 }
 
-
 async function resumenGeneral(){
 
             const pSistema = 'WMS';
@@ -1438,14 +1449,13 @@ async function resumenGeneral(){
                 console.log("Error en el SP");
               }
             });
-}
+}   
 
 function generarTabla(datos) {
     const tabla = document.getElementById("myTableresumen");
     const thead = tabla.querySelector("thead");
     const tbody = tabla.querySelector("#tblbodyRersumen");
 
-    // Asegúrate de que la tabla y los elementos existen
     if (!tabla || !thead || !tbody) {
         console.error("La tabla o los elementos no fueron encontrados en el DOM.");
         return;
@@ -1460,19 +1470,24 @@ function generarTabla(datos) {
         return;
     }
 
-    // Crear encabezados de la tabla basados en las claves del primer objeto
     const headers = Object.keys(datos[0]);
+
+    // Fila de encabezados
     const trHead = document.createElement("tr");
 
-    headers.forEach(header => {
+    headers.forEach((header, index) => {
         const th = document.createElement("th");
-        th.textContent = header.replace(/_/g, " "); // Reemplazar guiones bajos por espacios si los hay
+        th.textContent = header.replace(/_/g, " ").toUpperCase();
+        th.dataset.index = index;
+        th.style.cursor = "pointer"; // Indicar que se puede hacer clic
+        th.style.transition = "background 0.3s"; // Animación suave al ocultar
+        th.addEventListener("click", toggleColumnas);
         trHead.appendChild(th);
     });
 
     thead.appendChild(trHead);
 
-    // Crear filas de datos
+    // Crear filas
     datos.forEach(item => {
         const tr = document.createElement("tr");
 
@@ -1485,18 +1500,49 @@ function generarTabla(datos) {
         tbody.appendChild(tr);
     });
 
-    inicializarBotonesDescarga();   
+    
+    inicializarBotonesDescarga();
     ocultarLoader();
+    //agregarBotonRestaurar();
 }
-function inicializarBotonesDescarga() {    
-    const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
-    const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF    
-    const lblExcel = document.getElementById('lblExcel').style.display = 'block';
-    const lblPDF = document.getElementById('lblPDF').style.display = 'block';
-    btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
-    btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
-     
- }     
+
+// Función para ocultar/mostrar columnas al hacer clic en el encabezado
+function toggleColumnas(event) {
+    const btnRestaurar = document.getElementById("btnRestaurarColumnas");
+    btnRestaurar.hidden= false;
+    const index = event.target.dataset.index;
+    const tabla = document.getElementById("myTableresumen");
+
+    tabla.querySelectorAll(`th:nth-child(${+index + 1}), td:nth-child(${+index + 1})`)
+        .forEach(cell => {
+            if (cell.style.display === "none") {
+                cell.style.display = ""; // Mostrar columna
+                event.target.style.opacity = "1"; // Restaurar visibilidad
+                event.target.style.background = ""; // Restaurar color original
+            } else {
+                cell.style.display = "none"; // Ocultar columna
+                event.target.style.opacity = "0.5"; // Indicar que está oculta
+                event.target.style.background = "#ccc"; // Resaltar encabezado oculto
+            }
+        });
+}
+
+// Función para restaurar todas las columnas
+function restaurarColumnas() {
+    const tabla = document.getElementById("myTableresumen");
+
+    tabla.querySelectorAll("th, td").forEach(cell => {
+        cell.style.display = ""; // Mostrar todas las columnas
+    });
+
+    // Restaurar estilos de los encabezados
+    tabla.querySelectorAll("th").forEach(th => {
+        th.style.opacity = "1";
+        th.style.background = "";
+    });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para obtener datos de la tabla (personaliza según tu tabla)
 function obtenerDatosTabla() {
     // Asegúrate de que datosResumen esté definido y sea un arreglo
@@ -1506,7 +1552,17 @@ function obtenerDatosTabla() {
         console.error("datosResumen no está definido o no es un arreglo.");
         return [];
     }
-}   
+}  
+
+function inicializarBotonesDescarga() {    
+    const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
+    const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF    
+    const lblExcel = document.getElementById('lblExcel').style.display = 'block';
+    const lblPDF = document.getElementById('lblPDF').style.display = 'block';
+    btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
+    btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
+     
+ } 
 
 function descargarPDF() {
     const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
@@ -1581,8 +1637,6 @@ function descargarPDF() {
     // Guardar el archivo PDF
     doc.save("Reporte_Conteo_Inventario_General.pdf");
 }
-
-
 function descargarExcel() {
     // Obtener los datos de la tabla generada dinámicamente
     const jsonData = obtenerDatosTabla();
@@ -1609,9 +1663,8 @@ function descargarExcel() {
     // Escribir y descargar el archivo Excel
     XLSX.writeFile(workbook, "Reporte_Conteo_Inventario_General.xlsx");
 }
-
-  // Función para borrar la tabla
-  function limpiarTabla() {
+// Función para borrar la tabla
+function limpiarTabla() {
     const tabla = document.getElementById("myTableresumen");
     const thead = tabla.querySelector("thead");
     const tbody = tabla.querySelector("#tblbodyRersumen");
