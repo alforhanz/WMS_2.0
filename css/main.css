@@ -2823,3 +2823,210 @@ margin-top: -35px;
   gap: 15px;
   margin-bottom:  -75px;;
 }
+/*///////////REPORTE DE GENERAL DE INVENTARIO//////////////////////////////////*/
+
+
+#reporteInventarioRCM h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#reporteInventarioRCM p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+#fechaImpresionRCM {
+  text-align: right;
+  display: block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#fechaInventarioRCM {
+  font-weight: bold;
+}
+
+#reporteInventarioRCM table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#reporteInventarioRCM th,
+#reporteInventarioRCM td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left; /* Alineación a la izquierda */
+}
+
+#reporteInventarioRCM th {
+  /* background-color: #f4f4f4; */
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.fila-marca {
+  background-color: #e0e0e0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.fila-total {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  text-align: left;
+}
+
+.fila-gran-total {
+  background-color: #d4edda; /* Verde claro */
+  font-weight: bold;
+  text-align: left;
+
+}
+.reporteUno{
+  display: none;
+}
+
+.tablaReGeneralReporte{
+  display: none;
+}
+
+.marca{
+  text-align: left !important;
+}
+.reporteInventario {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////*/
+#reporteInventarioRM h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#reporteInventarioRM p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+#fechaImpresionRM {
+  text-align: right;
+  display: block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#fechaInventarioRM {
+  font-weight: bold;
+}
+
+#reporteInventarioRM table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#reporteInventarioRM th,
+#reporteInventarioRM td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left; /* Alineación a la izquierda */
+}
+
+#reporteInventarioRM th {
+  /* background-color: #f4f4f4; */
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////*/
+#reporteInventarioRC h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#reporteInventarioRC p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+#fechaImpresionRC {
+  text-align: right;
+  display: block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#fechaInventarioRC {
+  font-weight: bold;
+}
+
+#reporteInventarioRC table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#reporteInventarioRC th,
+#reporteInventarioRC td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left; /* Alineación a la izquierda */
+}
+
+#reporteInventarioRC th {
+  /* background-color: #f4f4f4; */
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////*/
+#reporteInventarioD h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+#reporteInventarioD p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+#fechaImpresionD {
+  text-align: right;
+  display: block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+#fechaInventarioD {
+  font-weight: bold;
+}
+
+#reporteInventarioD table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#reporteInventarioD th,
+#reporteInventarioD td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left; /* Alineación a la izquierda */
+}
+
+#reporteInventarioD th {
+  /* background-color: #f4f4f4; */
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}

@@ -91,12 +91,12 @@
               <!-- Agrupado por -->
               <div class="col s4">
                 <label>
-                  <input type="radio" name="agrupadoPor" id="agrupadoClase" value="clase" checked onchange="limpiarTabla()"/>
+                  <input type="checkbox" name="agrupadoPor" id="agrupadoClase" value="clase" checked onchange="limpiarTabla()"/>
                   <span>Clase</span>
                 </label>
                 <br />
                 <label>
-                  <input type="radio" name="agrupadoPor" id="agrupadoMarca" value="marca"  onchange="limpiarTabla()"/>
+                  <input type="checkbox" name="agrupadoPor" id="agrupadoMarca" value="marca"  onchange="limpiarTabla()"/>
                   <span>Marca</span>
                 </label>
               </div>
@@ -243,8 +243,9 @@
           </div>
       </div>
         </div>  
-          <!--Tabla Resumen  -->
-        <div id="tabla-resumen" class="col s12">
+          
+        <!--Tabla Resumen  -->
+        <div id="tabla-resumen" class="tablaReGeneralReporte col s12">
           <label id="cantidadDeRegistros"></label>
           <div class="row">
               <div id="resultadoGeneral"></div>
@@ -255,17 +256,108 @@
               </div>
               <table id="myTableresumen" class="display centered">
                   <thead></thead>
-                  <tbody id="tblbodyRersumen">
-                      <!-- Aquí se insertarán las filas de la tabla -->
+                  <tbody id="tblbodyRersumen">                    
                   </tbody>
               </table>
           </div>             
       </div>
+              <!-- Reporte #1 Resumido Agrupado por Clase y Marca Solo Contados -->
+              <div id="reporteInventarioRCM" class="reporteUno">
+                <p>Agrupado por: Clase y Marca, solo contados</p>
+                <table>
+                    <thead>
+                        <tr class="repo1head">
+                            <th >Marca</th>
+                            <th>Sistema</th>
+                            <th>Conteo</th>
+                            <th>Diferencia</th>
+                            <th>Cant.Sistema</th>
+                            <th>Cant.Contada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaReporteRCM"></tbody>
+                    <tfoot>
+                        <tr>                        
+                        </tr>
+                    </tfoot>
+                </table>
+              </div>
+
+                  <!-- Reporte #2 Resumido Agrupado por Marca Solo Contados -->
+                  <div id="reporteInventarioRM" class="reporteUno">
+                    <p>Agrupado por: Marca, solo contados</p>
+                    <table>
+                        <thead>
+                            <tr class="repo1head">
+                                <th >Marca</th>
+                                <th>Sistema</th>
+                                <th>Conteo</th>
+                                <th>Diferencia</th>
+                                <th>Cant.Sistema</th>
+                                <th>Cant.Contada</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaReporteRM"></tbody>
+                        <tfoot>
+                            <tr>                        
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div>
+
+                  <!-- Reporte #3 Resumido Agrupado por Clase Solo Contados -->
+                  <div id="reporteInventarioRC" class="reporteUno">
+                    <p>Agrupado por: Clase, solo contados</p>
+                    <table>
+                        <thead>
+                            <tr class="repo1head">
+                                <th >Marca</th>
+                                <th>Sistema</th>
+                                <th>Conteo</th>
+                                <th>Diferencia</th>
+                                <th>Cant.Sistema</th>
+                                <th>Cant.Contada</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaReporteRC"></tbody>
+                        <tfoot>
+                            <tr>                        
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div>    
+
+                    <!-- Reporte #4 Destallado Agrupado por Clase Solo Contados -->
+                    <div id="reporteInventarioD" class="reporteUno">
+                      <p>Agrupado por: Clase y Marca, Segun Artículos: Contados</p>
+                      <table>
+                          <thead>
+                              <tr class="repo1head">
+                                  <th >Articulo</th>
+                                  <th>Descripcion</th>
+                                  <th>Sistema</th>
+                                  <th>Conteo</th>
+                                  <th>Diferencia</th>
+                                  <th>Cant.Sistema</th>
+                                  <th>Cant.Contada</th>                                  
+                              </tr>
+                          </thead>
+                          <tbody id="tablaReporteD"></tbody>
+                          <tfoot>
+                              <tr>                        
+                              </tr>
+                          </tfoot>
+                      </table>
+                    </div>  
+
+
         <div class="resumen-paginador">
         <div id="pagination" class="invPagination"></div>   <!-- Los botones de paginación se agregarán aquí dinámicamente -->
         </div> 
       </div>
     </div> 
+
+
   </main>
    
   <!--JavaScript at end of body for optimized loading-->
