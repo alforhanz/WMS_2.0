@@ -677,46 +677,10 @@ async function resumenGeneral(){
       console.log("Error en el SP");
     }
   });  
-} 
-
-
-// function toggleColumnas(event) {
-//     const btnRestaurar = document.getElementById("btnRestaurarColumnas");
-//     btnRestaurar.hidden= false;
-//     const index = event.target.dataset.index;
-//     const tabla = document.getElementById("myTableresumen");
-//     tabla.querySelectorAll(`th:nth-child(${+index + 1}), td:nth-child(${+index + 1})`)
-//         .forEach(cell => {
-//             if (cell.style.display === "none") {
-//                 cell.style.display = ""; // Mostrar columna
-//                 event.target.style.opacity = "1"; // Restaurar visibilidad
-//                 event.target.style.background = ""; // Restaurar color original
-//             } else {
-//                 cell.style.display = "none"; // Ocultar columna
-//                 event.target.style.opacity = "0.5"; // Indicar que está oculta
-//                 event.target.style.background = "#ccc"; // Resaltar encabezado oculto
-//             }
-//         });
-// }
-
-
-
-// Función para restaurar todas las columnas
-// function restaurarColumnas() {
-//     const tabla = document.getElementById("myTableresumen");
-
-//     tabla.querySelectorAll("th, td").forEach(cell => {
-//         cell.style.display = ""; // Mostrar todas las columnas
-//     });
-//     // Restaurar estilos de los encabezados
-//     tabla.querySelectorAll("th").forEach(th => {
-//         th.style.opacity = "1";
-//         th.style.background = "";
-//     });
-// }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Función para obtener datos de la tabla (personaliza según tu tabla)
+// Función para obtener datos de la tabla (personaliza según tu tabla)/////////////////////////////////////////
 function obtenerDatosTabla() {
     // Asegúrate de que datosResumen esté definido y sea un arreglo
     if (Array.isArray(datosResumen)) {
@@ -727,15 +691,9 @@ function obtenerDatosTabla() {
     }
 }  
 
-function inicializarBotonesDescarga() {    
-    const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
-    const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF    
-    const lblExcel = document.getElementById('lblExcel').style.display = 'block';
-    const lblPDF = document.getElementById('lblPDF').style.display = 'block';
-    btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
-    btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
-     
- } 
+
+
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 // function descargarPDF() {
@@ -824,685 +782,13 @@ function inicializarBotonesDescarga() {
 //   doc.save("Reporte_Conteo_Inventario_General.pdf");
 // }
 
-function descargarPDF() {
-  let pTipoRpt = document.getElementById('tipoResumido').checked ? 'R' : 'D';
-  let pAgrupadoClase = document.getElementById('agrupadoClase').checked ? 'S' : 'N';
-  let pAgrupadoMarca = document.getElementById('agrupadoMarca').checked ? 'S' : 'N';
 
 
-    console.log('TIPO DE REPORTE:');
-    if(pTipoRpt === 'R' && pAgrupadoClase === 'S' && pAgrupadoMarca === 'S'){
-        console.log('Descarga Resumido, Clase, MArca');
-        descargarPDFRCM();
-      }else if(pTipoRpt === 'R' && pAgrupadoClase === 'N' && pAgrupadoMarca === 'S'){
-        console.log('Descarga a Resumido, MArca');
-        descargarPDFRM();
-      }else if(pTipoRpt === 'R' && pAgrupadoClase === 'S' && pAgrupadoMarca === 'N'){
-        console.log('Descarga a Resumido, Clase');
-        descargarPDFRC();
-      }else if(pTipoRpt === 'D' && pAgrupadoClase === 'N' && pAgrupadoMarca === 'N'){
-        console.log('Descarga a Detallado, Todas las Clasificaciones');   
-        descargarPDFDetalle()    
-      } 
-}
-function descargarPDFRCM() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+// function encabezadoReporte(){
 
- // Título, subtítulo y fechas
-  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
-  const subtitulo = "    Reporte de Inventario General Resumen";
-  const pBodega = document.getElementById('bodega-sucursal').textContent;
-  const fechaInventario = document.getElementById('fecha_ini').value;
-  const fechaDescarga = new Date().toLocaleDateString();
-
- // Obtener las cabeceras de la tabla
-  const tabla = document.getElementById("reporteInventarioRCM").querySelector("table");
-  const thead = tabla.querySelector("thead");
-  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
-
- // Obtener los datos de la tabla
-  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
-  const filas = rows.map(row => {
-      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
-  });
- // Función para dibujar encabezado en cada página
-  const dibujarEncabezado = () => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const tituloWidth = doc.getTextWidth(titulo);
-      const subtituloWidth = doc.getTextWidth(subtitulo);
-
-      doc.setFontSize(14);
-      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
-
-      doc.setFontSize(12);
-      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
-
-      doc.setFontSize(9);
-      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
-      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
-      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
-  };
-
- // Agregar pie de página con número de página
-  const agregarPiePagina = (data) => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      doc.setFontSize(7);
-      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
-  };
-
- // Crear la tabla en el PDF
-  doc.autoTable({
-      head: [headers],
-      body: filas,
-      startY: 60,
-      styles: { fontSize: 8 },
-      headStyles: { 
-          fillColor: [0, 128, 0], 
-          textColor: [255, 255, 255],         
-          halign: 'center' 
-      },
-      margin: { top: 40 },
-      columnStyles: {
-          0: { halign: 'center' },
-          1: { halign: 'center' },
-          2: { halign: 'center' },
-          3: { halign: 'center' },
-          4: { halign: 'center' },
-          5: { halign: 'center' }
-      },
-      didDrawPage: (data) => {
-          dibujarEncabezado();
-          agregarPiePagina(data);
-      },
-      didParseCell: (data) => {
-     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
-        if (data.row.index === filas.length - 1) {
-          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
-            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.halign = "center"; // Centrar texto
-        }
-    }
-  });
-
- // Guardar el PDF
-  doc.save("Reporte_Conteo_Inventario_General.pdf");
-}
-function descargarPDFRM() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
-
- // Título, subtítulo y fechas
-  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
-  const subtitulo = "    Reporte de Inventario General Resumen";
-  const pBodega = document.getElementById('bodega-sucursal').textContent;
-  const fechaInventario = document.getElementById('fecha_ini').value;
-  const fechaDescarga = new Date().toLocaleDateString();
-
- // Obtener las cabeceras de la tabla
-  const tabla = document.getElementById("reporteInventarioRM").querySelector("table");
-  const thead = tabla.querySelector("thead");
-  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
-
- // Obtener los datos de la tabla
-  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
-  const filas = rows.map(row => {
-      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
-  });
- // Función para dibujar encabezado en cada página
-  const dibujarEncabezado = () => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const tituloWidth = doc.getTextWidth(titulo);
-      const subtituloWidth = doc.getTextWidth(subtitulo);
-
-      doc.setFontSize(14);
-      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
-
-      doc.setFontSize(12);
-      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
-
-      doc.setFontSize(9);
-      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
-      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
-      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
-  };
-
- // Agregar pie de página con número de página
-  const agregarPiePagina = (data) => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      doc.setFontSize(7);
-      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
-  };
-
- // Crear la tabla en el PDF
-  doc.autoTable({
-      head: [headers],
-      body: filas,
-      startY: 60,
-      styles: { fontSize: 8 },
-      headStyles: { 
-          fillColor: [0, 128, 0], 
-          textColor: [255, 255, 255],         
-          halign: 'center' 
-      },
-      margin: { top: 40 },
-      columnStyles: {
-          0: { halign: 'center' },
-          1: { halign: 'center' },
-          2: { halign: 'center' },
-          3: { halign: 'center' },
-          4: { halign: 'center' },
-          5: { halign: 'center' }
-      },
-      didDrawPage: (data) => {
-          dibujarEncabezado();
-          agregarPiePagina(data);
-      },
-      didParseCell: (data) => {
-     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
-        if (data.row.index === filas.length - 1) {
-          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
-            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.halign = "center"; // Centrar texto
-        }
-    }
-  });
-
- // Guardar el PDF
-  doc.save("Reporte_Conteo_Inventario_General.pdf");
-}
-function descargarPDFRC() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
-
- // Título, subtítulo y fechas
-  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
-  const subtitulo = "    Reporte de Inventario General Resumen";
-  const pBodega = document.getElementById('bodega-sucursal').textContent;
-  const fechaInventario = document.getElementById('fecha_ini').value;
-  const fechaDescarga = new Date().toLocaleDateString();
-
- // Obtener las cabeceras de la tabla
-  const tabla = document.getElementById("reporteInventarioRC").querySelector("table");
-  const thead = tabla.querySelector("thead");
-  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
-
- // Obtener los datos de la tabla
-  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
-  const filas = rows.map(row => {
-      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
-  });
- // Función para dibujar encabezado en cada página
-  const dibujarEncabezado = () => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const tituloWidth = doc.getTextWidth(titulo);
-      const subtituloWidth = doc.getTextWidth(subtitulo);
-
-      doc.setFontSize(14);
-      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
-
-      doc.setFontSize(12);
-      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
-
-      doc.setFontSize(9);
-      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
-      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
-      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
-  };
-
- // Agregar pie de página con número de página
-  const agregarPiePagina = (data) => {
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      doc.setFontSize(7);
-      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
-  };
-
- // Crear la tabla en el PDF
-  doc.autoTable({
-      head: [headers],
-      body: filas,
-      startY: 60,
-      styles: { fontSize: 8 },
-      headStyles: { 
-          fillColor: [0, 128, 0], 
-          textColor: [255, 255, 255],         
-          halign: 'center' 
-      },
-      margin: { top: 40 },
-      columnStyles: {
-          0: { halign: 'center' },
-          1: { halign: 'center' },
-          2: { halign: 'center' },
-          3: { halign: 'center' },
-          4: { halign: 'center' },
-          5: { halign: 'center' }
-      },
-      didDrawPage: (data) => {
-          dibujarEncabezado();
-          agregarPiePagina(data);
-      },
-      didParseCell: (data) => {
-     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
-        if (data.row.index === filas.length - 1) {
-          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
-            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
-            data.cell.styles.fontStyle = "bold";
-            data.cell.styles.halign = "center"; // Centrar texto
-        }
-    }
-  });
-
- // Guardar el PDF
-  doc.save("Reporte_Conteo_Inventario_General.pdf");
-}
-// function descargarPDFDetalle() { 
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF('l', 'mm', 'a4'); 
-
-//   // Obtener la fecha actual de impresión
-//   const fechaImpresion = new Date().toLocaleDateString();
-
-//   // Verificar cuál es el reporte visible
-//   let tablaVisible = null;
-
-//   // Verificar qué div tiene la propiedad display: block
-//   const reportes = [
-//     { id: 'reporteInventarioRCM', tabla: 'tablaReporteRCM' },
-//     { id: 'reporteInventarioRM', tabla: 'tablaReporteRM' },
-//     { id: 'reporteInventarioRC', tabla: 'tablaReporteRC' },
-//     { id: 'reporteInventarioD', tabla: 'tablaReporteD' }
-//   ];
-
-//   // Recorremos los reportes y verificamos si el contenedor está visible
-//   reportes.forEach(reporte => {
-//     const divReporte = document.getElementById(reporte.id);
-//     if (divReporte && divReporte.style.display !== 'none') {
-//       tablaVisible = reporte.tabla;
-//     }
-//   });
-
-//   // Si se encontró una tabla visible, procedemos con la generación del PDF
-//   if (tablaVisible) {
-//     const tabla = document.getElementById(tablaVisible);
-//     if (tabla) {
-//       // Configuración de márgenes
-//       const margenIzquierdo = 10;
-//       let y = 10; // Posición inicial en Y
-
-//       // Agregar la fecha de impresión alineada a la derecha
-//       doc.setFontSize(10);
-//       const pageWidth = doc.internal.pageSize.getWidth();
-//       doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 48, y);
-      
-//       // Espacio entre líneas
-//       y += 10;
-
-//       // Agregar el título centrado
-//       doc.setFontSize(14);
-//       doc.setFont("helvetica", "bold");
-//       doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
-
-//       // Espacio entre líneas
-//       y += 10;
-
-//       // Agregar el subtítulo centrado
-//       doc.setFontSize(12);
-//       doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
-
-//       // Espacio entre líneas
-//       y += 10;
-
-//       // Información del reporte
-//       doc.setFontSize(10);
-//       doc.setFont("helvetica", "normal");
-//       doc.text(`Fecha inventario: 2024-02-07    Bodega: 81 Centro de Distribucion (CEDI)    Clase Marca`, margenIzquierdo, y);
-
-//       // Espacio antes de la tabla
-//       y += 10;
-
-//       // Usando el plugin autotable para agregar la tabla al PDF
-//       doc.autoTable({
-//         html: `#${tablaVisible}`,
-//         startY: y,
-//         styles: { fontSize: 8 },
-//         headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: 'center' }
-//       });
-
-//       // Guardamos el archivo PDF
-//       doc.save('Reporte_Inventario_General_Detallado.pdf');  
-//     }
-//   } else {
-//     alert("No hay tabla visible para generar el reporte.");
-//   }
 // }
-
-// function descargarPDFDetalle() { 
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF('l', 'mm', 'a4');
-//   // Obtener la fecha actual de impresión
-//   const fechaImpresion = new Date().toLocaleDateString();
-
-//   // Verificar cuál es el reporte visible
-//   let tablaVisible = null;
-
-//   const reportes = [
-//     { id: 'reporteInventarioRCM', tabla: 'tablaReporteRCM' },
-//     { id: 'reporteInventarioRM', tabla: 'tablaReporteRM' },
-//     { id: 'reporteInventarioRC', tabla: 'tablaReporteRC' },
-//     { id: 'reporteInventarioD', tabla: 'tablaReporteD' }
-//   ];
-
-//   reportes.forEach(reporte => {
-//     const divReporte = document.getElementById(reporte.id);
-//     if (divReporte && divReporte.style.display !== 'none') {
-//       tablaVisible = reporte.tabla;
-//     }
-//   });
-
-//   if (tablaVisible) {
-//     const tabla = document.getElementById(tablaVisible);
-//     if (tabla) {
-//       const margenIzquierdo = 10;
-//       let y = 10;
-
-//       // Agregar la fecha de impresión alineada a la derecha
-//       doc.setFontSize(10);
-//       const pageWidth = doc.internal.pageSize.getWidth();
-//       doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 48, y);
-      
-//       y += 10;
-
-//       // Agregar el título centrado
-//       doc.setFontSize(14);
-//       doc.setFont("helvetica", "bold");
-//       doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
-
-//       y += 10;
-
-//       // Agregar el subtítulo centrado
-//       doc.setFontSize(12);
-//       doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
-
-//       y += 10;
-
-//       // Información del reporte
-//       doc.setFontSize(10);
-//       doc.setFont("helvetica", "normal");
-//       doc.text(`Fecha inventario: 2024-02-07    Bodega: 81 Centro de Distribucion (CEDI)    Clase Marca`, margenIzquierdo, y);
-
-//       y += 10;
-
-//       // Extraer los encabezados de la tabla
-//       const encabezados = [];
-//       const filas = [];
-//       const thead = tabla.querySelector("thead tr");
-//       if (thead) {
-//         thead.querySelectorAll("th").forEach(th => {
-//           encabezados.push(th.innerText.trim()); // Trim para limpiar espacios
-//         });
-//       }
-
-//       // Extraer el contenido de la tabla
-//       tabla.querySelectorAll("tbody tr").forEach(row => {
-//         const fila = [];
-//         row.querySelectorAll("td").forEach(td => {
-//           fila.push(td.innerText.trim()); // Trim para limpiar espacios
-//         });
-//         filas.push(fila);
-//       });
-
-//       // Ajustar la tabla al ancho de la página
-//       doc.autoTable({
-//         head: [encabezados],
-//         body: filas,
-//         startY: y,
-//         tableWidth: 'auto',  // Ajusta el ancho de la tabla a la página
-//         columnWidth: 'wrap', // Ajusta automáticamente las columnas
-//         styles: { fontSize: 8, cellPadding: 2 }, // Reducimos el tamaño de la fuente
-//         headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: 'center' },
-//         margin: { left: 10, right: 10 }, // Márgenes
-//         didDrawCell: (data) => {
-//           if (data.column.index === encabezados.length - 1 && data.cell.text.length > 15) {
-//             data.cell.styles.cellWidth = 'wrap'; // Envuelve el texto en celdas largas
-//           }
-//         }
-//       });
-
-//       // Guardamos el archivo PDF
-//       doc.save('Reporte_Inventario_General_Detallado.pdf');  
-//     }
-//   } else {
-//     alert("No hay tabla visible para generar el reporte.");
-//   }
-// }
-
-/////////////////////////////////////////////////////////////////
-// function descargarPDFDetalle() { 
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF('l', 'mm', 'a4'); 
-
-//   // Obtener la fecha actual de impresión
-//   const fechaImpresion = new Date().toLocaleDateString();
-
-//   // Identificar la tabla visible
-//   const tabla = document.getElementById('tablaReporteD');
-
-//   if (tabla) {
-//     // Configuración de márgenes
-//     const margenIzquierdo = 10;
-//     let y = 10; // Posición inicial en Y
-
-//     // Agregar la fecha de impresión alineada a la derecha
-//     doc.setFontSize(10);
-//     const pageWidth = doc.internal.pageSize.getWidth();
-//     doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 48, y);
-    
-//     // Espacio entre líneas
-//     y += 10;
-
-//     // Agregar el título centrado
-//     doc.setFontSize(14);
-//     doc.setFont("helvetica", "bold");
-//     doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
-
-//     // Espacio entre líneas
-//     y += 10;
-
-//     // Agregar el subtítulo centrado
-//     doc.setFontSize(12);
-//     doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
-
-//     // Espacio entre líneas
-//     y += 10;
-
-//     // Información del reporte
-//     doc.setFontSize(10);
-//     doc.setFont("helvetica", "normal");
-//     doc.text(`Fecha inventario: 2024-02-07    Bodega: 81 Centro de Distribucion (CEDI)    Clase Marca`, margenIzquierdo, y);
-
-//     // Espacio antes de la tabla
-//     y += 10;
-
-//     // Usando el plugin autotable para agregar la tabla al PDF
-//     doc.autoTable({
-//       html: `#tablaReporteD`,
-//       startY: y,
-//       styles: { fontSize: 8 },
-//       headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: 'center' }
-//     });
-
-//     // Guardamos el archivo PDF
-//     doc.save('Reporte_Inventario_General_Detallado.pdf');  
-//   } else {
-//     alert("No hay tabla visible para generar el reporte.");
-//   }
-// }
-
-// function descargarPDFDetalle() {
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF('l', 'mm', 'a4');
-
-//   // Obtener la fecha actual de impresión
-//   const fechaImpresion = new Date().toLocaleDateString();
-  
-//   // Configuración de márgenes y posición inicial
-//   const margenIzquierdo = 10;
-//   let y = 10; 
-
-//   const pageWidth = doc.internal.pageSize.getWidth();
-
-//   // Agregar la fecha de impresión alineada a la derecha
-//   doc.setFontSize(10);
-//   doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 48, y);
-  
-//   y += 10;
-
-//   // Agregar el título centrado
-//   doc.setFontSize(14);
-//   doc.setFont("helvetica", "bold");
-//   doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
-
-//   y += 10;
-
-//   // Agregar el subtítulo centrado
-//   doc.setFontSize(12);
-//   doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
-
-//   y += 10;
-
-//   // Información del reporte
-//   doc.setFontSize(10);
-//   doc.setFont("helvetica", "normal");
-//   doc.text(`Fecha inventario: 2024-02-07    Bodega: 81 Centro de Distribucion (CEDI)    Clase Marca`, margenIzquierdo, y);
-
-//   y += 10;
-
-//   // Obtener la tabla desde el DOM
-//   const tabla = document.querySelector("#tablaReporteD");
-
-//   if (tabla) {
-//     let encabezados = [];
-//     let filas = [];
-
-//     // Extraer los encabezados de la tabla
-//     const thead = tabla.closest("table").querySelector("thead tr");
-//     if (thead) {
-//       thead.querySelectorAll("th").forEach(th => {
-//         encabezados.push(th.innerText.trim());
-//       });
-//     }
-
-//     // Extraer las filas de datos
-//     tabla.querySelectorAll("tr").forEach(row => {
-//       let fila = [];
-//       row.querySelectorAll("td").forEach(td => {
-//         fila.push(td.innerText.trim());
-//       });
-//       filas.push(fila);
-//     });
-
-//     // Agregar la tabla al PDF
-//     doc.autoTable({
-//       head: [encabezados],
-//       body: filas,
-//       startY: y,
-//       styles: { fontSize: 8, cellPadding: 2 },
-//       headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: 'center' },
-//       margin: { left: 10, right: 10 }
-//     });
-
-//     // Guardamos el archivo PDF
-//     doc.save('Reporte_Inventario_General_Detallado.pdf');  
-//   } else {
-//     alert("No se encontró la tabla para generar el reporte.");
-//   }
-// }
-
-
-function descargarPDFDetalle() { 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4');
-
-  // Obtener la fecha actual
-  const fechaImpresion = new Date().toLocaleDateString();
-
-  // Configuración de márgenes y posiciones
-  const margenIzquierdo = 10;
-  let y = 10; 
-
-  // Agregar la fecha de impresión alineada a la derecha
-  doc.setFontSize(10);
-  const pageWidth = doc.internal.pageSize.getWidth();
-  doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 48, y);
-  
-  y += 10;
-
-  // Título
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
-
-  y += 10;
-
-  // Subtítulo
-  doc.setFontSize(12);
-  doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
-
-  y += 10;
-
-  // Información del reporte
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text("Fecha inventario: 2024-02-07    Bodega: 81 Centro de Distribucion (CEDI)    Clase Marca", margenIzquierdo, y);
-
-  y += 10;
-
-  // Obtener la tabla y procesar filas manualmente
-  const tabla = document.getElementById("tablaReporteD");
-
-  if (tabla) {
-    let encabezados = [];
-    let datos = [];
-
-    // Obtener los encabezados desde el thead
-    const thead = tabla.closest("table").querySelector("thead");
-    if (thead) {
-      encabezados = [...thead.querySelectorAll("th")].map(th => th.innerText);
-    }
-
-    // Obtener los datos de cada fila
-    const filas = tabla.querySelectorAll("tr");
-    filas.forEach(fila => {
-      const celdas = [...fila.querySelectorAll("td")].map(td => td.innerText);
-      if (celdas.length > 0) datos.push(celdas);
-    });
-
-    // Generar la tabla en el PDF con autoTable
-    doc.autoTable({
-      head: [encabezados],
-      body: datos,
-      startY: y,
-      styles: { fontSize: 8 },
-      headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: "center" }
-    });
-
-    // Guardar el archivo PDF
-    doc.save("Reporte_Inventario_General_Detallado.pdf");
-  } else {
-    alert("No se encontró la tabla para generar el reporte.");
-  }
-}
-
-
-function encabezadoReporte(){
-
-}
-
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 function descargarExcel() {
     // Obtener los datos de la tabla generada dinámicamente
@@ -1825,12 +1111,7 @@ function generarReporteInventarioRC(datos) {
 
   Object.entries(marcasOrdenadas).forEach(([marca, items]) => {
       let subtotalSistema = 0, subtotalConteo = 0, subtotalDiferencia = 0, 
-          subtotalCantSistema = 0, subtotalCantContada = 0;
-
-      // let rowMarca = document.createElement("tr");
-      // rowMarca.classList.add("fila-marca");
-      // rowMarca.innerHTML = `<td colspan="6">${clase}</td>`;
-      // fragmento.appendChild(rowMarca);
+          subtotalCantSistema = 0, subtotalCantContada = 0;     
 
       items.forEach(item => {
           subtotalSistema += item.SISTEMA;
@@ -1901,6 +1182,7 @@ function generarReporteInventarioRC(datos) {
 }
 
 function generarReporteInventarioD(datos) {
+  let bodega=document.getElementById('bodega-sucursal').textContent;
   const tablaReporte = document.getElementById("tablaReporteD");
   tablaReporte.innerHTML = ""; // Limpiar la tabla antes de empezar
 
@@ -1933,7 +1215,7 @@ function generarReporteInventarioD(datos) {
   const fragmento = document.createDocumentFragment(); // Mejor rendimiento en el DOM
 
   let rowBodega = document.createElement("tr");
-  rowBodega.innerHTML = `<td colspan="7">BODEGA 81 CENTRO DE DISTRIBUCION (CEDI)</td>`;
+  rowBodega.innerHTML = `<td colspan="7">BODEGA ${bodega}</td>`;
   fragmento.appendChild(rowBodega);
 
   let subtotalBodegaSistema = 0, subtotalBodegaConteo = 0, subtotalBodegaDiferencia = 0, 
@@ -2051,6 +1333,388 @@ function generarReporteInventarioD(datos) {
   ocultarLoader();
   document.getElementById("reporteInventarioD").style.display = "block";
 }
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+function inicializarBotonesDescarga() {    
+  const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
+  const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF    
+  const lblExcel = document.getElementById('lblExcel').style.display = 'block';
+  const lblPDF = document.getElementById('lblPDF').style.display = 'block';
+  btnDescargarExcel ? btnDescargarExcel.hidden = false : btnDescargarExcel.hidden = true;
+  btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
+   
+} 
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+function descargarPDF() {
+  let pTipoRpt = document.getElementById('tipoResumido').checked ? 'R' : 'D';
+  let pAgrupadoClase = document.getElementById('agrupadoClase').checked ? 'S' : 'N';
+  let pAgrupadoMarca = document.getElementById('agrupadoMarca').checked ? 'S' : 'N';
 
 
+    console.log('TIPO DE REPORTE:');
+    if(pTipoRpt === 'R' && pAgrupadoClase === 'S' && pAgrupadoMarca === 'S'){
+        console.log('Descarga Resumido, Clase, MArca');
+        descargarPDFRCM();
+      }else if(pTipoRpt === 'R' && pAgrupadoClase === 'N' && pAgrupadoMarca === 'S'){
+        console.log('Descarga a Resumido, MArca');
+        descargarPDFRM();
+      }else if(pTipoRpt === 'R' && pAgrupadoClase === 'S' && pAgrupadoMarca === 'N'){
+        console.log('Descarga a Resumido, Clase');
+        descargarPDFRC();
+      }else if(pTipoRpt === 'D' && pAgrupadoClase === 'N' && pAgrupadoMarca === 'N'){
+        console.log('Descarga a Detallado, Todas las Clasificaciones');   
+        descargarPDFDetalle()    
+      } 
+}
+function descargarPDFRCM() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
 
+ // Título, subtítulo y fechas
+  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
+  const subtitulo = "    Reporte de Inventario General Resumen";
+  const pBodega = document.getElementById('bodega-sucursal').textContent;
+  const fechaInventario = document.getElementById('fecha_ini').value;
+  const fechaDescarga = new Date().toLocaleDateString();
+
+ // Obtener las cabeceras de la tabla
+  const tabla = document.getElementById("reporteInventarioRCM").querySelector("table");
+  const thead = tabla.querySelector("thead");
+  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
+
+ // Obtener los datos de la tabla
+  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
+  const filas = rows.map(row => {
+      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
+  });
+ // Función para dibujar encabezado en cada página
+  const dibujarEncabezado = () => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const tituloWidth = doc.getTextWidth(titulo);
+      const subtituloWidth = doc.getTextWidth(subtitulo);
+
+      doc.setFontSize(14);
+      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
+
+      doc.setFontSize(12);
+      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
+
+      doc.setFontSize(9);
+      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
+      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
+      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+  };
+
+ // Agregar pie de página con número de página
+  const agregarPiePagina = (data) => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      doc.setFontSize(7);
+      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+  };
+
+ // Crear la tabla en el PDF
+  doc.autoTable({
+      head: [headers],
+      body: filas,
+      startY: 60,
+      styles: { fontSize: 8 },
+      headStyles: { 
+          fillColor: [0, 128, 0], 
+          textColor: [255, 255, 255],         
+          halign: 'center' 
+      },
+      margin: { top: 40 },
+      columnStyles: {
+          0: { halign: 'center' },
+          1: { halign: 'center' },
+          2: { halign: 'center' },
+          3: { halign: 'center' },
+          4: { halign: 'center' },
+          5: { halign: 'center' }
+      },
+      didDrawPage: (data) => {
+          dibujarEncabezado();
+          agregarPiePagina(data);
+      },
+      didParseCell: (data) => {
+     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
+        if (data.row.index === filas.length - 1) {
+          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
+            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
+            data.cell.styles.fontStyle = "bold";
+            data.cell.styles.halign = "center"; // Centrar texto
+        }
+    }
+  });
+
+ // Guardar el PDF
+  doc.save("Reporte_Conteo_Inventario_General.pdf");
+}
+function descargarPDFRM() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+
+ // Título, subtítulo y fechas
+  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
+  const subtitulo = "    Reporte de Inventario General Resumen";
+  const pBodega = document.getElementById('bodega-sucursal').textContent;
+  const fechaInventario = document.getElementById('fecha_ini').value;
+  const fechaDescarga = new Date().toLocaleDateString();
+
+ // Obtener las cabeceras de la tabla
+  const tabla = document.getElementById("reporteInventarioRM").querySelector("table");
+  const thead = tabla.querySelector("thead");
+  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
+
+ // Obtener los datos de la tabla
+  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
+  const filas = rows.map(row => {
+      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
+  });
+ // Función para dibujar encabezado en cada página
+  const dibujarEncabezado = () => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const tituloWidth = doc.getTextWidth(titulo);
+      const subtituloWidth = doc.getTextWidth(subtitulo);
+
+      doc.setFontSize(14);
+      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
+
+      doc.setFontSize(12);
+      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
+
+      doc.setFontSize(9);
+      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
+      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
+      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+  };
+
+ // Agregar pie de página con número de página
+  const agregarPiePagina = (data) => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      doc.setFontSize(7);
+      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+  };
+
+ // Crear la tabla en el PDF
+  doc.autoTable({
+      head: [headers],
+      body: filas,
+      startY: 60,
+      styles: { fontSize: 8 },
+      headStyles: { 
+          fillColor: [0, 128, 0], 
+          textColor: [255, 255, 255],         
+          halign: 'center' 
+      },
+      margin: { top: 40 },
+      columnStyles: {
+          0: { halign: 'center' },
+          1: { halign: 'center' },
+          2: { halign: 'center' },
+          3: { halign: 'center' },
+          4: { halign: 'center' },
+          5: { halign: 'center' }
+      },
+      didDrawPage: (data) => {
+          dibujarEncabezado();
+          agregarPiePagina(data);
+      },
+      didParseCell: (data) => {
+     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
+        if (data.row.index === filas.length - 1) {
+          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
+            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
+            data.cell.styles.fontStyle = "bold";
+            data.cell.styles.halign = "center"; // Centrar texto
+        }
+    }
+  });
+
+ // Guardar el PDF
+  doc.save("Reporte_Conteo_Inventario_General.pdf");
+}
+function descargarPDFRC() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+
+ // Título, subtítulo y fechas
+  const titulo = "CENTRAL DE LUBRICANTES, S.A.";
+  const subtitulo = "    Reporte de Inventario General Resumen";
+  const pBodega = document.getElementById('bodega-sucursal').textContent;
+  const fechaInventario = document.getElementById('fecha_ini').value;
+  const fechaDescarga = new Date().toLocaleDateString();
+
+ // Obtener las cabeceras de la tabla
+  const tabla = document.getElementById("reporteInventarioRC").querySelector("table");
+  const thead = tabla.querySelector("thead");
+  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
+
+ // Obtener los datos de la tabla
+  const rows = Array.from(tabla.querySelectorAll("tbody tr"));
+  const filas = rows.map(row => {
+      return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
+  });
+ // Función para dibujar encabezado en cada página
+  const dibujarEncabezado = () => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const tituloWidth = doc.getTextWidth(titulo);
+      const subtituloWidth = doc.getTextWidth(subtitulo);
+
+      doc.setFontSize(14);
+      doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
+
+      doc.setFontSize(12);
+      doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
+
+      doc.setFontSize(9);
+      doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
+      doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
+      doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
+  };
+
+ // Agregar pie de página con número de página
+  const agregarPiePagina = (data) => {
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      doc.setFontSize(7);
+      doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
+  };
+
+ // Crear la tabla en el PDF
+  doc.autoTable({
+      head: [headers],
+      body: filas,
+      startY: 60,
+      styles: { fontSize: 8 },
+      headStyles: { 
+          fillColor: [0, 128, 0], 
+          textColor: [255, 255, 255],         
+          halign: 'center' 
+      },
+      margin: { top: 40 },
+      columnStyles: {
+          0: { halign: 'center' },
+          1: { halign: 'center' },
+          2: { halign: 'center' },
+          3: { halign: 'center' },
+          4: { halign: 'center' },
+          5: { halign: 'center' }
+      },
+      didDrawPage: (data) => {
+          dibujarEncabezado();
+          agregarPiePagina(data);
+      },
+      didParseCell: (data) => {
+     //   Aplicar el mismo formato del encabezado a la fila de Gran Total
+        if (data.row.index === filas.length - 1) {
+          data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
+            data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
+            data.cell.styles.fontStyle = "bold";
+            data.cell.styles.halign = "center"; // Centrar texto
+        }
+    }
+  });
+
+ // Guardar el PDF
+  doc.save("Reporte_Conteo_Inventario_General.pdf");
+}
+function descargarPDFDetalle() { 
+  let bodega=document.getElementById('bodega-sucursal').textContent;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('l', 'mm', 'a4');
+
+  // Obtener la fecha actual
+  const fechaImpresion = new Date().toLocaleDateString();
+
+  // Configuración de márgenes y posiciones
+  const margenIzquierdo = 10;
+  let y = 10; 
+
+  // Agregar la fecha de impresión alineada a la derecha
+  doc.setFontSize(10);
+  const pageWidth = doc.internal.pageSize.getWidth();
+  doc.text(`Fecha de impresión: ${fechaImpresion}`, pageWidth - 55, y);
+  
+  y += 10;
+
+  // Título
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text("CENTRAL DE LUBRICANTES, S.A.", pageWidth / 2, y, { align: "center" });
+
+  y += 10;
+
+  // Subtítulo
+  doc.setFontSize(12);
+  doc.text("Reporte de Inventario General Detallado Por Bodega, Clase y Marca", pageWidth / 2, y, { align: "center" });
+
+  y += 10;
+
+  // Información del reporte
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Fecha inventario: 2024-02-07 "+"Bodega: "+bodega+" / Clase y Marca, segun artículos contados", margenIzquierdo, y);
+
+  y += 10;
+
+  // Obtener la tabla y procesar filas manualmente
+  const tabla = document.getElementById("tablaReporteD");
+
+  if (tabla) {
+    let encabezados = [];
+    let datos = [];
+
+    // Obtener los encabezados desde el thead
+    const thead = tabla.closest("table").querySelector("thead");
+    if (thead) {
+      encabezados = [...thead.querySelectorAll("th")].map(th => th.innerText);
+    }
+
+    // Obtener los datos de cada fila
+    const filas = tabla.querySelectorAll("tr");
+    filas.forEach(fila => {
+      const celdas = [...fila.querySelectorAll("td")].map(td => td.innerText);
+
+      if (celdas.length > 0) {
+        // Verificar si la fila es un subtotal o total
+        const primeraCelda = celdas[0].trim();
+        if (
+          primeraCelda.startsWith("SubTotal") || 
+          primeraCelda.startsWith("Gran Total")
+        ) {
+          // Insertar una columna vacía después de la primera celda
+          celdas.splice(1, 0, "");
+        }
+        datos.push(celdas);
+      }
+    });
+
+    // Generar la tabla en el PDF con autoTable
+    doc.autoTable({
+      head: [encabezados],
+      body: datos,
+      startY: y,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [0, 128, 0], textColor: [255, 255, 255], halign: "center" },
+      columnStyles: {
+        0: { halign: "left" },  // Alinear Artículo a la izquierda
+        1: { halign: "left" },  // Alinear Descripción a la izquierda
+        2: { halign: "right" }, // Alinear números a la derecha
+        3: { halign: "right" },
+        4: { halign: "right" },
+        5: { halign: "right" },
+        6: { halign: "right" },
+      }
+    });
+
+    // Guardar el archivo PDF
+    doc.save("Reporte_Inventario_General_Detallado.pdf");
+  } else {
+    alert("No se encontró la tabla para generar el reporte.");
+  }
+}
