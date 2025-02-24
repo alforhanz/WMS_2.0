@@ -3049,7 +3049,7 @@ margin-top: -35px;
   margin-bottom: 0;
 }
 
-.btn-guardar-boleta {
+/* .btn-guardar-boleta {
   background-color: #28a745;
   border-radius: 5px;
   color: white;
@@ -3057,6 +3057,21 @@ margin-top: -35px;
   border: none;
   font-family: Arial, sans-serif;
   font-size: 14px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  width: 100%;
+  margin-right: 10px;
+  margin-top: 0 !important;
+} */
+
+.btn-guardar-boleta {
+  background-color: #28a745;
+  border-radius: 5px;
+  color: white;
+  height: 36px;
+  border: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   width: 100%;
@@ -3168,4 +3183,9 @@ margin-top: -35px;
 .btn-descarga-boleta {
   display: flex;
   flex-direction: row;
+}
+.btn-guardar-boleta:disabled {
+  background-color: #cccccc; /* Gris claro cuando está deshabilitado */
+  cursor: not-allowed; /* Cursor de "no permitido" */
+  opacity: 0.6; /* Reduce la opacidad */
 }
