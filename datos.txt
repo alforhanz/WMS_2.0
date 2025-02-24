@@ -1,0 +1,50 @@
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////
+ /////////			  RUTAS DEL WMS 	 				    ////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+$routes->get('wmslogin', 'WMSspLogin::login');//Establece la ruta al controlador para el login de usuarios
+$routes->get('getdashinfo/(:num)', 'GetDashInfo::show/$1');//Establece la ruta al controller para los diferentes Dashboards
+$routes->get('wmsgetdashinfo/(:num)', 'WMSGetDashInfo::show/$1');
+$routes->get('filtroswms', 'GetFiltrosWMS::index');
+$routes->get('wmsbusquedaarticulos/(:any)', 'WMSbusquedaArticulos::show/$1');//Establece la ruta al controlador de la búsqueda de articulos
+$routes->get('wmsexistenciaarticulosporbodega/(:any)', 'WMSExistenciasArticuloBodegas::show/$1');//Establece la ruta al controlador de las existencias de los articulos por bodega
+
+//VERIFICACION DE PEDIDOS
+$routes->get('wmsverificacionpedidos/(:any)', 'WMSgetVerificacionPedidos::show/$1'); //Ruta al controlador GetVerificacion
+$routes->get('wmsguardadopedidos/(:any)', 'WMSgetGuardadoParcialPedidos::show/$1');//Ruta Guardado Parcial,  Procesar Pedidos y actualizar filas eliminadas
+$routes->get('devolverarticulo/(:any)', 'GetDevolverArticulo::show/$1');//Ruta al controlador GetDevolverArticulo
+$routes->get('wmsguardadopicking/(:any)', 'WMSgetGuardadoParcialPicking::show/$1');//Ruta al controlador para Guardado Parcial,  Procesar Pedidos y actualizar filas eliminadas
+
+//CONTENEDOR
+$routes->get('contenedor/(:any)', 'GetContenedores::show/$1');//Ruta al controlador GetContenedor
+$routes->get('wmsautorizacioncontenedor', 'WMSgetTrasladoAutorizacion::show');//Ruta al controlador que autoriza el cierre de un contenedor
+
+//ORDENES DE COMPRA
+$routes->get('wmsordenesdecompras/(:any)', 'WMSordenesDeCompras::show_OrdenesDeCompras/$1');//Ruta al controlador que trae la lista de las ordenes de compras
+$routes->get('wmsordenesdecompraslist', 'WMSordenesDeCompras::show_OrdenDeComprasList');//Ruta al controlador que trae la lista de las ordenes de compras
+$routes->get('wmsguardaprocesaordendecompralist/(:any)', 'WMSguardaOdenesDeCompras::show/$1');//Ruta al controlador que guarda parciálmente la lista de las ordenes de compras
+$routes->get('wmsmostarbodegasconsultaordencompra', 'WMSmuestraBodegasConsultaOrdenCompra::show_Bodega');//Ruta al controlador que muestra dinamicamente las bodegas en OC procesadas
+$routes->get('wmscambiaboddestinooc', 'WMScambiaBodegaDestinoOrdenCompra::show_CambioBodega');
+$routes->get('wmsautorizaciones', 'WMSautorizacion::show_autoriza');
+
+//TRASLADOS
+$routes->get('wmsverificaciontraslados/(:any)', 'WMSgetVerificacionDeTraslados::show/$1'); //Ruta al controlador Traslados DE PREPARACION Y PREPARADOS
+$routes->get('wmsguardadotraslado/(:any)', 'WMSgetGuardadoParcialTraslado::show/$1');////Ruta al controlador para GUARDAR Y PROCESAR TRASLADOS
+$routes->get('wmsguardadopickingtraslado/(:any)', 'WMSgetGuardadoParcialPickingTraslado::show/$1');//Ruta al controlador para GUARDAR, PREPARAR TRASLADOS
+
+//INSERTAR CODIGOS DE BARRA NUEVOS
+$routes->get('wmsinsertacodigobarra', 'WMSinsertaCodigoDeBarra::insertaCodigo');//Establece la ruta al controlador que inserta los nuevos codigos de barra
+$routes->get('wmsverificacodigo', 'WMSverificaCodigo::verificaCodigo');//Establece la ruta al controlador que verifica los codigos de barra y de articulo.
+
+//CONTEO INVENTARIO
+$routes->get('wmsfechainventario', 'WMSgetFechasInventario::getfechainv');//Establece la ruta al controlador que trae las fechas de inventsario de la bodega especifica.
+$routes->get('wmsguardaconteoinv/(:any)', 'WMSgetGuardadoConteoInventario::show/$1');////Ruta al controlador para GUARDAR Y PROCESAR el conteo del inventario
+$routes->get('wmsresumeninventario', 'WMSgetResumenInventario::getResumeninv');//Establece la ruta al controlador que trae las fechas de inventsario de la bodega especifica.
+$routes->get('wmseliminadatosinventario', 'WMSdeleteDatosInventario::delDatosinv');//Establece la ruta al controlador que trae las fechas de inventsario de la bodega especifica.
+
+//REPORTE DEL INVENTARIO GENERAL
+$routes->get('wmsclasificacionesreporteinventario', 'WMSgetClasificacionesReporte::getClasificacion');//Obtiene las clasificaciones de clase marca tipo etc...
+$routes->get('wmsreporteinventariogeneral', 'WMSreporteInventarioGeneral::ResumenInventarioGeneral');
+
+//CREACIÓN DE BOLETAS
+$routes->get('wmscreaciondeboletas', 'WMScreacionDeBoletas::crearBoletas');

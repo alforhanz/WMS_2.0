@@ -3030,3 +3030,142 @@ margin-top: -35px;
   font-weight: bold;
   text-align: center;
 }
+
+.boleta {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.btn-container-boleta {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 63%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.btn-guardar-boleta {
+  background-color: #28a745;
+  border-radius: 5px;
+  color: white;
+  height: 36px;
+  border: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  width: 100%;
+  margin-right: 10px;
+  margin-top: 0 !important;
+}
+
+.btn-guardar-boleta:last-child {
+  margin-right: 0;
+}
+
+@media only screen and (max-width: 992px) {
+  .boleta {
+      flex-wrap: wrap;
+  }
+  .col.s4 {
+      width: 100%;
+      margin-bottom: 15px;
+  }
+  .btn-container-boleta {
+      flex-direction: column;
+      align-items: stretch;
+  }
+  .btn-guardar-boleta {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+  }
+  .btn-guardar-boleta:last-child {
+      margin-bottom: 0;
+  }
+}
+
+#myTableBoleta {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+#myTableBoleta thead th.boleta-header {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 2px solid #1f8136;
+  text-transform: uppercase;
+}
+
+#myTableBoleta tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTableBoleta tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#myTableBoleta tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+#myTableBoleta tbody tr:hover {
+  background-color: #eaf2f8;
+}
+
+#tblbodyBoleta td {
+  text-align: left !important; /* Alinea todo el contenido del tbody a la izquierda */
+  padding: 8px;
+  vertical-align: middle;
+  font-weight: normal;
+}
+
+#tblbodyBoleta td.boleta-number {
+  text-align: left !important; /* Cambia de derecha a izquierda */
+  font-family: monospace;
+  font-weight: normal;
+}
+
+#tblbodyBoleta td.boleta-description {
+  text-align: left !important;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: normal;
+}
+
+#tblbodyBoleta td.boleta-text {
+  text-align: left !important;
+  font-weight: normal;
+}
+
+/* Eliminar reglas redundantes de #myTableBoleta td ya cubiertas por #tblbodyBoleta td */
+@media only screen and (max-width: 992px) {
+  #myTableBoleta {
+      font-size: 12px;
+  }
+  #tblbodyBoleta td.boleta-description {
+      max-width: 150px;
+  }
+  #myTableBoleta thead th.boleta-header,
+  #tblbodyBoleta td {
+      padding: 6px;
+  }
+}
+
+.btn-descarga-boleta {
+  display: flex;
+  flex-direction: row;
+}

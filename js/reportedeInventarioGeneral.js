@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         limpiarTabla();    
     }); 
 
-        function actualizarEstadoAgrupado() {
+function actualizarEstadoAgrupado() {
             const agrupadoClase = document.getElementById("agrupadoClase");
             const agrupadoMarca = document.getElementById("agrupadoMarca");
          const deshabilitar = tipoDetallado.checked;
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
          agrupadoMarca.checked = false;
      }
 
-     function actualizarEstadoAgrupadodefault() {
+function actualizarEstadoAgrupadodefault() {
         const agrupadoClase = document.getElementById("agrupadoClase");
         const agrupadoMarca = document.getElementById("agrupadoMarca");
      const deshabilitar = tipoDetallado.checked;
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
      agrupadoMarca.checked = false;
  }
 
-    function fechasDeInventario() {
+function fechasDeInventario() {
         const pBodega = document.getElementById('bodega').value;
         const params = `?pBodega=${pBodega}`;
     
@@ -130,7 +130,8 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Error en la solicitud:", error));
     }
-    
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////   
  async function cargarClasificacionesCLase() {
     const checkClase = document.getElementById("clase-todas");
     const selectClase = document.getElementById("claseReporte"); 
@@ -409,7 +410,8 @@ fetch(env.API_URL + "filtroswms" + params, myInit)
   }
 });
 }
-
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // Función para habilitar o deshabilitar el select según el estado del checkbox
 function habilitaclase() {   
     const selectClase = document.getElementById("claseReporte"); // Select
@@ -574,27 +576,6 @@ function habilitaSeis(){
     var elems = document.querySelectorAll('select');
     M.FormSelect.init(elems);
 }
-
-//Selecciona las los valores de los select de las clasificaciones
-function selectClase(){
-    //const check = document.getElementById('clase-todas')
-    const clase= document.getElementById('claseReporte').value;
-    const marca= document.getElementById('marcaReporte').value;
-    const tipo= document.getElementById('tipoReporte').value;
-    const venta= document.getElementById('ventasReporte').value;
-    const envase= document.getElementById('envaseReporte').value;
-    const seis= document.getElementById('seisReporte').value;
-
-    console.log(clase);
-    console.log(marca);
-    console.log(tipo);
-    console.log(venta);
-    console.log(envase);
-    console.log(seis);
-
-    
-}
-
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 async function resumenGeneral(){
@@ -691,102 +672,6 @@ function obtenerDatosTabla() {
     }
 }  
 
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-// function descargarPDF() {
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
-
-//   Título, subtítulo y fechas
-//   const titulo = "CENTRAL DE LUBRICANTES, S.A.";
-//   const subtitulo = "    Reporte de Inventario General Resumen";
-//   const pBodega = document.getElementById('bodega-sucursal').textContent;
-//   const fechaInventario = document.getElementById('fecha_ini').value;
-//   const fechaDescarga = new Date().toLocaleDateString();
-
-//   Obtener las cabeceras de la tabla
-//   const tabla = document.getElementById("reporteInventario").querySelector("table");
-//   const thead = tabla.querySelector("thead");
-//   const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent);
-
-//   Obtener los datos de la tabla
-//   const rows = Array.from(tabla.querySelectorAll("tbody tr"));
-//   const filas = rows.map(row => {
-//       return Array.from(row.querySelectorAll("td")).map(td => td.textContent);
-//   });
-//   Función para dibujar encabezado en cada página
-//   const dibujarEncabezado = () => {
-//       const pageWidth = doc.internal.pageSize.getWidth();
-//       const tituloWidth = doc.getTextWidth(titulo);
-//       const subtituloWidth = doc.getTextWidth(subtitulo);
-
-//       doc.setFontSize(14);
-//       doc.text(titulo, (pageWidth - tituloWidth) / 2, 30);
-
-//       doc.setFontSize(12);
-//       doc.text(subtitulo, (pageWidth - subtituloWidth) / 2, 40);
-
-//       doc.setFontSize(9);
-//       doc.text(`Agrupado por: Clase, Marca y solo contados`, 9, 55);
-//       doc.text(`Bodega: B-${pBodega}  /  Fecha del inventario: ${fechaInventario}`, 9, 50);
-//       doc.text(`Fecha de impresión: ${fechaDescarga}`, pageWidth - 60, 6);
-//   };
-
-//   Agregar pie de página con número de página
-//   const agregarPiePagina = (data) => {
-//       const pageWidth = doc.internal.pageSize.getWidth();
-//       const pageHeight = doc.internal.pageSize.getHeight();
-//       doc.setFontSize(7);
-//       doc.text(`Página ${data.pageNumber}`, pageWidth - 20, pageHeight - 10);
-//   };
-
-//   Crear la tabla en el PDF
-//   doc.autoTable({
-//       head: [headers],
-//       body: filas,
-//       startY: 60,
-//       styles: { fontSize: 8 },
-//       headStyles: { 
-//           fillColor: [0, 128, 0], 
-//           textColor: [255, 255, 255],         
-//           halign: 'center' 
-//       },
-//       margin: { top: 40 },
-//       columnStyles: {
-//           0: { halign: 'center' },
-//           1: { halign: 'center' },
-//           2: { halign: 'center' },
-//           3: { halign: 'center' },
-//           4: { halign: 'center' },
-//           5: { halign: 'center' }
-//       },
-//       didDrawPage: (data) => {
-//           dibujarEncabezado();
-//           agregarPiePagina(data);
-//       },
-//       didParseCell: (data) => {
-//         Aplicar el mismo formato del encabezado a la fila de Gran Total
-//         if (data.row.index === filas.length - 1) {
-//           data.cell.styles.fillColor = [0, 128, 0]; // Fondo verde
-//             data.cell.styles.textColor = [255, 255, 255]; // Texto blanco
-//             data.cell.styles.fontStyle = "bold";
-//             data.cell.styles.halign = "center"; // Centrar texto
-//         }
-//     }
-//   });
-
-//   Guardar el PDF
-//   doc.save("Reporte_Conteo_Inventario_General.pdf");
-// }
-
-
-
-// function encabezadoReporte(){
-
-// }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -1370,7 +1255,7 @@ function descargarPDF() {
 }
 function descargarPDFRCM() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+  const doc = new jsPDF('p', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
 
  // Título, subtítulo y fechas
   const titulo = "CENTRAL DE LUBRICANTES, S.A.";
@@ -1455,7 +1340,7 @@ function descargarPDFRCM() {
 }
 function descargarPDFRM() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+  const doc = new jsPDF('p', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
 
  // Título, subtítulo y fechas
   const titulo = "CENTRAL DE LUBRICANTES, S.A.";
@@ -1540,7 +1425,7 @@ function descargarPDFRM() {
 }
 function descargarPDFRC() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
+  const doc = new jsPDF('p', 'mm', 'a4'); // 'l' para horizontal (landscape), 'mm' para milímetros, 'a4' para tamaño A4
 
  // Título, subtítulo y fechas
   const titulo = "CENTRAL DE LUBRICANTES, S.A.";
@@ -1626,7 +1511,7 @@ function descargarPDFRC() {
 function descargarPDFDetalle() { 
   let bodega=document.getElementById('bodega-sucursal').textContent;
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('l', 'mm', 'a4');
+  const doc = new jsPDF('p', 'mm', 'a4');
 
   // Obtener la fecha actual
   const fechaImpresion = new Date().toLocaleDateString();
@@ -1711,6 +1596,16 @@ function descargarPDFDetalle() {
         6: { halign: "right" },
       }
     });
+
+
+    // Obtener el número total de páginas
+const totalPages = doc.getNumberOfPages();
+
+for (let i = 1; i <= totalPages; i++) {
+  doc.setPage(i); // Ir a la página i
+  doc.setFontSize(10);
+  doc.text(`Página ${i} de ${totalPages}`, pageWidth - 20, doc.internal.pageSize.getHeight() - 10, { align: "right" });
+}
 
     // Guardar el archivo PDF
     doc.save("Reporte_Inventario_General_Detallado.pdf");
