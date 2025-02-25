@@ -3147,7 +3147,7 @@ margin-top: -35px;
 }
 
 #tblbodyBoleta td.boleta-number {
-  text-align: left !important; /* Cambia de derecha a izquierda */
+  text-align: right !important; /* Cambia de derecha a izquierda */
   font-family: monospace;
   font-weight: normal;
 }

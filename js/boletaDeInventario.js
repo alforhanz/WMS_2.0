@@ -76,9 +76,9 @@ async function presentarBoleta(){
     let TipoConsulta = 'D';    
     let FechaProceso = document.getElementById('fecha_ini').value;
     let Bodega = document.getElementById('bodega').value;  
-    let SoloDiferencia = 'S';
-    let SoloConteoCero = 'N';  
-    let Clasificacion = 'S';     
+    let SoloDiferencia = document.getElementById('soloDiferencias').checked ? 'S' : 'N';
+    let SoloConteoCero = document.getElementById('contIgualaCero').checked ? 'S' : 'N';  
+    let Clasificacion = 'null';     
     
     const params = new URLSearchParams({
         pSistema,
@@ -97,11 +97,15 @@ async function presentarBoleta(){
       if (result.msg === "SUCCESS") {
             if(result.resultado.length > 0){
               datosResumen=result.resultado;
+              const btnValidarBoleta = document.getElementById('btnValidarBoleta');
+              btnValidarBoleta.disabled = false; 
                   console.log('BOLETA DE INVENTARIO');
                   console.log(result.resultado)
                   generarTablaBoleta(datosResumen);
-                 inicializarBotonesDescarga();                
+                 inicializarBotonesDescarga();    
+                             
             }else{
+                
                 limpiarTabla();
               Swal.fire({                
                   icon: "info",
@@ -110,8 +114,7 @@ async function presentarBoleta(){
                   confirmButtonColor: "#28a745",
                 });            
                 
-          } 
-            
+          }             
           ocultarLoader();             
       } else {
         console.log("Error en el SP");
