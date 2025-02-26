@@ -6,7 +6,7 @@ let datosResumen = [];  // Definir la variable global para almacenar los datos d
 document.addEventListener("DOMContentLoaded", function () {
   fechasDeInventario();
   //limpiarTabla();
-  console.log("DOM cargado completamente ...");
+  //console.log("DOM cargado completamente ...");
   // Inicializar el select de Materialize
   var elems = document.querySelectorAll("select");
   M.FormSelect.init(elems);
@@ -28,8 +28,8 @@ function fechasDeInventario() {
             .then((response) => response.json())
             .then((result) => {
                 const resultado = result.fechainv; // Arreglo con las fechas
-                //console.log("Fechas programadas: ");
-                //console.log(resultado);
+                ////console.log("Fechas programadas: ");
+                ////console.log(resultado);
     
                 const fechaSelect = document.getElementById('fecha_ini');
     
@@ -91,7 +91,7 @@ async function presentarBoleta(){
         Clasificacion       
     }).toString();
     mostrarLoader();
-    fetch(`${env.API_URL}wmscreaciondeboletas?${params}`)
+    fetch(`${env.API_URL}wmspresentaciondeboletas?${params}`)
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
@@ -99,13 +99,12 @@ async function presentarBoleta(){
               datosResumen=result.resultado;
               const btnValidarBoleta = document.getElementById('btnValidarBoleta');
               btnValidarBoleta.disabled = false; 
-                  console.log('BOLETA DE INVENTARIO');
-                  console.log(result.resultado)
+                  //console.log('BOLETA DE INVENTARIO');
+                  //console.log(result.resultado)
                   generarTablaBoleta(datosResumen);
                  inicializarBotonesDescarga();    
                              
-            }else{
-                
+            }else{                
                 limpiarTabla();
               Swal.fire({                
                   icon: "info",
@@ -117,7 +116,7 @@ async function presentarBoleta(){
           }             
           ocultarLoader();             
       } else {
-        console.log("Error en el SP");
+        //console.log("Error en el SP");
       }
     });  
   }
@@ -145,16 +144,16 @@ async function validarBoleta() {
     }).toString();
     
     mostrarLoader();
-    fetch(`${env.API_URL}wmscreaciondeboletas?${params}`)
+    fetch(`${env.API_URL}wmspresentaciondeboletas?${params}`)
     .then((response) => response.json())
     .then((result) => {
         if (result.msg === "SUCCESS") {
             datosResumen = result.resultado;
             const btnCrearBoleta = document.getElementById('btnCrearBoleta'); // Referencia al botón
-
+            const btnValidarBoleta = document.getElementById('btnValidarBoleta');
             if (result.resultado.length > 0) {
-                console.log('BOLETA DE INVENTARIO');
-                console.log(result.resultado);
+                //console.log('BOLETA DE INVENTARIO');
+                //console.log(result.resultado);
                 Swal.fire({
                     icon: "info",
                     title: "Información",
@@ -179,13 +178,18 @@ async function validarBoleta() {
                     title: "Información",
                     text: "Habilitar creación de la boleta",
                     confirmButtonColor: "#28a745",
+                }).then((swalResult) => {
+                    if (swalResult.isConfirmed) {
+                        btnCrearBoleta.disabled = false; // Habilitar el botón si no hay artículos remitidos
+                        btnValidarBoleta.disabled = false;            
+                    }
                 });            
-                btnCrearBoleta.disabled = false; // Habilitar el botón si no hay artículos remitidos
+               
             } 
             
             ocultarLoader();             
         } else {
-            console.log("Error en el SP");
+            //console.log("Error en el SP");
             ocultarLoader();
         }
     })
@@ -194,6 +198,110 @@ async function validarBoleta() {
         ocultarLoader();
     });
 }
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+async function actualizaCostos(){
+
+    let pSistema = 'WMS';
+    let pUsuario = localStorage.getItem('username');
+    let pOrigen = 'S';      
+    
+    const params = new URLSearchParams({
+        pSistema,
+        pUsuario,
+        pOrigen    
+    }).toString();
+    mostrarLoader();
+    fetch(`${env.API_URL}wmsactualizacostosinv?${params}`)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.msg === "SUCCESS") {
+            if(result.resultado.length > 0){
+              datosResumen=result.resultado;
+              const btnValidarBoleta = document.getElementById('btnValidarBoleta');
+              btnValidarBoleta.disabled = false; 
+                  //console.log('BOLETA DE INVENTARIO');
+                  //console.log(result.resultado)
+                  crearBoleta();
+            }else{
+                
+                limpiarTabla();
+              Swal.fire({                
+                  icon: "info",
+                  title: "Información",
+                  text: "No es posible crear la boleta",
+                  confirmButtonColor: "#28a745",
+                });            
+                
+          }             
+          ocultarLoader();             
+      } else {
+        //console.log("Error en el SP");
+      }
+    });  
+
+}
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+async function crearBoleta(){
+    // Swal.fire({
+    //     icon: "info",
+    //     title: "Información",
+    //     text: "Funcionalidad en construcción",
+    //     confirmButtonColor: "#28a745",
+    //   });
+    let pSistema = 'WMS';
+    let pUsuario = localStorage.getItem('username');
+    let pOrigen = 'I';    
+    let FechaProceso = document.getElementById('fecha_ini').value;
+    let Bodega = document.getElementById('bodega').value;  
+    let SoloDiferencia = 'S';
+   
+    
+    const params = new URLSearchParams({
+        pSistema,
+        pUsuario,
+        pOrigen,
+        FechaProceso,
+        Bodega,
+        SoloDiferencia    
+    }).toString();
+    mostrarLoader();
+    fetch(`${env.API_URL}wmscrearvoletainv?${params}`)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.msg === "SUCCESS") {
+            if(result.resultado.length > 0){
+              datosResumen=result.resultado;
+              const btnValidarBoleta = document.getElementById('btnValidarBoleta');
+              btnValidarBoleta.disabled = false; 
+                  //console.log('BOLETA DE INVENTARIO');
+                  //console.log(result.resultado)                  
+                  Swal.fire({                
+                    icon: "info",
+                    title: "Información",
+                    text: "Consecutivo Boleta: "+result.resultado[0][""],
+                    confirmButtonColor: "#28a745",
+                  });                 
+            }else{
+                
+                limpiarTabla();
+              Swal.fire({                
+                  icon: "info",
+                  title: "Información",
+                  text: "No hay registros en este momento verifique los filtros de búsqueda",
+                  confirmButtonColor: "#28a745",
+                });            
+                
+          }             
+          ocultarLoader();             
+      } else {
+        //console.log("Error en el SP");
+      }
+    });  
+
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 function obtenerDatosTabla() {    
@@ -207,7 +315,7 @@ function obtenerDatosTabla() {
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 function generarTablaBoleta(datos) {
-    limpiarTabla();
+   // limpiarTabla();
     const tablaResumen = document.getElementById("myTableBoleta");
     const tbodyResumen = document.getElementById("tblbodyBoleta");
     const cantidadRegistros = document.getElementById("cantidadDeRegistros");
@@ -449,26 +557,32 @@ function limpiarTabla() {
         }
     });
 
-    // Ocultar los botones de descarga y sus etiquetas
+   //// Ocultar los botones de descarga y sus etiquetas
+    const btnValidarBoleta = document.getElementById("btnValidarBoleta");
+    btnValidarBoleta.disabled=true;
+    const btnCrearBoleta = document.getElementById("btnCrearBoleta");
+    btnCrearBoleta.disabled=true;
+
     const btnDescargarExcel = document.getElementById("btnDescargarExcel");
     const lblExcel = document.getElementById("lblExcel");
     const btnDescargarPDF = document.getElementById("btnDescargarPDF");
     const lblPDF = document.getElementById("lblPDF");
 
+
     if (btnDescargarExcel) {
         btnDescargarExcel.setAttribute("hidden", "");
-        console.log("Ocultando btnDescargarExcel"); // Para depuración
+        //console.log("Ocultando btnDescargarExcel"); // Para depuración
     }
     if (lblExcel) {
         lblExcel.setAttribute("hidden", "");
-        console.log("Ocultando lblExcel"); // Para depuración
+        //console.log("Ocultando lblExcel"); // Para depuración
     }
     if (btnDescargarPDF) {
         btnDescargarPDF.setAttribute("hidden", "");
-        console.log("Ocultando btnDescargarPDF"); // Para depuración
+        //console.log("Ocultando btnDescargarPDF"); // Para depuración
     }
     if (lblPDF) {
         lblPDF.setAttribute("hidden", "");
-        console.log("Ocultando lblPDF"); // Para depuración
+        //console.log("Ocultando lblPDF"); // Para depuración
     }
 }
