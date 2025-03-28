@@ -21,7 +21,7 @@
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <!-- FONTS -->
-  <style>   
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&display=swap');
   </style>
   <!-- FONTS -->
@@ -29,74 +29,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="js/encabezado.js" type="text/javascript"></script>
   <!-- <meta name="theme-color" content=""> -->
-  <title>Verificación de Picking - WMS</title>
+  <title>Detalle de Traslados Verificados- WMS</title>
 </head>
 
-<!-- <body id="home" tabindex="-1"> -->
-  <body id="home">
+<body id="home" tabindex="-1">
   <!-- HEADER -->
   <my-header></my-header>
   <!--HEADER-->
   <main>
     <div id="resultadoBusqueda">
-      <h2 class="titulo-vista">Verificación de Picking de pedidos</h2>
       <div id="contenedorLoader"></div>
       <div id="carga"></div>
       <div class="container">
-  
-        <div class="row">
-          <div id="menup">
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input placeholder="Ingrese número de pedido" id="pPedido" type="text" class="validate">
-              <label for="first_name">Número de Pedido</label>
-            </div>
-          </div>
-  
-          <div class="input-field col s6">
+        <h2 class="titulo-vista">Detalle de Traslados Verificados</h2>
+        <!-- Switch traslados Entrada y salida-->
+        <div class="row col s12 switch-button">
+          <div class="input-field col s4">
             <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
             <label for="fecha_ini">Fecha Inicial</label>
           </div>
-  
-          <div class="input-field col s6">
+
+          <div class="input-field col s4">
             <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
             <label for="fecha_fin">Fecha Final</label>
           </div>
-
-          <!-- Switch Pedidos acturados y finalizados-->  
-          <div class="row col s12 switch-button">
-            <div class="switch">
-              <label class="label-button-switch">
-                <input checked="false" type="checkbox" id="toggleSwitch">
-                <span class="lever"></span>
-                Pedidos Preparados
+<!-- 
+          <div class="input-field col s4">
+            <div>
+              <label>
+                <input type="checkbox" id="Entrada" checked/>
+                <span>Traslados de Entrada</span>
               </label>
             </div>
+            
+            <div >
+              <label>
+                <input type="checkbox" id="Salida" checked />
+                <span>Traslados de Salida</span>
+              </label>
+            </div>
+          </div> -->
+          <div class="input-field col s2">
+            <label>
+              <input type="checkbox" id="tEntrada" checked />
+              <span>Traslados de Entrada</span>
+            </label>
           </div>
+          <div class="input-field col s2">
+            <label>
+              <input type="checkbox" id="tSalida" checked />
+              <span>Traslados de Salida</span>
+            </label>
+          </div>
+        </div>         
+         
+          <div class="row">
+            <div class="input-field col s4">
+              <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate">
+              <!-- <label for="first_name">Número de Contenedor</label> -->
+              <label for="first_name"></label>
+            </div>
+            <div class="input-field col s4">
+              <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate">
+              <!-- <label for="first_name">Número de Contenedor</label> -->
+              <label for="first_name"></label>
+            </div>
+          </div>
+       
 
-        </div>          
-        <!-- Boton Buscar Pedidos-->
+        <!-- Boton Buscar traslados-->
         <div class="row col-md-12 S12">
-          <button class="btn waves-effect waves-light" type="submit" onclick="validarFormulario()">Buscar
+          <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">Buscar
             <i class="material-icons right">send</i>
           </button>
         </div>
-  
+
         <!-- Tabla de resultados para listado de pedidos -->
-        <div class="row">
+        <div class="row tblcontenedor">
           <div id="resultadoGeneral"></div>
-          <table id="tblpedido" class="display centered">
+          <table id="tblDetallestrasladosVerif" class="display centered">
             <thead>
-              <tr class="themeColor2">
-                <th>DOC</th>
-                <th>DESC</th>
-                <th>TOTAL UN</th>
-                <th>L PREP</th>
-                <th>VERIF</th>
+              <tr class="themeColor-Traslado">
+                <th>TRASLADO</th>
+                <th id="destino">BODEGA DESTINO</th>
+                <th id="origen">BODEGA ORIGEN</th>
+                <th>CANT VERIF</th>
+                <th>CANT PREP</th>
+                <th>FECHA</th>
               </tr>
             </thead>
-            <tbody class="striped"></tbody>
+            <tbody id="busqueda_result" class="striped"></tbody>
           </table>
           <div id="resultadoPaginador"></div>
         </div>
@@ -112,15 +134,15 @@
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/verificacionDePicking.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/loader.js"></script>
-  <script type="tex/javascript" src="js/paginacion.js"></script>
+  <script type="text/javascript" src="js/detalleTrasladoVerificados.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/loader.js?v1.1"></script>
+  <script type="tex/javascript" src="js/paginacion.js?v1.1"></script>
   <!--JavaScript local-->
 
   <script>
     // Ejecutar la función mostrarLoader cuando el DOM esté listo
     document.addEventListener("DOMContentLoaded", mostrarLoader);
-
+    //document.addEventListener("DOMContentLoaded", aplicarEstilosTablaPedidos);
     // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar
     // window.addEventListener("load", ocultarLoader);
     // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar completamente
@@ -128,8 +150,6 @@
       // Llama a la función para ocultar el loader
       ocultarLoader();
     };
-
-
   </script>
 </body>
 

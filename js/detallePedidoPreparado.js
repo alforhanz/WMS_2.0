@@ -1,6 +1,9 @@
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 //Variable global que contiene el detalle del pedido
 var detallePedidoList = "";
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", function () {
 
   //inicializarBotones();
@@ -17,7 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location = "index.html";
   }
 });
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function cargarDetallePedido(documento, pedido, estado) {
   // Concatena la variable con texto y asigna el valor al label documento y pedido
   document.getElementById("documento").innerHTML = "Documento: " + documento;
@@ -42,7 +46,8 @@ function cargarDetallePedido(documento, pedido, estado) {
       }
     });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function armarTablaLectura(detallePedidoList) {
   var tbody = document.getElementById("tblbodyLectura");
   var estadoPreparacion = localStorage.getItem("EstadoPreparacion");
@@ -121,7 +126,8 @@ function armarTablaLectura(detallePedidoList) {
             }
       }
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 /////////VALIDA EL CODIGO LEIDO EN LA PESTAÑA LECTURA//////////////////
 function validarCodigoBarras(input) {
   var pedidoList = detallePedidoList;
@@ -170,9 +176,9 @@ function validarCodigoBarras(input) {
     });
   }
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///// Funcion que crea la nueva fila en la pestaña lectura ////////////
-
 function crearNuevaFila() {
   const tableBody = document.querySelector('#tblbodyLectura');
 
@@ -202,13 +208,15 @@ function crearNuevaFila() {
     nuevoCodigoBarrasInput.focus();
   }
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO./////////
 function validarCantidadPedida() {
   //Llamado a guardar datos en la variable arrray en el LS
   guardarTablaEnArray();
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function guardarTablaEnArray() {
   var dataArray = [];
 
@@ -246,7 +254,8 @@ function guardarTablaEnArray() {
 
   return dataArray;
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
 function agrupar() {
   // Obtener el arreglo almacenado en localStorage
@@ -284,7 +293,8 @@ function agrupar() {
   // Actualizar el arreglo en localStorage con los resultados consolidados
   localStorage.setItem("dataArray", JSON.stringify(newArray));
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 // Funcion que elimina filas en la pestaña lectura
 function eliminarFila(icon) {
 
@@ -342,7 +352,8 @@ function eliminarFila(icon) {
     }
   });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///FUNCIÓN QUE ARMA LA TABLA DE LA PESTAÑA VERIFICACIÓN
 function armarTablaVerificacion(detallePedidoList) {
 
@@ -386,7 +397,8 @@ function armarTablaVerificacion(detallePedidoList) {
 
   //verificacion();
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function limpiarMensajes() {
   localStorage.removeItem("mensajes");
   const mensajeTextArea = document.getElementById('mensajeText');
@@ -394,11 +406,10 @@ function limpiarMensajes() {
   // Limpiar la variable 'mensajes' del localStorage
   guardarTablaEnArray();
 }
-
-
-//FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
+   /////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
+ //FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
 // POR ARTICULO, COMPARA LO QUE TIENE EL ARRAY DEL LS Y VERIFICA LAS COINCIDENCIAS, PARA MOSTRARLO EN LA PESTAÑA VERIFICACION
-
 function verificacion() {
   var dataArray = JSON.parse(localStorage.getItem('dataArray')); 
   var cantidadesTotales = {};
@@ -546,8 +557,9 @@ function verificacion() {
 
   //activaDevolverArticulo();
 }//Fin de verificacion
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para verificar si todas las filas tienen el ícono "fa-check" en la columna "CANT VERIF", Y ACTIVAR EL BOTON DE PROCESAR
 function todasLasFilasVerificadas() {
   // Obtener todas las filas de la tabla de verificación
@@ -571,8 +583,9 @@ function todasLasFilasVerificadas() {
   // Si todas las celdas contienen el ícono "done_all", retornar verdadero
   return true;
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //FUNCION QUE VERIFICA LAS CANTIDASDES LEIDAS Y DEL PEDIDO PÁRA ACTIVAR EL BOTON DE GUARDADO PARCIAL
 function activaGuardadoParcial() {
   // Obtener todas las filas de la tabla de verificación
@@ -594,7 +607,8 @@ function activaGuardadoParcial() {
   // Si ninguna fila tiene cantidad leída mayor que cantidad pedida, retornamos false
   return false;
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para mostrar los mensajes almacenados en el localStorage en el textarea
 function mostrarMensajesLocalStorage() {
@@ -610,93 +624,18 @@ function mostrarMensajesLocalStorage() {
     }
   }
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 // Llama a la función mostrarMensajesLocalStorage cuando se hace clic en la pestaña "Verificación"
 document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click', mostrarMensajesLocalStorage);
-
-// function inicializarBotones() {
-//   // Crear los botones y el contenedor
-//   const pedidofinalizado = localStorage.getItem("pedidos_finalizados");
-//   const contenedorBotones = document.createElement('div');
-//   const botonProcesar = document.createElement('button');
-//   const botonGuardarParcial = document.createElement('button');
-//   const botonRegresar = document.createElement('button'); // Crear botón Regresar
- 
-
-//   // Configurar propiedades del botón Procesar
-//   botonProcesar.textContent = 'Procesar';
-//   botonProcesar.id = 'btnProcesar';
-//   botonProcesar.hidden = true;
-//   botonProcesar.onclick = confirmaProcesar; // Agregar onclick
-
-//   // Configurar propiedades del botón Guardar Parcial
-//   botonGuardarParcial.textContent = 'Guardar';
-//   botonGuardarParcial.id = 'btnGuardar';
-//   botonGuardarParcial.hidden = true;
-//   botonGuardarParcial.onclick = confirmarGuardadoParcial; // Agregar onclick
-
-//   // Configurar propiedades del botón Regresar
-//   botonRegresar.textContent = 'Regresar';
-//   botonRegresar.id = 'btnRegresar';
-//   botonRegresar.hidden = false;
-//   botonRegresar.onclick = confirmaRegresar;
-//   // botonRegresar.onclick = function() {
-//   // window.location.href = 'verificacionDePedidos.html';
-//   // };
-
-//   // Aplicar estilos al botón de Guardar Parcial
-//   botonGuardarParcial.style.backgroundColor = '#28a745';
-//   botonGuardarParcial.style.borderRadius = '5px';
-//   botonGuardarParcial.style.color = 'white';
-//   botonGuardarParcial.style.marginTop = '16px';
-//   botonGuardarParcial.style.marginLeft = '16px';
-//   botonGuardarParcial.style.marginRight = '16px';
-//   botonGuardarParcial.style.height = '36px';
-
-//   // Aplicar estilos al botón de Procesar
-//   botonProcesar.style.width = '105px';
-//   botonProcesar.style.backgroundColor = '#28a745';
-//   botonProcesar.style.borderRadius = '5px';
-//   botonProcesar.style.color = 'white';
-//   botonProcesar.style.marginTop = '16px';
-//   botonProcesar.style.height = '36px';
-//   botonProcesar.style.marginbottom = '25px';
-
-//   // Aplicar estilos al botón de Regresar
-//   botonRegresar.style.backgroundColor = '#28a745';
-//   botonRegresar.style.borderRadius = '5px';
-//   botonRegresar.style.color = 'white';
-//   botonRegresar.style.marginTop = '16px';
-//   botonRegresar.style.marginLeft = '16px';
-//   botonRegresar.style.marginRight = '16px';
-//   botonRegresar.style.height = '36px';
-
-//   // Agregar botones al contenedor
-//   if(pedidofinalizado != 'true'){
-//     contenedorBotones.appendChild(botonRegresar);
-//   }else{
-//     contenedorBotones.appendChild(botonGuardarParcial);
-//     contenedorBotones.appendChild(botonProcesar);    
-//   }
-//   // contenedorBotones.appendChild(botonGuardarParcial);
-//   // contenedorBotones.appendChild(botonProcesar);
-//   // contenedorBotones.appendChild(botonRegresar); // Agregar botón Regresar al contenedor
-
-//   // Obtener tabla de verificación
-//   const tablaVerificacion = document.getElementById('myTableVerificacion');
-
-//   // Insertar contenedor de botones después de la tabla de verificación
-//   tablaVerificacion.parentNode.insertBefore(contenedorBotones, tablaVerificacion.nextSibling);
-// }
-
-// Llamar a la función para cargar y mostrar los mensajes desde el localStorage al cargar la página
-
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 window.onload = function () {
  // inicializarBotones();
   guardarTablaEnArray();
 };
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function mostrarProcesoEnConstruccion() {
   Swal.fire({
     title: "Proceso en Construcción",
@@ -707,7 +646,8 @@ function mostrarProcesoEnConstruccion() {
     //cancelButtonColor: "#6e7881",
   });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Funcion de confirmación del guardado parcial
 function confirmarGuardadoParcial() {
@@ -726,7 +666,8 @@ function confirmarGuardadoParcial() {
     }
   });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 //FUNCION DE GUARDADO PARCIAL
 function guardaParcialMente() {
   //var dataArray = JSON.parse(localStorage.getItem('dataArray'));
@@ -847,8 +788,8 @@ function guardaParcialMente() {
       }
     });
 }//fin fn
-
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 //Funcion de confirmación de procesar pedido
 function confirmaProcesar() {
   Swal.fire({
@@ -865,7 +806,8 @@ function confirmaProcesar() {
     }
   });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 //FUNCION DE Procesar el pedido
 function procesar() {
   let pUsuario = localStorage.getItem('username');
@@ -968,7 +910,8 @@ for (let i = 1; i < table.rows.length; i++) {
       }
     });
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 function activaDevolverArticulo() {
   // Obtener la tabla por su ID
   var table = document.getElementById('tblbodyVerificacion');
@@ -993,7 +936,8 @@ function activaDevolverArticulo() {
     }
   }
 }
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para devolver un artículo eliminado del pedido
 function devolverArticulo(articulo) {
@@ -1067,8 +1011,8 @@ function devolverArticulo(articulo) {
     }
   });
 }
-
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 ///////FUNCION PARA Retornar a la vista anterior//////       
 function confirmaRegresar() {
   localStorage.setItem('autoSearchPedidos', 'true');   

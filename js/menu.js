@@ -1,5 +1,6 @@
 //Se creaun arreglo para los menús
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 var ArrayMenu = [];
 let menuEnlaces = [
   //CONSULTA
@@ -14,7 +15,9 @@ let menuEnlaces = [
     { MODULO: 10, SUBMODULO: 8, ICON: "", LINK: "boletaDeInventario.html"}, 
 
   { MODULO: 12, SUBMODULO: 0, ICON: "feature_search", LINK: ""},//CONSULTAS
-    { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"},  
+    { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"}, 
+    { MODULO: 12, SUBMODULO: 2, ICON: "", LINK: "detalleTrasladoVerificados.html"},  
+
   { MODULO: 13, SUBMODULO: 0, ICON: "rocket", LINK: ""},//Operacion
    { MODULO: 13, SUBMODULO: 1, ICON: "", LINK: "ingresaCodigoBarra.html"},//ingresa cod barras
 
@@ -23,9 +26,10 @@ let menuEnlaces = [
    { MODULO: 3, SUBMODULO: 24, ICON: "", LINK: "reportedeInventarioGeneral.html"}, //Resumen de Conteo de Inventario General
    
   { MODULO: 4, SUBMODULO: 0, ICON: "manage_accounts", LINK: ""},//ADMINISTRACION
-  // { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "ingresaCodigoBarra.html"},//ingresa cod barras 
+  { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "ingresaCodigoBarra.html"},  
 ];
-
+ /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 $(document).ready(function () {
   $("#expand_morefather").click(function () {
     let element = document.getElementById("expand_more");   
@@ -39,9 +43,8 @@ $(document).ready(function () {
   });
   cargarMenu();
 });
-
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function cargarMenu() {
   //let loader = `<div class="loading"></div>`;
   const usuario = existe_Usuario();
@@ -51,18 +54,19 @@ function cargarMenu() {
     .then((response) => response.json())
     .catch((error) => console.error("Error:", error))
     .then((result) => {
-      console.log("Resultado de los modulos");
-      console.log(result);
+      // console.log("Resultado de los modulos");
+      // console.log(result);
       ArrayMenu = result.menu;
-      console.log("OPCIONES DE MENU");
-      console.log(ArrayMenu);
+      // console.log("OPCIONES DE MENU");
+      // console.log(ArrayMenu);
       var source = builddata();
-      console.log("MENU");
-      console.log(source);
+      // console.log("MENU");
+      // console.log(source);
       buildUL(source);
     });
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 var builddata = function () {
   var source = [];
   var items = [];
@@ -102,8 +106,8 @@ var builddata = function () {
 
   return source;
 };
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 var buildUL = function (items) {
   let htm = "",
     icono = "",

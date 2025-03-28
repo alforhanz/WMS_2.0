@@ -8,6 +8,11 @@
   color:white;
 }
 
+.themeColor2{
+  background-color: #7e8180 !important;
+  color: white;
+}
+
 tr.themeColor {
   align-content: center;
 }

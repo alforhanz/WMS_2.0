@@ -1,10 +1,13 @@
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", function () {
 //console.log("DOM cargado");
 fechasDeInventario();
 
 //inicializarBotonesDescarga();
 });
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function validarCodigoBarras(input) {
     const codBarra = input.value.toUpperCase(); // Convertir a mayúsculas
     const filaActual = input.closest('tr'); // Obtener la fila actual
@@ -45,9 +48,9 @@ function validarCodigoBarras(input) {
         });    
     }
 }
-
- /////////// CREAR NUEVA FILA /////////
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////// CREAR NUEVA FILA /////////
 function crearNuevaFila() {
     const tableBody = document.querySelector('#tblbodyLectura');
     const uniqueId = Date.now(); // Generar un ID único para los elementos
@@ -78,13 +81,15 @@ function crearNuevaFila() {
         nuevoCodigoBarrasInput.focus();
     }
 }
-
-///////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO de la orden de comra./////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///VALIDA LO QUE SE LEE CONTRA EL PEDIDO de la orden de comra.//////
 function validarCantidades() {
   //Llamado a guardar datos en la variable arrray en el LS
   guardarTablaEnArray();
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function guardarTablaEnArray() {
   var dataArray = [];
 
@@ -120,8 +125,9 @@ function guardarTablaEnArray() {
   agrupar();
   return dataArray;
 }
-
-///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////
 function agrupar() {
     // Obtener el arreglo almacenado en localStorage
     var dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
@@ -158,7 +164,8 @@ function agrupar() {
     // Actualizar el arreglo en localStorage con los resultados consolidados
     localStorage.setItem("dataArray", JSON.stringify(newArray));
   }
-  
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // Funcion que elimina filas en la pestaña lectura
 function eliminarFila(icon) {
     var row = icon.closest('tr');
@@ -212,6 +219,8 @@ function eliminarFila(icon) {
         }
     });    
 }
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function ordenarTabla(index) {
     const tabla = document.getElementById('myTableresumen');
     const filas = Array.from(tabla.rows).slice(1); // Excluye el encabezado
@@ -252,13 +261,15 @@ function ordenarTabla(index) {
     // Llamada para actualizar la paginación
     updatePagination(1); // Resetear a la primera página tras ordenar
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // Declaración de registrosPorPagina fuera de la función resumenGeneral
 const registrosPorPagina = 10; // Número de registros por página
 let paginaActual = 1; // Página actual
 let totalPaginas = 1; // Total de páginas
 let datosResumen = [];  // Definir la variable global para almacenar los datos del resumen
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 async function resumen() {
     let btnFinalizar = document.getElementById('btnFinalizar');
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
@@ -365,7 +376,7 @@ async function resumen() {
         btnAnterior.textContent = 'Anterior';
         btnAnterior.disabled = paginaActual === 1;
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
-        btnAnterior.style.backgroundColor = '#28a745'; // Color de fondo
+        btnAnterior.style.backgroundColor = '#7e8180'; // Color de fondo
         btnAnterior.style.color = 'white';            // Color del texto
         btnAnterior.style.border = 'none';            // Sin bordes
         btnAnterior.style.borderRadius = '5px';       // Bordes redondeados
@@ -375,8 +386,8 @@ async function resumen() {
         btnAnterior.style.fontSize = '14px';          // Tamaño de fuente
         btnAnterior.style.fontWeight = 'bold';        // Negrita
         btnAnterior.style.transition = '0.3s';        // Animación suave
-        btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#218838'; // Hover
-        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#28a745'; // Volver al original
+        btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#7e8180'; // Hover
+        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#7e8180'; // Volver al original
         paginacion.appendChild(btnAnterior);
 
         // Botón para abrir el modal de números de página
@@ -385,7 +396,7 @@ async function resumen() {
         btnVerPaginas.addEventListener('click', () => {
             mostrarModalPaginas();
         });
-        btnVerPaginas.style.backgroundColor = '#28a745';
+        btnVerPaginas.style.backgroundColor = '#7e8180';
         btnVerPaginas.style.color = 'white';
         btnVerPaginas.style.border = 'none';
         btnVerPaginas.style.borderRadius = '5px';
@@ -395,8 +406,8 @@ async function resumen() {
         btnVerPaginas.style.fontSize = '14px';
         btnVerPaginas.style.fontWeight = 'bold';
         btnVerPaginas.style.transition = '0.3s';
-        btnVerPaginas.onmouseover = () => btnVerPaginas.style.backgroundColor = '#218838';
-        btnVerPaginas.onmouseleave = () => btnVerPaginas.style.backgroundColor = '#28a745';
+        btnVerPaginas.onmouseover = () => btnVerPaginas.style.backgroundColor = '#7e8180';
+        btnVerPaginas.onmouseleave = () => btnVerPaginas.style.backgroundColor = '#7e8180';
         paginacion.appendChild(btnVerPaginas);
 
         // Botón Siguiente
@@ -404,7 +415,7 @@ async function resumen() {
         btnSiguiente.textContent = 'Siguiente';
         btnSiguiente.disabled = paginaActual === totalPaginas;
         btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
-        btnSiguiente.style.backgroundColor = '#28a745';
+        btnSiguiente.style.backgroundColor = '#7e8180';
         btnSiguiente.style.color = 'white';
         btnSiguiente.style.border = 'none';
         btnSiguiente.style.borderRadius = '5px';
@@ -414,8 +425,8 @@ async function resumen() {
         btnSiguiente.style.fontSize = '14px';
         btnSiguiente.style.fontWeight = 'bold';
         btnSiguiente.style.transition = '0.3s';
-        btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
-        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#28a745';
+        btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#7e8180';
+        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#7e8180';
         paginacion.appendChild(btnSiguiente);
     }
     function mostrarModalPaginas() {
@@ -502,7 +513,8 @@ async function resumen() {
         tblBodyResumen.appendChild(mensajeError);
     }
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 async function resumenGeneral() {    
 
     let btnResumenGeneral = document.getElementById('btnResumenGeneral');
@@ -518,7 +530,8 @@ async function resumenGeneral() {
     thead.innerHTML = '';
 
     const filaEncabezado = document.createElement('tr');
-    filaEncabezado.className = 'themeColor';
+    //filaEncabezado.className = 'themeColor';
+    filaEncabezado.style.backgroundColor = '#7e8180';
     encabezado.forEach((columna, index) => {
         const th = document.createElement('th');
         th.textContent = columna;
@@ -652,7 +665,7 @@ async function resumenGeneral() {
         btnAnterior.textContent = 'Anterior';
         btnAnterior.disabled = paginaActual === 1;
         btnAnterior.addEventListener('click', () => cambiarPagina(paginaActual - 1));
-        btnAnterior.style.backgroundColor = '#28a745'; // Color de fondo
+        btnAnterior.style.backgroundColor = '#7e8180'; // Color de fondo
         btnAnterior.style.color = 'white';            // Color del texto
         btnAnterior.style.border = 'none';            // Sin bordes
         btnAnterior.style.borderRadius = '5px';       // Bordes redondeados
@@ -663,7 +676,7 @@ async function resumenGeneral() {
         btnAnterior.style.fontWeight = 'bold';        // Negrita
         btnAnterior.style.transition = '0.3s';        // Animación suave
         btnAnterior.onmouseover = () => btnAnterior.style.backgroundColor = '#218838'; // Hover
-        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#28a745'; // Volver al original
+        btnAnterior.onmouseleave = () => btnAnterior.style.backgroundColor = '#7e8180'; // Volver al original
         paginacion.appendChild(btnAnterior);
 
         // Botón para abrir el modal de números de página
@@ -673,7 +686,7 @@ async function resumenGeneral() {
             mostrarModalPaginacion();
         });
         btnVerPaginas.style.backgroundColor = 'transparent';
-        btnVerPaginas.style.color = '#28a745';
+        btnVerPaginas.style.color = '#black';
         btnVerPaginas.style.border = 'none';
         btnVerPaginas.style.borderRadius = '5px';
         btnVerPaginas.style.padding = '10px 15px';
@@ -690,7 +703,7 @@ async function resumenGeneral() {
         btnSiguiente.textContent = 'Siguiente';
         btnSiguiente.disabled = paginaActual === totalPaginas;
         btnSiguiente.addEventListener('click', () => cambiarPagina(paginaActual + 1));
-        btnSiguiente.style.backgroundColor = '#28a745';
+        btnSiguiente.style.backgroundColor = '#7e8180';
         btnSiguiente.style.color = 'white';
         btnSiguiente.style.border = 'none';
         btnSiguiente.style.borderRadius = '5px';
@@ -701,7 +714,7 @@ async function resumenGeneral() {
         btnSiguiente.style.fontWeight = 'bold';
         btnSiguiente.style.transition = '0.3s';
         btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
-        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#28a745';
+        btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#7e8180';
         paginacion.appendChild(btnSiguiente); 
     }    
     function mostrarModalPaginacion() {
@@ -800,10 +813,8 @@ async function resumenGeneral() {
 
    
 }
-
-//////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
+  //////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
 //Funcion de confirmación del guardado parcial en la pestaña lectura
  function confirmarGuardadoParcialLectura() {
         const tabla = document.getElementById('myTableLectura');
@@ -835,7 +846,8 @@ async function resumenGeneral() {
             });
         }
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function guardaParcialMenteLectura() {   
     const dataArray = JSON.parse(localStorage.getItem('dataArray')); // Obtener como objeto
     //console.log("Data a enviar:", dataArray);
@@ -881,7 +893,8 @@ function guardaParcialMenteLectura() {
         sendChunk(chunk, i);
     }
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 ///////FUNCION PARA Finalizar//////       
 function confirmaFinalizar() {  
   
@@ -900,7 +913,8 @@ function confirmaFinalizar() {
         }
       });    
   }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function finalizaConteoInventario() {   
     //console.log('datosResumen:');
     //console.log(datosResumen);
@@ -986,7 +1000,8 @@ function finalizaConteoInventario() {
  
     limpiarResultadoGeneral();
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function limpiarResultadoGeneral() {
     const tabla = document.getElementById("myTableLectura");
 
@@ -1010,7 +1025,8 @@ function limpiarResultadoGeneral() {
     //console.log("Tabla de lectura y campos relacionados limpiados correctamente.");
     crearNuevaFila();
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function activabtnguardar()
 {
     let btnFinalizar = document.getElementById('btnFinalizar');
@@ -1028,7 +1044,8 @@ function activabtnguardar()
     if (btnGuardaConteo) btnGuardaConteo.hidden = false;
 
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function fechasDeInventario() {
     const pBodega = document.getElementById('bodega').value;
     const params = `?pBodega=${pBodega}`;
@@ -1076,8 +1093,8 @@ function fechasDeInventario() {
         })
         .catch(error => console.error("Error en la solicitud:", error));
 }
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function eliminarFilaResumen(icon) {
     let usuario = localStorage.getItem('username');
     let bodega = document.getElementById('bodega').value;
@@ -1138,10 +1155,9 @@ function eliminarFilaResumen(icon) {
         }
     });
 }
-
-//////////////////////////////////////DESGARGAR DATOS/////////////////////
-
-
+//////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+//////////////////////////////////////DESGARGAR DATOS///////////////
 function inicializarBotonesDescarga() {    
     const btnDescargarExcel = document.getElementById('btnDescargarExcel'); // Obtener el botón de Excel
     const btnDescargarPDF = document.getElementById('btnDescargarPDF'); // Crear el botón de PDF 
@@ -1153,8 +1169,8 @@ function inicializarBotonesDescarga() {
     btnDescargarPDF ? btnDescargarPDF.hidden = false : btnDescargarPDF.hidden = true;
     
  }
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function descargarExcel() {
     // Obtener los datos de la tabla
     const jsonData = obtenerDatosTabla();
@@ -1199,8 +1215,8 @@ function descargarExcel() {
     // Escribir y descargar el archivo Excel
     XLSX.writeFile(workbook, "Reporte_Conteo_Inventario.xlsx");
 }
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function descargarPDF() {
     const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
     const doc = new jsPDF();
@@ -1298,9 +1314,9 @@ function descargarPDF() {
     // Guardar el archivo
     doc.save("Reporte_Conteo_Inventario.pdf");
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 function resumen_descargarExcel() {
     // Obtener los datos de la tabla
     const jsonData = obtenerDatosTabla();
@@ -1346,8 +1362,8 @@ function resumen_descargarExcel() {
     // Escribir y descargar el archivo Excel
     XLSX.writeFile(workbook, "Resumen_Conteo_Inventario.xlsx");
 }
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function resumen_descargarPDF() {
     const { jsPDF } = window.jspdf; // Importar jsPDF desde el espacio global
     const doc = new jsPDF();
@@ -1445,9 +1461,8 @@ function resumen_descargarPDF() {
     // Guardar el archivo
     doc.save("Resumen_Conteo_Inventario.pdf");
 }
-
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // Función para obtener datos de la tabla (personaliza según tu tabla)
 function obtenerDatosTabla() {
     // Asegúrate de que datosResumen esté definido y sea un arreglo

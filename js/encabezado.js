@@ -1,5 +1,5 @@
-// const template = document.createElement("template");
-
+  /////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////
 class MyHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
@@ -122,6 +122,4 @@ class MyHeader extends HTMLElement {
 `;
   }
 }
-// template.innerHTML = document.body.appendChild(template.content);
-
 customElements.define("my-header", MyHeader);

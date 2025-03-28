@@ -228,9 +228,11 @@ svg[atributos] {
   width: 100%;
   height: 45px;
   background-color: #28a745;
+  /* background-color: #28a745; */
 }
 .btn:hover{
-  background-color: #1f8136 !important;
+  background-color: #7e8180 !important;
+  /* background-color: #1f8136 !important; */
 }
 #btn2 {
   width: 42%;
@@ -2624,7 +2626,7 @@ h2 {
 }
 
 #myTableresumen th {
-  background-color: #4CAF50;
+  background-color: #7e8180;
   color: white;
   font-size: 15px; /* Tamaño de fuente más discreto */
   font-weight: bold; /* Enfatizar encabezados */
@@ -2705,7 +2707,8 @@ h2 {
 
 /* Estilo para el botón guardar */
 .btn-guardar-conteo {
-  background-color: #28a745;
+  /* background-color: #28a745; */
+  background-color: #218838;
   border-radius: 5px;
   color: white;
   height: 36px;
@@ -2714,14 +2717,15 @@ h2 {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
-  width: 27%;
+  width: 36%;
+  height: 42px;
   margin-right: 52px;
   margin-top: 3rem !important;
 }
 
 /* Hover para el botón */
 .btn-guardar-conteo:hover {
-  background-color: #218838;
+  background-color: #679170;
 }
 
 /* Focus para el botón */
@@ -2862,7 +2866,7 @@ margin-top: -35px;
 
 #reporteInventarioRCM th {
   /* background-color: #f4f4f4; */
-  background-color: #28a745;
+  background-color: #7e8180;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -2939,7 +2943,7 @@ margin-top: -35px;
 
 #reporteInventarioRM th {
   /* background-color: #f4f4f4; */
-  background-color: #28a745;
+  background-color: #7e8180;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -2982,7 +2986,7 @@ margin-top: -35px;
 
 #reporteInventarioRC th {
   /* background-color: #f4f4f4; */
-  background-color: #28a745;
+  background-color: #7e8180;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -3025,7 +3029,7 @@ margin-top: -35px;
 
 #reporteInventarioD th {
   /* background-color: #f4f4f4; */
-  background-color: #28a745;
+  background-color: #7e8180;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -3114,7 +3118,7 @@ margin-top: -35px;
 }
 
 #myTableBoleta thead th.boleta-header {
-  background-color: #28a745;
+  background-color: #7e8180;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -3189,3 +3193,89 @@ margin-top: -35px;
   cursor: not-allowed; /* Cursor de "no permitido" */
   opacity: 0.6; /* Reduce la opacidad */
 }
+
+.filter-Elements{
+  margin-bottom: 10px;
+}
+/* .checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0; 
+} */
+
+#btnCodBarras{
+  margin: 0 auto;
+  display: block;
+  width: 30%;
+  border-radius: 5px;
+}
+#btnDetalleTrasladosVerif {
+  /* margin: 0 auto;
+  display: block; */
+  width: 30%;
+  border-radius: 5px;
+}
+.themeColor-Traslado{
+  background-color: #7e8180 !important;
+  color: white;
+}
+#btnOCProcesadas{
+  margin: 0 auto;
+  display: block;
+  width: 30%;
+  border-radius: 5px;
+}
+
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  .btn {
+    width: 100%;
+    height: 45px;
+    background-color: #28a745;
+    /* background-color: #28a745; */
+  }
+  .btn:hover{
+    background-color: #7e8180 !important;
+    /* background-color: #1f8136 !important; */
+  }
+}
+
+/* Medium and up */
+@media screen and (min-width: 40em) {
+  .btn {
+    width: 100%;
+    height: 45px;
+    background-color: #28a745;
+    /* background-color: #28a745; */
+  }
+  .btn:hover{
+    background-color: #7e8180 !important;
+    /* background-color: #1f8136 !important; */
+  }
+}
+
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+  .btn {
+    width: 100%;
+    height: 45px;
+    background-color: #28a745;
+    /* background-color: #28a745; */
+  }
+  .btn:hover{
+    background-color: #7e8180 !important;
+    /* background-color: #1f8136 !important; */
+  }
+}
+
+/* Large and up */
+@media screen and (min-width: 64em) {}
+
+/* Large only */
+@media screen and (min-width: 64em) and (max-width: 74.9375em) {}

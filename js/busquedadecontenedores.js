@@ -1,3 +1,5 @@
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", function (){ 
   console.log("DOM cargado...");
   const busqueda = localStorage.getItem('SearchParameterFlag');
@@ -17,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function (){
         }        
     } 
 });
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 //busquedadecontenedores functions
 function validarBusquedaContenedor() {
   //revisar como toma el valor
@@ -43,8 +45,8 @@ function validarBusquedaContenedor() {
     enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo);
   }
 }
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo) {
   // mostrarLoading();
   let pag = 1;
@@ -143,17 +145,17 @@ localStorage.setItem('SearchParameterFlag', 'true');
     });
 ocultarLoader();
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 //////////////////FUNCION PARA MOSTRAR EL DETALLE DE LOS PEDIDOS///////////
 function irDetalleContenedor(pTraslado, Bodega_Solicita) {
   localStorage.setItem("contenedor", pTraslado);
   localStorage.setItem("bodega_solicita", Bodega_Solicita);
   window.location.href = 'lineasContenedor.html';
 }
-
-
-
-////////////////////se aplican estilos a las filas cuyos documentos comienzan con 'T'. /////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+//se aplican estilos a las filas cuyos documentos comienzan con 'T'.
 function aplicarEstilosTablaPedidos() {
   $('#tblpedido tbody tr').each(function () {
     var documentoValue = $(this).find('td:eq(0)').text().trim();
@@ -166,25 +168,25 @@ function aplicarEstilosTablaPedidos() {
     }
   });
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 // //limpiar el contenido de la busqueda cuando cambia la fecha
-
 const fecha_ini=document.getElementById('fecha_ini');
 fecha_ini.addEventListener('change', function(){
   limpiarResultadoGeneral();
   
 });
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 const fecha_fin=document.getElementById('fecha_fin');
 fecha_ini.addEventListener('change', function(){
   limpiarResultadoGeneral();
   
 });
-
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 ///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
 const checkbox = document.getElementById('toggleSwitch');
-
 /////////////// Agregar un evento de cambio al checkbox/////////////
 checkbox.addEventListener('change', function () {
   if (checkbox.checked === false) {
@@ -193,9 +195,9 @@ checkbox.addEventListener('change', function () {
   }
  limpiarResultadoGeneral();
 });
-
-
-/////////////////Fucnion que activa el toggleSwitch para ver los contenedorers procesados
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+//Fucnion que activa el toggleSwitch para ver los contenedorers procesados
 function contenedoresProcesados() {
 
   Swal.fire({
@@ -216,7 +218,8 @@ function contenedoresProcesados() {
     }
   });
 }
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 function limpiarResultadoGeneral() {
   const tabla = document.getElementById("tblcontenedores");
   const resultadoPaginador = document.getElementById("resultadoPaginador");
