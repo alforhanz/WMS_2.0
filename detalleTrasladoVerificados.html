@@ -53,22 +53,7 @@
             <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
             <label for="fecha_fin">Fecha Final</label>
           </div>
-<!-- 
-          <div class="input-field col s4">
-            <div>
-              <label>
-                <input type="checkbox" id="Entrada" checked/>
-                <span>Traslados de Entrada</span>
-              </label>
-            </div>
-            
-            <div >
-              <label>
-                <input type="checkbox" id="Salida" checked />
-                <span>Traslados de Salida</span>
-              </label>
-            </div>
-          </div> -->
+
           <div class="input-field col s2">
             <label>
               <input type="checkbox" id="tEntrada" checked />
@@ -85,12 +70,12 @@
          
           <div class="row">
             <div class="input-field col s4">
-              <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate">
+              <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
               <!-- <label for="first_name">Número de Contenedor</label> -->
               <label for="first_name"></label>
             </div>
             <div class="input-field col s4">
-              <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate">
+              <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
               <!-- <label for="first_name">Número de Contenedor</label> -->
               <label for="first_name"></label>
             </div>
@@ -103,23 +88,33 @@
             <i class="material-icons right">send</i>
           </button>
         </div>
+        <div class="col s12">
+          <div class="btn-descargaDetalleTrasVerif">
+              <div class="impexcel">
+                  <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden >
+                      <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                  </button>
+                  <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden >Descargar
+                      Excel</label>
+              </div>
+              <div class="imppdf">
+                  <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                      <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                  </button>
+                  <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+              </div>
+          </div>
+      </div>
 
         <!-- Tabla de resultados para listado de pedidos -->
-        <div class="row tblcontenedor">
+        <div class="tblTrasladosVerif">
           <div id="resultadoGeneral"></div>
           <table id="tblDetallestrasladosVerif" class="display centered">
-            <thead>
-              <tr class="themeColor-Traslado">
-                <th>TRASLADO</th>
-                <th id="destino">BODEGA DESTINO</th>
-                <th id="origen">BODEGA ORIGEN</th>
-                <th>CANT VERIF</th>
-                <th>CANT PREP</th>
-                <th>FECHA</th>
-              </tr>
+            <thead id="theadDetallestrasladosVerif">
+              <!-- Los encabezados se generarán dinámicamente -->
             </thead>
             <tbody id="busqueda_result" class="striped"></tbody>
-          </table>
+          </table>     
           <div id="resultadoPaginador"></div>
         </div>
         <!-- Cierre de tabla de resultados para listado de pedidos -->
@@ -131,6 +126,11 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Incluir la biblioteca de XLSX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+  <!-- Incluir la biblioteca de jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>

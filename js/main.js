@@ -1296,7 +1296,7 @@ function BuscarBorrar(cadena, value) {
   });
   return arreglo.toString();
 }
-////////////////// BUSQUEDA DE ARTICULOS Y FILTRADA /////////////////////////////////////////
+////////////////// BUSQUEDA DE ARTICULOS EN INVENTARIO X BODEGA /////////////////////////////////////////
 
 function preBusqueda() {
   let nPag = 0;
@@ -2176,7 +2176,6 @@ function logout() {
   window.location.href = "index.html";
 }
 
-
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {
   $('.loading').show();
@@ -2466,7 +2465,6 @@ function mostrarImagen(codigo, descripcion) {
 
   });
 }
-
 
 //muestra las existencias en un swall.fire
 function mostrarExistencias(p_Articulo) {

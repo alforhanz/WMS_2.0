@@ -3232,6 +3232,18 @@ margin-top: -35px;
   border-radius: 5px;
 }
 
+.tblTrasladosVerif{
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.btn-descargaDetalleTrasVerif{
+    display: flex;
+    flex-direction: row;
+    margin-left: 70em;
+}
+
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   .btn {
@@ -3258,6 +3270,11 @@ margin-top: -35px;
     background-color: #7e8180 !important;
     /* background-color: #1f8136 !important; */
   }
+  #dashboardselect{
+    width: 50%;
+    height: 45px;
+    background-color: #28a745;
+}
 }
 
 /* Medium only */
@@ -3279,3 +3296,4 @@ margin-top: -35px;
 
 /* Large only */
 @media screen and (min-width: 64em) and (max-width: 74.9375em) {}
+
