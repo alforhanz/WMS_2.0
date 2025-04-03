@@ -165,24 +165,21 @@ input[type="search"]:not(.browser-default):focus:not([readonly]) {
   display: none;
 }
 /* Large and up */
-@media screen and (min-width: 64em) {
+/* @media screen and (min-width: 64em) {
   #nav-mobile .reset-left {
     margin-right: 5px !important;
   }
   .container {
     margin-top: 42px;
   }
-  /* .tblcontenedor {
-    margin-top: 17px;
+
 } */
 
-}
-
-@media only screen and (max-width: 640px) {
+/* @media only screen and (max-width: 640px) {
   #nav-mobile .reset-left {
     margin-right: 5px !important;
   }
-}
+} */
 
 .menuLista {
   color: #000;
@@ -568,12 +565,12 @@ svg[atributos] {
   padding-top: 0px !important;
 }
 
-@media screen and (max-width: 39.9375em) {
+/* @media screen and (max-width: 39.9375em) {
   .tabs .tab a {
     padding: 0 5px;
   }
-}
-@media only screen and (max-width: 992px) {
+} */
+/* @media only screen and (max-width: 992px) {
   nav .brand-logo {
     left: 38%;
     -webkit-transform: translateX(-50%);
@@ -590,7 +587,7 @@ svg[atributos] {
     position: relative;
     cursor: pointer;
     background-color: transparent;
-    /* border: none; */
+   
     border: 1px solid #ffffff;
     border-radius: 5px;
     outline: none;
@@ -695,7 +692,6 @@ svg[atributos] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    /* z-index: 9999; */
     background-color: #7875758c !important;
     left: 20px;
   }
@@ -722,78 +718,6 @@ svg[atributos] {
     top: 1px;
     position: relative;
   }
-
-  /* .switch label .lever {
-    content: "";
-    display: inline-block;
-    position: relative;
-    width: 66px;
-    height: 46px;
-    background-color: rgba(0, 0, 0, 0.38);
-    border-radius: 0px;
-    margin-right: 10px;
-    -webkit-transition: background 0.3s ease;
-    transition: background 0.3s ease;
-    vertical-align: middle;
-    margin: 0 16px;
-  }
-
-  .switch label .lever:after {
-    content: "";
-    position: relative;
-    display: inline-block;
-    width: 37px;
-    height: 33px;
-    border-radius: 8%;
-    left: 38px;
-    top: 0px;
-    z-index: 2;
-    -webkit-transition: left 0.3s ease, background 0.3s ease,
-      -webkit-box-shadow 0.1s ease, -webkit-transform 0.1s ease;
-    transition: left 0.3s ease, background 0.3s ease,
-      -webkit-box-shadow 0.1s ease, -webkit-transform 0.1s ease;
-    transition: left 0.3s ease, background 0.3s ease, box-shadow 0.1s ease,
-      transform 0.1s ease;
-    transition: left 0.3s ease, background 0.3s ease, box-shadow 0.1s ease,
-      transform 0.1s ease, -webkit-box-shadow 0.1s ease,
-      -webkit-transform 0.1s ease;
-  }
-
-  .switch label .lever:after {
-    background-color: #a9a4a4;
-    -webkit-box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-      0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
-      0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-  }
-  .switch label .lever {
-    content: "";
-    display: inline-block;
-    position: relative;
-    width: 75px;
-    height: 34px;
-    background-color: #28a745;
-    border-radius: 5px;
-    margin-right: 10px;
-    -webkit-transition: background 0.3s ease;
-    transition: background 0.3s ease;
-    vertical-align: middle;
-    margin: 0 16px;
-  }
-
-  .switch label input[type="checkbox"]:checked + .lever:after {
-    background-color: #7e8180;
-  }
-
-  .switch label input[type="checkbox"]:checked + .lever:after {
-    left: 0px;
-  }
-  .switch label input[type="checkbox"]:checked + .lever {
-    background-color: #28a745;
-  }
-  .switch label .lever:before {
-    background-color: rgba(14, 230, 61, 0);
-  } */
 
   #forms2 .select-wrapper input.select-dropdown {
     position: relative;
@@ -831,7 +755,7 @@ svg[atributos] {
     position: relative;
     cursor: pointer;
     background-color: transparent;
-    /* border: none; */
+ 
     border: 1px solid #ffffff;
     border-radius: 5px;
     outline: none;
@@ -855,7 +779,7 @@ svg[atributos] {
     position: relative;
     cursor: pointer;
     background-color: transparent;
-    /* border: none; */
+   
     border: 1px solid #ffffff;
     border-radius: 5px;
     outline: none;
@@ -971,9 +895,9 @@ svg[atributos] {
   .datepicker-footer {
     width: 102%;
   }
-}
+} */
 
-/*///// MENSAJES ///*/
+/*/////////////////////////////////////////////*/
 #mensajeText {
   background-color: transparent;
   border: none;
@@ -1068,11 +992,11 @@ svg[atributos] {
   -webkit-transition: transform 1s;
   transition: transform 1s;
 }
-@media only screen and (max-width: 992px) {
+/* @media only screen and (max-width: 992px) {
   .modal {
     width: 95%;
   }
-}
+} */
 
 #myTableLectura {
   width: 100%;
@@ -2009,7 +1933,7 @@ th {
 /*//////////////////////// MEDIA QUERY RESPONSIVE DESIGN////////////////////////////////////////////////*/
 
 /* Small only */
-@media screen and (max-width: 39.9375em) {
+/* @media screen and (max-width: 39.9375em) {
 .tblcontenedor {
     margin-top: 17px;
 }
@@ -2154,10 +2078,10 @@ h6 {
 #cantidadDeRegistros{
   font-size: 12px;
 }
-}
+} */
 
 /* Medium and up */
-@media screen and (min-width: 40em) {
+/* @media screen and (min-width: 40em) {
   .tblcontenedor {
     margin-top: 17px;
 }
@@ -2183,10 +2107,10 @@ h2 {
   background-color: #4c4e4e !important;
   width: 300px;
 }
-}
+} */
 
 /* Medium only */
-@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+/* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
   h2 {
     font-size: 3.56rem;
     line-height: 100%;
@@ -2218,10 +2142,10 @@ h2 {
   margin-left: 355px !important;    
 }
 
-}
+} */
 
 /* Large and up */
-@media screen and (min-width: 64em) {
+/* @media screen and (min-width: 64em) {
   #modalFiltro {
     display: none;
     position: fixed;
@@ -2334,10 +2258,6 @@ h2 {
     font-size: 1.5rem;
   }
 
-  /* input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea{
-    font-size: 1em;
-  } */
-
   #lista-articulo ul {
     width: 80em; 
     padding: 0;
@@ -2368,10 +2288,10 @@ h2 {
   text-align: center !important;
   font-size: 1em;
 }
-}
+} */
 
 /* Large only */
-@media screen and (min-width: 64em) and (max-width: 74.9375em) {
+/* @media screen and (min-width: 64em) and (max-width: 74.9375em) {
   #modalFiltro {
     display: none;
     position: fixed;
@@ -2480,7 +2400,7 @@ h2 {
 .loading{
   left: 44%;
 }
-}
+} */
 
 
 /*/////////////////////////////////////////////////////////*/
@@ -2556,16 +2476,16 @@ h2 {
 }
 
 /* Large only */
-@media screen and (min-width: 64em) and (max-width: 74.9375em){
+/* @media screen and (min-width: 64em) and (max-width: 74.9375em){
   #bodegaSelect {
-    width: 70%; /* Ajusta el ancho cuando el contenedor es grande */
+    width: 70%; 
   }
 
   #bodegaButton {
-    width: 27%; /* Ajusta el ancho cuando el contenedor es grande */
-    margin-left: 1em; /* Añade un pequeño margen para separar el botón del select */
+    width: 27%; 
+    margin-left: 1em;
   }
-}
+} */
 
 #lbl_bodega_destino{
   font-size: 1rem !important;
@@ -2689,13 +2609,12 @@ h2 {
 }
 
 /* Ajuste para pantallas pequeñas */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .input-ubicacion {
-    width: 90%; /* Ajuste el ancho en pantallas pequeñas */
+    width: 90%;
   }
-}
+} */
 
-/*/////////////////btn-guardado-copnteo inventario*/
 
 /* Contenedor del botón */
 .btn-container-conteo {
@@ -2740,11 +2659,11 @@ h2 {
 }
 
 
-@media only screen and (max-width: 992px){
+/* @media only screen and (max-width: 992px){
   .select-wrapper + label {
     top: -36px;  
 }
-}
+} */
 
 .modal-conteo {
   display: none;
@@ -3087,7 +3006,7 @@ margin-top: -35px;
   margin-right: 0;
 }
 
-@media only screen and (max-width: 992px) {
+/* @media only screen and (max-width: 992px) {
   .boleta {
       flex-wrap: wrap;
   }
@@ -3107,7 +3026,7 @@ margin-top: -35px;
   .btn-guardar-boleta:last-child {
       margin-bottom: 0;
   }
-}
+} */
 
 #myTableBoleta {
   width: 100%;
@@ -3171,7 +3090,7 @@ margin-top: -35px;
 }
 
 /* Eliminar reglas redundantes de #myTableBoleta td ya cubiertas por #tblbodyBoleta td */
-@media only screen and (max-width: 992px) {
+/* @media only screen and (max-width: 992px) {
   #myTableBoleta {
       font-size: 12px;
   }
@@ -3182,7 +3101,7 @@ margin-top: -35px;
   #tblbodyBoleta td {
       padding: 6px;
   }
-}
+} */
 
 .btn-descarga-boleta {
   display: flex;
@@ -3244,56 +3163,54 @@ margin-top: -35px;
     margin-left: 70em;
 }
 
-/* Small only */
-@media screen and (max-width: 39.9375em) {
-  .btn {
-    width: 100%;
-    height: 45px;
-    background-color: #28a745;
-    /* background-color: #28a745; */
-  }
-  .btn:hover{
-    background-color: #7e8180 !important;
-    /* background-color: #1f8136 !important; */
-  }
+.detalles-Style{
+  margin-top: 2em !important;
 }
 
-/* Medium and up */
-@media screen and (min-width: 40em) {
+/* Small only */
+/* @media screen and (max-width: 39.9375em) {
   .btn {
     width: 100%;
     height: 45px;
     background-color: #28a745;
-    /* background-color: #28a745; */
   }
   .btn:hover{
     background-color: #7e8180 !important;
-    /* background-color: #1f8136 !important; */
+  }
+} */
+
+/* Medium and up */
+/* @media screen and (min-width: 40em) {
+  .btn {
+    width: 100%;
+    height: 45px;
+    background-color: #28a745;
+  }
+  .btn:hover{
+    background-color: #7e8180 !important;
   }
   #dashboardselect{
     width: 50%;
     height: 45px;
     background-color: #28a745;
 }
-}
+} */
 
 /* Medium only */
-@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+/* @media screen and (min-width: 40em) and (max-width: 63.9375em) {
   .btn {
     width: 100%;
     height: 45px;
     background-color: #28a745;
-    /* background-color: #28a745; */
   }
   .btn:hover{
     background-color: #7e8180 !important;
-    /* background-color: #1f8136 !important; */
   }
-}
+} */
 
 /* Large and up */
-@media screen and (min-width: 64em) {}
+/* @media screen and (min-width: 64em) {} */
 
 /* Large only */
-@media screen and (min-width: 64em) and (max-width: 74.9375em) {}
+/* @media screen and (min-width: 64em) and (max-width: 74.9375em) {} */
 
