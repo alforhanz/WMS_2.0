@@ -29,7 +29,7 @@
       margin: 1.373333rem 0 1.424rem 0;
     }
     h5 {
-      font-size: 12px;
+      font-size: 12px !important;
       text-transform: uppercase;
       font-weight: bold;
       line-height: 110%;
@@ -37,7 +37,7 @@
       text-align: left;
     }
     h6 {
-      font-size: 11px;
+      font-size: 11px !important;
       line-height: 110%;
       margin: 0;
     }
@@ -105,7 +105,7 @@
     }
     .sidenav {
       background-color: #4c4e4e !important;
-      width: 300px;
+      width: 90%;
     }
     #codigo-barras, #cant-pedida {
       text-align: center !important;
@@ -145,7 +145,7 @@
     }
     .sidenav {
       background-color: #4c4e4e !important;
-      width: 300px;
+      width: 25%;
     }
   }
   
@@ -213,7 +213,7 @@
       margin: 3.373333rem 0 1.424rem 0;
     }
     h5 {
-      font-size: 14px;
+      font-size: 14px !important;
       text-transform: uppercase;
       font-weight: bold;
       line-height: 110%;
@@ -221,7 +221,7 @@
       text-align: left;
     }
     h6 {
-      font-size: 12px;
+      font-size: 12px !important;
       line-height: 110%;
       margin: 0;
     }
@@ -263,7 +263,7 @@
       background-color: rgba(14, 230, 61, 0);
     }
     .input-field > label {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
     #lista-articulo ul {
       width: 80em;
@@ -352,7 +352,7 @@
       padding: 14px 16px;
     }
     h5 {
-      font-size: 14px;
+      font-size: 14px !important;
       text-transform: uppercase;
       font-weight: bold;
       line-height: 110%;
@@ -360,7 +360,7 @@
       text-align: left;
     }
     h6 {
-      font-size: 12px; /* Parece un error, debería ser 1.2rem? */
+      font-size: 12px !important;
       line-height: 110%;
       margin: 0;
     }
