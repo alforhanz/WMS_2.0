@@ -2554,11 +2554,21 @@ function sucursalbremen(tienda, id_tienda) {
     },
   ];
   sessionStorage.setItem("bodega", JSON.stringify(newbodega));
- 
+
+  
   const bodegaChange = document.getElementById("bodega");
- if(bodegaChange){
-  fechasDeInventario();
- }
+
+  if (bodegaChange) {
+    // Verificar si fechasDeInventario está definida antes de llamarla
+    if (typeof fechasDeInventario === "function") {
+      bodegaChange.addEventListener("change", function () {
+        fechasDeInventario(); // Llamar solo si existe
+      });
+      fechasDeInventario(); // Llamada inicial solo si existe
+    }
+    // Si no está definida, no hacemos nada o podemos registrar un mensaje opcional
+    // console.log("fechasDeInventario no está definida en esta vista");
+  }
   
 }
 

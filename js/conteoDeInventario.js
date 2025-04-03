@@ -331,7 +331,7 @@ async function resumen() {
         labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
     }
 
-    function renderizarDatos(datos) {
+function renderizarDatos(datos) {
         tblBodyResumen.innerHTML = '';
         totalPaginas = Math.ceil(datos.length / registrosPorPagina);
 
@@ -362,7 +362,7 @@ async function resumen() {
 
         actualizarPaginacion();
     }
-    function actualizarPaginacion() {
+function actualizarPaginacion() {
         const paginacion = document.getElementById('pagination');
         if (!paginacion) {
             console.error("No se encontró el contenedor de paginación.");
@@ -429,7 +429,7 @@ async function resumen() {
         btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#7e8180';
         paginacion.appendChild(btnSiguiente);
     }
-    function mostrarModalPaginas() {
+function mostrarModalPaginas() {
         let modal = document.getElementById('modalPaginas');
         if (!modal) {
             crearModalPaginas();
@@ -458,7 +458,7 @@ async function resumen() {
 
         modal.style.display = 'block';
     }
-    function crearModalPaginas() {
+function crearModalPaginas() {
         const modal = document.createElement('div');
         modal.id = 'modalPaginas';
         modal.className = 'modal-conteo';
@@ -484,13 +484,13 @@ async function resumen() {
     
         document.body.appendChild(modal);
     }
-    function cambiarPagina(pagina) {
+function cambiarPagina(pagina) {
         if (pagina >= 1 && pagina <= totalPaginas) {
             paginaActual = pagina;
             renderizarDatos(datosResumen);
         }
     }
-    function ordenarTabla(indiceColumna) {
+function ordenarTabla(indiceColumna) {
         const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
         const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
         filas.sort((a, b) => {
@@ -504,7 +504,7 @@ async function resumen() {
         filas.forEach(fila => tblBodyResumen.appendChild(fila));
         thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
     }
-    function mostrarMensajeError(mensaje, columnas) {
+function mostrarMensajeError(mensaje, columnas) {
         const mensajeError = document.createElement('tr');
         const celdaError = document.createElement('td');
         celdaError.colSpan = columnas;
@@ -575,7 +575,7 @@ async function resumenGeneral() {
         labelCantidadRegistros.textContent = 'Cantidad de registros: 0';
     }
     
-    function renderizarDatos(datos) {
+function renderizarDatos(datos) {
         let registrosPorPagina = 20;  // Establecer 20 filas por página
         tblBodyResumen.innerHTML = '';
         totalPaginas = Math.ceil(datos.length / registrosPorPagina); // Calcular el total de páginas
@@ -651,7 +651,7 @@ async function resumenGeneral() {
         // Actualizar los controles de paginación
         actualizarPaginacion();
     }
-    function actualizarPaginacion() {
+function actualizarPaginacion() {
         const paginacion = document.getElementById('pagination');
         if (!paginacion) {
             console.error("No se encontró el contenedor de paginación.");
@@ -716,8 +716,9 @@ async function resumenGeneral() {
         btnSiguiente.onmouseover = () => btnSiguiente.style.backgroundColor = '#218838';
         btnSiguiente.onmouseleave = () => btnSiguiente.style.backgroundColor = '#7e8180';
         paginacion.appendChild(btnSiguiente); 
-    }    
-    function mostrarModalPaginacion() {
+    }
+
+function mostrarModalPaginacion() {
         // Crear o seleccionar el modal
         let modal = document.getElementById('modalPaginacion');
         if (!modal) {
@@ -782,13 +783,13 @@ async function resumenGeneral() {
             paginationContainer.appendChild(btnPagina);
         }
     }   
-    function cambiarPagina(pagina) {
+function cambiarPagina(pagina) {
         if (pagina >= 1 && pagina <= totalPaginas) {
             paginaActual = pagina;
             renderizarDatos(datosResumen);  // Vuelve a renderizar los datos al cambiar de página
         }
     }
-    function ordenarTabla(indiceColumna) {
+function ordenarTabla(indiceColumna) {
         const filas = Array.from(tblBodyResumen.querySelectorAll('tr'));
         const ordenAscendente = !thead.getAttribute('data-order') || thead.getAttribute('data-order') === 'desc';
         filas.sort((a, b) => {
@@ -802,16 +803,14 @@ async function resumenGeneral() {
         filas.forEach(fila => tblBodyResumen.appendChild(fila));
         thead.setAttribute('data-order', ordenAscendente ? 'asc' : 'desc');
     }
-    function mostrarMensajeError(mensaje, columnas) {
+function mostrarMensajeError(mensaje, columnas) {
         const mensajeError = document.createElement('tr');
         const celdaError = document.createElement('td');
         celdaError.colSpan = columnas;
         celdaError.textContent = mensaje;
         mensajeError.appendChild(celdaError);
         tblBodyResumen.appendChild(mensajeError);
-    }
-
-   
+    }   
 }
   //////////////////////////////////////////////////////////////////////
  //////////////////////////////////////////////////////////////////////

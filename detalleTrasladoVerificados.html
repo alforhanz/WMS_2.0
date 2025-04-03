@@ -41,70 +41,178 @@
       <div id="contenedorLoader"></div>
       <div id="carga"></div>
       <div class="container">
+      
+
         <h2 class="titulo-vista">Detalle de Traslados Verificados</h2>
-        <!-- Switch traslados Entrada y salida-->
-        <div class="row col s12 switch-button">
-          <div class="input-field col s4">
-            <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
-            <label for="fecha_ini">Fecha Inicial</label>
-          </div>
 
-          <div class="input-field col s4">
-            <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
-            <label for="fecha_fin">Fecha Final</label>
-          </div>
-
-          <div class="input-field col s2">
-            <label>
-              <input type="checkbox" id="tEntrada" checked />
-              <span>Traslados de Entrada</span>
-            </label>
-          </div>
-          <div class="input-field col s2">
-            <label>
-              <input type="checkbox" id="tSalida" checked />
-              <span>Traslados de Salida</span>
-            </label>
-          </div>
-        </div>         
-         
-          <div class="row">
+        <!-- Tabs Datos b'asicos y clasificaciones -->
+        <ul id="tabs-swipe-demo" class="tabs">
+          <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
+          <li class="tab col s3"><a href="#tab-clasificacion" >Clasificaciones</a></li>
+        </ul>
+        <!-- DATOS BÁSICOS -->
+        <div id="tab-datos-basicos" class="row btnReportes"> 
+          <div class="row col s12 ">
             <div class="input-field col s4">
-              <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
-              <!-- <label for="first_name">Número de Contenedor</label> -->
-              <label for="first_name"></label>
+              <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+              <label for="fecha_ini">Fecha Inicial</label>
             </div>
+  
             <div class="input-field col s4">
-              <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
-              <!-- <label for="first_name">Número de Contenedor</label> -->
-              <label for="first_name"></label>
+              <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+              <label for="fecha_fin">Fecha Final</label>
             </div>
-          </div>
-       
-
-        <!-- Boton Buscar traslados-->
-        <div class="row col-md-12 S12">
-          <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">Buscar
-            <i class="material-icons right">send</i>
-          </button>
+  
+            <div class="input-field col s2">
+              <label>
+                <input type="checkbox" id="tEntrada" checked />
+                <span>Traslados de Entrada</span>
+              </label>
+            </div>
+            <div class="input-field col s2">
+              <label>
+                <input type="checkbox" id="tSalida" checked />
+                <span>Traslados de Salida</span>
+              </label>
+            </div>
+          </div>   
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                <!-- <label for="first_name">Número de Contenedor</label> -->
+                <label for="first_name"></label>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                <!-- <label for="first_name">Número de Contenedor</label> -->
+                <label for="first_name"></label>
+              </div>
+            </div>
         </div>
-        <div class="col s12">
-          <div class="btn-descargaDetalleTrasVerif">
+
+          <!-- Contenedor de los elementos de la pestaña de Clasificación -->
+          <div id="tab-clasificacion" class="row btnReportes">
+            <div class="container">
+              <div class="row">
+                <!-- Fila 1 -->
+                 
+                 <!-- Clase -->
+                <div class="input-field col s3">
+                  <select id="claseReporte" onchange="cargarClasificacionesMarca()">
+                    <option value="null" disabled selected>Seleccionar Clase</option>                   
+                  </select>
+                  <label for="claseReporte">Clase</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="clase-todas"  checked onchange="limpiarResultadoGeneral()"/>
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Marca -->
+                <div class="input-field col s3">
+                  <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
+                    <option value="" disabled selected>Seleccionar Marca</option>                   
+                  </select>
+                  <label for="marcaReporte">Marca</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()"/>
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Tipo -->
+                <div class="input-field col s3">
+                  <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
+                    <option value="" disabled selected>Seleccionar Tipo</option>                   
+                  </select>
+                  <label for="tipoReporte">Tipo</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="tipo-todas"  checked onchange="limpiarResultadoGeneral()"/>
+                    <span>Todas</span>
+                  </label>
+                </div> 
+              </div>
+      
+              <!-- Fila 2 -->               
+              <div class="row">
+                <!-- Ventas -->
+                <div class="input-field col s3">
+                  <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
+                    <option value="" disabled selected>Seleccionar Ventas</option>
+                  </select>
+                  <label for="ventasReporte">Ventas</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Envase -->
+                <div class="input-field col s3">
+                  <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
+                    <option value="" disabled selected>Seleccionar Envase</option>                   
+                  </select>
+                  <label for="envaseReporte">Envase</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
+                    <span>Todas</span>
+                  </label>
+                </div>
+
+                <!-- Seis -->
+                <div class="input-field col s3">
+                  <select id="seisReporte">
+                    <option value="" disabled selected>Seleccionar 6</option>                  
+                  </select>
+                  <label for="seisReporte">6</label>
+                </div>
+                <div class="input-field col s1">
+                  <label>
+                    <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
+                    <span>Todas</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+        </div>
+
+          <div class="row col-md-12 s12">
+            <!-- Botón Buscar traslados -->
+            <div class="col s4 m2 l2">
+              <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">
+                Buscar
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          
+            <!-- Botones de descarga -->
+            <div class="col s4 m2 l2">
               <div class="impexcel">
-                  <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden >
-                      <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                  </button>
-                  <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden >Descargar
-                      Excel</label>
+                <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                  <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                </button>
+                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
               </div>
+            </div>
+            <div class="col s4 m2 l2">
               <div class="imppdf">
-                  <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
-                      <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                  </button>
-                  <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                  <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                </button>
+                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
               </div>
+            </div>
           </div>
-      </div>
 
         <!-- Tabla de resultados para listado de pedidos -->
         <div class="tblTrasladosVerif">
