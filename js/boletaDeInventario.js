@@ -99,8 +99,8 @@ async function presentarBoleta(){
               datosResumen=result.resultado;
               const btnValidarBoleta = document.getElementById('btnValidarBoleta');
               btnValidarBoleta.disabled = false; 
-                  //console.log('BOLETA DE INVENTARIO');
-                  //console.log(result.resultado)
+                  console.log('BOLETA DE INVENTARIO');
+                  console.log(result.resultado)
                   generarTablaBoleta(datosResumen);
                  inicializarBotonesDescarga();    
                              
@@ -172,16 +172,17 @@ async function validarBoleta() {
                 limpiarTabla();  
                 btnCrearBoleta.disabled = true; // Deshabilitar el botón si hay artículos remitidos
             } else {
-                limpiarTabla();
+                //limpiarTabla();
                 Swal.fire({
                     icon: "info",
                     title: "Información",
-                    text: "Habilitar creación de la boleta",
+                    text: "Proceda a la creación de la boleta",
                     confirmButtonColor: "#28a745",
                 }).then((swalResult) => {
                     if (swalResult.isConfirmed) {
+                        agregarColumnaValidated();
                         btnCrearBoleta.disabled = false; // Habilitar el botón si no hay artículos remitidos
-                        btnValidarBoleta.disabled = false;            
+                        btnValidarBoleta.disabled = true;            
                     }
                 });            
                
@@ -198,6 +199,30 @@ async function validarBoleta() {
         ocultarLoader();
     });
 }
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+function agregarColumnaValidated() {
+    const tablaResumen = document.getElementById("myTableBoleta");
+    const thead = tablaResumen.querySelector("thead tr");
+    const tbody = document.getElementById("tblbodyBoleta");
+    const filas = tbody.getElementsByTagName("tr");
+
+    // Agregar encabezado "Estado" al thead
+    const thEstado = document.createElement("th");
+    thEstado.textContent = "Estado";
+    thEstado.classList.add("boleta-header");
+    thead.appendChild(thEstado);
+
+    // Agregar "Verificado" a cada fila en el tbody
+    for (let i = 0; i < filas.length; i++) {
+        const tdEstado = document.createElement("td");
+        tdEstado.textContent = "Verificado";
+        tdEstado.classList.add("boleta-text"); // Reutilizamos la clase existente
+        filas[i].appendChild(tdEstado);
+    }
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 async function actualizaCostos(){
@@ -535,6 +560,8 @@ function descargarExcel() {
     // Escribir y descargar el archivo Excel
     XLSX.writeFile(workbook, "Reporte_Conteo_Inventario_General.xlsx");
 }
+
+
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 function limpiarTabla() {

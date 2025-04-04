@@ -20,6 +20,7 @@
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/main.css?v2.02" media="screen,projection" />
 
   <!-- FONTS -->
@@ -46,9 +47,8 @@
       <div class="container">
 
         <!-- Fecha -->
-        <div class="input-field col s6">
-          <select id="fecha_ini">
-           
+        <div class="input-field col s4">
+          <select id="fecha_ini">           
           </select>
           <label for="fecha_ini" class="inventario-fecha-estilo">Fecha</label>
         </div>
@@ -91,13 +91,17 @@
                   <td>
                     <span display: inline-block;></span>
                   </td>
-                  <td class="codigo-barras-cell">
+                  <td class="codigo-barras-cell">                    
                     <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
-                      oninput="validarCodigoBarras(this)" autofocus>
+                      onchange="validarCodigoBarras(this)" autofocus><label for="codigo-barras" hidden></label>
                   </td>
+                  <!-- <td class="codigo-barras-cell">                    
+                    <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
+                      oninput="validarCodigoBarras(this)" autofocus><label for="codigo-barras" hidden></label>
+                  </td> -->
                   <td class="codigo-barras-cell2">
-                    <input id="cant-leida" style="text-align: center;" type="text" class="codigo-barras-input" value=""
-                      onchange="validarCantidades(this)">
+                    <input id="cant-leida" class="codigo-barras-input" type="text" class="codigo-barras-input" value=""
+                      onchange="validarCantidades(this)"><label for="codigo-barras" hidden></label>
                   </td>
                   <td class="codigo-barras-cell2">
                     <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
@@ -144,7 +148,7 @@
             </table>
           </div>
         </div>
-        <div id="pagination" style="text-align: center; margin-top: 20px;">
+        <div id="pagination" class="btnpaginacion-conteo">
           <!-- Los botones de paginación se agregarán aquí dinámicamente -->
       </div>
       
@@ -152,7 +156,7 @@
     </div>
     </div>
 
-    <div class="row" id="observaciones-container" style="display:none;">
+    <div class="row" id="observaciones-container" >
       <div class="input-field col s12">
         <label id="lblObservaciones" for="observaciones">Observaciones</label>
         <textarea placeholder="Observaciones" id="observaciones" type="text"></textarea>

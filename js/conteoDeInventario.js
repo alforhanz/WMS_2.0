@@ -62,7 +62,7 @@ function crearNuevaFila() {
             </td>
             <td class="codigo-barras-cell">
                 <input type="text" style="text-align: center;" id="codigo-barras-${uniqueId}" 
-                    class="codigo-barras-input" value="" oninput="validarCodigoBarras(this)" autofocus>
+                    class="codigo-barras-input" value="" onchange="validarCodigoBarras(this)" autofocus>
             </td>
             <td class="codigo-barras-cell2" >
                 <input id="cant-leida-${uniqueId}" style="text-align: center;" 
@@ -822,7 +822,8 @@ function mostrarMensajeError(mensaje, columnas) {
         const fechaInv = document.getElementById('fecha_ini').value;
        
 
-        if(tabla && tabla.rows.length > 2 && ubicacion.length > 0 && fechaInv.length>0){
+        // if(tabla && tabla.rows.length > 2 && ubicacion.length > 0 && fechaInv.length>0){
+            if(tabla && tabla.rows.length > 2 && fechaInv.length>0){
             Swal.fire({
                 icon: 'info',
                 title: '¿A continuación se guardaran los datos leidos?',
@@ -839,7 +840,8 @@ function mostrarMensajeError(mensaje, columnas) {
         }else{
             Swal.fire({
                 icon: 'warning',
-                title: 'Está intentando guardar sin antes realizar una lectura válida del inventario. Recuerde verificar la ubicación y la fecha asignadas al inventario.',               
+                title: 'Está intentando guardar sin antes realizar una lectura válida del inventario. Recuerde verificar la fecha asignadas al inventario.',               
+                // title: 'Está intentando guardar sin antes realizar una lectura válida del inventario. Recuerde verificar la ubicación y la fecha asignadas al inventario.',               
                 confirmButtonText: 'Cerrar',
                 confirmButtonColor: "#28a745",                
             });

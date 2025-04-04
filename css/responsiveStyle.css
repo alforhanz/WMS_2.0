@@ -11,6 +11,9 @@
   
   /* Small only (max-width: 39.9375em = 639px) */
   @media screen and (max-width: 39.9375em) {
+    body{
+      font-size: 10px;
+    }
     .tabs .tab a {
       padding: 0 5px;
     }
@@ -114,10 +117,58 @@
     #cantidadDeRegistros {
       font-size: 12px;
     }
+    .inventario-fecha-estilo{
+      color: #28a745 !important;
+      margin-top: -35px;
+      top: 0px !important;
+      font-size: 14px !important;
+      }
+
+      #theadDetallestrasladosVerif {
+        display: none; /* Oculta los encabezados */
+    }
+
+    #tblDetallestrasladosVerif tbody,
+    #tblDetallestrasladosVerif tr,
+    #tblDetallestrasladosVerif td {
+        display: block;
+        width: 100%;
+    }
+
+    #tblDetallestrasladosVerif tr {
+        margin-bottom: 0.9375em; /* 15px en em ≈ 0.9375em */
+    }
+
+    #tblDetallestrasladosVerif td {
+        position: relative;
+        padding-left: 50%; /* Espacio para el data-label */
+        text-align: left !important; /* Sobreescribe alineación */
+        border: none; /* Opcional */
+    }
+
+    #tblDetallestrasladosVerif td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0.625em; /* 10px ≈ 0.625em */
+        width: 45%;
+        padding-right: 0.625em; /* 10px ≈ 0.625em */
+        font-weight: bold;
+        text-align: left;
+        color: #333;
+    }
+
+    #tblDetallestrasladosVerif td[data-label="ARTICULO"] h5,
+    #tblDetallestrasladosVerif td[data-label="ARTICULO"] h6 {
+        text-align: left !important;
+    }
+
   }
   
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
+    /* body{
+      font-size: 10px;
+    } */
     #dashboardselect {
       width: 50%;
       height: 45px;
@@ -326,7 +377,7 @@
       margin: -6px;
       padding: 12px;
       display: block;
-      user-select: none;
+      /* user-select: none; */
       z-index: 1;
       left: 8px;
     }
@@ -338,8 +389,8 @@
     }
     .input-field {
       position: relative;
-      margin-top: 10px;
-      margin-bottom: 31px;
+      margin-top: 10px;     
+      margin-bottom: 71px;
     }
     nav {
       box-shadow: 0 2px 2px 0 rgba(248, 15, 0, 0.14), 0 3px 1px -2px rgba(255, 255, 255, 0.12), 0 1px 5px 0 rgba(255, 255, 255, 0.20);
@@ -401,7 +452,7 @@
       margin: -6px;
       padding: 12px;
       display: block;
-      user-select: none;
+      /* user-select: none; */
       left: 20px;
     }
     #text input[type="text"]:not(.browser-default) {
@@ -435,7 +486,7 @@
       margin: -6px;
       padding: 12px;
       display: block;
-      user-select: none;
+      /* user-select: none; */
       z-index: 1;
       left: 8px;
     }
@@ -462,7 +513,7 @@
       margin: -6px;
       padding: 12px;
       display: block;
-      user-select: none;
+      /* user-select: none; */
       z-index: 1;
       left: 8px;
     }
@@ -525,7 +576,7 @@
       overflow: hidden;
       white-space: nowrap;
       cursor: pointer;
-      user-select: none;
+      /* user-select: none; */
       text-decoration: none !important;
     }
     .datepicker-footer {
@@ -538,7 +589,7 @@
       flex-wrap: wrap;
     }
     .col.s4 {
-      width: 100%;
+      width: 100% !important;
       margin-bottom: 15px;
     }
     .btn-container-boleta {

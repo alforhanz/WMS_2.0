@@ -36,6 +36,10 @@ h6{
 .pagination li.active {
   background-color: #000 !important;
 }
+.btnpaginacion-conteo{
+  text-align: center;
+  margin-top: 20px;
+}
 .gradient-45deg-grey-deep-darken {
   background: -webkit-linear-gradient(45deg, #757575, #212121) !important;
   background: linear-gradient(45deg, #757575, #212121) !important;
@@ -2231,4 +2235,19 @@ top: 0px !important;
 
 .detalles-Style{
   margin-top: 2em !important;
+}
+#observaciones-container{
+  display: none;
+}
+/* Estilos básicos para la tabla */
+#tblDetallestrasladosVerif {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+#tblDetallestrasladosVerif th,
+#tblDetallestrasladosVerif td {
+  padding: 8px;
+  border: 1px solid #ddd; /* Opcional, para mejor visibilidad */
 }
