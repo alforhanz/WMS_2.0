@@ -144,6 +144,7 @@
         padding-left: 50%; /* Espacio para el data-label */
         text-align: left !important; /* Sobreescribe alineación */
         border: none; /* Opcional */
+        box-sizing: border-box;
     }
 
     #tblDetallestrasladosVerif td:before {
@@ -162,8 +163,15 @@
         text-align: left !important;
     }
 
+    #tblDetallestrasladosVerif td[colspan] {
+      padding-left: 0.625em; /* Alinea con el resto en móvil */
+      text-align: right !important;
   }
-  
+  .download-buttons {
+    gap: 0.3em; /* Reduce aún más el espacio en móvil si es necesario */
+}
+
+  }  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
     /* body{
@@ -198,6 +206,12 @@
       background-color: #4c4e4e !important;
       width: 25%;
     }
+
+    #tblDetallestrasladosVerif th,
+    #tblDetallestrasladosVerif td {
+        width: auto; /* Ajusta al contenido en pantallas grandes */
+    }
+
   }
   
   /* Medium only (min-width: 40em and max-width: 63.9375em = 640px - 1022px) */

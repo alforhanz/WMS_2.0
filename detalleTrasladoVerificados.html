@@ -187,16 +187,42 @@
             </div>
         </div>
 
-          <div class="row col-md-12 s12">
-            <!-- Botón Buscar traslados -->
+        <div class="row col-md-12 s12">
+          <!-- Botón Buscar traslados -->
+          <div class="col s4 m2 l2">
+            <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">
+              Buscar
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        
+          <!-- Contenedor para botones de descarga alineados a la derecha -->
+          <!-- <div class="col s10 m10 l10 right-align"> -->
+            <div class="right-align">
+            <div class="download-buttons">
+              <div class="impexcel">
+                <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" >
+                  <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                </button>
+                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" >Descargar Excel</label>
+              </div>
+              <div class="imppdf">
+                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" >
+                  <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                </button>
+                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" >Descargar PDF</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <!-- <div class="row col-md-12 s12">           
             <div class="col s4 m2 l2">
               <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">
                 Buscar
                 <i class="material-icons right">send</i>
               </button>
             </div>
-          
-            <!-- Botones de descarga -->
             <div class="col s4 m2 l2">
               <div class="impexcel">
                 <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
@@ -213,7 +239,7 @@
                 <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
               </div>
             </div>
-          </div>
+          </div> -->
 
         <!-- Tabla de resultados para listado de pedidos -->
         <div class="tblTrasladosVerif">

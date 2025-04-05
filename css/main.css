@@ -2248,6 +2248,49 @@ top: 0px !important;
 
 #tblDetallestrasladosVerif th,
 #tblDetallestrasladosVerif td {
-  padding: 8px;
+  padding: 0.5em;
   border: 1px solid #ddd; /* Opcional, para mejor visibilidad */
+  width: auto; /* Permite que el ancho se ajuste al contenido */
+  max-width: 100%; /* Evita que se desborde del contenedor */
+   white-space: normal; /* Permite que el texto se envuelva si es necesario */
+   font-weight: normal;   
+}
+/* Alinear el contenedor de botones a la derecha */
+.right-align {
+  width: 97.3% !important;
+  text-align: right;
+  margin-left: 15px;
+}
+
+/* Estilos para el contenedor de botones de descarga */
+.download-buttons {
+  display: inline-flex; /* Usa flexbox para alinear los botones horizontalmente */
+  gap: 1em; /* Espacio reducido entre botones (ajusta según necesites) */
+  align-items: center; /* Centra verticalmente los elementos */
+}
+
+/* Ajustes para los botones de descarga */
+.impexcel, .imppdf {
+  display: inline-block; /* Mantiene los elementos en línea */
+  margin: 0 auto; /* Elimina márgenes por defecto */
+}
+
+/* Estilos para los botones y etiquetas */
+.btn-descarga {
+  padding: 0; /* Reduce el padding interno si es necesario */
+  margin: 0 auto; /* Elimina márgenes */
+  border: none; /* Opcional: elimina bordes si los hay */
+  background: none; /* Opcional: elimina fondo por defecto */
+  cursor: pointer;
+}
+
+.btnimpexcel, .btnimppdf {
+  margin-left: 0.3em; /* Espacio mínimo entre ícono y texto */
+  cursor: pointer;
+}
+
+/* Asegura que los íconos no sean demasiado grandes */
+.btn-icon {
+  width: 55px; /* Tamaño fijo para los íconos (ajusta según necesites) */
+  height: 44px;
 }
