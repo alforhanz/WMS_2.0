@@ -12,7 +12,7 @@
   /* Small only (max-width: 39.9375em = 639px) */
   @media screen and (max-width: 39.9375em) {
     body{
-      font-size: 10px;
+      font-size: 12px;
     }
     .tabs .tab a {
       padding: 0 5px;
@@ -171,6 +171,32 @@
     gap: 0.3em; /* Reduce aún más el espacio en móvil si es necesario */
 }
 
+.paginador-container {
+  margin: 20px 10em;
+  width: 40%;
+}
+
+.paginador-controls {
+  flex-direction: column; /* Apila los elementos verticalmente */
+  gap: 5px; /* Reduce el espacio entre elementos */
+}
+
+.paginador-btn-container, .paginador-select-container {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  text-align: center; /* Centra el contenido */
+}
+
+.paginador-btn {
+  display: block;
+  padding: 8px; /* Más espacio clickable */
+}
+
+.paginador-select {
+  width: 100%; /* Select ocupa todo el ancho */
+  max-width: 45px; /* Limita el ancho máximo */
+  margin: 0 auto; /* Centra el select */
+}
+
   }  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
@@ -210,6 +236,9 @@
     #tblDetallestrasladosVerif th,
     #tblDetallestrasladosVerif td {
         width: auto; /* Ajusta al contenido en pantallas grandes */
+    }
+    .paginador-controls {
+      flex-direction: row; /* Mantiene los elementos en horizontal */
     }
 
   }

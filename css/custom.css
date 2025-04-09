@@ -21,14 +21,14 @@
   font-weight: 700;
   font-size: 2em;
   text-transform: uppercase;
-}
+} *
 .la_date {
   font-size: 1.313rem !important;
-}
+} */
 main {
   padding-top: 200px;
-}
-.margen-25 {
+} 
+ .margen-25 {
   margin-bottom: 25px;
 }
 .shopping-person {
@@ -65,7 +65,7 @@ main {
 #tblcotizacion tbody:nth-child(4n),
 #tblarticulocliente tbody:nth-child(4n) {
   background: #fff !important;
-}
+} 
 #container_servicostaller input {
   width: 100%;
   height: 45px;
@@ -185,8 +185,8 @@ th {
 .tooltips-luciano th {
   padding: 5px 0;
   font-weight: bold;
-}
-#tblcliente tbody tr td:nth-child(3n) {
+} 
+ #tblcliente tbody tr td:nth-child(3n) {
   text-align: center;
 }
 .input-border {
@@ -288,6 +288,7 @@ nav a.sidenav-trigger {
   -o-transform: rotate(360deg);
   transform: rotate(360deg);
 }
+/*css del modal de las bodegas que se despliega en el header*/
 #bodega_sucursales {
   height: 100%;
   top: 0 !important;
@@ -393,10 +394,6 @@ footer .waves-effect:first-child {
 
 #save_articulos_cliente .btn-large {
   width: 100%;
-}
-
-#paginador .row {
-  width: 90%;
 }
 
 .collapsible li.active i {

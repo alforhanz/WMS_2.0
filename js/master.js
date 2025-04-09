@@ -64,8 +64,6 @@ window.onload = function () {
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-
-
 function login() {
 
   let usuario = document.querySelector("#username").value;
@@ -112,35 +110,14 @@ function login() {
           .then((response) => response.json())
           .then((result) => {
 
-          //  // Supongamos que result.bodega es el array de objetos que deseas almacenar
-          // var bodegaArray = result.bodega;
-
-          // // Acceder al primer elemento del array
-          // var primerElemento = bodegaArray[0];
-
-          // // Obtener solo el valor del campo "BODEGA"
-          // var bodegaValue = primerElemento.BODEGA;
-
-          // // Almacenar el valor en el localStorage
-          // localStorage.setItem('BodegaUsuario', bodegaValue);
-
-
-                 
           if (result.msg === "SUCCESS") {
-            console.log("Esta pasando por aqui");
-            console.log(result.msg);
-            //localStorage.setItem('username', JSON.stringify(result.username));
-            localStorage.setItem('username', result.username);    
-            // Almacenar la cadena JSON en el localStorage
-           // localStorage.setItem('BodegaUsuario', bodegaJSON.BODEGA); 
-
-           // localStorage.setItem('BodegaUsuario', result.bodega);       
+            console.log("Esta pasando por el login");
+            console.log(result.msg);            
+            localStorage.setItem('username', result.username);
             sessionStorage.setItem("tokens", JSON.stringify(result.access_token));
             sessionStorage.setItem("user", JSON.stringify(result.username));
-            sessionStorage.setItem("compania", JSON.stringify(result.compania));
-            // compania = compania.replace(/"/g, "");
+            sessionStorage.setItem("compania", JSON.stringify(result.compania));            
             sessionStorage.setItem("bodega", JSON.stringify(result.bodega));
-            //PRIVILEGIOS (MODULOS)
             sessionStorage.setItem("_priv", JSON.stringify(result.priv));         
 
             //DECLARACION DEL TOAST INICIO DE SESION
@@ -159,13 +136,9 @@ function login() {
             Toast.fire({
               icon: "success",
               title: "Iniciando Bremen.security configuración",
-            }).then(function () {
-              // getDataDash();
+            }).then(function () {             
               window.location = "home.html";
             });
-
-            //alert("You are logged in");
-            //this.goToMain();
           } else {
           Swal.fire({
             icon: "error",

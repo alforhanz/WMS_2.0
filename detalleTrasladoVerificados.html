@@ -201,16 +201,16 @@
             <div class="right-align">
             <div class="download-buttons">
               <div class="impexcel">
-                <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" >
+                <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
                   <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
                 </button>
-                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" >Descargar Excel</label>
+                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel"  hidden>Descargar Excel</label>
               </div>
               <div class="imppdf">
-                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" >
+                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()"  hidden>
                   <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
                 </button>
-                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" >Descargar PDF</label>
+                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf"  hidden>Descargar PDF</label>
               </div>
             </div>
           </div>
@@ -266,26 +266,15 @@
   <!-- Incluir la biblioteca de jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
+  <!-- otros script's -->
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/detalleTrasladoVerificados.js?v1.1" defer></script>
   <script type="text/javascript" src="js/loader.js?v1.1"></script>
   <script type="tex/javascript" src="js/paginacion.js?v1.1"></script>
-  <!--JavaScript local-->
+  
 
-  <script>
-    // Ejecutar la función mostrarLoader cuando el DOM esté listo
-    document.addEventListener("DOMContentLoaded", mostrarLoader);
-    //document.addEventListener("DOMContentLoaded", aplicarEstilosTablaPedidos);
-    // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar
-    // window.addEventListener("load", ocultarLoader);
-    // Ejecutar la función ocultarLoader cuando la ventana haya terminado de cargar completamente
-    window.onload = function () {
-      // Llama a la función para ocultar el loader
-      ocultarLoader();
-    };
-  </script>
 </body>
 
 </html>

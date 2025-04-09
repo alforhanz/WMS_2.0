@@ -2234,58 +2234,97 @@ function paginadorPedidos(nPag, pag, IDCategoria) {
         </div>
       </div><br>`;
 }
+//////////////////////////////////////////////////////////////////////////////////////
+
+// function paginadorTablas(nPag, pag, dynamicFunction) {
+//   //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
+//   //console.log("nPag:" + nPag + "- pag:" + pag);
+//   //MUESTRA LA CANTIDAD DE PAGINA
+//   let selected = "";
+//   sel = `<select class="browser-default" onchange="${dynamicFunction}(${nPag}, this.value)">
+//         <option value="" disabled>Páginas</option>`;
+//   for (var i = 0; i < nPag; i++) {
+//     if (i + 1 == pag) {
+//       selected = "selected";
+//     } else {
+//       selected = "";
+//     }
+//     if (nPag != 1) {
+//       sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+//         }</option>`;
+//     }
+//   }
+//   sel += `</select>`;
+
+//   if (pag <= 1) btnAtras = `<a style="color:#aba7a7;">❮ Anterior</a>`;
+//   else
+//     btnAtras = `<a onclick="${dynamicFunction}(${nPag} , ${parseInt(pag) - 1
+//       });">❮ Anterior</a>`;
+
+//   if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
+//   else
+//     btnSig = `<a onclick="${dynamicFunction}(${nPag},${parseInt(pag) + 1
+//       })">Siguiente ❯</a>`;
+
+//   return `
+//         <div id="paginador">
+//         <div class="row">
+//           <div class="col s4"></div>
+//           <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
+//           <div class="col s4"></div>
+//         </div>
+//         <div class="row" style="width:fit-content !important;">
+//             <div class="col s4" id="btnAtras" style="width:fit-content !important;">
+//               ${btnAtras}
+//             </div>
+//           <div class="col s4">
+//             ${sel}
+//           </div>
+//           <div class="col s4" id="btnSig" style="width:fit-content !important;">
+//             ${btnSig}
+//           </div>
+//         </div>
+//       </div><br>`;
+// }
 
 function paginadorTablas(nPag, pag, dynamicFunction) {
-  //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
-  //console.log("nPag:" + nPag + "- pag:" + pag);
-  //MUESTRA LA CANTIDAD DE PAGINA
+  // Generar el select con las páginas
   let selected = "";
-  sel = `<select class="browser-default" onchange="${dynamicFunction}(${nPag}, this.value)">
-        <option value="" disabled>Páginas</option>`;
-  for (var i = 0; i < nPag; i++) {
-    if (i + 1 == pag) {
-      selected = "selected";
-    } else {
-      selected = "";
-    }
-    if (nPag != 1) {
-      sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
-        }</option>`;
+  let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+              <option value="" disabled>Páginas</option>`;
+  for (let i = 0; i < nPag; i++) {
+    selected = i + 1 === pag ? "selected" : "";
+    if (nPag !== 1) {
+      sel += `<option value="${i + 1}" ${selected}>${i + 1}</option>`;
     }
   }
   sel += `</select>`;
 
-  if (pag <= 1) btnAtras = `<a style="color:#aba7a7;">❮ Anterior</a>`;
-  else
-    btnAtras = `<a onclick="${dynamicFunction}(${nPag} , ${parseInt(pag) - 1
-      });">❮ Anterior</a>`;
+  // Botones de navegación
+  const btnAtras = pag <= 1
+    ? `<a class="paginador-btn disabled">❮ Anterior</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
 
-  if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
-  else
-    btnSig = `<a onclick="${dynamicFunction}(${nPag},${parseInt(pag) + 1
-      })">Siguiente ❯</a>`;
+  const btnSig = pag >= nPag
+    ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
 
+  // Retornar el HTML con clases en lugar de estilos inline
   return `
-        <div id="paginador">
-        <div class="row">
-          <div class="col s4"></div>
-          <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
-          <div class="col s4"></div>
-        </div>
-        <div class="row" style="width:fit-content !important;">
-            <div class="col s4" id="btnAtras" style="width:fit-content !important;">
-              ${btnAtras}
-            </div>
-          <div class="col s4">
-            ${sel}
-          </div>
-          <div class="col s4" id="btnSig" style="width:fit-content !important;">
-            ${btnSig}
-          </div>
-        </div>
-      </div><br>`;
+    <div id="paginador" class="paginador-container">
+      <div class="row paginador-info">
+        <div class="col s12 center-align">${pag}/${nPag}</div>
+      </div>
+      <div class="row paginador-controls">
+        <div class="col s4 paginador-btn-container">${btnAtras}</div>
+        <div class="col s4 paginador-select-container">${sel}</div>
+        <div class="col s4 paginador-btn-container">${btnSig}</div>
+      </div>
+    </div>
+  `;
 }
 
+//---------------------------------------------------------------------------
 function cambiarVistaMosaico() {
   mostrarResultadosBusqueda(4, 1);
 }

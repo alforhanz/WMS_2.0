@@ -1,4 +1,4 @@
-#popupMenu-popup {
+/* #popupMenu-popup {
   overflow-y: scroll;
   height: 100%;
   position: fixed;
@@ -9,7 +9,7 @@
 #popupMenu {
   border: 0 !important;
   border-radius: 0 !important;
-}
+} */
 .shop-bodegas {
   background: #28a745;
   border-top: solid 1px #ffffff70;
@@ -92,18 +92,7 @@
 .reset-info-bodega {
   padding-left: 0 !important;
 }
-/* .buscador input {
-  border: 1px solid #28a745 !important;
-  margin: 0 !important;
-  padding-left: 8px !important;
-  height: 44px !important;
-  border-radius: 5px 0px 0px 5px !important;
-  -moz-border-radius: 5px 0px 0px 5px !important;
-  -webkit-border-radius: 5px 0px 0px 5px !important;
-  border: 0px solid #28a745;
-  top: -1px; 
-  left: -10px;
-} */
+
 .shop-bodegas {
   background: #28a745;
   border-top: solid 1px #ffffff70;

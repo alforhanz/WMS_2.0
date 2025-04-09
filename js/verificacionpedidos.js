@@ -6,7 +6,8 @@ const checkbox = document.getElementById('toggleSwitch');
   var instances = M.Datepicker.init(elems, {
     format: 'yyyy-mm-dd', // Formato de fecha
   });
-  document.addEventListener("DOMContentLoaded", function () {
+
+document.addEventListener("DOMContentLoaded", function () {
     ocultarColumnaLPrep();
    // console.log("DOM completamente cargado y parseado.");
     //localStorage.clear();
@@ -57,7 +58,6 @@ const checkbox = document.getElementById('toggleSwitch');
               }      
             }
     });
-
 function validarFormulario() {
   //revisar como toma el valor 
   var bodega = document.getElementById("bodega").value;
@@ -87,7 +87,6 @@ function validarFormulario() {
     listadoPedido(pBodega, pPedido, pFechaDesde, pFechaHasta, pUsuario, pOpcion);
   }
 }
-
 function listadoPedido(pBodega, pPedido, pFechaDesde, pFechaHasta, pUsuario, pOpcion) {
   localStorage.setItem('autoSearchPedidos', 'false'); // Aquí se establece el valor 'false' para la búsqueda de las órdenes de compra
 
@@ -108,6 +107,8 @@ function listadoPedido(pBodega, pPedido, pFechaDesde, pFechaHasta, pUsuario, pOp
       if (result.msg === "SUCCESS") {
         if (result.pedidos.length != 0) {
           ArrayData = result.pedidos;
+          console.log('Pediros');
+          console.log(ArrayData);
           ArrayDataFiltrado = result.pedidos;
           let cantReg = result.pedidos.length;
           let nPag = Math.ceil(cantReg / xPag);
@@ -140,7 +141,6 @@ function listadoPedido(pBodega, pPedido, pFechaDesde, pFechaHasta, pUsuario, pOp
       }
     });
 }
-
 function mostrarResultadosVerificacionPedidos(nPag, pag) {
   let htm = "";
   let desde = (pag - 1) * xPag;
@@ -150,7 +150,6 @@ function mostrarResultadosVerificacionPedidos(nPag, pag) {
   htm += paginadorTablas(nPag, pag, 'mostrarResultadosVerificacionPedidos');
   document.getElementById("resultadoPaginador").innerHTML = htm;
 }
-
 function resultadosVerificacionPedidos(desde, hasta) {
 
   const bodega = document.getElementById('bodega').value; //obtener el numero de la bodega
@@ -222,14 +221,13 @@ function resultadosVerificacionPedidos(desde, hasta) {
 
   tbody.innerHTML = htm; // Insertar el contenido generado en el tbody 
 }
-
 function irDetallePedido(documento, pedido, estado, estado_preparacion) {
   const checkbox = document.getElementById('toggleSwitch');
   let bodega = localStorage.getItem('BodegaUsuario');
   // Extraer solo el número de la bodega
   let bodegaNumero = bodega.match(/\d+/)[0];
 
-  console.log(bodegaNumero); // Esto mostrará "52" si el valor original era "B-52"
+ // console.log(bodegaNumero); // Esto mostrará "52" si el valor original era "B-52"
   localStorage.setItem("pedidos_finalizados",checkbox.checked); 
   localStorage.setItem("documento", documento);
   localStorage.setItem("pedidoSelect", pedido);
@@ -243,9 +241,7 @@ function irDetallePedido(documento, pedido, estado, estado_preparacion) {
         window.location.href = 'detalle_pedido.html';
     } 
 }
-
 ///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
-
 /////////////// Agregar un evento de cambio al checkbox/////////////
 checkbox.addEventListener('change', function () {
   // Imprimir el valor del checkbox en la consola
@@ -255,7 +251,6 @@ checkbox.addEventListener('change', function () {
   }
   limpiarResultadoGeneral()
 });
-
 /////////////////Fucnion que activa el toggleSwitch para ver los pedidos facturados y finalizados
 function pedidosFinalizados() {
   // Mostrar el cuadro de diálogo con SweetAlert2
@@ -276,7 +271,6 @@ function pedidosFinalizados() {
     }
   });
 }
-
 ////////////////////se aplican estilos a las filas cuyos documentos comienzan con 'T'. /////////////////
 function aplicarEstilosTablaPedidos() {
   $('#tblpedido tbody tr').each(function () {
@@ -290,7 +284,6 @@ function aplicarEstilosTablaPedidos() {
     }
   });
 }
-
 function ocultarColumnaLPrep() {
 
   const bodega = document.getElementById('bodega').value; // Ejemplo: "B-51"
@@ -314,7 +307,6 @@ function ocultarColumnaLPrep() {
         });
   }
 }
-
 // //limpiar el contenido de la busqueda
 function limpiarResultadoGeneral() {
   const tabla = document.getElementById("tblpedido");
@@ -339,12 +331,10 @@ function limpiarResultadoGeneral() {
     }
   }  
 }
-
 const fecha_ini=document.getElementById('fecha_ini');
 fecha_ini.addEventListener('change', function(){
   limpiarResultadoGeneral();
 });
-
 const fecha_fin=document.getElementById('fecha_fin');
 fecha_fin.addEventListener('change', function(){
   limpiarResultadoGeneral();

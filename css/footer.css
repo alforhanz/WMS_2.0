@@ -1,4 +1,4 @@
-footer {
+/* footer {
   position: fixed;
   left: 0;
   bottom: 0;
@@ -9,7 +9,6 @@ footer {
 }
 
 .btn2_.waves-effect {
-  /* border: none; */
   width: 20px;
   position: fixed;
   height: 20px;
@@ -182,4 +181,37 @@ p {
   width: 24px;
   height: 24px;
   margin: 10px -30px 0px 7px;
+} */
+/* Estilos para el footer */
+.page-footer {
+  width: 100%;  
+  background-color: #233730 ; /* Color gris oscuro de Materialize (puedes cambiarlo) */
+  padding-top: 20px; /* Espaciado superior estándar de Materialize */
+}
+
+/* Ajustes para tipografía y espaciado */
+.page-footer h5 {
+  font-size: 1.5rem; /* Tamaño estándar de Materialize para h5 */
+  margin-bottom: 10px;
+}
+
+.page-footer p {
+  margin: 0; /* Elimina márgenes por defecto */
+}
+
+.page-footer ul li {
+  margin-bottom: 5px; /* Espaciado entre elementos de la lista */
+}
+
+/* Footer copyright */
+.footer-copyright {
+  background-color: rgba(0, 0, 0, 0.2); /* Fondo oscuro translúcido típico de Materialize */
+  padding: 10px 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 39.9375em) {
+  .page-footer .container {
+    padding: 0 10px; /* Ajuste para móviles */
+  }
 }

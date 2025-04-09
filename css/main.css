@@ -526,6 +526,7 @@ svg[atributos] {
   right: 16px;
   width: 324px;
 }
+
 .tabs .tab a:hover,
 .tabs .tab a.active {
   background-color: transparent;
@@ -789,14 +790,14 @@ svg[atributos] {
   margin: 0;
   padding: 0;
 }
-#lista-articulo select {
+/* #lista-articulo select {
   background-color: #000;
   color: #fff;
   width: 100%;
   padding: 5px;
   border-radius: 2px;
   height: 37px;
-}
+} */
 #lista-articulo .cabecera {
   background: #535262;
   color: #fff;
@@ -1365,7 +1366,7 @@ th {
   -webkit-tap-highlight-color: transparent;
 }
 
-#paginador {
+/* #paginador {
   font-size: 14px;
 }
 #paginador #btnAtras,
@@ -1386,7 +1387,7 @@ th {
 #paginador a {
   color: #000;
   text-decoration: none;
-}
+} */
 #detalleFactura {
   width: 100%;
   display: table;
@@ -2293,4 +2294,46 @@ top: 0px !important;
 .btn-icon {
   width: 55px; /* Tamaño fijo para los íconos (ajusta según necesites) */
   height: 44px;
+}
+/* Estilos básicos para el paginador */
+/* .paginador-container {
+  margin: 20px 0;
+  width: 100%;
+} */
+
+.paginador-container {
+  margin: 0 auto;
+  width: 30%;
+}
+.paginador-info {
+  margin-bottom: 10px;
+}
+
+.paginador-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Espacio entre elementos */
+}
+
+.paginador-btn-container, .paginador-select-container {
+  display: inline-block;
+}
+
+.paginador-btn {
+  cursor: pointer;
+  color: #28a745; /* Color clickable, ajusta según tu tema */
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.paginador-btn.disabled {
+  color: #aba7a7; /* Color deshabilitado */
+  cursor: not-allowed;
+}
+
+.paginador-select {
+  display: inline-block;
+  width: auto; /* Ajusta al contenido */
+  min-width: 80px; /* Tamaño mínimo para evitar que sea demasiado pequeño */
 }
