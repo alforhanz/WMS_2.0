@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <!--Import Personalize css-->
@@ -29,8 +27,81 @@
   <link rel="icon" type="image/x-icon" href="/img/wms.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="js/encabezado.js" type="text/javascript"></script>
+
+  <style>
+    /* Estilos para el contenedor de checkboxes */
+     .checkbox-container {
+              border: 1px solid #7e8180;
+              border-radius: 5px;
+              padding: 27px;
+              background-color: #f9f9f9;
+              margin-top: 0px;
+              margin-left: 3em;
+    }
+      /* Estilo para el legend */
+  .checkbox-container legend {
+    font-size: 1rem;
+    color: #060606;
+    font-weight: bold;
+    padding: 0 10px; /* Espaciado alrededor del texto */
+  }
+    
+    /* Estilos para las filas de checkboxes */
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      /* margin-bottom: 58px; */
+    }
+    
+    /* Ajustes para los checkboxes */
+    .checkbox-container .input-field {
+      margin-bottom: 5px; /* Espaciado entre checkboxes */
+    }
+    
+    /* Asegurar que las etiquetas de los checkboxes sean consistentes */
+    @media screen and (max-width: 39.9375em) {
+    .checkbox-container {
+        margin-top: 10px;
+        padding: 10px;
+        height: 12em;
+        margin-bottom: 2em;
+    }
+}
+    
+    /* Responsividad para pantallas pequeñas */
+    @media screen and (max-width: 39.9375em) {
+      .checkbox-container {
+        margin-top: 10px; /* Menos margen en pantallas pequeñas */
+        padding: 10px; /* Menos padding */
+      }
+      .checkbox-row {
+        flex-direction: column; /* Apila los checkboxes verticalmente */
+      }
+      .checkbox-container .input-field {
+        margin-bottom: 10px; /* Mayor espaciado entre checkboxes */
+      }
+    }
+    
+    /* Ajustes para pantallas medianas y grandes */
+    @media screen and (min-width: 40em) {
+      .checkbox-container {
+            min-height: 163px;
+            width: 78%;
+        }
+      .checkbox-row {
+        flex-wrap: nowrap; /* Evita que los checkboxes se envuelvan en la misma fila */
+      }
+      .checkbox-row .input-field {
+        flex: 1; /* Distribuye el espacio equitativamente */
+        text-align: left; /* Alinea el texto a la izquierda */
+      }
+    }
+    </style>
+
+
   <!-- <meta name="theme-color" content=""> -->
-  <title>Detalle de Traslados Verificados- WMS</title>
+  <title>Detalle de Transacciones Verificados- WMS</title>
 </head>
 
 <body id="home" tabindex="-1">
@@ -41,56 +112,87 @@
     <div id="resultadoBusqueda">
       <div id="contenedorLoader"></div>
       <div id="carga"></div>
-      <div class="container">
-      
+      <div class="container">     
 
-        <h2 class="titulo-vista">Detalle de Traslados Verificados</h2>
+        <h2 class="titulo-vista">Detalle de Transacciones Verificadas</h2>
 
         <!-- Tabs Datos b'asicos y clasificaciones -->
         <ul id="tabs-swipe-demo" class="tabs">
           <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
           <li class="tab col s3"><a href="#tab-clasificacion" >Clasificaciones</a></li>
         </ul>
-        <!-- DATOS BÁSICOS -->
-        <div id="tab-datos-basicos" class="row btnReportes"> 
-          <div class="row col s12 detalles-Style">
-            <div class="input-field col s4">
-              <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
-              <label for="fecha_ini">Fecha Inicial</label>
-            </div>
-  
-            <div class="input-field col s4">
-              <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
-              <label for="fecha_fin">Fecha Final</label>
-            </div>
-
-            <div class="input-field col s4">
-              <div>
-                <label>
-                  <input type="checkbox" id="tEntrada" checked />
-                  <span>Traslados de Entrada</span>
-                </label>
-              </div>
-              <div>
-                <label>
-                  <input type="checkbox" id="tSalida" checked />
-                  <span>Traslados de Salida</span>
-                </label>
-              </div>
-            </div>
-          </div>  
-
-            <div class="row">
-              <div class="input-field col s4">
-                <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">          
-                <label for="first_name"></label>
-              </div>
-              <div class="input-field col s4">
-                <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">               
-                <label for="first_name"></label>
-              </div>
-            </div>
+       
+        
+<!-- DATOS BÁSICOS -->
+<div id="tab-datos-basicos" class="row btnReportes">
+  <div class="row col s12 detalles-Style">
+    <!-- Columna izquierda: Inputs de fechas -->
+    <div class="col s12 m6 l6">
+      <!-- Fechas -->
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+          <label for="fecha_ini">Fecha Inicial</label>
         </div>
+        <div class="input-field col s12 m6">
+          <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+          <label for="fecha_fin">Fecha Final</label>
+        </div>
+      </div>
+      <!-- Traslado, Artículo, Entrada, Salida -->
+      <div class="row">
+        <div class="input-field col s12 m4">
+          <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
+          <label for="pTaslado"></label>
+        </div>
+        <div class="input-field col s12 m4">
+          <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
+          <label for="pArticulo"></label>
+        </div>
+        <div class="input-field col s12 m2">
+          <label>
+            <input type="checkbox" id="tEntrada" checked />
+            <span>Entrada</span>
+          </label>
+        </div>
+        <div class="input-field col s12 m2">
+          <label>
+            <input type="checkbox" id="tSalida" checked />
+            <span>Salida</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- Columna derecha: Checkboxes en un cuadro -->
+    <div class="col s12 m6 l6">
+      <fieldset class="checkbox-container">
+        <legend>Tipo de Transacción</legend>
+        <div class="row checkbox-row">
+          <div class="input-field col s12 m4">
+            <label>
+              <input type="checkbox" id="tTraslado" checked />
+              <span>Traslados</span>
+            </label>
+          </div>
+          <div class="input-field col s12 m4">
+            <label>
+              <input type="checkbox" id="tVenta" checked />
+              <span>Pedidos</span>
+            </label>
+          </div>
+          <div class="input-field col s12 m4">
+            <label>
+              <input type="checkbox" id="tOrdenesDeCompras" checked />
+              <span>Ordenes De Compras</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+
+        <!-- fin de pestaña DATOS BÁSICOS -->
 
           <!-- Contenedor de los elementos de la pestaña de Clasificación -->
           <div id="tab-clasificacion" class="row btnReportes">
@@ -197,8 +299,7 @@
             </button>
           </div>
         
-          <!-- Contenedor para botones de descarga alineados a la derecha -->
-          <!-- <div class="col s10 m10 l10 right-align"> -->
+          <!-- Contenedor para botones de descarga alineados a la derecha -->          
             <div class="right-align">
             <div class="download-buttons">
               <div class="impexcel">
@@ -232,7 +333,7 @@
     </div>
   </main>
 
-  <footer class="page-footer">
+  <!-- <footer class="page-footer">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
@@ -256,7 +357,7 @@
       <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
       </div>
     </div>
-  </footer>
+  </footer> -->
 
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

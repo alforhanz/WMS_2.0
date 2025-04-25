@@ -294,7 +294,7 @@ function cargarBodegas() {
 fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra")
     .then(response => response.json())
     .then(data => {
-    const bodegasSelect = document.getElementById('bodegaSelect');
+    const bodegasSelect = document.getElementById('bodegaSelectOC');
     if (data.respuesta && Array.isArray(data.respuesta)) {
         // Limpiar las opciones existentes
         bodegasSelect.innerHTML = '<option value="" disabled selected>Seleccione una bodega</option>';
@@ -321,7 +321,7 @@ function handleBodegaChange(event) {
     localStorage.setItem('bodega_Destino_OC',event.target.value)
   }
   // Obtener el elemento <select> y agregar el evento onchange
-  document.getElementById('bodegaSelect').addEventListener('change', handleBodegaChange);
+  document.getElementById('bodegaSelectOC').addEventListener('change', handleBodegaChange);
 
 
 /////////   CAMBIAR LA BODEGA DESTINO EN LA OC          /////////////////////////////////

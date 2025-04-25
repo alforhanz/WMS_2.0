@@ -196,6 +196,13 @@
   max-width: 45px; /* Limita el ancho máximo */
   margin: 0 auto; /* Centra el select */
 }
+#bodegaSelectOC {
+  width: 100% !important; /* Ocupa todo el espacio disponible dentro de su contenedor */
+}
+
+#bodegaButtonOC {
+  width: 100% !important; /* Ocupa todo el espacio disponible dentro de su contenedor */ 
+}
 
   }  
   /* Medium and up (min-width: 40em = 640px) */
@@ -357,7 +364,7 @@
       background-color: rgba(14, 230, 61, 0);
     }
     .input-field > label {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
     #lista-articulo ul {
       width: 80em;

@@ -1626,6 +1626,14 @@ th {
   color: #474343 !important;
 }
 
+#bodegaSelectOC {
+  width: 20%; /* Ocupa todo el espacio disponible dentro de su contenedor */
+}
+
+#bodegaButtonOC {
+  width: 20%; /* Ocupa todo el espacio disponible dentro de su contenedor */ 
+}
+
 #bodegaSelect {
   width: 100%; /* Ocupa todo el espacio disponible dentro de su contenedor */
 }
@@ -1633,7 +1641,6 @@ th {
 #bodegaButton {
   width: 100%; /* Ocupa todo el espacio disponible dentro de su contenedor */ 
 }
-
 #lbl_bodega_destino{
   font-size: 1rem !important;
   color: #837f7f;
@@ -2337,4 +2344,8 @@ font-size: 20px !important;
   display: inline-block;
   width: auto; /* Ajusta al contenido */
   min-width: 80px; /* Tamaño mínimo para evitar que sea demasiado pequeño */
+}
+
+#tabs-swipe-demo{
+  margin-top: 5em !important;
 }
