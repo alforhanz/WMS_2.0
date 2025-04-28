@@ -48,7 +48,7 @@ h6{
   background-color: #28a745 !important;
 }
 a {
-  color: #fff;
+  color: #0a0a0a;
   text-decoration: none;
 }
 .green.darken-4 {
@@ -755,7 +755,7 @@ svg[atributos] {
   background-color: #fff;
   list-style: none;
   display: inline-block;
-  width: 50%;
+  width: 98%;
   border-bottom: solid 1px #d6d3d3;
 }
 #lista-articulo li:nth-child(2):after {
@@ -814,11 +814,11 @@ svg[atributos] {
   font-size: 13px;
   color: #fff;
   background: #098255;
-  padding: 4px 6px;
-  text-align: center;
-  position: relative;  
+  padding: 8px 4px;
+  text-align: left;
+  position: relative;
   border-radius: 3px;
-  line-height: 26px;
+  line-height: 14px;
   font-weight: bold;
   z-index: 100;
   bottom: 30px;

@@ -1,3 +1,8 @@
+  /////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////// 
+// Variable global para almacenar los totales (puedes ajustarla según tu estructura)
+let totalEntradasGlobal = 0;
+let totalSalidasGlobal = 0;
  /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', function() {    
@@ -139,7 +144,7 @@ function verTrasladosLista(){
   }//Fin de ver traslados lista
  /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////  
-  function TrasladosEntradaSalida() {
+function TrasladosEntradaSalida() {
   // Obtener el estado de los checkboxes
   const entradaChecked = document.getElementById('tEntrada').checked;
   const salidaChecked = document.getElementById('tSalida').checked;
@@ -219,358 +224,7 @@ function mostrarResultadosVerificacionTraslados(nPag, pag) {
     document.getElementById("resultadoPaginador").innerHTML = htm;
   }
  /////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////// 
-
-// function armarTablaDetalleTrasladosVerificados(desde, hasta) {
-//   // Validar que ArrayDataFiltrado exista y no esté vacío
-//   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
-//     console.error("ArrayDataFiltrado no está definido o está vacío.");
-//     return;
-//   }
-
-//   const tabla = document.getElementById("tblDetallestrasladosVerif");
-//   const thead = document.getElementById("theadDetallestrasladosVerif");
-//   let tbody = tabla.querySelector("tbody");
-
-//   // Crear tbody si no existe
-//   if (!tbody) {
-//     tbody = document.createElement("tbody");
-//     tabla.appendChild(tbody);
-//   }
-
-//   // Limpiar contenido previo
-//   thead.innerHTML = "";
-//   tbody.innerHTML = "";
-
-//   // Generar encabezados dinámicamente desde las claves del primer objeto, excluyendo DESCRIPCION
-//   const headersOriginales = Object.keys(ArrayDataFiltrado[0]);
-//   const headers = headersOriginales.filter(header => header.toUpperCase() !== "DESCRIPCION");
-//   let headerHtml = '<tr class="themeColor-Traslado">';
-//   headers.forEach((header) => {
-//     // Convertir a mayúsculas y alinear encabezados a la derecha
-//     headerHtml += `<th style="text-align: center;">${header.toUpperCase()}</th>`;
-//   });
-//   headerHtml += "</tr>";
-//   thead.innerHTML = headerHtml;
-
-//   // Generar filas de datos
-//   let bodyHtml = "";
-//   for (let i = desde; i < hasta && i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       // Alternar color de fondo
-//       let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
-
-//       // Crear fila
-//       bodyHtml += `<tr style="background-color:${backgroundColor};">`;
-
-//       // Iterar sobre las claves filtradas para mantener el orden de los encabezados
-//       headers.forEach((header) => {
-//         let value;
-//         let alignment = "left"; // Por defecto, texto alineado a la derecha
-
-//         if (header.toUpperCase() === "ARTICULO") {
-//           // Combinar ARTICULO y DESCRIPCION en una sola celda
-//           const articulo = ArrayDataFiltrado[i]["ARTICULO"] || "";
-//           const descripcion = ArrayDataFiltrado[i]["DESCRIPCION"] || "";
-//           value = `${articulo} - ${descripcion}`;
-//         } else {
-//           // Obtener el valor de la clave
-//           value = ArrayDataFiltrado[i][header] || "";
-//           // Verificar si es un campo numérico como CANTIDAD_TRASLADO
-//           if (header.toUpperCase() === "CANTIDAD_TRASLADO" && !isNaN(value) && value !== "") {
-//             value = Number(value).toFixed(2); // Formatear con 2 decimales
-//             alignment = "right"; // Alinear a la izquierda para campos numéricos
-//           } else if (!isNaN(value) && value !== "") {
-//             // Para otros campos numéricos, también aplicar 2 decimales y alineación izquierda
-//             value = Number(value).toFixed(2);
-//             alignment = "right";
-//           }
-//         }
-//         // Aplicar alineación a la celda
-//         bodyHtml += `<td style="text-align: ${alignment};">${value}</td>`;
-//       });
-
-//       bodyHtml += "</tr>";
-//     }
-//   }
-
-//   // Insertar contenido en el tbody
-//   tbody.innerHTML = bodyHtml;
-// }
-
-
-// function armarTablaDetalleTrasladosVerificados(desde, hasta) {
-//   // Validar que ArrayDataFiltrado exista y no esté vacío
-//   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
-//     console.error("ArrayDataFiltrado no está definido o está vacío.");
-//     return;
-//   }
-
-//   const tabla = document.getElementById("tblDetallestrasladosVerif");
-//   const thead = document.getElementById("theadDetallestrasladosVerif");
-//   let tbody = tabla.querySelector("tbody");
-
-//   // Crear tbody si no existe
-//   if (!tbody) {
-//     tbody = document.createElement("tbody");
-//     tabla.appendChild(tbody);
-//   }
-
-//   // Limpiar contenido previo
-//   thead.innerHTML = "";
-//   tbody.innerHTML = "";
-
-//   // Generar encabezados dinámicamente desde las claves del primer objeto, excluyendo DESCRIPCION
-//   const headersOriginales = Object.keys(ArrayDataFiltrado[0]);
-//   const headers = headersOriginales.filter(header => header.toUpperCase() !== "DESCRIPCION");
-//   let headerHtml = '<tr class="themeColor-Traslado">';
-//   headers.forEach((header) => {
-//     headerHtml += `<th style="text-align: center;">${header.toUpperCase()}</th>`;
-//   });
-//   headerHtml += "</tr>";
-//   thead.innerHTML = headerHtml;
-
-//   // Generar filas de datos
-//   let bodyHtml = "";
-//   for (let i = desde; i < hasta && i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       // Alternar color de fondo
-//       let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
-
-//       // Crear fila
-//       bodyHtml += `<tr style="background-color:${backgroundColor};">`;
-
-//       // Iterar sobre las claves filtradas para mantener el orden de los encabezados
-//       headers.forEach((header) => {
-//         let value;
-//         let alignment = "left"; // Por defecto, texto alineado a la izquierda
-
-//         if (header.toUpperCase() === "ARTICULO") {
-//           // Combinar ARTICULO y DESCRIPCION en una sola celda con h5 y h6
-//           const articulo = ArrayDataFiltrado[i]["ARTICULO"] || "";
-//           const descripcion = ArrayDataFiltrado[i]["DESCRIPCION"] || "";
-//           value = `
-//             <h5 style="text-align: center; color: #f56108; margin: 0;">${articulo}</h5>
-//             <h6 style="text-align: center; margin: 0;">${descripcion}</h6>
-//           `;
-//           alignment = "rig"; // Alinear al centro para esta celda
-//         } else {
-//           // Obtener el valor de la clave
-//           value = ArrayDataFiltrado[i][header] || "";
-//           // Verificar si es un campo numérico como CANTIDAD_TRASLADO
-//           if (header.toUpperCase() === "CANTIDAD_TRASLADO" && !isNaN(value) && value !== "") {
-//             value = Number(value).toFixed(2); // Formatear con 2 decimales
-//             alignment = "right"; // Alinear a la derecha para campos numéricos
-//           } else if (!isNaN(value) && value !== "") {
-//             // Para otros campos numéricos, también aplicar 2 decimales y alineación a la derecha
-//             value = Number(value).toFixed(2);
-//             alignment = "right";
-//           }
-//         }
-//         // Aplicar alineación a la celda
-//         bodyHtml += `<td style="text-align: ${alignment};">${value}</td>`;
-//       });
-
-//       bodyHtml += "</tr>";
-//     }
-//   }
-
-//   // Insertar contenido en el tbody
-//   tbody.innerHTML = bodyHtml;
-// }
-
-
-// function armarTablaDetalleTrasladosVerificados(desde, hasta) {
-//   // Validar que ArrayDataFiltrado exista y no esté vacío
-//   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
-//     console.error("ArrayDataFiltrado no está definido o está vacío.");
-//     return;
-//   }
-
-//   const tabla = document.getElementById("tblDetallestrasladosVerif");
-//   const thead = document.getElementById("theadDetallestrasladosVerif");
-//   let tbody = tabla.querySelector("tbody");
-
-//   // Crear tbody si no existe
-//   if (!tbody) {
-//     tbody = document.createElement("tbody");
-//     tabla.appendChild(tbody);
-//   }
-
-//   // Limpiar contenido previo
-//   thead.innerHTML = "";
-//   tbody.innerHTML = "";
-
-//   // Generar encabezados dinámicamente desde las claves del primer objeto, excluyendo DESCRIPCION
-//   const headersOriginales = Object.keys(ArrayDataFiltrado[0]);
-//   const headers = headersOriginales.filter(header => header.toUpperCase() !== "DESCRIPCION");
-//   let headerHtml = '<tr class="themeColor-Traslado">';
-//   headers.forEach((header) => {
-//     headerHtml += `<th style="text-align: center;">${header.toUpperCase()}</th>`;
-//   });
-//   headerHtml += "</tr>";
-//   thead.innerHTML = headerHtml;
-
-//   // Generar filas de datos
-//   let bodyHtml = "";
-//   for (let i = desde; i < hasta && i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       // Alternar color de fondo
-//       let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
-
-//       // Crear fila
-//       bodyHtml += `<tr style="background-color:${backgroundColor};">`;
-
-//       // Iterar sobre las claves filtradas para mantener el orden de los encabezados
-//       headers.forEach((header) => {
-//         let value;
-//         let alignment = "left"; // Por defecto, texto alineado a la izquierda
-
-//         if (header.toUpperCase() === "ARTICULO") {
-//           // Combinar ARTICULO y DESCRIPCION en una sola celda con h5 y h6
-//           const articulo = ArrayDataFiltrado[i]["ARTICULO"] || "";
-//           const descripcion = ArrayDataFiltrado[i]["DESCRIPCION"] || "";
-//           value = `
-//             <h5 style="text-align: left; color: #f56108; margin: 0;">${articulo}</h5>
-//             <h6 style="text-align: left; margin: 0;">${descripcion}</h6>
-//           `;
-//           alignment = "center"; // Alinear al centro para esta celda
-//         } else {
-//           // Obtener el valor de la clave
-//           value = ArrayDataFiltrado[i][header] || "";
-//           // Verificar si es un campo numérico como CANTIDAD_TRASLADO o FECHA HORA APLICACION
-//           if (header.toUpperCase() === "CANTIDAD_TRASLADO" && !isNaN(value) && value !== "") {
-//             value = Number(value).toFixed(2); // Formatear con 2 decimales
-//             alignment = "right"; // Alinear a la derecha para campos numéricos
-//           } else if (header.toUpperCase() === "FECHA HORA APLICACION") {
-//             alignment = "right"; // Alinear a la derecha específicamente para FECHA HORA APLICACION
-//           } else if (!isNaN(value) && value !== "") {
-//             // Para otros campos numéricos, también aplicar 2 decimales y alineación a la derecha
-//             value = Number(value).toFixed(2);
-//             alignment = "right";
-//           }
-//         }
-//         // Agregar data-label para diseño responsive
-//         bodyHtml += `<td style="text-align: ${alignment};" data-label="${header.toUpperCase()}">${value}</td>`;
-//       });
-
-//       bodyHtml += "</tr>";
-//     }
-//   }
-
-//   // Insertar contenido en el tbody
-//   tbody.innerHTML = bodyHtml;
-// }
-
-
-// function armarTablaDetalleTrasladosVerificados(desde, hasta) {
-//   // Validar que ArrayDataFiltrado exista y no esté vacío
-//   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
-//     console.error("ArrayDataFiltrado no está definido o está vacío.");
-//     return;
-//   }
-
-//   const tabla = document.getElementById("tblDetallestrasladosVerif");
-//   const thead = document.getElementById("theadDetallestrasladosVerif");
-//   let tbody = tabla.querySelector("tbody");
-
-//   // Crear tbody si no existe
-//   if (!tbody) {
-//     tbody = document.createElement("tbody");
-//     tabla.appendChild(tbody);
-//   }
-
-//   // Limpiar contenido previo
-//   thead.innerHTML = "";
-//   tbody.innerHTML = "";
-
-//   // Generar encabezados dinámicamente desde las claves del primer objeto, excluyendo DESCRIPCION
-//   const headersOriginales = Object.keys(ArrayDataFiltrado[0]);
-//   const headers = headersOriginales.filter(header => header.toUpperCase() !== "DESCRIPCION");
-//   let headerHtml = '<tr class="themeColor-Traslado">';
-//   headers.forEach((header) => {
-//     headerHtml += `<th style="text-align: center;">${header.toUpperCase()}</th>`;
-//   });
-//   headerHtml += "</tr>";
-//   thead.innerHTML = headerHtml;
-
-//   // Generar filas de datos y calcular totales
-//   let bodyHtml = "";
-//   let totalEntradas = 0; // Suma de valores positivos
-//   let totalSalidas = 0;  // Suma de valores negativos
-
-//   for (let i = desde; i < hasta && i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       // Alternar color de fondo
-//       let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
-
-//       // Crear fila
-//       bodyHtml += `<tr style="background-color:${backgroundColor};">`;
-
-//       // Iterar sobre las claves filtradas para mantener el orden de los encabezados
-//       headers.forEach((header) => {
-//         let value;
-//         let alignment = "left"; // Por defecto, texto alineado a la izquierda
-
-//         if (header.toUpperCase() === "ARTICULO") {
-//           const articulo = ArrayDataFiltrado[i]["ARTICULO"] || "";
-//           const descripcion = ArrayDataFiltrado[i]["DESCRIPCION"] || "";
-//           value = `
-//             <h5 style="text-align: center; color: #f56108; margin: 0;">${articulo}</h5>
-//             <h6 style="text-align: center; margin: 0;">${descripcion}</h6>
-//           `;
-//           alignment = "center";
-//         } else {
-//           value = ArrayDataFiltrado[i][header] || "";
-//           if (header.toUpperCase() === "CANT TRASLADO" && !isNaN(value) && value !== "") {
-//             value = Number(value).toFixed(2);
-//             alignment = "right";
-//             // Calcular totales según el signo del valor
-//             const numValue = Number(value);
-//             if (numValue > 0) {
-//               totalEntradas += numValue;
-//             } else if (numValue < 0) {
-//               totalSalidas += numValue;
-//             }
-//           } else if (header.toUpperCase() === "FECHA HORA APLICACION") {
-//             alignment = "right";
-//           } else if (!isNaN(value) && value !== "") {
-//             value = Number(value).toFixed(2);
-//             alignment = "right";
-//           }
-//         }
-//         bodyHtml += `<td style="text-align: ${alignment};" data-label="${header.toUpperCase()}">${value}</td>`;
-//       });
-
-//       bodyHtml += "</tr>";
-//     }
-//   }
-
-//   // Agregar filas de totales
-//   // Total de Entradas (valores positivos)
-//   bodyHtml += `
-//     <tr style="background-color: #e0f7fa; font-weight: bold;">
-//       <td colspan="${headers.length - 1}" style="text-align: right;">Total de Entradas:</td>
-//       <td style="text-align: right;" data-label="TOTAL ENTRADAS">${totalEntradas.toFixed(2)}</td>
-//     </tr>
-//   `;
-//   // Total de Salidas (valores negativos)
-//   bodyHtml += `
-//     <tr style="background-color: #ffebee; font-weight: bold;">
-//       <td colspan="${headers.length - 1}" style="text-align: right;">Total de Salidas:</td>
-//       <td style="text-align: right;" data-label="TOTAL SALIDAS">${totalSalidas.toFixed(2)}</td>
-//     </tr>
-//   `;
-
-//   // Insertar contenido en el tbody
-//   tbody.innerHTML = bodyHtml;
-// }
-
-
-// Variable global para almacenar los totales (puedes ajustarla según tu estructura)
-let totalEntradasGlobal = 0;
-let totalSalidasGlobal = 0;
-
+/////////////////////////////////////////////////////////////////////////////  
 // Función para calcular los totales globales (se ejecuta una vez o cuando cambian los datos)
 function calcularTotalesGlobales() {
   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
@@ -581,7 +235,7 @@ function calcularTotalesGlobales() {
   totalSalidasGlobal = 0;
 
   ArrayDataFiltrado.forEach((item) => {
-    const value = item["CANT TRASLADO"];
+    const value = item["CANT APLICADA"];
     if (!isNaN(value) && value !== "") {
       const numValue = Number(value);
       if (numValue > 0) {
@@ -592,15 +246,16 @@ function calcularTotalesGlobales() {
     }
   });
 }
-
+  /////////////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////////////  
 // Función para mostrar los totales en un elemento separado
 function mostrarTotalesGlobales() {
   const totalesContainer = document.getElementById("totalesContainer") || document.createElement("div");
   totalesContainer.id = "totalesContainer";
   totalesContainer.innerHTML = `
-    <div style="font-size: 20px; text-align: right; right margin-top: 20px; padding: 10px; ">
-      <p style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toFixed(2)}</p>
-      <p style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toFixed(2)}</p>
+    <div style="font-size: 20px; text-align: right; margin-top: 20px; padding: 10px;">
+      <p style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      <p style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
     </div>
   `;
   // Asegurarse de que esté después de la tabla
@@ -610,6 +265,26 @@ function mostrarTotalesGlobales() {
   }
 }
 
+// function mostrarTotalesGlobales() {
+//   const totalesContainer = document.getElementById("totalesContainer") || document.createElement("div");
+//   totalesContainer.id = "totalesContainer";
+//   totalesContainer.innerHTML = `
+//     <div style="font-size: 20px; text-align: right; right margin-top: 20px; padding: 10px; ">
+//       <p style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toFixed(2)}</p>
+//       <p style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toFixed(2)}</p>
+//     </div>
+//   `;
+//   // Asegurarse de que esté después de la tabla
+//   const tabla = document.getElementById("tblDetallestrasladosVerif");
+//   if (!document.getElementById("totalesContainer")) {
+//     tabla.parentNode.insertBefore(totalesContainer, tabla.nextSibling);
+//   }
+// }
+
+
+
+  /////////////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////////////  
 // Función principal actualizada
 function armarTablaDetalleTrasladosVerificados(desde, hasta) {
   if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
@@ -683,7 +358,7 @@ function armarTablaDetalleTrasladosVerificados(desde, hasta) {
   }
   mostrarTotalesGlobales();
 }
-/////////////////////////////////////////////////////////////////////////////
+ /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////  
 function aplicarEstilosTabla() {
       $('#tblDetallestrasladosVerif tbody tr').each(function () {
@@ -893,7 +568,7 @@ fecha_ini.addEventListener('change', function(){
   });
  ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////   
- async function cargarClasificacionesCLase() {
+async function cargarClasificacionesCLase() {
   const checkClase = document.getElementById("clase-todas");
   const selectClase = document.getElementById("claseReporte"); 
   const isChecked = localStorage.getItem('check_Clase') === 'true';
