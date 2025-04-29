@@ -344,48 +344,6 @@ table {
 }
 
 
-/* Small only */
-@media screen and (max-width: 39.9375em) {
-  #resultadoBusqueda{
-    width: 100%;
-    margin: 0 auto;
-  }
-
-
-}
-
-/* Medium and up */
-@media screen and (min-width: 40em) {
-  #resultadoBusqueda{
-    width: 100%;
-    margin: 0 auto;
-  }
-}
-
-
-
-/* Medium only */
-@media screen and (min-width: 40em) and (max-width: 63.9375em) {
-
-}
-
-/* Large and up */
-@media screen and (min-width: 64em) {
-    #resultadoBusqueda{
-      width: 86%;
-      margin: 0 auto;
-    }
-}
-
-/* Large only */
-@media screen and (min-width: 64em) and (max-width: 74.9375em) {
-  #resultadoBusqueda{
-    width: 86%;
-    margin: 0 auto;
-  }
-
-}
-
   /*///////////////////////////////////////////////////////////////////*/
  /*///                Reglas para el menu                           //*/
 /*///////////////////////////////////////////////////////////////////*/

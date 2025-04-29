@@ -147,24 +147,14 @@ th {
   width: 100%;
   height: auto !important;
 }
-.flotante-acciones {
-  position: absolute;
-  bottom: -15px;
-  right: 0;
-  width: 35px;
-  background: #bfbbbb94;
-  padding: 5px;
-  border-radius: 20px;
-  padding-top: 15px;
-  border: solid 1px #c1c1c1a8;
-}
+
 .link-flotante-acciones {
   padding-bottom: 35px;
 }
-#envoltorio {
+/* #envoltorio {
   min-height: 170px;
   height: 100% !important;
-}
+} */
 #envoltorio .dropdown-content {
   min-width: 38px !important;
 }

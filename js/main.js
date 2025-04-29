@@ -1870,6 +1870,8 @@ function mostrarResultadosBusqueda(nPag, pag) {
   $("select").formSelect();
   $(".dropdown-trigger").dropdown();
 }
+
+
 //-----------------------------------------------------------------------------------
 // function mostrarResultados(desde, hasta) {
 //   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
@@ -1976,6 +1978,110 @@ function mostrarResultadosBusqueda(nPag, pag) {
 // }
 
 
+
+
+// function mostrarResultados(desde, hasta) {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+//   var totalRegistros = 0, tipobusqueda = "";
+//   tipobusqueda = "T";
+//   var totalizador = 0;
+//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
+//     if (
+//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+//     ) {
+//       totalizador++;
+//     }
+//   }
+
+//   if (totalizador !== 0) {
+//     totalRegistros = ArrayDataFiltrado.length - totalizador;
+//     clearFiltros = false;
+//   } else {
+//     totalRegistros = ArrayDataFiltrado.length;
+//     clearFiltros = false;
+//   }
+//   let client = 0;
+//   let htm = "",
+//     remateLabel = "",
+//     bodegaLabel = "",
+//     url = "",
+//     precioL = "";
+//   var pre = 1;
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//         </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6 m12" >
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div></div>
+//             <div class="row" id="vistabusqueda">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+//               <i class="material-icons right">list</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//             </div>`;
+//   htm += '<div class="row">'; // Inicia la primera fila
+//   for (let i = desde; i < hasta; i++) {
+//     if (ArrayDataFiltrado[i]) {
+//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
+//       if (ArrayDataFiltrado[i].BODEGA == "S") {
+//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
+//       } else {
+//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
+//       }
+//       url = ` href="#"`;
+//       htm += `
+//         <div class="col s6 m4 l3">
+         
+//             <div class="container-img">
+//               <div id="envoltorio">
+//                 <a ${url}>
+//                   ${remateLabel}
+//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
+//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+//                   ${bodegaLabel}
+//                 </a>
+//                 <div class="flotante-acciones">
+//                   <div class="link-flotante-acciones" style="padding-bottom: 5px;">
+//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+//                       <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+//                     </a>
+//                     <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
+//                   </div>
+//                 </div>
+//                 <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
+//                 <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
+//                 <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
+//               </div>
+//               <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
+//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+//               <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
+//                 ${precioL}</span>
+//             </div>
+         
+//         </div>`;
+//       // Cerrar la fila cada 4 elementos y abrir una nueva
+//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
+//         htm += '</div><div class="row">';
+//       }
+//     }
+//   }
+//   htm += '</div>'; // Cierra la última fila
+//   htm += '</div>'; // Cierra lista-articulo
+//   return htm;
+// }
+
+
 function mostrarResultados(desde, hasta) {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   let bodegaCod = bodega[0].BODEGA;
@@ -2026,7 +2132,7 @@ function mostrarResultados(desde, hasta) {
               FILTRAR </a>
             </div>
             </div>`;
-  htm += '<div class="row">'; // Inicia la primera fila
+  htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
   for (let i = desde; i < hasta; i++) {
     if (ArrayDataFiltrado[i]) {
       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
@@ -2037,9 +2143,9 @@ function mostrarResultados(desde, hasta) {
       }
       url = ` href="#"`;
       htm += `
-        <div class="col s12 m3 l3">
+        <div class="col s6 m4 l3">
           <li>
-            <div class="container-img">
+            <div class="card container-img">
               <div id="envoltorio">
                 <a ${url}>
                   ${remateLabel}
@@ -2072,14 +2178,120 @@ function mostrarResultados(desde, hasta) {
       }
     }
   }
-  htm += '</div>'; // Cierra la última fila
+  htm += '</div></ul>'; // Cierra la última fila y la lista
   htm += '</div>'; // Cierra lista-articulo
   return htm;
 }
 
 
+// function mostrarResultados(desde, hasta) {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+//   var totalRegistros = 0, tipobusqueda = "";
+//   tipobusqueda = "T";
+//   var totalizador = 0;
+//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
+//     if (
+//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+//     ) {
+//       totalizador++;
+//     }
+//   }
 
-//-----------------------------------------------------------------------------------
+//   if (totalizador !== 0) {
+//     totalRegistros = ArrayDataFiltrado.length - totalizador;
+//     clearFiltros = false;
+//   } else {
+//     totalRegistros = ArrayDataFiltrado.length;
+//     clearFiltros = false;
+//   }
+//   let client = 0;
+//   let htm = "",
+//     remateLabel = "",
+//     bodegaLabel = "",
+//     url = "",
+//     precioL = "";
+//   var pre = 1;
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//         </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6 m12" >
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div></div>
+//             <div class="row" id="vistabusqueda">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+//               <i class="material-icons right">list</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//             </div>`;
+//   htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
+//   for (let i = desde; i < hasta; i++) {
+//     if (ArrayDataFiltrado[i]) {
+//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
+//       if (ArrayDataFiltrado[i].BODEGA == "S") {
+//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
+//       } else {
+//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
+//       }
+//       url = ` href="#"`;
+//       htm += `
+//         <div class="col s6 m4 l3">
+//           <li>
+//             <div class="card container-img">
+//               <div class="card-image" id="envoltorio">
+//                 <a ${url}>
+//                   ${remateLabel}
+//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
+//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+//                   ${bodegaLabel}
+//                 </a>
+//               </div>
+//               <div class="card-content">
+//                 <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
+//                 <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+//                 <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
+//                   ${precioL}</span>
+//               </div>
+//               <div class="flotante-acciones">
+//                 <div class="link-flotante-acciones" style="padding-bottom: 5px;">
+//                   <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+//                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+//                   </a>
+//                   <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
+//                 </div>
+//               </div>
+//               <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
+//               <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
+//               <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
+//             </div>
+//           </li>
+//         </div>`;
+//       // Cerrar la fila cada 4 elementos y abrir una nueva
+//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
+//         htm += '</div><div class="row">';
+//       }
+//     }
+//   }
+//   htm += '</div></ul>'; // Cierra la última fila y la lista
+//   htm += '</div>'; // Cierra lista-articulo
+//   return htm;
+// }
+
+
+
+// -----------------------------------------------------------------------------------
+
+
 function paginador(nPag, pag) {
   //MUESTRA LA CANTIDAD DE PAGINA
   let selected = "";

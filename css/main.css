@@ -745,52 +745,50 @@ svg[atributos] {
 #lista-articulo a {
   text-decoration: none;
 }
-#lista-articulo ul {
+/* #lista-articulo ul {
   width: 100%;
   margin: 0;
   padding: 0;
   display: table;
-}
-#lista-articulo li {
+} */
+/* #lista-articulo li {
   background-color: #fff;
   list-style: none;
   display: inline-block;
-  width: 98%;
+  width: 100%;
   border-bottom: solid 1px #d6d3d3;
-}
-#lista-articulo li:nth-child(2):after {
+} */
+/* #lista-articulo li:nth-child(2):after {
   display: block;
   height: 0;
   clear: both;
   visibility: hidden;
   border-right: 0 !important;
-}
-#lista-articulo li .container-img {
-  border-right: solid 1px #d6d3d3;
+} */
+/* #lista-articulo li .container-img {  
   padding: 5px;
   margin: 5px 0;
-}
-#lista-articulo li:nth-child(2n) .container-img {
+} */
+/* #lista-articulo li:nth-child(2n) .container-img {
   border-right: 0 !important;
   display: block;
-}
+} */
 #lista-articulo .articulo-titulo {
   font-size: 15px;
   color: #000 !important;
+  margin-left: 21px;
 }
 #lista-articulo h4 {
   color: #000 !important;
-  margin: 5px 0;
+  margin: 5px 21px;
   font-size: 13px;
   min-height: 48px;
-  padding: 0;
-  margin: 0;
 }
 #lista-articulo h6 {
   margin: 0;
   padding: 0;
-}
-/* #lista-articulo select {
+} 
+ /* #lista-articulo select {
   background-color: #000;
   color: #fff;
   width: 100%;
@@ -804,27 +802,27 @@ svg[atributos] {
   padding: 7px 0;
   text-shadow: none;
 }
-#lista-cliente .cabecera {
+/* #lista-cliente .cabecera {
   background: #000;
   color: #fff;
   padding: 7px 0;
   text-shadow: none;
-}
+} */
 .mi-tienda {
-  font-size: 13px;
+  /* font-size: 13px; */
   color: #fff;
   background: #098255;
   padding: 8px 4px;
   text-align: left;
   position: relative;
-  border-radius: 3px;
+  border-radius: 10px;
   line-height: 14px;
   font-weight: bold;
   z-index: 100;
   bottom: 30px;
   position: absolute;
   left: 0;
-  bottom: 0;
+  /* bottom: 0; */
 }
 .remates {
   font-size: 10.5px;
@@ -2348,4 +2346,16 @@ font-size: 20px !important;
 
 #tabs-swipe-demo{
   margin-top: 5em !important;
+}
+.flotante-acciones {
+  position: absolute;
+  bottom: 99px;
+  right: 30px;
+  /* width: 14%; */
+  background: #bfbbbb94;
+  padding: 11px;
+  border-radius: 16px;
+  padding-top: 28px;
+  border: solid 1px #c1c1c1a8;
+  /* margin-left: 17em; */
 }

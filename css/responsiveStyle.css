@@ -102,10 +102,10 @@
       background-color: rgba(14, 230, 61, 0);
     }
     #envoltorio {
-      width: 100%;
-      height: 170px;
+      /* width: 100%; */
+      height: 211px;
       position: relative;
-    }
+  }
     .sidenav {
       background-color: #4c4e4e !important;
       width: 90%;
@@ -205,16 +205,31 @@
 }
 
 #lista-articulo li {
-  width: 80%;
-  margin-left: 4em;
+  width: 100%;  
 }
 
-#lista-articulo li .container-img {
-  border-right: solid 1px #d6d3d3;
+#lista-articulo li .container-img { 
   padding: 19px;
-  margin: 8px 0;
-  border-right: transparent;
+  margin: 8px 0;  
 }
+
+.row .col.s6 {
+  width: 50% !important;   
+}
+.flotante-acciones {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 33%;
+  background: #bfbbbb94;
+  padding: 11px;
+  border-radius: 16px;
+  padding-top: 21px;
+  border: solid 1px #c1c1c1a8;
+  margin-left: 12em;
+}
+
+
   }  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
@@ -241,11 +256,10 @@
       margin: 1.373333rem 0 1.424rem 0;
     }
     #envoltorio {
-      width: 100%;
-      height: 170px;
+      /* width: 100%; */
+      /* height: 366px; */
       position: relative;
-      margin: 0 auto;
-    }
+  }
     .sidenav {
       background-color: #4c4e4e !important;
       width: 25%;
@@ -258,7 +272,13 @@
     .paginador-controls {
       flex-direction: row; /* Mantiene los elementos en horizontal */
     }
-
+    .row .col.m4 {
+      width: 25%!important;   
+  }
+  .flotante-acciones{
+    margin-left: 6em;
+    bottom: -16px;
+  }
   }
   
   /* Medium only (min-width: 40em and max-width: 63.9375em = 640px - 1022px) */
@@ -292,6 +312,18 @@
     .row .col.m12 {
       margin-left: 355px !important;
     }
+    .row .col.m4 {
+      width: 24%!important;   
+  }
+
+  #envoltorio {
+    width: 100%;
+    height: 206px;   
+}
+.flotante-acciones{
+  margin-left: 7em;
+  bottom: -16px;
+}
   }
   
   /* Large and up (min-width: 64em = 1024px) */
@@ -378,7 +410,7 @@
       font-size: 1.2rem;
     }
     #lista-articulo ul {
-      width: 80em;
+      width: 80%;
       padding: 0;
       display: table;
       margin: 0 auto;
@@ -400,6 +432,9 @@
       text-align: center !important;
       font-size: 1em;
     }
+    .row .col.l3 {
+      width: 25% !important; 
+  }
   }
   
   /* Large only (min-width: 64em and max-width: 74.9375em = 1024px - 1199px) */
