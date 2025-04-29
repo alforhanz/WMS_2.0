@@ -765,10 +765,21 @@ svg[atributos] {
   visibility: hidden;
   border-right: 0 !important;
 } */
-/* #lista-articulo li .container-img {  
-  padding: 5px;
-  margin: 5px 0;
-} */
+#lista-articulo table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-left: 14em;
+}
+#lista-articulo td, #lista-articulo th {
+  padding: 8px;
+}
+
+#lista-articulo .container-img {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
 /* #lista-articulo li:nth-child(2n) .container-img {
   border-right: 0 !important;
   display: block;
