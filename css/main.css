@@ -766,9 +766,8 @@ svg[atributos] {
   border-right: 0 !important;
 } */
 #lista-articulo table {
-  width: 80%;
-  border-collapse: collapse;
-  margin-left: 14em;
+  width: 100%;
+  border-collapse: collapse;  
 }
 #lista-articulo td, #lista-articulo th {
   padding: 8px;

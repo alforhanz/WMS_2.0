@@ -182,7 +182,7 @@
 }
 
 .paginador-btn-container, .paginador-select-container {
-  width: 100%; /* Ocupa todo el ancho disponible */
+  width: 100%!important; /* Ocupa todo el ancho disponible */
   text-align: center; /* Centra el contenido */
 }
 
@@ -216,6 +216,7 @@
 .row .col.s6 {
   width: 50% !important;   
 }
+
 .flotante-acciones {
   position: absolute;
   bottom: 0px;

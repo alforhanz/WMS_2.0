@@ -1313,6 +1313,7 @@ function preBusqueda() {
   let pag = 1;
   // let loader = `<div class="loading"></div>`;
   let articulo = document.getElementById("articulo").value;
+  const art = encodeURIComponent(articulo);
   let bodega = document.getElementById("bodega").value;
   let clase = localStorage.getItem('claseSelect') || '';
   let marca = localStorage.getItem('marcaSelect') || '';
@@ -1327,7 +1328,7 @@ function preBusqueda() {
     "&pExistencia=" +
     null +
     "&pArticulo=" +
-    articulo +
+    art +
     "&pClase=" +
     clase +
     "&pMarca=" +
@@ -1884,109 +1885,109 @@ function mostrarResultadosBusqueda(nPag, pag) {
 
 
 // // -----------------------------------------------------------------------------------
-function mostrarResultados(desde, hasta) {
-  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-  let bodegaCod = bodega[0].BODEGA;
-  var totalRegistros = 0, tipobusqueda = "";
-  //console.log("TIPOBUSQUEDA: " + tipobusqueda);
-  //Para productos terminados(T), para KIT (K)
-  tipobusqueda = "T";
-  //Conteo total de registros para todas las demas categorias y rines incompletos
-  var totalizador = 0;
-  for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-    if (
-      ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-      +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-    ) {
-      totalizador++;
-    }
-  }
+// function mostrarResultados(desde, hasta) {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+//   var totalRegistros = 0, tipobusqueda = "";
+//   //console.log("TIPOBUSQUEDA: " + tipobusqueda);
+//   //Para productos terminados(T), para KIT (K)
+//   tipobusqueda = "T";
+//   //Conteo total de registros para todas las demas categorias y rines incompletos
+//   var totalizador = 0;
+//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
+//     if (
+//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
+//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
+//     ) {
+//       totalizador++;
+//     }
+//   }
 
-  if (totalizador !== 0) {
-    totalRegistros = ArrayDataFiltrado.length - totalizador;
-    clearFiltros = false;
-  } else {
-    totalRegistros = ArrayDataFiltrado.length;
-    clearFiltros = false;
-  }
-  let client = 0;
-  //DECLARACION DE VARIABLES
-  let htm = "",
-    remateLabel = "",
-    bodegaLabel = "",
-    url = "",
-    precioL = "";
-  //var pre = 1;
-  htm += '<div id="lista-articulo">';
-  htm += `<div class="col s12">
-          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-        </div>`;
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6 m12" >
-              <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
-            </div></div>
-            <div class="row" id="vistabusqueda">
-            <div class="col s6">
-                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-              <i class="material-icons right">list</i>
-              VISTA </a>
-            </div>
-            <div class="col s6">
-              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-              <i class="material-icons right">filter_list</i>
-              FILTRAR </a>
-            </div>
-            </div>`;
-  htm += '<ul id="listas">';
-  ////console.log(ArrayData);
-  for (let i = desde; i < hasta; i++) {
-    if (ArrayDataFiltrado[i]) {
-      DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-      //SI ENCUENTRA STOCK DEL ARTICULO EN BODEGA AGREGA ETIQUETA: EN TIENDA
-      if (ArrayDataFiltrado[i].BODEGA == "S") {
-        bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-        //bodegaLabel = '<span class="mi-tienda">En Bodega </span>';
-        // bodegaLabel = `<span class="mi-tienda">En ${bodegaCod}</span>`;
-      } else {
-        bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
-      }
-      // url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}&IDCategoria=${ArrayDataFiltrado[i].ID_CLASE}&pTipoProd=${tipobusqueda}"`;
-      url = ` href="#"`;
-      htm += `
-          <li>
-            <div class="container-img">
-            <div id="envoltorio">
-              <a ${url}>
-                  ${remateLabel}
-                  <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-                    data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-                  ${bodegaLabel}
-              </a>
-              <div class="flotante-acciones">
-                      <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-                          <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-                              <!--<i class="icon-inventory" style="font-size: 24px;"></i>-->
-                              <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-                          </a>
-                          <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-                      </div>`;
-      htm += `</div>
-                      <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-                      <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-                      <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-              </div>
-              <h3 class="articulo-titulo"> ${ArrayDataFiltrado[i].ARTICULO}</h3>
-              <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-              <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-              ${precioL}</span>
-            </div>
-          </li>`;
-    }
-  }
-  htm += "</ul></div>";
-  return htm;
-}
+//   if (totalizador !== 0) {
+//     totalRegistros = ArrayDataFiltrado.length - totalizador;
+//     clearFiltros = false;
+//   } else {
+//     totalRegistros = ArrayDataFiltrado.length;
+//     clearFiltros = false;
+//   }
+//   let client = 0;
+//   //DECLARACION DE VARIABLES
+//   let htm = "",
+//     remateLabel = "",
+//     bodegaLabel = "",
+//     url = "",
+//     precioL = "";
+//   //var pre = 1;
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//         </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6 m12" >
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div></div>
+//             <div class="row" id="vistabusqueda">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+//               <i class="material-icons right">list</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//             </div>`;
+//   htm += '<ul id="listas">';
+//   ////console.log(ArrayData);
+//   for (let i = desde; i < hasta; i++) {
+//     if (ArrayDataFiltrado[i]) {
+//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
+//       //SI ENCUENTRA STOCK DEL ARTICULO EN BODEGA AGREGA ETIQUETA: EN TIENDA
+//       if (ArrayDataFiltrado[i].BODEGA == "S") {
+//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
+//         //bodegaLabel = '<span class="mi-tienda">En Bodega </span>';
+//         // bodegaLabel = `<span class="mi-tienda">En ${bodegaCod}</span>`;
+//       } else {
+//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
+//       }
+//       // url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}&IDCategoria=${ArrayDataFiltrado[i].ID_CLASE}&pTipoProd=${tipobusqueda}"`;
+//       url = ` href="#"`;
+//       htm += `
+//           <li>
+//             <div class="container-img">
+//             <div id="envoltorio">
+//               <a ${url}>
+//                   ${remateLabel}
+//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
+//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+//                   ${bodegaLabel}
+//               </a>
+//               <div class="flotante-acciones">
+//                       <div class="link-flotante-acciones" style="padding-bottom: 5px;">
+//                           <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+//                               <!--<i class="icon-inventory" style="font-size: 24px;"></i>-->
+//                               <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+//                           </a>
+//                           <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
+//                       </div>`;
+//       htm += `</div>
+//                       <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
+//                       <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
+//                       <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
+//               </div>
+//               <h3 class="articulo-titulo"> ${ArrayDataFiltrado[i].ARTICULO}</h3>
+//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+//               <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
+//               ${precioL}</span>
+//             </div>
+//           </li>`;
+//     }
+//   }
+//   htm += "</ul></div>";
+//   return htm;
+// }
 
 
 function mostrarResultados(desde, hasta) {
@@ -3007,7 +3008,7 @@ function mostrarResultadosVistaLista(nPag, pag) {
   let htm = "";
   let desde = (pag - 1) * xPag;
   let hasta = pag * xPag;
-  //htm = mostrarResultados(desde, hasta);
+ 
   resultadosVistaLista(desde, hasta);
   htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaLista');
   document.getElementById("resultadoPaginador").innerHTML = htm;
@@ -3073,7 +3074,6 @@ function resultadosVistaLista(desde, hasta) {
 
   htm += `<div id="resultadoPaginador">`;
   htm += `</div>`;
-
   htm += "</div>";
 
   document.getElementById("resultadoBusqueda").innerHTML = htm;
@@ -3085,79 +3085,79 @@ function resultadosVistaLista(desde, hasta) {
   );
 }
 
-// function cambiarVistaLista() {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   let totalRegistros = 0, htm = "";
-//   totalRegistros = ArrayDataFiltrado.length;
-//   let nPag = Math.ceil(totalRegistros / xPag);
+function cambiarVistaLista() {
+  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+  let bodegaCod = bodega[0].BODEGA;
+  let totalRegistros = 0, htm = "";
+  totalRegistros = ArrayDataFiltrado.length;
+  let nPag = Math.ceil(totalRegistros / xPag);
  
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//           </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6">
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico();">
-//               <i class="material-icons right">apps</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//           </div>`;
+  htm += '<div id="lista-articulo">';
+  htm += `<div class="col s12">
+          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+          </div>`;
+  htm += `<div class="row" id="totalregistros">
+            <div class="col s6">
+              <span>Total de Registros: </span>
+              <span>${totalRegistros}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico();">
+              <i class="material-icons right">apps</i>
+              VISTA </a>
+            </div>
+            <div class="col s6">
+              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+              <i class="material-icons right">filter_list</i>
+              FILTRAR </a>
+            </div>
+          </div>`;
 
-//   htm += `<table class="striped centered" style="margin-top:5%;">
-//   <thead style="background:#28a745;color:white;">
-//     <tr>
-//       <th style="width:30%;">CODIGO</th>
-//       <th style="width:30%;">CODIGO DE BARRAS</th>
-//       <th style="width:10%;">EN ${bodegaCod}</th>
-//       <th style="width:30%;">ACTION</th>
-//     </tr>
-//   </thead>
-//   <tbody>`;
+  htm += `<table class="striped centered" style="margin-top:5%;">
+  <thead style="background:#28a745;color:white;">
+    <tr>
+      <th style="width:30%;">CODIGO</th>
+      <th style="width:30%;">CODIGO DE BARRAS</th>
+      <th style="width:10%;">EN ${bodegaCod}</th>
+      <th style="width:30%;">ACTION</th>
+    </tr>
+  </thead>
+  <tbody>`;
 
-//   for (let i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       htm += `<tr>`;
-//       htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
-//               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
-//               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
-//               <td>
-//                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-//                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
-//               </td>`; // Puedes poner aquí el botón de acción que desees
-//       htm += `</tr>`;
-//     }
-//   }
+  for (let i = 0; i < ArrayDataFiltrado.length; i++) {
+    if (ArrayDataFiltrado[i]) {
+      htm += `<tr>`;
+      htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
+              <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
+              <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
+              <td>
+                <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
+                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
+              </td>`; // Puedes poner aquí el botón de acción que desees
+      htm += `</tr>`;
+    }
+  }
 
 
-//   htm += `</tbody>
-//           </table>`;
+  htm += `</tbody>
+          </table>`;
 
-//   htm += `<div id="resultadoPaginador">`;
-//   htm += paginadorTablas(nPag, 1, 'mostrarResultadosVistaLista');
-//   htm += `</div>`;
+  htm += `<div id="resultadoPaginador">`;
+  htm += paginadorTablas(nPag, 1, 'mostrarResultadosVistaLista');
+  htm += `</div>`;
 
-//   htm += "</div>";
+  htm += "</div>";
 
-//   document.getElementById("resultadoBusqueda").innerHTML = htm;
-//   $("html, body").animate(
-//     {
-//       scrollTop: $("#resultadoBusqueda").offset().top - 140,
-//     },
-//     1000
-//   );
-// }
+  document.getElementById("resultadoBusqueda").innerHTML = htm;
+  $("html, body").animate(
+    {
+      scrollTop: $("#resultadoBusqueda").offset().top - 140,
+    },
+    1000
+  );
+}
 
 //funcion que muestra las imagenes en el swall.fire
 function mostrarImagen(codigo, descripcion) {
@@ -3181,9 +3181,7 @@ function mostrarImagen(codigo, descripcion) {
 
 //muestra las existencias en un swall.fire
 function mostrarExistencias(p_Articulo) {
-  // Obtener el usuario del localStorage
-  //let usuario = localStorage.getItem('username');
-
+ const art = encodeURIComponent(p_Articulo);
   // Mostrar el loading antes de abrir la ventana emergente
   Swal.fire({
     title: "Cargando Registros....",
@@ -3198,7 +3196,7 @@ function mostrarExistencias(p_Articulo) {
   const apiUrl = env.API_URL + "wmsexistenciaarticulosporbodega/1";
 
   // Parámetros de la solicitud
-  const params = `?p_Articulo=${p_Articulo}`;
+  const params = `?p_Articulo=${art}`;
 
   fetch(apiUrl + params, {
     method: 'GET',
@@ -3253,7 +3251,6 @@ function mostrarExistencias(p_Articulo) {
 
 function sucursalbremen(tienda, id_tienda) {
   ////console.log("Tienda: " + tienda + " " + "Id: " + id_tienda);
-  let IDCategoria = document.getElementById("txtCategoria").value;
   document.getElementById("bodega-sucursal").innerHTML = tienda;
   document.getElementById("bodega").value = id_tienda;
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
@@ -3267,7 +3264,6 @@ function sucursalbremen(tienda, id_tienda) {
     },
   ];
   sessionStorage.setItem("bodega", JSON.stringify(newbodega));
-
   
   const bodegaChange = document.getElementById("bodega");
 
@@ -3278,10 +3274,7 @@ function sucursalbremen(tienda, id_tienda) {
         fechasDeInventario(); // Llamar solo si existe
       });
       fechasDeInventario(); // Llamada inicial solo si existe
-    }
-    // Si no está definida, no hacemos nada o podemos registrar un mensaje opcional
-    // console.log("fechasDeInventario no está definida en esta vista");
-  }
-  
+    }  
+  }  
 }
 
