@@ -1859,16 +1859,42 @@ function busquedaGeneral() {
   }
 }
 //-----------------------------------------------------------------------------------
+// function mostrarResultadosBusqueda(nPag, pag) {
+//   ////console.log("nPage:" + nPag + "- pag:" + pag);
+//   //VARIABLE client no se esta usando
+//   pTipoProd = "T";
+//   // let client = existe_Cliente();
+//   let htm = "";
+//   let desde = (pag - 1) * xPag;
+//   let hasta = pag * xPag;
+//   // //console.log("DESDE MOSTRARRESULTADOSBUSQUEDA");
+//   // //console.log(IDCategoria);
+//   htm = mostrarResultados(desde, hasta);
+//   htm += paginador(nPag, pag);
+//   document.getElementById("resultadoBusqueda").innerHTML = htm;
+//   $("html, body").animate(
+//     {
+//       scrollTop: $("#resultadoBusqueda").offset().top - 140,
+//     },
+//     1000
+//   );
+//   // document.getElementById("carga").innerHTML = "";
+//   $("select").formSelect();
+//   $(".dropdown-trigger").dropdown();
+// }
+
 function mostrarResultadosBusqueda(nPag, pag) {
-  ////console.log("nPage:" + nPag + "- pag:" + pag);
-  //VARIABLE client no se esta usando
-  pTipoProd = "T";
-  // let client = existe_Cliente();
   let htm = "";
   let desde = (pag - 1) * xPag;
-  let hasta = pag * xPag;
-  // //console.log("DESDE MOSTRARRESULTADOSBUSQUEDA");
-  // //console.log(IDCategoria);
+  let hasta = Math.min(pag * xPag, ArrayDataFiltrado.length);
+
+  // Asegurar que desde y hasta estén dentro de los límites
+  if (desde >= ArrayDataFiltrado.length) {
+    desde = 0;
+    hasta = Math.min(xPag, ArrayDataFiltrado.length);
+    pag = 1;
+  }
+
   htm = mostrarResultados(desde, hasta);
   htm += paginador(nPag, pag);
   document.getElementById("resultadoBusqueda").innerHTML = htm;
@@ -1878,7 +1904,6 @@ function mostrarResultadosBusqueda(nPag, pag) {
     },
     1000
   );
-  // document.getElementById("carga").innerHTML = "";
   $("select").formSelect();
   $(".dropdown-trigger").dropdown();
 }
@@ -3085,13 +3110,93 @@ function resultadosVistaLista(desde, hasta) {
   );
 }
 
+//-----------------------------------------------------------------------------------------------------------------------
+// function cambiarVistaLista() {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+//   let totalRegistros = 0, htm = "";
+//   totalRegistros = ArrayDataFiltrado.length;
+//   let nPag = Math.ceil(totalRegistros / xPag);
+ 
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//           </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6">
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico();">
+//               <i class="material-icons right">apps</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//           </div>`;
+
+//   htm += `<table class="striped centered" style="margin-top:5%;">
+//   <thead style="background:#28a745;color:white;">
+//     <tr>
+//       <th style="width:30%;">CODIGO</th>
+//       <th style="width:30%;">CODIGO DE BARRAS</th>
+//       <th style="width:10%;">EN ${bodegaCod}</th>
+//       <th style="width:30%;">ACTION</th>
+//     </tr>
+//   </thead>
+//   <tbody>`;
+
+//   for (let i = 0; i < ArrayDataFiltrado.length; i++) {
+//     if (ArrayDataFiltrado[i]) {
+//       htm += `<tr>`;
+//       htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
+//               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
+//               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
+//               <td>
+//                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
+//                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
+//               </td>`; // Puedes poner aquí el botón de acción que desees
+//       htm += `</tr>`;
+//     }
+//   }
+
+
+//   htm += `</tbody>
+//           </table>`;
+
+//   htm += `<div id="resultadoPaginador">`;
+//   htm += paginadorTablas(nPag, 1, 'mostrarResultadosVistaLista');
+//   htm += `</div>`;
+
+//   htm += "</div>";
+
+//   document.getElementById("resultadoBusqueda").innerHTML = htm;
+//   $("html, body").animate(
+//     {
+//       scrollTop: $("#resultadoBusqueda").offset().top - 140,
+//     },
+//     1000
+//   );
+// }
+
+//funcion que muestra las imagenes en el swall.fire
+
 function cambiarVistaLista() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   let bodegaCod = bodega[0].BODEGA;
-  let totalRegistros = 0, htm = "";
-  totalRegistros = ArrayDataFiltrado.length;
+  let totalRegistros = ArrayDataFiltrado.length;
+  let pag = 1; // Página inicial
+  let desde = (pag - 1) * xPag;
+  let hasta = Math.min(pag * xPag, totalRegistros);
   let nPag = Math.ceil(totalRegistros / xPag);
- 
+  let htm = "";
+
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
@@ -3126,26 +3231,25 @@ function cambiarVistaLista() {
   </thead>
   <tbody>`;
 
-  for (let i = 0; i < ArrayDataFiltrado.length; i++) {
+  for (let i = desde; i < hasta; i++) {
     if (ArrayDataFiltrado[i]) {
       htm += `<tr>`;
       htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
               <td>
-                <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
-              </td>`; // Puedes poner aquí el botón de acción que desees
+                <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
+                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
+              </td>`;
       htm += `</tr>`;
     }
   }
-
 
   htm += `</tbody>
           </table>`;
 
   htm += `<div id="resultadoPaginador">`;
-  htm += paginadorTablas(nPag, 1, 'mostrarResultadosVistaLista');
+  htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaLista');
   htm += `</div>`;
 
   htm += "</div>";
@@ -3159,7 +3263,8 @@ function cambiarVistaLista() {
   );
 }
 
-//funcion que muestra las imagenes en el swall.fire
+
+
 function mostrarImagen(codigo, descripcion) {
 
   Swal.fire({
