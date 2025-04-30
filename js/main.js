@@ -1311,8 +1311,16 @@ function BuscarBorrar(cadena, value) {
 function preBusqueda() {
   let nPag = 0;
   let pag = 1;
-  // let loader = `<div class="loading"></div>`;
-  let articulo = document.getElementById("articulo").value;
+  let articulo = document.getElementById("articulo").value.trim();
+  if (!articulo) {
+    Swal.fire({
+      icon: "warning",
+      title: "Advertencia",
+      text: "Por favor, ingrese un artículo para buscar.",
+      confirmButtonColor: "#28a745",
+    });
+    return;
+  }
   const art = encodeURIComponent(articulo);
   let bodega = document.getElementById("bodega").value;
   let clase = localStorage.getItem('claseSelect') || '';
@@ -1320,8 +1328,6 @@ function preBusqueda() {
   let tipo = localStorage.getItem('tipoSelect') || '';
   let envase = localStorage.getItem('envaseSelect') || '';
 
-  // document.getElementById("carga").innerHTML = loader;
- 
   const params =
     "?pActivos=" +
     "S" +
@@ -1341,18 +1347,31 @@ function preBusqueda() {
     bodega +
     "&pTipoBodega=" +
     0;
+
   fetch(env.API_URL + "wmsbusquedaarticulos/1" + params, myInit)
-    .then((response) => response.json())
-    .catch((error) => console.error("Error:", error))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la respuesta de la API");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo conectar con la API. Por favor, intenta de nuevo.",
+        confirmButtonColor: "#28a745",
+      });
+      ocultarLoader();
+    })
     .then((result) => {
-      if (result.msg === "SUCCESS") {
-        console.log('Cantidad de Registros: ');
-        console.log(result.data.length);
+      if (result && result.msg === "SUCCESS") {
+        console.log('Cantidad de Registros: ', result.data.length);
         if (result.data.length > 0) {
           ArrayData = result.data;
           ArrayDataFiltrado = result.data;
-          console.log("DATA DE BUSQUEDA... ");
-          console.log(ArrayData);
+          console.log("DATA DE BUSQUEDA...", ArrayData);
           let totales = ArrayDataFiltrado.length;
           nPag = Math.ceil(totales / xPag);
           LimpiarFiltroPre(1);
@@ -1361,14 +1380,20 @@ function preBusqueda() {
           Swal.fire({
             icon: "info",
             title: "Información",
-            text: "No hay resultado para la busqueda " + articulo,
+            text: "No hay resultado para la búsqueda: " + articulo,
             confirmButtonColor: "#28a745",
           });
           ocultarLoader();
           LimpiarFiltroPre(1);
-          //document.getElementById("carga").innerHTML = "";
-          return false;
         }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Respuesta inválida de la API.",
+          confirmButtonColor: "#28a745",
+        });
+        ocultarLoader();
       }
     });
 }
