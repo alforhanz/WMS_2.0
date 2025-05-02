@@ -1,5 +1,5 @@
-  /////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////// 
+ /////////////////////////////////////////////////////////////////////////////
+ ///////////////////////////////////////////////////////////////////////////// 
 // Variable global para almacenar los totales (puedes ajustarla según tu estructura)
 let totalEntradasGlobal = 0;
 let totalSalidasGlobal = 0;
@@ -88,10 +88,10 @@ function obtenerValorParametro(parametros, nombreParametro) {
  /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 function verTrasladosLista(){
-  
+            //Parametros de Sistema
             let pSistema= 'WMS';
             let pUsuario = localStorage.getItem('username');
-            let pBodega = localStorage.getItem('bodegaUser');
+            let pBodega = document.getElementById('bodega').value;
             let pOpcion = TrasladosEntradaSalida();
             let pFechaDesde = $("#fecha_ini").val();
             let pFechaHasta = $("#fecha_fin").val();
@@ -105,7 +105,12 @@ function verTrasladosLista(){
             let pEnvase = document.getElementById('envaseReporte').value;
             let pVentas = document.getElementById('ventasReporte').value;
             let pT6 = document.getElementById('seisReporte').value;
+            //Parametros de Transacciones
+            let pTipoTransaccion = getTipoTransaccion();
 
+
+
+            //the parameters for the stored procedure here
             const params =
               "?pSistema="+
               pSistema +
@@ -123,6 +128,7 @@ function verTrasladosLista(){
               pTraslado+
               "&pArticulo="+
               pArticulo+
+              // --clasificaciones--
               "&pClase="+
               pClase+
               "&pMarca="+
@@ -134,14 +140,52 @@ function verTrasladosLista(){
               "&pVentas="+
               pVentas+
               "&pT6="+
-              pT6;
+              pT6+
+              //--transacciones--
+              "&pTipoTransaccion="+
+              pTipoTransaccion;
 
             localStorage.setItem("parametrosBusqueda", params);
-            //console.log("Parametros:\n"+params);
+            console.log("Parametros:\n"+params);
   
-            listadoTraslados(params);
+           listadoTraslados(params);
          
   }//Fin de ver traslados lista
+ /////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////  
+  function getTipoTransaccion() {
+    const traslado = document.getElementById('tTraslado');
+    const venta = document.getElementById('tVenta');
+    const ordenDeCompras = document.getElementById('tOrdenesDeCompras');
+  
+    let pTipoTransaccion = '';
+  
+    const checkedCount = (traslado.checked ? 1 : 0) + (venta.checked ? 1 : 0) + (ordenDeCompras.checked ? 1 : 0);
+  
+    if (checkedCount === 0) {
+      pTipoTransaccion = ''; 
+    } else if (checkedCount === 1) {
+      if (traslado.checked) {
+        pTipoTransaccion = 'T';
+      } else if (venta.checked) {
+        pTipoTransaccion = 'P';
+      } else if (ordenDeCompras.checked) {
+        pTipoTransaccion = 'O';
+      }
+    } else if (checkedCount === 2) {
+      if (traslado.checked && venta.checked) {
+        pTipoTransaccion = 'TP'; 
+      } else if (traslado.checked && ordenDeCompras.checked) {
+        pTipoTransaccion = 'TO'; 
+      } else if (venta.checked && ordenDeCompras.checked) {
+        pTipoTransaccion = 'PO'; 
+      }
+    } else if (checkedCount === 3) {
+      pTipoTransaccion = '';
+    }
+  
+    return pTipoTransaccion;
+  } 
  /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////  
 function TrasladosEntradaSalida() {
