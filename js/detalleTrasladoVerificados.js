@@ -298,8 +298,8 @@ function mostrarTotalesGlobales() {
   totalesContainer.id = "totalesContainer";
   totalesContainer.innerHTML = `
     <div style="font-size: 20px; text-align: right; margin-top: 20px; padding: 10px;">
-      <p style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-      <p style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      <p id="totalEntradas" style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      <p id="ttotalSalidas" style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
     </div>
   `;
   // Asegurarse de que esté después de la tabla
@@ -444,6 +444,17 @@ function limpiarResultadoGeneral() {
   const thead = document.getElementById("theadDetallestrasladosVerif");
   const resultadoPaginador = document.getElementById("resultadoPaginador");
   const totalRegistros = document.getElementById("totalregistros");
+  const totalEntradas = document.getElementById('totalEntradas');
+  const ttotalSalidas = document.getElementById('ttotalSalidas');
+
+
+if(totalEntradas){
+  totalEntradas.innerHTML= "";
+}
+if(ttotalSalidas){
+  ttotalSalidas.innerHTML= "";
+}
+
 
   // Limpiar el contenido del paginador si existe
   if (resultadoPaginador) {
