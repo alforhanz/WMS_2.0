@@ -3288,36 +3288,65 @@ function cambiarVistaLista() {
   );
 }
 
-
-
 function mostrarImagen(codigo, descripcion) {
+  let code;
+  try {
+    code = decodeURIComponent(codigo); // Decodificar para el título
+  } catch (e) {
+    console.error("Error decodificando código:", e);
+    code = codigo; // Usar codificado como respaldo
+  }
 
   Swal.fire({
     confirmButtonColor: "#28a745",
     html: `
-                      <div>
-                          <h3>${codigo}</h3>
-                          <!-- <img src="//200.124.12.146:8097/index.php/image/displayimage/${codigo}" alt="Imagen" width="200" height="200">-->
-                          <img src="${env.API_IMAGE}/${codigo}" alt="Imagen" width="200" height="200">
-                          <p>${descripcion}</p>
-                      </div>
-                  `,
+      <div>
+        <h3>${code}</h3>
+        <img src="${env.API_IMAGE}/${codigo}" alt="Imagen" width="200" height="200">
+        <p>${descripcion}</p>
+      </div>
+    `,
     customClass: {
       title: 'img-tamaño-articulo'
     }
-
   });
 }
 
-//muestra las existencias en un swall.fire
+// function mostrarImagen(codigo, descripcion) {
+// // aqui decodificamos a codigo
+// const code = decodeURIComponent(codigo);
+//   Swal.fire({
+//     confirmButtonColor: "#28a745",
+//     html: `
+//                       <div>
+//                           <h3>${codigo}</h3>
+//                           <!-- <img src="//200.124.12.146:8097/index.php/image/displayimage/${code}" alt="Imagen" width="200" height="200">-->
+//                           <img src="${env.API_IMAGE}/${codigo}" alt="Imagen" width="200" height="200">
+//                           <p>${descripcion}</p>
+//                       </div>
+//                   `,
+//     customClass: {
+//       title: 'img-tamaño-articulo'
+//     }
+
+//   });
+// }
+
 function mostrarExistencias(p_Articulo) {
- const art = encodeURIComponent(p_Articulo);
+  let code;
+  try {
+    code = decodeURIComponent(p_Articulo); // Decodificar para el título y API
+  } catch (e) {
+    console.error("Error decodificando código:", e);
+    code = p_Articulo; // Usar codificado como respaldo
+  }
+
   // Mostrar el loading antes de abrir la ventana emergente
   Swal.fire({
     title: "Cargando Registros....",
     allowOutsideClick: false,
     showConfirmButton: false,
-    onBeforeOpen: function () {
+    didOpen: function () {
       Swal.showLoading();
     }
   });
@@ -3326,7 +3355,7 @@ function mostrarExistencias(p_Articulo) {
   const apiUrl = env.API_URL + "wmsexistenciaarticulosporbodega/1";
 
   // Parámetros de la solicitud
-  const params = `?p_Articulo=${art}`;
+  const params = `?p_Articulo=${encodeURIComponent(code)}`;
 
   fetch(apiUrl + params, {
     method: 'GET',
@@ -3363,7 +3392,7 @@ function mostrarExistencias(p_Articulo) {
       tablaHtml += '</tbody>' + '</table>';
 
       Swal.fire({
-        title: "Articulo: " + p_Articulo,
+        title: "Artículo: " + code, // Usar decodificado
         html: tablaHtml,
         confirmButtonText: "Aceptar",
         confirmButtonColor: "#55b251"
@@ -3374,10 +3403,89 @@ function mostrarExistencias(p_Articulo) {
       Swal.fire({
         title: "Error",
         text: "Ocurrió un error al obtener los registros de existencia",
-        icon: "error"
+        icon: "error",
+        confirmButtonColor: "#55b251"
       });
     });
 }
+
+// //muestra las existencias en un swall.fire
+// function mostrarExistencias(p_Articulo) {
+//    let code;
+//   try {
+//     code = decodeURIComponent(p_Articulo); // Decodificar para el título
+//   } catch (e) {
+//     console.error("Error decodificando código:", e);
+//     code = p_Articulo; // Usar codificado como respaldo
+//   }
+
+//   // Mostrar el loading antes de abrir la ventana emergente
+//   Swal.fire({
+//     title: "Cargando Registros....",
+//     allowOutsideClick: false,
+//     showConfirmButton: false,
+//     onBeforeOpen: function () {
+//       Swal.showLoading();
+//     }
+//   });
+
+//   // Ruta del API
+//   const apiUrl = env.API_URL + "wmsexistenciaarticulosporbodega/1";
+
+//   // Parámetros de la solicitud
+//   // const params = `?p_Articulo=${art}`;
+//   const params = `?p_Articulo=${code}`;
+
+//   fetch(apiUrl + params, {
+//     method: 'GET',
+//     cache: 'no-cache',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Accept': 'application/json'
+//     }
+//   })
+//     .then(response => {
+//       if (!response.ok) {
+//         throw new Error('La solicitud no fue exitosa');
+//       }
+//       return response.json();
+//     })
+//     .then(data => {
+//       var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
+//       var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
+//         '<thead>' +
+//         '<tr style="border-bottom: 1px solid #ddd;">' +
+//         '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
+//         '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
+//         '</tr>' +
+//         '</thead>' +
+//         '<tbody>';
+
+//       existenciaArticulos.forEach(articulo => {
+//         tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
+//           '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
+//           '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
+//           '</tr>';
+//       });
+
+//       tablaHtml += '</tbody>' + '</table>';
+
+//       Swal.fire({
+//         title: "Articulo: " + p_Articulo,
+//         html: tablaHtml,
+//         confirmButtonText: "Aceptar",
+//         confirmButtonColor: "#55b251"
+//       });
+//     })
+//     .catch(error => {
+//       console.error('Error:', error);
+//       Swal.fire({
+//         title: "Error",
+//         text: "Ocurrió un error al obtener los registros de existencia",
+//         icon: "error"
+//       });
+//     });
+// }
 
 function sucursalbremen(tienda, id_tienda) {
   ////console.log("Tienda: " + tienda + " " + "Id: " + id_tienda);
