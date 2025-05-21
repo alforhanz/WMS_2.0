@@ -775,9 +775,9 @@ svg[atributos] {
 
 #lista-articulo .container-img {
   border: 1px solid black;
-  margin: 5px;
+  /* margin: 5px;
   padding: 10px;
-  box-sizing: border-box;
+  box-sizing: border-box; */
 }
 /* #lista-articulo li:nth-child(2n) .container-img {
   border-right: 0 !important;
@@ -794,10 +794,10 @@ svg[atributos] {
   font-size: 13px;
   min-height: 48px;
 }
-#lista-articulo h6 {
+/* #lista-articulo h6 {
   margin: 0;
   padding: 0;
-} 
+}  */
  /* #lista-articulo select {
   background-color: #000;
   color: #fff;
@@ -2368,4 +2368,50 @@ font-size: 20px !important;
   padding-top: 28px;
   border: solid 1px #c1c1c1a8;
   /* margin-left: 17em; */
+}
+/*CheckBox del encabezado principal*/
+/* Contenedor del label para posicionamiento relativo */
+label[for="sinExistencias"] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Ocultar el checkbox nativo */
+#sinExistencias {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Estilo del checkbox personalizado (span antes del texto) */
+#sinExistencias + span::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000000; /* Bordes negros */
+  background-color: #ffffff; /* Fondo blanco */
+  margin-right: 8px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+/* Estilo cuando el checkbox está marcado */
+#sinExistencias:checked + span::before {
+  background-color: #ffffff; /* Mantener fondo blanco */
+  border: 2px solid #000000; /* Mantener borde negro */
+  /* Añadir marca de verificación */
+  content: "✔";
+  color: #000000; /* Color de la marca */
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+}
+
+/* Opcional: Estilo del texto del span */
+#sinExistencias + span {
+  color: #fafafa; /* Mantener color del texto del label */
 }

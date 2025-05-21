@@ -17,32 +17,36 @@ class MyHeader extends HTMLElement {
     </nav>
     <!-- encabezado logo-->
 
-    <!--BUSCADOR-->
-    <div class="contenedor-buscador">
-      <div class="row">
-        <div class="col s11">
-          <div class="row buscador">
-            <div class="s10 col">
-              <input class="uil uil-search-alt" data-role="none" id="articulo" placeholder="Buscar" value=""
-                autocomplete="off">
+     <!--BUSCADOR-->
+            <div class="contenedor-buscador">
+              <div class="row">
+                <div class="col s11">
+                  <div class="row buscador">
+                    <div class="s10 col">
+                      <input class="uil uil-search-alt" data-role="none" id="articulo" placeholder="Buscar" value=""
+                        autocomplete="off">
+                    </div>
+                    <div class="s2 col">
+                      <!--<button id="buscado" class="search-action ui-btn" onclick="javascript: busquedaGeneral()">Esta funcion no va-->
+                      <button id="buscado" class="search-action ui-btn" onclick="javascript: preBusqueda()">
+                        <i class="material-icons">search</i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col s1" style="padding-left: 0;">
+                  <a href="#" onclick="filtrosModal();"><span class="material-symbols-outlined text-black"
+                      style="font-size: 23px;margin-top: 0;padding: 10px;background: #535162 !important;border-radius: 5px;color: #ffffff;margin-left: -16px;"><i class="material-icons">filter_list</i></span></a>
+                </div>                
+              </div>
+               <div >    
+                <label style="margin-left: 40px; color:#fafafa;">
+                      <input type="checkbox" id="sinExistencias" />
+                      <span>Mostrar busqueda sin existencias </span>
+                    </label>            
+              </div>
             </div>
-            <div class="s2 col">
-              <!--<button id="buscado" class="search-action ui-btn" onclick="javascript: busquedaGeneral()">Esta funcion no va-->
-              <button id="buscado" class="search-action ui-btn" onclick="javascript: preBusqueda()">
-                <i class="material-icons">search</i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="col s1" style="padding-left: 0;">
-          <a href="#" onclick="filtrosModal();"><span class="material-symbols-outlined text-black"
-              style="font-size: 23px;margin-top: 0;padding: 10px;background: #535162 !important;border-radius: 5px;color: #ffffff;margin-left: -16px;"><i class="material-icons">filter_list</i></span></a>
-        </div>
-      </div>
-      <!--Switch button-->
-      <!--Fin Switch button-->
-    </div>
-    <!--FIN BUSCADOR-->
+            <!--FIN BUSCADOR-->
 
     <!--UBICACION-->
     <div class="row shop-bodegas">

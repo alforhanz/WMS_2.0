@@ -1327,12 +1327,27 @@ function preBusqueda() {
   let marca = localStorage.getItem('marcaSelect') || '';
   let tipo = localStorage.getItem('tipoSelect') || '';
   let envase = localStorage.getItem('envaseSelect') || '';
-
+  const checkbox = document.getElementById("sinExistencias");
+  const sinExistencias = checkbox ? checkbox.checked : false;
+  let existenciaBusqueda = "";
+  
+  //console.log("Mostrar sin existencias:", sinExistencias);
+  
+  // Lógica de búsqueda
+  if (sinExistencias) {
+    // Incluir ítems sin existencias
+    console.log("Buscando con ítems sin existencias...");
+     existenciaBusqueda = "N"
+  } else {
+    // Excluir ítems sin existencias
+    console.log("Buscando solo ítems con existencias...");
+    existenciaBusqueda = "S"
+  }
   const params =
     "?pActivos=" +
     "S" +
     "&pExistencia=" +
-    null +
+    existenciaBusqueda +
     "&pArticulo=" +
     art +
     "&pClase=" +
@@ -2041,8 +2056,9 @@ function mostrarResultadosBusqueda(nPag, pag) {
 
 
 function mostrarResultados(desde, hasta) {
-  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-  let bodegaCod = bodega[0].BODEGA;
+  // const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+
+  // let bodegaCod = bodega[0].BODEGA;
   var totalRegistros = 0, tipobusqueda = "";
   tipobusqueda = "T";
   var totalizador = 0;
@@ -2062,22 +2078,55 @@ function mostrarResultados(desde, hasta) {
     totalRegistros = ArrayDataFiltrado.length;
     clearFiltros = false;
   }
-  let client = 0;
-  let htm = "",
-    remateLabel = "",
-    bodegaLabel = "",
-    url = "",
-    precioL = "";
-  var pre = 1;
+  // let client = 0;
+  let htm = "",    
+      bodegaLabel = "",
+      url = "";
+  // var pre = 1;
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
         </div>`;
+
+// htm+=` <div class="row" id="totalregistros">
+//             <div class="col s6 m12" >
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div>
+            
+//             </div>
+//             <label for="exist">Existencias
+//           <div id="exist" class="switch">
+            
+//                 <label>
+//                     Off
+//                     <input checked type="checkbox">
+//                     <span class="lever"></span>
+//                     On
+//                 </label>
+//             </div>
+//             </label>
+
+//             <div class="row" id="vistabusqueda">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+//               <i class="material-icons right">list</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//             </div>`
+
+
   htm += `<div class="row" id="totalregistros">
             <div class="col s6 m12" >
               <span>Total de Registros: </span>
               <span>${totalRegistros}</span>
-            </div></div>
+            </div>
+            </div>
             <div class="row" id="vistabusqueda">
             <div class="col s6">
                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
@@ -2094,42 +2143,54 @@ function mostrarResultados(desde, hasta) {
   for (let i = desde; i < hasta; i++) {
     if (ArrayDataFiltrado[i]) {
       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-      if (ArrayDataFiltrado[i].BODEGA == "S") {
+      // if (ArrayDataFiltrado[i].BODEGA != "N") {
+      
+      const cantBodega = parseFloat(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA) || 0;
+        if (cantBodega > 0) {
         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
       } else {
-        bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
+        bodegaLabel = `<span ></span>`;
       }
       url = ` href="#"`;
+      let colorReorden ="";
+            /* Reglas
+            * Si la Existencia Actual es menor o igual a la Cantidad Mínima: Rojo
+            * Si la Existencia Actual es mayor a la Cantidad Mínima y Menor o igual al Punto de Reorden: Naranja
+            * Si la Existencia Actual es mayor al Punto de Reorden y Menor a la cantidad Maxima: Verde
+            * Si la Existencia Actual es mayor que a la cantidad Maxima: Azul  indicando SobreStock
+            */
+        if(ArrayDataFiltrado[i].color==='R'){//Rojo
+          colorReorden = 'red accent-4';
+        }else if(ArrayDataFiltrado[i].color==='A'){//Azul
+          colorReorden = ' light-blue darken-1';
+        }else if(ArrayDataFiltrado[i].color==='N'){//Naranja
+          colorReorden = 'deep-orange accent-3';
+        }else if(ArrayDataFiltrado[i].color==='V'){// Verde
+          colorReorden = 'green darken-1';
+        }
+      
       htm += `
-        <div class="col s6 m4 l3">         
-            <div class="container-img">
-              <div id="envoltorio">
-                <a ${url}>
-                  ${remateLabel}
-                  <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-                    data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-                  ${bodegaLabel}
-                </a>
-                <div class="flotante-acciones">
-                  <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-                    <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-                      <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-                    </a>
-                    <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-                  </div>
+      <div class="col s6 m4 l3">         
+          <div class="container-img">
+            <div id="envoltorio">
+              <a ${url}>                
+                <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+                 ${bodegaLabel}
+              </a>
+              <div class="flotante-acciones ${colorReorden}">
+                <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+                  <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+                    <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                  </a>             
                 </div>
-                <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-                <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-                <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-              </div>
-              <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-              <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-              <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-                ${precioL}</span>
+              </div>          
             </div>
-         
-        </div>`;
-      // Cerrar la fila cada 4 elementos y abrir una nueva
+            <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
+            <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>  
+            <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
+           </div>         
+      </div>`;  
+     
       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
         htm += '</div><div class="row">';
       }
@@ -3069,7 +3130,7 @@ function resultadosVistaLista(desde, hasta) {
   let bodegaCod = bodega[0].BODEGA;
   let totalRegistros = 0, htm = "";
   totalRegistros = ArrayDataFiltrado.length;
-  let nPag = Math.ceil(totalRegistros / xPag);
+  // let nPag = Math.ceil(totalRegistros / xPag);
 
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
@@ -3311,27 +3372,6 @@ function mostrarImagen(codigo, descripcion) {
     }
   });
 }
-
-// function mostrarImagen(codigo, descripcion) {
-// // aqui decodificamos a codigo
-// const code = decodeURIComponent(codigo);
-//   Swal.fire({
-//     confirmButtonColor: "#28a745",
-//     html: `
-//                       <div>
-//                           <h3>${codigo}</h3>
-//                           <!-- <img src="//200.124.12.146:8097/index.php/image/displayimage/${code}" alt="Imagen" width="200" height="200">-->
-//                           <img src="${env.API_IMAGE}/${codigo}" alt="Imagen" width="200" height="200">
-//                           <p>${descripcion}</p>
-//                       </div>
-//                   `,
-//     customClass: {
-//       title: 'img-tamaño-articulo'
-//     }
-
-//   });
-// }
-
 function mostrarExistencias(p_Articulo) {
   let code;
   try {
@@ -3408,84 +3448,6 @@ function mostrarExistencias(p_Articulo) {
       });
     });
 }
-
-// //muestra las existencias en un swall.fire
-// function mostrarExistencias(p_Articulo) {
-//    let code;
-//   try {
-//     code = decodeURIComponent(p_Articulo); // Decodificar para el título
-//   } catch (e) {
-//     console.error("Error decodificando código:", e);
-//     code = p_Articulo; // Usar codificado como respaldo
-//   }
-
-//   // Mostrar el loading antes de abrir la ventana emergente
-//   Swal.fire({
-//     title: "Cargando Registros....",
-//     allowOutsideClick: false,
-//     showConfirmButton: false,
-//     onBeforeOpen: function () {
-//       Swal.showLoading();
-//     }
-//   });
-
-//   // Ruta del API
-//   const apiUrl = env.API_URL + "wmsexistenciaarticulosporbodega/1";
-
-//   // Parámetros de la solicitud
-//   // const params = `?p_Articulo=${art}`;
-//   const params = `?p_Articulo=${code}`;
-
-//   fetch(apiUrl + params, {
-//     method: 'GET',
-//     cache: 'no-cache',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Accept': 'application/json'
-//     }
-//   })
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error('La solicitud no fue exitosa');
-//       }
-//       return response.json();
-//     })
-//     .then(data => {
-//       var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
-//       var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
-//         '<thead>' +
-//         '<tr style="border-bottom: 1px solid #ddd;">' +
-//         '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
-//         '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
-//         '</tr>' +
-//         '</thead>' +
-//         '<tbody>';
-
-//       existenciaArticulos.forEach(articulo => {
-//         tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
-//           '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
-//           '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
-//           '</tr>';
-//       });
-
-//       tablaHtml += '</tbody>' + '</table>';
-
-//       Swal.fire({
-//         title: "Articulo: " + p_Articulo,
-//         html: tablaHtml,
-//         confirmButtonText: "Aceptar",
-//         confirmButtonColor: "#55b251"
-//       });
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-//       Swal.fire({
-//         title: "Error",
-//         text: "Ocurrió un error al obtener los registros de existencia",
-//         icon: "error"
-//       });
-//     });
-// }
 
 function sucursalbremen(tienda, id_tienda) {
   ////console.log("Tienda: " + tienda + " " + "Id: " + id_tienda);
