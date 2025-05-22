@@ -774,10 +774,10 @@ svg[atributos] {
 }
 
 #lista-articulo .container-img {
-  border: 1px solid black;
-  /* margin: 5px;
+  border: 1px solid #dedede;
+  margin: 5px;
   padding: 10px;
-  box-sizing: border-box; */
+  box-sizing: border-box;
 }
 /* #lista-articulo li:nth-child(2n) .container-img {
   border-right: 0 !important;
@@ -794,10 +794,10 @@ svg[atributos] {
   font-size: 13px;
   min-height: 48px;
 }
-/* #lista-articulo h6 {
+#lista-articulo h6 {
   margin: 0;
   padding: 0;
-}  */
+} 
  /* #lista-articulo select {
   background-color: #000;
   color: #fff;
@@ -2357,61 +2357,59 @@ font-size: 20px !important;
 #tabs-swipe-demo{
   margin-top: 5em !important;
 }
+
+#lista-articulo {
+  padding: 0 10px;
+}
+
+#totalregistros,
+#vistabusqueda {
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 columnas por defecto (Large and up) */
+  gap: 15px; /* Espacio entre elementos */
+}
+
+.container-img {
+  position: relative;
+  width: 100%;
+}
+
+.container-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px; /* Opcional: para estética */
+}
+
+.articulo-titulo,
+.container-img h4 {
+  font-size: 14px;
+  margin: 5px 0;
+  text-align: center;
+}
+
 .flotante-acciones {
   position: absolute;
-  bottom: 99px;
-  right: 30px;
-  /* width: 14%; */
-  background: #bfbbbb94;
-  padding: 11px;
-  border-radius: 16px;
-  padding-top: 28px;
+  top: 22em; 
+  right: 10px; 
+  width: 19%; 
+  height: 7em;
+  background: #bfbbbb94; 
+  padding: 0px; 
+  border-radius: 27px;
   border: solid 1px #c1c1c1a8;
-  /* margin-left: 17em; */
-}
-/*CheckBox del encabezado principal*/
-/* Contenedor del label para posicionamiento relativo */
-label[for="sinExistencias"] {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
 }
 
-/* Ocultar el checkbox nativo */
-#sinExistencias {
+.mi-tienda {
   position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* Estilo del checkbox personalizado (span antes del texto) */
-#sinExistencias + span::before {
-  content: "";
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #000000; /* Bordes negros */
-  background-color: #ffffff; /* Fondo blanco */
-  margin-right: 8px;
-  box-sizing: border-box;
-  vertical-align: middle;
-}
-
-/* Estilo cuando el checkbox está marcado */
-#sinExistencias:checked + span::before {
-  background-color: #ffffff; /* Mantener fondo blanco */
-  border: 2px solid #000000; /* Mantener borde negro */
-  /* Añadir marca de verificación */
-  content: "✔";
-  color: #000000; /* Color de la marca */
-  text-align: center;
-  line-height: 16px;
-  font-size: 12px;
-}
-
-/* Opcional: Estilo del texto del span */
-#sinExistencias + span {
-  color: #fafafa; /* Mantener color del texto del label */
+  bottom: 10px;
+  left: 10px;
+  background: #28a745;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
 }

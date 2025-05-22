@@ -1,9 +1,7 @@
 var ArrayData = new Array();
-//Array para almacenar filtros
 var ArrayData2 = new Array();
 var ArrayDataFiltrado = new Array();
 var ArrayPrecio = new Array();
-// var ArrayITBMS = new Array();
 var promo = "";
 var viewImcompletos = false;
 var clearFiltros = false;
@@ -11,16 +9,15 @@ const xPag = 20;
 var itemsToDelete = "";
 var itemsToDelete_NoProm = "";
 var promoToDelete = "";
-// let acumToDelete = [];
 let acumToDelete = JSON.parse(sessionStorage.getItem("itemsToDelete"));
-
+//-----------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   console.log('DOM cargado...')
    //--------------------------------------------------
   validate_login();
   existeBodega();
 });
-//-------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 function validate_login() {
   const user = sessionStorage.getItem("user");
   if (user) {
@@ -31,7 +28,7 @@ function validate_login() {
     window.location = "index.html";
   }
 }
-//-------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function existeBodega() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   if (bodega) {
@@ -40,8 +37,7 @@ function existeBodega() {
     // document.getElementById("icon-cliente").setAttribute("href", "#modal1");
   }
 }
-
-//-----------------------------FILTRAR MODAL---------quemao----------------------------
+//-----------------------------Filtros sobre el resultado de la búsqueda------------------------------------------
 function FiltrarModal(IDCategoria, seccion) {
   let htm = "";
   let usuario = document.getElementById("hUsuario").value;
@@ -233,123 +229,123 @@ function FiltrarModal(IDCategoria, seccion) {
   document.getElementById("filtroenvases").innerHTML = MostrarEnvases();
   $(".collapsible").collapsible();
 }
-//-----------------------------FILTROS MODAL-------------------------------------
-function filtrosModal() {
-  let htm = "", IDCategoria = "1055";
-  let usuario = document.getElementById("hUsuario").value;
-  let elem = document.getElementById("modalFiltro");
-  let instance = M.Modal.getInstance(elem);
+//-----------------------------FILTROS MODAL------------------------------------------
+// function filtrosModal() {
+//   let htm = "", IDCategoria = "1055";
+//  // let usuario = document.getElementById("hUsuario").value;
+//   let elem = document.getElementById("modalFiltro");
+//   let instance = M.Modal.getInstance(elem);
 
-  if (elem.style.display === 'none') {
-    instance.open();
-  } else {
-    instance.open();
-    localStorage.removeItem('claseSelect');
-    htm = ` <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>CLASE</div>
-                  <div class="collapsible-body">
-                    <div id="filtroclase" style="padding-left: 10px"></div>
-                      <input type="hidden" value="" id="txtClaseV" name="txtClaseV">
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>MARCA</div>
-                  <div class="collapsible-body">
-                      <div id="filtromarca" style="padding-left: 10px"></div>
-                        <input type="hidden" value="" id="txtMarcaV" name="txtMarcaV" >
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>TIPO</div>
-                  <div class="collapsible-body">
-                      <div id="filtrotipo" style="padding-left: 10px"></div>
-                        <input type="hidden" value="" id="txtTipo" name="txtTipo" >
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO</div>
-                  <div class="collapsible-body">
-                      <div id="filtrosubtipo" style="padding-left: 10px"></div>
-                        <input type="hidden" value="" id="txtSubtipo" name="txtSubtipo" >
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO2</div>
-                  <div class="collapsible-body">
-                      <div id="filtrosubtipo2" style="padding-left: 10px"></div>
-                        <input type="hidden" value="" id="txtSubtipo2" name="txtSubtipo2" >
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <ul class="collapsible">
-                <li>
-                  <div class="collapsible-header"><i class="material-icons">add</i>ENVASE</div>
-                  <div class="collapsible-body">
-                      <div id="filtroenvase" style="padding-left: 10px"></div>
-                        <input type="hidden" value="" id="txtEnvase" name="txtEnvase" >
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>`;
-    htm += `<div class="row">
-          <div class="col s6">
-            <a onclick="preBusqueda();" class="btn waves-light green darken-4 expand-car">
-              <i class="material-icons left">check</i>
-              Aceptar
-            </a>
-          </div>
-          <div class="col s6">
-            <a onclick="LimpiarFiltroPre();" class="btn waves-light green darken-4 expand-car">
-              <i class="material-icons left">update</i>
-              Limpiar
-            </a>
-          </div>
-        </div>`;
-    ////console.log(htm);
-    document.getElementById("divFiltro").innerHTML = htm;
-    // Llamar las marcas por API
-    getFiltros().then(() => {
-      // Una vez que los datos estén listos, llamamos a MostrarClases()
-      document.getElementById("filtroclase").innerHTML = MostrarClases(1);
-    }).catch((error) => {
-      console.error("Error:", error);
-    });
-    $(".collapsible").collapsible();
-  }
-}
-
+//   if (elem.style.display === 'none') {
+//     instance.open();
+//   } else {
+//     instance.open();
+//     localStorage.removeItem('claseSelect');
+//     htm = ` <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>CLASE</div>
+//                   <div class="collapsible-body">
+//                     <div id="filtroclase" style="padding-left: 10px"></div>
+//                       <input type="hidden" value="" id="txtClaseV" name="txtClaseV">
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>MARCA</div>
+//                   <div class="collapsible-body">
+//                       <div id="filtromarca" style="padding-left: 10px"></div>
+//                         <input type="hidden" value="" id="txtMarcaV" name="txtMarcaV" >
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>TIPO</div>
+//                   <div class="collapsible-body">
+//                       <div id="filtrotipo" style="padding-left: 10px"></div>
+//                         <input type="hidden" value="" id="txtTipo" name="txtTipo" >
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO</div>
+//                   <div class="collapsible-body">
+//                       <div id="filtrosubtipo" style="padding-left: 10px"></div>
+//                         <input type="hidden" value="" id="txtSubtipo" name="txtSubtipo" >
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO2</div>
+//                   <div class="collapsible-body">
+//                       <div id="filtrosubtipo2" style="padding-left: 10px"></div>
+//                         <input type="hidden" value="" id="txtSubtipo2" name="txtSubtipo2" >
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s12">
+//               <ul class="collapsible">
+//                 <li>
+//                   <div class="collapsible-header"><i class="material-icons">add</i>ENVASE</div>
+//                   <div class="collapsible-body">
+//                       <div id="filtroenvase" style="padding-left: 10px"></div>
+//                         <input type="hidden" value="" id="txtEnvase" name="txtEnvase" >
+//                   </div>
+//                 </li>
+//               </ul>
+//             </div>
+//           </div>`;
+//     htm += `<div class="row">
+//           <div class="col s6">
+//             <a onclick="preBusqueda();" class="btn waves-light green darken-4 expand-car">
+//               <i class="material-icons left">check</i>
+//               Aceptar
+//             </a>
+//           </div>
+//           <div class="col s6">
+//             <a onclick="LimpiarFiltroPre();" class="btn waves-light green darken-4 expand-car">
+//               <i class="material-icons left">update</i>
+//               Limpiar
+//             </a>
+//           </div>
+//         </div>`;
+//     ////console.log(htm);
+//     document.getElementById("divFiltro").innerHTML = htm;
+//     // Llamar las marcas por API
+//     getFiltros().then(() => {
+//       // Una vez que los datos estén listos, llamamos a MostrarClases()
+//       document.getElementById("filtroclase").innerHTML = MostrarClases(1);
+//     }).catch((error) => {
+//       console.error("Error:", error);
+//     });
+//     $(".collapsible").collapsible();
+//   }
+// }
+//------------------------------------------------------------------------------------
 function cerrarModal() {
   let elem = document.getElementById("modalFiltro");
   let instance = M.Modal.getInstance(elem);
@@ -363,15 +359,12 @@ $("#articulo").on("keypress", function (e) {
   }
 });
 //-----------------------------------------------------------------------------------
-// Busqueda de clientes
 $("#txtRuc").on("keypress", function (e) {
   if (e.keyCode == 13 || e.keyCode == 9) {
     e.preventDefault();
     // btnBusquedaCliente();
   }
 });
-//-----------------------------------------------------------------------------------
-
 //-----------------------------------------------------------------------------------
 $(document).ready(function () {
   $(".sidenav").sidenav();
@@ -529,7 +522,7 @@ function getFiltros(clase, marca, tipo, subtipo, subtipo2, envase) {
       throw error; // Rechazar la promesa con el error
     });
 }
-
+//-----------------------------------------------------------------------------------
 function formatData(data) {
   let name = "";
   return data.map((item) => {
@@ -616,7 +609,6 @@ function message(info, titulo, mensaje) {
   });
 }
 //-----------------------------------------------------------------------------------
-//FUNCION PARA VALIDAR INPUT TEXT OBLIGATORIOS
 function validate_error(mensaje) {
   let message = mensaje;
   Swal.fire({
@@ -626,46 +618,23 @@ function validate_error(mensaje) {
     confirmButtonColor: "#000",
   });
 }
-
-//FUNCION AGREGAR PAGINADOR SECCION BUSQUEDA CLIENTES
-//-----------------------------------------------------------------------------------
-// function showClientResult(nPag, pag, IDCategoria, ord) {
-//   let htm = "";
-//   // htm += paginador(nPag, pag, IDCategoria, ord);
-//   htm += paginadorServicios(nPag, pag, IDCategoria);
-//   document.getElementById("BusquedaResultado").innerHTML = htm;
-// }
-
-
-
 //-----------------------------------------------------------------------------------
 function existe_Usuario() {
   const usuario = sessionStorage.getItem("user");
   return JSON.parse(usuario) || [];
 }
-
-
-//-----------------------------------------------------------------------------------
-// function existe_DatosCliente() {
-//   const datos = localStorage.getItem("clientedatos");
-//   return JSON.parse(datos) || [];
-// }
-
-
-
 //-----------------------------------------------------------------------------------
 function expand(id) {
   let ids = document.getElementById(id);
   if (ids.style.display === "none") ids.style.display = "table-row-group";
   else ids.style.display = "none";
 }
-
+//-----------------------------------------------------------------------------------
 function closetooltips() {
   document.querySelectorAll(".tooltips-luciano").forEach(function (el) {
     el.style.display = "none";
   });
 }
-
 //-----------------------------------------------------------------------------------
 function CerrarModal(key) {
   //console.log(key);
@@ -1307,7 +1276,6 @@ function BuscarBorrar(cadena, value) {
   return arreglo.toString();
 }
 ////////////////// BUSQUEDA DE ARTICULOS EN INVENTARIO X BODEGA /////////////////////////////////////////
-
 function preBusqueda() {
   let nPag = 0;
   let pag = 1;
@@ -1331,15 +1299,10 @@ function preBusqueda() {
   const sinExistencias = checkbox ? checkbox.checked : false;
   let existenciaBusqueda = "";
   
-  //console.log("Mostrar sin existencias:", sinExistencias);
-  
-  // Lógica de búsqueda
-  if (sinExistencias) {
-    // Incluir ítems sin existencias
+  if (sinExistencias) {    
     console.log("Buscando con ítems sin existencias...");
      existenciaBusqueda = "N"
-  } else {
-    // Excluir ítems sin existencias
+  } else {    
     console.log("Buscando solo ítems con existencias...");
     existenciaBusqueda = "S"
   }
@@ -1383,6 +1346,7 @@ function preBusqueda() {
     .then((result) => {
       if (result && result.msg === "SUCCESS") {
         console.log('Cantidad de Registros: ', result.data.length);
+        console.log(result.data);
         if (result.data.length > 0) {
           ArrayData = result.data;
           ArrayDataFiltrado = result.data;
@@ -1645,284 +1609,6 @@ function LimpiarFiltro(IDCategoria) {
   });
 }
 //-----------------------------------------------------------------------------------
-// function detalleFactura(tipoDocumento, stock) {
-//   let bodega = document.getElementById("bodega").value;
-//   let x = document.querySelector("#FormCarrito");
-//   for (let elem of x) {
-//     if (elem.value == "0.00") {
-//       Swal.fire({
-//         icon: "warning",
-//         title: "Linea sin precios",
-//         text: "Existen articulos sin precios.",
-//         confirmButtonColor: "#000",
-//       });
-//       return false;
-//     }
-//   }
-//   if (tipoDocumento == "P" && stock > 0) {
-//     Swal.fire({
-//       icon: "warning",
-//       title: "Oops...",
-//       text:
-//         "No se puede crear pedido, porque hay artículos con cantidad pedida mayor a la cantidad en existencia en bodega " +
-//         bodega,
-//     });
-//     return false;
-//   } else {
-//     window.location.href =
-//       "detalle-factura.html?tipodocumento=" + tipoDocumento;
-//   }
-// }
-//-----------------------------------------------------------------------------------
-// function precioArticuloVende(art, i) {
-//   const usuario = existe_Usuario();
-//   idCat = document.getElementById("txtCategoria").value;
-//   const params = "?art=" + art + "&user=" + usuario + "&idcategoria=" + idCat;
-//   //console.log(env.API_URL + "reportes/1" + params);
-//   fetch(env.API_URL + "reportes/1" + params, {
-//     method: "GET", // *GET, POST, PUT, DELETE, etc.
-//     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//     headers: {
-//       "Content-Type": "application/json",
-//       Accept: "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((result) => {
-//       if (result.msg === "SUCCESS") {
-//         let htm =
-//           "<h6 class='red-text right' onclick='closetooltips()'><i class='material-icons red-text'>close</i></h6><table>";
-//         result.reporte.forEach(function (key, index) {
-//           htm +=
-//             "<tr><td>" +
-//             key.NIVEL_PRECIO +
-//             " : </td><td>B/." +
-//             parseFloat(key.PRECIO).toFixed(2) +
-//             "</td></tr>";
-//         });
-//         htm += "</table>";
-
-//         document.getElementById("precios_lista" + i).innerHTML = htm;
-//         document.querySelectorAll(".tooltips-luciano").forEach(function (el) {
-//           el.style.display = "none";
-//         });
-//         document.getElementById("precios_lista" + i).style.display = "block";
-//         window.setTimeout(function () {
-//           $("#precios_lista" + i).fadeOut();
-//         }, 8000);
-//       } else {
-//         //console.log("No se cargo los modelos, verifique la conexión");
-//       }
-//     });
-// }
-// //-----------------------trae stock articulo por bodega------------------------------
-// function precioArticuloVende2(art, i, tipobusqueda) {
-//   // tipobusqueda = localStorage.getItem('tipobusqueda');
-//   let loader = `<div class="loading"></div>`;
-//   // document.getElementById("carga").innerHTML = loader;
-//   const usuario = existe_Usuario();
-//   idCat = document.getElementById("txtCategoria").value;
-//   let params = "";
-//   if (tipobusqueda == "K") {
-//     params = "?user=" + usuario + "&art=" + art + "&p_Opcion=" + 3;
-//   }
-//   else {
-//     params = "?user=" + usuario + "&art=" + art;
-//   }
-
-//   fetch(env.API_URL + "reportes/3" + params, {
-//     method: "GET", // *GET, POST, PUT, DELETE, etc.
-//     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//     headers: {
-//       "Content-Type": "application/json",
-//       Accept: "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((result) => {
-//       //console.log(result.reporte);
-//       let htm = "";
-//       if (result.msg === "SUCCESS") {
-//         htm +=
-//           "<h6 class='red-text right' onclick='closetooltips()'><i class='material-icons red-text'>close</i></h6><table><tr><td>SUCURSAL</td><td>CANTIDAD</td></tr>";
-//         result.reporte.forEach(function (key, index) {
-//           // Verificar si key.CANTIDAD es un número válido
-//           var cantidad = parseFloat(key.CANTIDAD);
-//           // Si no es un número válido o es igual a 0, asignar 0
-//           if (isNaN(cantidad) || cantidad === 0) {
-//             cantidad = 0;
-//           } else {
-//             // Convertir a entero si es un número válido y diferente de 0
-//             cantidad = parseInt(cantidad);
-//           }
-//           htm +=
-//             '<tr><td style="font-size:8px">' +
-//             key.BODEGAS +
-//             " : </td><td class='center-align'>" +
-//             cantidad +
-//             "</td></tr>";
-//         });
-//         htm += "</table>";
-//         // document.getElementById("carga").innerHTML = "";
-//         document.getElementById("inventario_lista" + i).innerHTML = htm;
-//         document.querySelectorAll(".tooltips-luciano").forEach(function (el) {
-//           el.style.display = "none";
-//         });
-//         document.getElementById("inventario_lista" + i).style.display = "block";
-//         window.setTimeout(function () {
-//           $("#inventario_lista" + i).fadeOut();
-//         }, 8000);
-//       } else {
-//         //console.log("No se cargo los modelos, verifique la conexión");
-//       }
-//     });
-// }
-// //-----------------------------------------------------------------------------------
-// function precioArticuloVende3(art, i) {
-//   //ULTIMAS COMPRAS
-//   let loader = `<div class="loading"></div>`;
-//   document.getElementById("carga").innerHTML = loader;
-//   const usuario = existe_Usuario();
-//   const client = existe_Cliente();
-//   idCat = document.getElementById("txtCategoria").value;
-//   const params = "?user=" + usuario + "&art=" + art + "&cliente=" + client;
-//   //console.log(env.API_URL + "reportes/2" + params);
-//   fetch(env.API_URL + "reportes/2" + params, {
-//     method: "GET", // *GET, POST, PUT, DELETE, etc.8
-//     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//     headers: {
-//       "Content-Type": "application/json",
-//       Accept: "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((result) => {
-//       let htm = "";
-//       if (result.msg === "SUCCESS") {
-//         //console.log(result.reporte);
-//         if (result.reporte != 0) {
-//           htm +=
-//             "<h6 class='red-text right' onclick='closetooltips()'><i class='material-icons red-text'>close</i></h6><table><tr><td>FECHA</td><td>CANT.</td><td>PRECIO</td></tr>";
-//           result.reporte.forEach(function (key, index) {
-//             htm +=
-//               "<tr><td>" +
-//               key.FECHA +
-//               "</td><td class='center-align'>" +
-//               parseInt(key.CANTIDAD).toFixed(0) +
-//               "</td><td class='center-align'>" +
-//               key.PRECIO_TOTAL +
-//               "</td></tr>";
-//           });
-//           htm += "</table>";
-//         } else {
-//           htm = `<h6 class='red-text right' onclick='closetooltips()'><i class='material-icons red-text'>close</i></h6><table><tr><td>Cliente no tiene <br>ultimas compras<br>del articulo ${art}</td></table>`;
-//         }
-//         document.getElementById("carga").innerHTML = "";
-//         document.getElementById("ultimas_compras" + i).innerHTML = htm;
-//         document.querySelectorAll(".tooltips-luciano").forEach(function (el) {
-//           el.style.display = "none";
-//         });
-//         document.getElementById("ultimas_compras" + i).style.display = "block";
-//         window.setTimeout(function () {
-//           $("#ultimas_compras" + i).fadeOut();
-//         }, 8000);
-//       } else {
-//         //console.log("No se cargo los modelos, verifique la conexión");
-//       }
-//     });
-// }
-
-
-// //-----------------------------------------------------------------------------------
-function busquedaGeneral() {
-  let params;
-  let nPag = 0;
-  // htm = "";
-  let pag = 1;
-  let loader = `<div class="loading"></div>`;
-  let articulo = document.getElementById("articulo").value;
-  bodega = document.getElementById("bodega").value;
-  idCat = 1040;
-  if (articulo == "") {
-    Swal.fire({
-      icon: "warning",
-      text: "Por favor ingrese la palabra a buscar",
-      confirmButtonColor: "#f90f00",
-    });
-    document.getElementById("articulo").focus();
-  } else {   
-
-    params =
-      "?ptiporpt=" +
-      tiporpt +
-      "&ptipoclase=" +
-      tipoclase +
-      "&articulo=" +
-      articulo +
-      "&bodega=" +
-      bodega +
-      "&ptipoprod=" +
-      tipobusqueda;
-
-    //console.log("Estos son los parametros de busqueda General: " + params);
-    // //console.log(params);
-    fetch(env.API_URL + "wmsbusquedaarticulos/1" + params, myInit)
-      .then((response) => response.json())
-      .catch((error) => console.error("Error:", error))
-      .then((result) => {
-        if (result.msg === "SUCCESS") {
-          //console.log(result.data.length);
-          if (result.data.length > 0) {
-            ArrayData = result.data;
-            ArrayDataFiltrado = result.data;
-            //console.log("DATA DE BUSQUEDA GENERAL");
-            //console.log(ArrayData);
-            let totales = ArrayDataFiltrado.length;
-            nPag = Math.ceil(totales / xPag);
-            if (tipoclase == "1040") {
-              mostrarResultadosBusquedaServicios(nPag, pag, idCat);
-            } else {
-              mostrarResultadosBusqueda(nPag, pag, idCat, "", tipobusqueda);
-            }
-          } else {
-            Swal.fire({
-              icon: "info",
-              title: "Información",
-              text: "No hay resultado para la busqueda " + articulo,
-              confirmButtonColor: "#28a745",
-            });
-            document.getElementById("carga").innerHTML = "";
-            return false;
-          }
-        }
-      });
-  }
-}
-//-----------------------------------------------------------------------------------
-// function mostrarResultadosBusqueda(nPag, pag) {
-//   ////console.log("nPage:" + nPag + "- pag:" + pag);
-//   //VARIABLE client no se esta usando
-//   pTipoProd = "T";
-//   // let client = existe_Cliente();
-//   let htm = "";
-//   let desde = (pag - 1) * xPag;
-//   let hasta = pag * xPag;
-//   // //console.log("DESDE MOSTRARRESULTADOSBUSQUEDA");
-//   // //console.log(IDCategoria);
-//   htm = mostrarResultados(desde, hasta);
-//   htm += paginador(nPag, pag);
-//   document.getElementById("resultadoBusqueda").innerHTML = htm;
-//   $("html, body").animate(
-//     {
-//       scrollTop: $("#resultadoBusqueda").offset().top - 140,
-//     },
-//     1000
-//   );
-//   // document.getElementById("carga").innerHTML = "";
-//   $("select").formSelect();
-//   $(".dropdown-trigger").dropdown();
-// }
-
 function mostrarResultadosBusqueda(nPag, pag) {
   let htm = "";
   let desde = (pag - 1) * xPag;
@@ -1947,513 +1633,112 @@ function mostrarResultadosBusqueda(nPag, pag) {
   $("select").formSelect();
   $(".dropdown-trigger").dropdown();
 }
-
-
-// // -----------------------------------------------------------------------------------
-// function mostrarResultados(desde, hasta) {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   var totalRegistros = 0, tipobusqueda = "";
-//   //console.log("TIPOBUSQUEDA: " + tipobusqueda);
-//   //Para productos terminados(T), para KIT (K)
-//   tipobusqueda = "T";
-//   //Conteo total de registros para todas las demas categorias y rines incompletos
-//   var totalizador = 0;
-//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (
-//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//     ) {
-//       totalizador++;
-//     }
-//   }
-
-//   if (totalizador !== 0) {
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   } else {
-//     totalRegistros = ArrayDataFiltrado.length;
-//     clearFiltros = false;
-//   }
-//   let client = 0;
-//   //DECLARACION DE VARIABLES
-//   let htm = "",
-//     remateLabel = "",
-//     bodegaLabel = "",
-//     url = "",
-//     precioL = "";
-//   //var pre = 1;
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//         </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6 m12" >
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div></div>
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//               <i class="material-icons right">list</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//             </div>`;
-//   htm += '<ul id="listas">';
-//   ////console.log(ArrayData);
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       //SI ENCUENTRA STOCK DEL ARTICULO EN BODEGA AGREGA ETIQUETA: EN TIENDA
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
-//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-//         //bodegaLabel = '<span class="mi-tienda">En Bodega </span>';
-//         // bodegaLabel = `<span class="mi-tienda">En ${bodegaCod}</span>`;
-//       } else {
-//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
-//       }
-//       // url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}&IDCategoria=${ArrayDataFiltrado[i].ID_CLASE}&pTipoProd=${tipobusqueda}"`;
-//       url = ` href="#"`;
-//       htm += `
-//           <li>
-//             <div class="container-img">
-//             <div id="envoltorio">
-//               <a ${url}>
-//                   ${remateLabel}
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//               </a>
-//               <div class="flotante-acciones">
-//                       <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                           <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                               <!--<i class="icon-inventory" style="font-size: 24px;"></i>-->
-//                               <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                           </a>
-//                           <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                       </div>`;
-//       htm += `</div>
-//                       <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-//                       <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//                       <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//               </div>
-//               <h3 class="articulo-titulo"> ${ArrayDataFiltrado[i].ARTICULO}</h3>
-//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//               <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-//               ${precioL}</span>
-//             </div>
-//           </li>`;
-//     }
-//   }
-//   htm += "</ul></div>";
-//   return htm;
-// }
-
-
+// -----------------------------------------------------------------------------------
 function mostrarResultados(desde, hasta) {
-  // const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+  let htm = "";
+  let bodegaLabel = "";
+  let url = "";
 
-  // let bodegaCod = bodega[0].BODEGA;
-  var totalRegistros = 0, tipobusqueda = "";
-  tipobusqueda = "T";
-  var totalizador = 0;
-  for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-    if (
-      ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-      +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-    ) {
-      totalizador++;
-    }
-  }
-
-  if (totalizador !== 0) {
-    totalRegistros = ArrayDataFiltrado.length - totalizador;
-    clearFiltros = false;
-  } else {
-    totalRegistros = ArrayDataFiltrado.length;
-    clearFiltros = false;
-  }
-  // let client = 0;
-  let htm = "",    
-      bodegaLabel = "",
-      url = "";
-  // var pre = 1;
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
-          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-        </div>`;
-
-// htm+=` <div class="row" id="totalregistros">
-//             <div class="col s6 m12" >
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div>
-            
-//             </div>
-//             <label for="exist">Existencias
-//           <div id="exist" class="switch">
-            
-//                 <label>
-//                     Off
-//                     <input checked type="checkbox">
-//                     <span class="lever"></span>
-//                     On
-//                 </label>
-//             </div>
-//             </label>
-
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//               <i class="material-icons right">list</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//             </div>`
-
+            <h2 style="text-align:center; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+          </div>`;
 
   htm += `<div class="row" id="totalregistros">
-            <div class="col s6 m12" >
+            <div class="col s6 m12">
               <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
+              <span>${ArrayDataFiltrado.length}</span>
             </div>
-            </div>
-            <div class="row" id="vistabusqueda">
+          </div>
+          <div class="row" id="vistabusqueda">
             <div class="col s6">
-                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-              <i class="material-icons right">list</i>
-              VISTA </a>
+              <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+                <i class="material-icons right">list</i>
+                VISTA
+              </a>
             </div>
             <div class="col s6">
               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-              <i class="material-icons right">filter_list</i>
-              FILTRAR </a>
+                <i class="material-icons right">filter_list</i>
+                FILTRAR
+              </a>
             </div>
-            </div>`;
-  htm += '<div class="row">'; // Inicia la primera fila
+          </div>`;
+
+  htm += '<div class="grid-container">'; // Contenedor de la cuadrícula
+
   for (let i = desde; i < hasta; i++) {
     if (ArrayDataFiltrado[i]) {
-      DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-      // if (ArrayDataFiltrado[i].BODEGA != "N") {
-      
+      let DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
       const cantBodega = parseFloat(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA) || 0;
-        if (cantBodega > 0) {
-        bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-      } else {
-        bodegaLabel = `<span ></span>`;
+
+      // Etiqueta de bodega
+      bodegaLabel = cantBodega > 0 ? `<span class="mi-tienda">En Bodega</span>` : `<span></span>`;
+
+      // URL de la imagen (manejo de FOTO = "S" o "N")
+      const imagenUrl =
+        ArrayDataFiltrado[i].FOTO === "S"
+          ? `${env.API_IMAGE}/${DArticulo}`
+          : "https://via.placeholder.com/150?text=Sin+Imagen"; // Imagen por defecto si FOTO = "N"
+
+      url = `href="#"`;
+
+      // Reglas de color
+      let colorReorden = "";
+      if (ArrayDataFiltrado[i].color === "R") {
+        colorReorden = "red accent-4";
+      } else if (ArrayDataFiltrado[i].color === "A") {
+        colorReorden = "light-blue darken-1";
+      } else if (ArrayDataFiltrado[i].color === "N") {
+        colorReorden = "deep-orange accent-3";
+      } else if (ArrayDataFiltrado[i].color === "V") {
+        colorReorden = "green darken-1";
       }
-      url = ` href="#"`;
-      let colorReorden ="";
-            /* Reglas
-            * Si la Existencia Actual es menor o igual a la Cantidad Mínima: Rojo
-            * Si la Existencia Actual es mayor a la Cantidad Mínima y Menor o igual al Punto de Reorden: Naranja
-            * Si la Existencia Actual es mayor al Punto de Reorden y Menor a la cantidad Maxima: Verde
-            * Si la Existencia Actual es mayor que a la cantidad Maxima: Azul  indicando SobreStock
-            */
-        if(ArrayDataFiltrado[i].color==='R'){//Rojo
-          colorReorden = 'red accent-4';
-        }else if(ArrayDataFiltrado[i].color==='A'){//Azul
-          colorReorden = ' light-blue darken-1';
-        }else if(ArrayDataFiltrado[i].color==='N'){//Naranja
-          colorReorden = 'deep-orange accent-3';
-        }else if(ArrayDataFiltrado[i].color==='V'){// Verde
-          colorReorden = 'green darken-1';
-        }
-      
+
       htm += `
-      <div class="col s6 m4 l3">         
-          <div class="container-img">
-            <div id="envoltorio">
-              <a ${url}>                
-                <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-                 ${bodegaLabel}
-              </a>
-              <div class="flotante-acciones ${colorReorden}">
-                <div class="link-flotante-acciones " style="padding-bottom: 5px;">
-                  <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-                    <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-                  </a>             
-                </div>
-              </div>          
-            </div>
-            <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
-            <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>  
-            <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
-           </div>         
-      </div>`;  
-     
-      if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-        htm += '</div><div class="row">';
-      }
+        <div class="container-img">
+                 <div id="envoltorio">
+               <a ${url}>                
+                 <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+                  ${bodegaLabel}
+               </a>
+               <div class="flotante-acciones ${colorReorden}">
+                 <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+                   <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                   </a>             
+                 </div>
+               </div>          
+             </div>
+          <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
+          <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+          <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
+        </div>`;
     }
   }
-  htm += '</div>'; // Cierra la última fila
-  htm += '</div>'; // Cierra lista-articulo
+
+  htm += "</div>"; // Cierra grid-container
+  htm += "</div>"; // Cierra lista-articulo
   return htm;
 }
 
-
-
 // function mostrarResultados(desde, hasta) {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   var totalRegistros = 0, tipobusqueda = "";
-//   tipobusqueda = "T";
-//   var totalizador = 0;
-//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (
-//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//     ) {
-//       totalizador++;
-//     }
-//   }
-
-//   if (totalizador !== 0) {
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   } else {
-//     totalRegistros = ArrayDataFiltrado.length;
-//     clearFiltros = false;
-//   }
-//   let client = 0;
-//   let htm = "",
-//     remateLabel = "",
-//     bodegaLabel = "",
-//     url = "",
-//     precioL = "";
-//   var pre = 1;
+    
+//   let htm = "",    
+//       bodegaLabel = "",
+//       url = "";
+//   // var pre = 1;
 //   htm += '<div id="lista-articulo">';
 //   htm += `<div class="col s12">
 //           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
 //         </div>`;
+
 //   htm += `<div class="row" id="totalregistros">
 //             <div class="col s6 m12" >
 //               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div></div>
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//               <i class="material-icons right">list</i>
-//               VISTA </a>
+//               <span>${ ArrayDataFiltrado.length}</span>
 //             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
 //             </div>
-//             </div>`;
-//   htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
-//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-//       } else {
-//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
-//       }
-//       url = ` href="#"`;
-//       htm += `
-//         <div class="col s6 m4 l3">
-//           <li>
-//             <div class="card container-img">
-//               <div id="envoltorio">
-//                 <a ${url}>
-//                   ${remateLabel}
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//                 </a>
-//                 <div class="flotante-acciones">
-//                   <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                       <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                     </a>
-//                     <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                   </div>
-//                 </div>
-//                 <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-//                 <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//                 <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//               </div>
-//               <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//               <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-//                 ${precioL}</span>
-//             </div>
-//           </li>
-//         </div>`;
-//       // Cerrar la fila cada 4 elementos y abrir una nueva
-//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-//         htm += '</div><div class="row">';
-//       }
-//     }
-//   }
-//   htm += '</div></ul>'; // Cierra la última fila y la lista
-//   htm += '</div>'; // Cierra lista-articulo
-//   return htm;
-// }
-
-
-
-
-// function mostrarResultados(desde, hasta) {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   var totalRegistros = 0, tipobusqueda = "";
-//   tipobusqueda = "T";
-//   var totalizador = 0;
-//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (
-//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//     ) {
-//       totalizador++;
-//     }
-//   }
-
-//   if (totalizador !== 0) {
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   } else {
-//     totalRegistros = ArrayDataFiltrado.length;
-//     clearFiltros = false;
-//   }
-//   let client = 0;
-//   let htm = "",
-//     remateLabel = "",
-//     bodegaLabel = "",
-//     url = "",
-//     precioL = "";
-//   var pre = 1;
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//         </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6 m12" >
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div></div>
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//               <i class="material-icons right">list</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//             </div>`;
-//   htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
-//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-//       } else {
-//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
-//       }
-//       url = ` href="#"`;
-//       htm += `
-//         <div class="col s6 m4 l3">
-//           <li>
-//             <div class="card container-img">
-//               <div class="card-image" id="envoltorio">
-//                 <a ${url}>
-//                   ${remateLabel}
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//                 </a>
-//               </div>
-//               <div class="card-content">
-//                 <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-//                 <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//                 <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-//                   ${precioL}</span>
-//               </div>
-//               <div class="flotante-acciones">
-//                 <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                   <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                   </a>
-//                   <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                 </div>
-//               </div>
-//               <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-//               <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//               <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//             </div>
-//           </li>
-//         </div>`;
-//       // Cerrar la fila cada 4 elementos y abrir una nueva
-//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-//         htm += '</div><div class="row">';
-//       }
-//     }
-//   }
-//   htm += '</div></ul>'; // Cierra la última fila y la lista
-//   htm += '</div>'; // Cierra lista-articulo
-//   return htm;
-// }
-
-
-
-//-----------------------------------------------------------------------------------
-
-
-
-// function mostrarResultados(desde, hasta) {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   var totalRegistros = 0, tipobusqueda = "";
-//   tipobusqueda = "T";
-//   var totalizador = 0;
-//   for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (
-//       ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//       +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//     ) {
-//       totalizador++;
-//     }
-//   }
-
-//   if (totalizador !== 0) {
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   } else {
-//     totalRegistros = ArrayDataFiltrado.length;
-//     clearFiltros = false;
-//   }
-//   let client = 0;
-//   let htm = "",
-//     remateLabel = "",
-//     bodegaLabel = "",
-//     url = "",
-//     precioL = "";
-//   var pre = 1;
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//         </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6 m12" >
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div></div>
 //             <div class="row" id="vistabusqueda">
 //             <div class="col s6">
 //                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
@@ -2469,42 +1754,49 @@ function mostrarResultados(desde, hasta) {
 //   htm += '<div class="row">'; // Inicia la primera fila
 //   for (let i = desde; i < hasta; i++) {
 //     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
+//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");      
+      
+//       const cantBodega = parseFloat(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA) || 0;
+//         if (cantBodega > 0) {
 //         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
 //       } else {
-//         bodegaLabel = `<span class="mi-tienda card-panel red darken-1">No disponible</span>`;
+//         bodegaLabel = `<span ></span>`;
 //       }
 //       url = ` href="#"`;
+//       // Reglas
+//       let colorReorden ="";        
+//         if(ArrayDataFiltrado[i].color==='R'){//Rojo:  Si la Existencia Actual es menor o igual a la Cantidad Mínima.
+//           colorReorden = 'red accent-4';
+//         }else if(ArrayDataFiltrado[i].color==='A'){//Azul: Si la Existencia Actual es mayor que a la cantidad Maxima
+//           colorReorden = ' light-blue darken-1';
+//         }else if(ArrayDataFiltrado[i].color==='N'){//Naranja: Si la Existencia Actual es mayor a la Cantidad Mínima y Menor o igual al Punto de Reorden
+//           colorReorden = 'deep-orange accent-3';
+//         }else if(ArrayDataFiltrado[i].color==='V'){// Verde: Si la Existencia Actual es mayor al Punto de Reorden y Menor a la cantidad Maxima
+//           colorReorden = 'green darken-1';
+//         }
+      
 //       htm += `
-//         <div class="col s6 m4 l3">         
-//             <div class="container-img" style="border: 1px solid #000;">
-//               <div id="envoltorio">
-//                 <a ${url}>
-//                   ${remateLabel}
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//                 </a>
-//                 <div class="flotante-acciones">
-//                   <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                       <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                     </a>
-//                     <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                   </div>
+//       <div class="col s6 m4 l3">         
+//           <div class="container-img">
+//             <div id="envoltorio">
+//               <a ${url}>                
+//                 <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+//                  ${bodegaLabel}
+//               </a>
+//               <div class="flotante-acciones ${colorReorden}">
+//                 <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+//                   <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+//                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+//                   </a>             
 //                 </div>
-//                 <div id="precios_lista${i}" class="closed tooltips-l degliano"></div>
-//                 <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//                 <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//               </div>
-//               <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//               <span style="color: #f90f00; font-size: 15px; line-height: 65%;">
-//                 ${precioL}</span>
+//               </div>          
 //             </div>
-//         </div>`;
-//       // Cerrar la fila cada 4 elementos y abrir una nueva
+//             <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
+//             <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>  
+//             <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
+//            </div>         
+//       </div>`;  
+     
 //       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
 //         htm += '</div><div class="row">';
 //       }
@@ -2514,248 +1806,7 @@ function mostrarResultados(desde, hasta) {
 //   htm += '</div>'; // Cierra lista-articulo
 //   return htm;
 // }
-
-
 //-----------------------------------------------------------------------------------
-// function mostrarResultados(desde, hasta) {
-//   var totalRegistros = 0;
-//   // Conteo total de registros, excluyendo rines incompletos si viewImcompletos es false
-//   if (viewImcompletos) {
-//     totalRegistros = ArrayDataFiltrado.length;
-//   } else {
-//     var totalizador = 0;
-//     for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//       if (
-//         ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//         +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//       ) {
-//         totalizador++;
-//       }
-//     }
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   }
-
-//   let htm = "",
-//     bodegaLabel = "",
-//     remateLabel = "",
-//     url = "",
-//     precioL = "";
-//   var pre = 1;
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h5 class="sub-header"><b>Resultado de Búsqueda</b></h5>
-//         </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6 m12">
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div></div>
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//               <a class="btn red darken-4" href="javascript:void(0);" onclick="FiltrarModal();">
-//                 <i class="material-icons right">filter_list</i>
-//                 FILTRAR </a>
-//             </div></div>`;
-//   htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       // Etiqueta de disponibilidad en tienda
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
-//         bodegaLabel = '<span class="mi-tienda">En Tienda</span>';
-//       } else {
-//         bodegaLabel = "";
-//       }
-//       // URL y precio
-//       if (ArrayDataFiltrado[i].PRECIOLISTA != null) {
-//         url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}"`;
-//         pre = `${parseFloat(ArrayDataFiltrado[i].PRECIOLISTA).toFixed(2)}`;
-//       } else {
-//         pre = parseFloat(0).toFixed(2);
-//         url = ` onclick="error_precio();"`;
-//       }
-//       // Etiquetas de descuento o remate
-//       if (
-//         ArrayDataFiltrado[i].PRECIO_DESCUENTO !== ".00" &&
-//         ArrayDataFiltrado[i].PRECIO_DESCUENTO !== null &&
-//         ArrayDataFiltrado[i].PRECIO_DESCUENTO !== undefined
-//       ) {
-//         remateLabel = '<div class="descuentos new-top-left">Descuento</div>';
-//         precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Descuento: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
-//           ArrayDataFiltrado[i].PRECIO_DESCUENTO
-//         ).toFixed(
-//           2
-//         )}</strong></span> <span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
-//       } else if (ArrayDataFiltrado[i].REMATE == "R") {
-//         remateLabel = '<div class="remates new-top-left">Remate </div>';
-//         precioL = `<span class="black-text" style="font-size: 12px;font-weight: bold;">Precio Remate: </span><span style="color: #c00; background-color: #fff; font-size: 15px;"><br><strong>B/. ${parseFloat(
-//           ArrayDataFiltrado[i].PRECIOREMATE
-//         ).toFixed(
-//           2
-//         )}</strong></span> <span style="color: #000; background-color: #fff; font-size: 13px;">B/. <strike> ${pre}</strike></span>`;
-//       } else {
-//         remateLabel = "";
-//         precioL = `<span style="font-size: 12px; color: #001; font-weight: bold!important;">Precio <br>Referencia:</span> B/.<strong>${pre}</strong></span>`;
-//       }
-
-//       // Filtrado de rines incompletos
-//       if (
-//         !viewImcompletos &&
-//         ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//         +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//       ) {
-//         continue; // No muestra rines incompletos
-//       }
-
-//       htm += `
-//         <div class="col s6 m4 l3">
-//           <li>
-//             <div class="container-img">
-//               <div id="envoltorio">
-//                 <a ${url}>
-//                   ${remateLabel}
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//                 </a>
-//                 <div class="flotante-acciones">
-//                   <div class="link-flotante-acciones">
-//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende('${ArrayDataFiltrado[i].ARTICULO}','${i}')">
-//                       <i class="left material-icons black-text" style="font-size: 24px;">monetization_on</i>
-//                     </a>
-//                   </div>
-//                   <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="precioArticuloVende2('${ArrayDataFiltrado[i].ARTICULO}',2${i})">
-//                       <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                     </a>
-//                     <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                   </div>
-//                 </div>
-//                 <div id="precios_lista${i}" class="closed tooltips-luciano"></div>
-//                 <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//                 <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//               </div>
-//               <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//               <span style="color: #000; font-size: 15px; line-height: 65%;">
-//                 ${precioL}</span>
-//             </div>
-//           </li>
-//         </div>`;
-//       // Cerrar la fila cada 4 elementos y abrir una nueva
-//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-//         htm += '</div><div class="row">';
-//       }
-//     }
-//   }
-//   htm += '</div></ul></div>'; // Cierra la última fila, lista y lista-articulo
-//   return htm;
-// }
-
-// function mostrarResultados(desde, hasta) {
-//   var totalRegistros = 0;
-//   // Conteo total de registros, excluyendo rines incompletos si viewImcompletos es false
-//   if (viewImcompletos) {
-//     totalRegistros = ArrayDataFiltrado.length;
-//   } else {
-//     var totalizador = 0;
-//     for (var i = 0; i < ArrayDataFiltrado.length; i++) {
-//       if (
-//         ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//         +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//       ) {
-//         totalizador++;
-//       }
-//     }
-//     totalRegistros = ArrayDataFiltrado.length - totalizador;
-//     clearFiltros = false;
-//   }
-
-//   let htm = "",
-//     bodegaLabel = "",
-//     url = "";
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h5 class="sub-header"><b>Resultado de Búsqueda</b></h5>
-//         </div>`;
-//         htm += `<div class="row" id="totalregistros">
-//         <div class="col s6 m12" >
-//           <span>Total de Registros: </span>
-//           <span>${totalRegistros}</span>
-//         </div></div>
-//         <div class="row" id="vistabusqueda">
-//         <div class="col s6">
-//             <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//           <i class="material-icons right">list</i>
-//           VISTA </a>
-//         </div>
-//         <div class="col s6">
-//           <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//           <i class="material-icons right">filter_list</i>
-//           FILTRAR </a>
-//         </div>
-//         </div>`;
-//   htm += '<ul><div class="row">'; // Inicia la lista y la primera fila
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");
-//       // Etiqueta de disponibilidad en tienda
-//       if (ArrayDataFiltrado[i].BODEGA == "S") {
-//         bodegaLabel = '<span class="mi-tienda">En Tienda</span>';
-//       } else {
-//         bodegaLabel = "";
-//       }
-//       // URL
-//       url = ` href="detalle.html?art=${ArrayDataFiltrado[i].ARTICULO}"`;
-
-//       // Filtrado de rines incompletos
-//       if (
-//         !viewImcompletos &&
-//         ArrayDataFiltrado[i].ID_CLASE == "1055" &&
-//         +ArrayDataFiltrado[i].CANT_DISPONIBLE < 4
-//       ) {
-//         continue; // No muestra rines incompletos
-//       }
-
-//       htm += `
-//         <div class="col s6 m4 l3">
-//           <li>
-//             <div class="container-img">
-//               <div id="envoltorio">
-//                 <a ${url}>
-//                   <img src="${env.API_IMAGE}/${DArticulo}" width="100%"
-//                     data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                   ${bodegaLabel}
-//                 </a>
-//                 <div class="flotante-acciones">
-//                   <div class="link-flotante-acciones" style="padding-bottom: 5px;">
-//                     <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                        <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                      </a>
-//                     <div id="myDropdown2${i}" class="dropdown-content2" style="right: 15px; top: 35px;"></div>
-//                   </div>
-//                 </div>
-//                 <div id="inventario_lista2${i}" class="closed tooltips-luciano"></div>
-//                 <div id="ultimas_compras3${i}" class="closed tooltips-luciano"></div>
-//               </div>
-//               <h3 class="articulo-titulo">${ArrayDataFiltrado[i].ARTICULO}</h3>
-//               <h4>${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-//             </div>
-//           </li>
-//         </div>`;
-//       // Cerrar la fila cada 4 elementos y abrir una nueva
-//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-//         htm += '</div><div class="row">';
-//       }
-//     }
-//   }
-//   htm += '</div></ul></div>'; // Cierra la última fila, lista y lista-articulo
-//   return htm;
-// }
-
-
-
 function paginador(nPag, pag) {
   //MUESTRA LA CANTIDAD DE PAGINA
   let selected = "";
@@ -2803,100 +1854,6 @@ function paginador(nPag, pag) {
         </div>
       </div><br>`;
 }
-
-
-//-----------------------------------------------------------------------------------
-// function ingresarCliente(cliente, nombre) {
-//   let subcadena = "";
-//   //traer nombre/razon social de localStorage
-//   var infopedido = JSON.parse(localStorage.getItem("cartCLSA"));
-//   if (infopedido && infopedido[0] && infopedido[0].CLIENTE) {
-//     // El valor de infopedido[0].CLIENTE no es nulo
-//     // Realiza aquí la acción que deseas hacer con este valor
-//     razonPedido = infopedido[0].CLIENTE;
-//     subcadena = razonPedido.substring(razonPedido.indexOf(" ") + 1);
-//     //console.log("RAZON PEDIDO:");
-//     //console.log(subcadena.trim());
-//   }
-
-//   let usuario = document.getElementById("hUsuario").value;
-//   cliente = cliente.replace("&", "%26");
-//   //console.log(cliente + "-" + nombre);
-//   //-------------------datos de cliente de tabla cliente-------------------
-//   const params = "?user=" + usuario + "&cliente=" + cliente + "&opcion=2";
-//   //console.log("Parametros de usuario: " + params);
-//   fetch(env.API_URL + "cliente/1" + params, myInit)
-//     .then((response) => response.json())
-//     .catch((error) => console.error("Error:", error))
-//     .then((result) => {
-//       if (result.msg === "SUCCESS") {
-//         if (result.cliente.length != 0) {
-//           ClientData.datos = result.cliente;
-//           //guarda el permiso para cambiar precio de articulos en carrito
-//           sessionStorage.setItem(
-//             "cambPrecio",
-//             ClientData.datos[0].MODIF_PRECIO
-//           );
-//           //insertar razon social aqui
-//           if (infopedido && infopedido[0] && infopedido[0].CLIENTE) {
-//             ClientData.datos[0].NOMBRE = subcadena.trim();
-//           }
-
-//           //console.log("DATOS CLIENTE: ");
-//           //console.log(ClientData.datos);
-//           if (cartCLSAObj.cartCLSA.length > 0) {
-//             ClientData.datos[0].CONDICION_PAGO =
-//               cartCLSAObj.cartCLSA[0].condicion_pago;
-//           }
-//         }
-//         document.getElementById("carga").innerHTML = "";
-//       }
-//     });
-//   //-------------------fin datos de cliente de tabla cliente-------------------
-//   const data = "?user=" + usuario + "&cliente=" + cliente;
-//   fetch(env.API_URL + "cliente/2" + data, myInit)
-//     .then((response) => response.json())
-//     .catch((error) => console.error("Error:", error))
-//     .then((result) => {
-//       if (result.msg === "SUCCESS") {
-//         if (result.cuenta.length != 0) {
-//           window.setTimeout(function () {
-//             ClientData.datos[0].CUENTA = [];
-//             ClientData.datos[0].CUENTA.push(result.cuenta);
-//             ClientData.guardarCliente();
-//           }, 1000);
-//           const Toast = Swal.mixin({
-//             toast: true,
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 2000,
-//             timerProgressBar: true,
-//             onOpen: (toast) => {
-//               toast.addEventListener("mouseenter", Swal.stopTimer);
-//               toast.addEventListener("mouseleave", Swal.resumeTimer);
-//             },
-//           });
-//           Toast.fire({
-//             icon: "success",
-//             title: "Agregando el cliente seleccionado",
-//           }).then(function () {
-//             Swal.fire({
-//               icon: "success",
-//               title: "Agregado correctamente",
-//               text: "Su cliente fue agregado.",
-//               confirmButtonColor: "#000",
-//             }).then(function () {
-//               window.setTimeout(function () {
-//                 window.location.href = "home.html";
-//               }, 1000);
-//             });
-//           });
-//         }
-//         document.getElementById("carga").innerHTML = "";
-//       }
-//     });
-// }
-
 //---------------------------------MODAL LATERAL-------------------------------------
 $(document).ready(function () {
   $("#bodega-sucursal").click(function () {
@@ -2946,7 +1903,7 @@ $(document).ready(function () {
   //---------------------------------------------------------------------------------
 });
 /////////////////////////////////////// LOGOUT //////////////////////////------------
-
+//-----------------------------------------------------------------------------------
 function logout() {
   // Eliminar todas las variables de sessionStorage
   Object.keys(sessionStorage).forEach(function (key) {
@@ -2961,15 +1918,12 @@ function logout() {
   // Redirigir al usuario a la página de inicio
   window.location.href = "index.html";
 }
-
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {
   $('.loading').show();
   document.querySelector('.loading').style.display = 'block';
 }
-
 //---------------FUNCION PAGINADOR PARA BUSQUEDA PEDIDOS/COTIZACIONES------------------
-
 function paginadorPedidos(nPag, pag, IDCategoria) {
   //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
   //console.log("nPag:" + nPag + "- pag:" + pag);
@@ -3020,59 +1974,7 @@ function paginadorPedidos(nPag, pag, IDCategoria) {
         </div>
       </div><br>`;
 }
-//////////////////////////////////////////////////////////////////////////////////////
-
-// function paginadorTablas(nPag, pag, dynamicFunction) {
-//   //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
-//   //console.log("nPag:" + nPag + "- pag:" + pag);
-//   //MUESTRA LA CANTIDAD DE PAGINA
-//   let selected = "";
-//   sel = `<select class="browser-default" onchange="${dynamicFunction}(${nPag}, this.value)">
-//         <option value="" disabled>Páginas</option>`;
-//   for (var i = 0; i < nPag; i++) {
-//     if (i + 1 == pag) {
-//       selected = "selected";
-//     } else {
-//       selected = "";
-//     }
-//     if (nPag != 1) {
-//       sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
-//         }</option>`;
-//     }
-//   }
-//   sel += `</select>`;
-
-//   if (pag <= 1) btnAtras = `<a style="color:#aba7a7;">❮ Anterior</a>`;
-//   else
-//     btnAtras = `<a onclick="${dynamicFunction}(${nPag} , ${parseInt(pag) - 1
-//       });">❮ Anterior</a>`;
-
-//   if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
-//   else
-//     btnSig = `<a onclick="${dynamicFunction}(${nPag},${parseInt(pag) + 1
-//       })">Siguiente ❯</a>`;
-
-//   return `
-//         <div id="paginador">
-//         <div class="row">
-//           <div class="col s4"></div>
-//           <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
-//           <div class="col s4"></div>
-//         </div>
-//         <div class="row" style="width:fit-content !important;">
-//             <div class="col s4" id="btnAtras" style="width:fit-content !important;">
-//               ${btnAtras}
-//             </div>
-//           <div class="col s4">
-//             ${sel}
-//           </div>
-//           <div class="col s4" id="btnSig" style="width:fit-content !important;">
-//             ${btnSig}
-//           </div>
-//         </div>
-//       </div><br>`;
-// }
-
+//-----------------------------------------------------------------------------------
 function paginadorTablas(nPag, pag, dynamicFunction) {
   // Generar el select con las páginas
   let selected = "";
@@ -3109,12 +2011,11 @@ function paginadorTablas(nPag, pag, dynamicFunction) {
     </div>
   `;
 }
-
 //---------------------------------------------------------------------------
 function cambiarVistaMosaico() {
   mostrarResultadosBusqueda(4, 1);
 }
-
+//-----------------------------------------------------------------------------------
 function mostrarResultadosVistaLista(nPag, pag) {
   let htm = "";
   let desde = (pag - 1) * xPag;
@@ -3124,7 +2025,7 @@ function mostrarResultadosVistaLista(nPag, pag) {
   htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaLista');
   document.getElementById("resultadoPaginador").innerHTML = htm;
 }
-
+//-----------------------------------------------------------------------------------
 function resultadosVistaLista(desde, hasta) {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   let bodegaCod = bodega[0].BODEGA;
@@ -3195,84 +2096,7 @@ function resultadosVistaLista(desde, hasta) {
     1000
   );
 }
-
 //-----------------------------------------------------------------------------------------------------------------------
-// function cambiarVistaLista() {
-//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-//   let bodegaCod = bodega[0].BODEGA;
-//   let totalRegistros = 0, htm = "";
-//   totalRegistros = ArrayDataFiltrado.length;
-//   let nPag = Math.ceil(totalRegistros / xPag);
- 
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//           </div>`;
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6">
-//               <span>Total de Registros: </span>
-//               <span>${totalRegistros}</span>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico();">
-//               <i class="material-icons right">apps</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//           </div>`;
-
-//   htm += `<table class="striped centered" style="margin-top:5%;">
-//   <thead style="background:#28a745;color:white;">
-//     <tr>
-//       <th style="width:30%;">CODIGO</th>
-//       <th style="width:30%;">CODIGO DE BARRAS</th>
-//       <th style="width:10%;">EN ${bodegaCod}</th>
-//       <th style="width:30%;">ACTION</th>
-//     </tr>
-//   </thead>
-//   <tbody>`;
-
-//   for (let i = 0; i < ArrayDataFiltrado.length; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       htm += `<tr>`;
-//       htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
-//               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
-//               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
-//               <td>
-//                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-//                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
-//               </td>`; // Puedes poner aquí el botón de acción que desees
-//       htm += `</tr>`;
-//     }
-//   }
-
-
-//   htm += `</tbody>
-//           </table>`;
-
-//   htm += `<div id="resultadoPaginador">`;
-//   htm += paginadorTablas(nPag, 1, 'mostrarResultadosVistaLista');
-//   htm += `</div>`;
-
-//   htm += "</div>";
-
-//   document.getElementById("resultadoBusqueda").innerHTML = htm;
-//   $("html, body").animate(
-//     {
-//       scrollTop: $("#resultadoBusqueda").offset().top - 140,
-//     },
-//     1000
-//   );
-// }
-
-//funcion que muestra las imagenes en el swall.fire
-
 function cambiarVistaLista() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   let bodegaCod = bodega[0].BODEGA;
@@ -3348,7 +2172,7 @@ function cambiarVistaLista() {
     1000
   );
 }
-
+//-----------------------------------------------------------------------------------
 function mostrarImagen(codigo, descripcion) {
   let code;
   try {
@@ -3372,6 +2196,7 @@ function mostrarImagen(codigo, descripcion) {
     }
   });
 }
+//-----------------------------------------------------------------------------------
 function mostrarExistencias(p_Articulo) {
   let code;
   try {
@@ -3448,7 +2273,7 @@ function mostrarExistencias(p_Articulo) {
       });
     });
 }
-
+//-----------------------------------------------------------------------------------
 function sucursalbremen(tienda, id_tienda) {
   ////console.log("Tienda: " + tienda + " " + "Id: " + id_tienda);
   document.getElementById("bodega-sucursal").innerHTML = tienda;
