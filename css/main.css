@@ -757,8 +757,7 @@ svg[atributos] {
 #lista-articulo .container-img {
   border-radius: 30px; 
   border: 1px solid #dedede;
-  margin: 5px;
-  padding: 10px;
+  margin: 5px; 
   box-sizing: border-box;
 }
 #lista-articulo .articulo-titulo {
@@ -2330,13 +2329,13 @@ font-size: 20px !important;
   text-align: center;
 }
 
- #envoltorio {
+ /* #envoltorio {
        bottom: 5px;   
-  }
+  } */
 
   .flotante-acciones {
     position: absolute;
-    bottom: 175px;
+    bottom: 215px;
     right: 10px;
     width: 41px;
     background: #bfbbbb94;

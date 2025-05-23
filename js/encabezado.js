@@ -26,8 +26,7 @@ class MyHeader extends HTMLElement {
                       <input class="uil uil-search-alt" data-role="none" id="articulo" placeholder="Buscar" value=""
                         autocomplete="off">
                     </div>
-                    <div class="s2 col">
-                      <!--<button id="buscado" class="search-action ui-btn" onclick="javascript: busquedaGeneral()">Esta funcion no va-->
+                    <div class="s2 col">                     
                       <button id="buscado" class="search-action ui-btn" onclick="javascript: preBusqueda()">
                         <i class="material-icons">search</i>
                       </button>

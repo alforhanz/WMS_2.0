@@ -8,24 +8,6 @@
   .btn:hover {
     background-color: #7e8180 !important;
   }
-  /*screen and (max-width: 21.9375em)= 348px*/
-  @media screen and (max-width: 21.9375em){
-    /* #envoltorio {
-      width: 100% !important;
-      height: 195px !important;
-      position: relative;
-  } */
-  /* .flotante-acciones {  
-    top: 5em;   
-    right: 1px;
-    width: 24%;
-    height: 7em;  
-
-} */
-
-
-  }
-  
   /* Small only (max-width: 39.9375em = 639px) */
   @media screen and (max-width: 39.9375em) {
     body{

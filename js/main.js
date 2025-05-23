@@ -1325,7 +1325,7 @@ function preBusqueda() {
     bodega +
     "&pTipoBodega=" +
     0;
-
+    mostrarLoader();
   fetch(env.API_URL + "wmsbusquedaarticulos/1" + params, myInit)
     .then((response) => {
       if (!response.ok) {
@@ -1355,6 +1355,7 @@ function preBusqueda() {
           nPag = Math.ceil(totales / xPag);
           LimpiarFiltroPre(1);
           mostrarResultadosBusqueda(nPag, pag);
+          ocultarLoader();
         } else {
           Swal.fire({
             icon: "info",
