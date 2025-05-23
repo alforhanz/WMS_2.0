@@ -745,26 +745,7 @@ svg[atributos] {
 #lista-articulo a {
   text-decoration: none;
 }
-/* #lista-articulo ul {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  display: table;
-} */
-/* #lista-articulo li {
-  background-color: #fff;
-  list-style: none;
-  display: inline-block;
-  width: 100%;
-  border-bottom: solid 1px #d6d3d3;
-} */
-/* #lista-articulo li:nth-child(2):after {
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-  border-right: 0 !important;
-} */
+
 #lista-articulo table {
   width: 100%;
   border-collapse: collapse;  
@@ -774,15 +755,12 @@ svg[atributos] {
 }
 
 #lista-articulo .container-img {
+  border-radius: 30px; 
   border: 1px solid #dedede;
   margin: 5px;
   padding: 10px;
   box-sizing: border-box;
 }
-/* #lista-articulo li:nth-child(2n) .container-img {
-  border-right: 0 !important;
-  display: block;
-} */
 #lista-articulo .articulo-titulo {
   font-size: 15px;
   color: #000 !important;
@@ -798,28 +776,15 @@ svg[atributos] {
   margin: 0;
   padding: 0;
 } 
- /* #lista-articulo select {
-  background-color: #000;
-  color: #fff;
-  width: 100%;
-  padding: 5px;
-  border-radius: 2px;
-  height: 37px;
-} */
+
 #lista-articulo .cabecera {
   background: #535262;
   color: #fff;
   padding: 7px 0;
   text-shadow: none;
 }
-/* #lista-cliente .cabecera {
-  background: #000;
-  color: #fff;
-  padding: 7px 0;
-  text-shadow: none;
-} */
-.mi-tienda {
-  /* font-size: 13px; */
+
+.mi-tienda { 
   color: #fff;
   background: #098255;
   padding: 8px 4px;
@@ -832,7 +797,6 @@ svg[atributos] {
   bottom: 30px;
   position: absolute;
   left: 0;
-  /* bottom: 0; */
 }
 .remates {
   font-size: 10.5px;
@@ -1373,29 +1337,6 @@ th {
   vertical-align: middle;
   -webkit-tap-highlight-color: transparent;
 }
-
-/* #paginador {
-  font-size: 14px;
-}
-#paginador #btnAtras,
-#btnSig {
-  padding: 10px;
-  border: 0 !important;
-  background: #fff;
-  color: #000;
-}
-#paginador select {
-  margin: 0 auto;
-  border-radius: 5px;
-  margin-top: 0px !important;
-  font-weight: normal !important;
-  text-shadow: none !important;
-  border: 0;
-}
-#paginador a {
-  color: #000;
-  text-decoration: none;
-} */
 #detalleFactura {
   width: 100%;
   display: table;
@@ -2311,11 +2252,8 @@ font-size: 20px !important;
   width: 55px; /* Tamaño fijo para los íconos (ajusta según necesites) */
   height: 44px;
 }
+
 /* Estilos básicos para el paginador */
-/* .paginador-container {
-  margin: 20px 0;
-  width: 100%;
-} */
 
 .paginador-container {
   margin: 0 auto;
@@ -2392,18 +2330,21 @@ font-size: 20px !important;
   text-align: center;
 }
 
-.flotante-acciones {
-  position: absolute;
-  top: 22em; 
-  right: 10px; 
-  width: 19%; 
-  height: 7em;
-  background: #bfbbbb94; 
-  padding: 0px; 
-  border-radius: 27px;
-  border: solid 1px #c1c1c1a8;
-}
+ #envoltorio {
+       bottom: 5px;   
+  }
 
+  .flotante-acciones {
+    position: absolute;
+    bottom: 175px;
+    right: 10px;
+    width: 41px;
+    background: #bfbbbb94;
+    border-radius: 16px;
+    padding-top: 19px;
+    border: solid 1px #c1c1c1a8;
+    margin-left: 12em;
+}
 .mi-tienda {
   position: absolute;
   bottom: 10px;
@@ -2412,4 +2353,50 @@ font-size: 20px !important;
   color: white;
   padding: 5px;
   border-radius: 4px;
+}
+
+/* Contenedor del label para posicionamiento relativo */
+label[for="sinExistencias"] {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Ocultar el checkbox nativo */
+#sinExistencias {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Estilo del checkbox personalizado (span antes del texto) */
+#sinExistencias + span::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000000; /* Bordes negros */
+  background-color: #ffffff; /* Fondo blanco */
+  margin-right: 8px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+/* Estilo cuando el checkbox está marcado */
+#sinExistencias:checked + span::before {
+  background-color: #ffffff; /* Mantener fondo blanco */
+  border: 2px solid #000000; /* Mantener borde negro */
+  /* Añadir marca de verificación */
+  content: "✔";
+  color: #000000; /* Color de la marca */
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+}
+
+/* Opcional: Estilo del texto del span */
+#sinExistencias + span {
+  color: #fafafa; /* Mantener color del texto del label */
 }
