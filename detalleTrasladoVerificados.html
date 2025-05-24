@@ -30,45 +30,44 @@
 
   <style>
     /* Estilos para el contenedor de checkboxes */
-     .checkbox-container {
-              border: 1px solid #7e8180;
-              border-radius: 5px;
-              padding: 27px;
-              background-color: #f9f9f9;
-              margin-top: 0px;
-              margin-left: 3em;
+    .checkbox-container {
+      border: 1px solid #7e8180;
+      border-radius: 5px;
+      padding: 27px;
+      background-color: #f9f9f9;
+      margin-top: 0px;
+      margin-left: 3em;
     }
-      /* Estilo para el legend */
-  .checkbox-container legend {
-    font-size: 1rem;
-    color: #060606;
-    font-weight: bold;
-    padding: 0 10px; /* Espaciado alrededor del texto */
-  }
-    
+    /* Estilo para el legend */
+    .checkbox-container legend {
+      font-size: 1rem;
+      color: #060606;
+      font-weight: bold;
+      padding: 0 10px; /* Espaciado alrededor del texto */
+    }
     /* Estilos para las filas de checkboxes */
     .checkbox-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
-      /* margin-bottom: 58px; */
     }
-    
     /* Ajustes para los checkboxes */
     .checkbox-container .input-field {
       margin-bottom: 5px; /* Espaciado entre checkboxes */
     }
-    
+
+    .input-field>label{
+      position:unset;
+    }
     /* Asegurar que las etiquetas de los checkboxes sean consistentes */
     @media screen and (max-width: 39.9375em) {
-    .checkbox-container {
+      .checkbox-container {
         margin-top: 10px;
         padding: 10px;
         height: 12em;
         margin-bottom: 2em;
+      }
     }
-}
-    
     /* Responsividad para pantallas pequeñas */
     @media screen and (max-width: 39.9375em) {
       .checkbox-container {
@@ -82,13 +81,12 @@
         margin-bottom: 10px; /* Mayor espaciado entre checkboxes */
       }
     }
-    
     /* Ajustes para pantallas medianas y grandes */
     @media screen and (min-width: 40em) {
       .checkbox-container {
-            min-height: 163px;
-            width: 78%;
-        }
+        min-height: 163px;
+        width: 78%;
+      }
       .checkbox-row {
         flex-wrap: nowrap; /* Evita que los checkboxes se envuelvan en la misma fila */
       }
@@ -97,9 +95,51 @@
         text-align: left; /* Alinea el texto a la izquierda */
       }
     }
-    </style>
-
-  <!-- <meta name="theme-color" content=""> -->
+    /* Estilos responsivos para la pestaña de Clasificación */
+    @media screen and (max-width: 1060px) {
+      #tab-clasificacion .row {
+            display: flex;
+            align-items: baseline;
+            /* align-content: center; */
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+      #tab-clasificacion .input-field {
+        width: 100%; /* Ocupa todo el ancho */
+        max-width: 100%;
+        margin-bottom: 20px; /* Más espacio entre elementos */
+        padding: 0 15px; /* Padding lateral para mejor presentación */
+      }
+      #tab-clasificacion .input-field.col.s3,
+      #tab-clasificacion .input-field.col.s1 {
+        width: 100%!important; /* Forzar ancho completo para apilar */
+        max-width: 100%;
+      }
+      #tab-clasificacion select {
+        font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+      }
+      #tab-clasificacion label {
+        font-size: 0.9rem; /* Ajustar tamaño de etiquetas */
+      }
+      #tab-clasificacion .input-field [type="checkbox"] + span {
+        font-size: 0.9rem; /* Ajustar tamaño de texto de checkboxes */
+      }
+    }
+    /* Ajustes para pantallas grandes */
+    @media screen and (min-width: 1061px) {
+      #tab-clasificacion .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      #tab-clasificacion .input-field.col.s3 {
+        width: 25%!important; /* Mantener el diseño de 3 columnas para selects */
+      }
+      #tab-clasificacion .input-field.col.s1 {
+        width: 8.33%; /* Mantener el diseño de checkboxes */
+      }
+    }
+  </style>
   <title>Detalle de Transacciones Verificados- WMS</title>
 </head>
 
@@ -115,203 +155,197 @@
 
         <h2 class="titulo-vista">Detalle de Transacciones Verificadas</h2>
 
-        <!-- Tabs Datos b'asicos y clasificaciones -->
+        <!-- Tabs Datos básicos y clasificaciones -->
         <ul id="tabs-swipe-demo" class="tabs">
           <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
           <li class="tab col s3"><a href="#tab-clasificacion" >Clasificaciones</a></li>
         </ul>
-       
         
-<!-- DATOS BÁSICOS -->
-<div id="tab-datos-basicos" class="row btnReportes">
-  <div class="row col s12 detalles-Style">
-    <!-- Columna izquierda: Inputs de fechas -->
-    <div class="col s12 m6 l6">
-      <!-- Fechas -->
-      <div class="row">
-        <div class="input-field col s12 m6">
-          <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
-          <label for="fecha_ini">Fecha Inicial</label>
-        </div>
-        <div class="input-field col s12 m6">
-          <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
-          <label for="fecha_fin">Fecha Final</label>
-        </div>
-      </div>
-      <!-- Traslado, Artículo, Entrada, Salida -->
-      <div class="row">
-        <div class="input-field col s12 m4">
-          <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
-          <label for="pTaslado"></label>
-        </div>
-        <div class="input-field col s12 m4">
-          <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
-          <label for="pArticulo"></label>
-        </div>
-        <div class="input-field col s12 m2">
-          <label>
-            <input type="checkbox" id="tEntrada" checked />
-            <span>Entrada</span>
-          </label>
-        </div>
-        <div class="input-field col s12 m2">
-          <label>
-            <input type="checkbox" id="tSalida" checked />
-            <span>Salida</span>
-          </label>
-        </div>
-      </div>
-    </div>
-    <!-- Columna derecha: Checkboxes en un cuadro -->
-    <div class="col s12 m6 l6">
-      <fieldset class="checkbox-container">
-        <legend>Tipo de Transacción</legend>
-        <div class="row checkbox-row">
-          <div class="input-field col s12 m4">
-            <label>
-              <input type="checkbox" id="tTraslado" checked />
-              <span>Traslados</span>
-            </label>
-          </div>
-          <div class="input-field col s12 m4">
-            <label>
-              <input type="checkbox" id="tVenta" checked />
-              <span>Pedidos</span>
-            </label>
-          </div>
-          <div class="input-field col s12 m4">
-            <label>
-              <input type="checkbox" id="tOrdenesDeCompras" checked />
-              <span>Ordenes De Compras</span>
-            </label>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-  </div>
-</div>
-
-        <!-- fin de pestaña DATOS BÁSICOS -->
-
-          <!-- Contenedor de los elementos de la pestaña de Clasificación -->
-          <div id="tab-clasificacion" class="row btnReportes">
-            <div class="container">
+        <!-- DATOS BÁSICOS -->
+        <div id="tab-datos-basicos" class="row btnReportes">
+          <div class="row col s12 detalles-Style">
+            <!-- Columna izquierda: Inputs de fechas -->
+            <div class="col s12 m6 l6">
+              <!-- Fechas -->
               <div class="row">
-                <!-- Fila 1 -->
-                 
-                 <!-- Clase -->
-                <div class="input-field col s3">
-                  <select id="claseReporte" onchange="cargarClasificacionesMarca()">
-                    <option value="null" disabled selected>Seleccionar Clase</option>                   
-                  </select>
-                  <label for="claseReporte">Clase</label>
+                <div class="input-field col s12 m6">
+                  <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+                  <label for="fecha_ini">Fecha Inicial</label>
                 </div>
-                <div class="input-field col s1">
-                  <label>
-                    <input type="checkbox" id="clase-todas"  checked onchange="limpiarResultadoGeneral()"/>
-                    <span>Todas</span>
-                  </label>
+                <div class="input-field col s12 m6">
+                  <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+                  <label for="fecha_fin">Fecha Final</label>
                 </div>
-
-                <!-- Marca -->
-                <div class="input-field col s3">
-                  <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
-                    <option value="" disabled selected>Seleccionar Marca</option>                   
-                  </select>
-                  <label for="marcaReporte">Marca</label>
-                </div>
-                <div class="input-field col s1">
-                  <label>
-                    <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()"/>
-                    <span>Todas</span>
-                  </label>
-                </div>
-
-                <!-- Tipo -->
-                <div class="input-field col s3">
-                  <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
-                    <option value="" disabled selected>Seleccionar Tipo</option>                   
-                  </select>
-                  <label for="tipoReporte">Tipo</label>
-                </div>
-                <div class="input-field col s1">
-                  <label>
-                    <input type="checkbox" id="tipo-todas"  checked onchange="limpiarResultadoGeneral()"/>
-                    <span>Todas</span>
-                  </label>
-                </div> 
               </div>
-      
-              <!-- Fila 2 -->               
+              <!-- Traslado, Artículo, Entrada, Salida -->
               <div class="row">
-                <!-- Ventas -->
-                <div class="input-field col s3">
-                  <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
-                    <option value="" disabled selected>Seleccionar Ventas</option>
-                  </select>
-                  <label for="ventasReporte">Ventas</label>
+                <div class="input-field col s12 m4">
+                  <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                  <label for="pTaslado"></label>
                 </div>
-                <div class="input-field col s1">
+                <div class="input-field col s12 m4">
+                  <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                  <label for="pArticulo"></label>
+                </div>
+                <div class="input-field col s12 m2">
                   <label>
-                    <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
+                    <input type="checkbox" id="tEntrada" checked />
+                    <span>Entrada</span>
                   </label>
                 </div>
-
-                <!-- Envase -->
-                <div class="input-field col s3">
-                  <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
-                    <option value="" disabled selected>Seleccionar Envase</option>                   
-                  </select>
-                  <label for="envaseReporte">Envase</label>
-                </div>
-                <div class="input-field col s1">
+                <div class="input-field col s12 m2">
                   <label>
-                    <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
-
-                <!-- Seis -->
-                <div class="input-field col s3">
-                  <select id="seisReporte">
-                    <option value="" disabled selected>Seleccionar 6</option>                  
-                  </select>
-                  <label for="seisReporte">6</label>
-                </div>
-                <div class="input-field col s1">
-                  <label>
-                    <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
+                    <input type="checkbox" id="tSalida" checked />
+                    <span>Salida</span>
                   </label>
                 </div>
               </div>
             </div>
+            <!-- Columna derecha: Checkboxes en un cuadro -->
+            <div class="col s12 m6 l6">
+              <fieldset class="checkbox-container">
+                <legend>Tipo de Transacción</legend>
+                <div class="row checkbox-row">
+                  <div class="input-field col s12 m4">
+                    <label>
+                      <input type="checkbox" id="tTraslado" checked />
+                      <span>Traslados</span>
+                    </label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <label>
+                      <input type="checkbox" id="tVenta" checked />
+                      <span>Pedidos</span>
+                    </label>
+                  </div>
+                  <div class="input-field col s12 m4">
+                    <label>
+                      <input type="checkbox" id="tOrdenesDeCompras" checked />
+                      <span>Ordenes De Compras</span>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
         </div>
 
+          <!-- Contenedor de los elementos de la pestaña de Clasificación -->
+  <div id="tab-clasificacion" class="row btnReportes">
+    <div class="container">
+      <div class="row">
+        <!-- Fila 1 -->
+        <!-- Clase -->
+        <div class="input-field col s1">
+            <label for="clase-todas">
+              <input type="checkbox" id="clase-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="claseReporte">Clase</label>
+          <select id="claseReporte" onchange="cargarClasificacionesMarca()">
+            <option value="null" disabled selected>Seleccionar Clase</option>
+          </select>          
+        </div>
+     
+        <!-- Marca -->
+        <div class="input-field col s1">
+            <label for="marca-todas">
+              <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="marcaReporte">Marca</label>
+          <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
+            <option value="" disabled selected>Seleccionar Marca</option>
+          </select>         
+        </div>
+        
+        <!-- Tipo -->
+        <div class="input-field col s1">
+            <label for="tipo-todas">
+              <input type="checkbox" id="tipo-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="tipoReporte">Tipo</label>
+          <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
+            <option value="" disabled selected>Seleccionar Tipo</option>
+          </select>          
+        </div>
+      
+      </div>
+      <!-- Fila 2 -->
+      <div class="row">
+        <!-- Ventas -->
+        <div class="input-field col s1">
+            <label for="ventas-todas">
+              <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="ventasReporte">Ventas</label>
+          <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
+            <option value="" disabled selected>Seleccionar Ventas</option>
+          </select>         
+        </div>
+       
+        <!-- Envase -->
+        <div class="input-field col s1">
+            <label for="envase-todas">
+              <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="envaseReporte">Envase</label>
+          <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
+            <option value="" disabled selected>Seleccionar Envase</option>
+          </select>         
+        </div>
+        
+        <!-- Seis -->
+        <div class="input-field col s1">
+            <label for="seis-todas">
+              <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
+              <span>Todas</span>
+            </label>
+          </div>
+        <div class="input-field col s3">
+          <label for="seisReporte">6</label>
+          <select id="seisReporte">
+            <option value="" disabled selected>Seleccionar 6</option>
+          </select>        
+        </div>
+     
+      </div>
+    </div>
+  </div>
+
         <div class="row col-md-12 s12">
-          <!-- Botón Buscar traslados -->
-          <div class="col s4 m2 l2">
+          <div id="trasladoVerifyButton">
             <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">
               Buscar
               <i class="material-icons right">send</i>
             </button>
           </div>
-        
-          <!-- Contenedor para botones de descarga alineados a la derecha -->          
-            <div class="right-align">
+          <div class="right-align">
             <div class="download-buttons">
               <div class="impexcel">
                 <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
                   <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
                 </button>
-                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel"  hidden>Descargar Excel</label>
+                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
               </div>
               <div class="imppdf">
-                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()"  hidden>
+                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
                   <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
                 </button>
-                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf"  hidden>Descargar PDF</label>
+                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
               </div>
             </div>
           </div>
@@ -327,53 +361,21 @@
           </table>     
           <div id="resultadoPaginador"></div>
         </div>
-        <!-- Cierre de tabla de resultados para listado de pedidos -->
       </div>
     </div>
   </main>
-
-  <!-- <footer class="page-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Footer Content</h5>
-          <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-        </div>
-        <div class="col l4 offset-l2 s12">
-          <h5 class="white-text">Links</h5>
-          <ul>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      © 2014 Copyright Text
-      <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-      </div>
-    </div>
-  </footer> -->
-
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Incluir la biblioteca de XLSX -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-  <!-- Incluir la biblioteca de jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
-  <!-- otros script's -->
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/detalleTrasladoVerificados.js?v1.1" defer></script>
   <script type="text/javascript" src="js/loader.js?v1.1"></script>
-  <script type="tex/javascript" src="js/paginacion.js?v1.1"></script>  
-  
+  <script type="text/javascript" src="js/paginacion.js?v1.1"></script>  
 </body>
 </html>

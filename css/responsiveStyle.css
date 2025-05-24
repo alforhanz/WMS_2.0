@@ -130,6 +130,13 @@
         width: 100%;
     }
 
+    #btnDetalleTrasladosVerif{
+
+      width: 100%;
+    }
+
+
+
     #tblDetallestrasladosVerif tr {
         margin-bottom: 0.9375em; /* 15px en em ≈ 0.9375em */
     }
@@ -211,17 +218,6 @@
 .row .col.s6 {
   width: 50% !important;   
 }
-/* #envoltorio {
-  width: 100%;
-  height: 255px;
-} */
-
-/* .flotante-acciones { */
-  /* top: 7em; */
-  /* right: -7px;
-  width: 22%;
-  height: 6em; */
-/* } */
 
 .grid-container {
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas */
@@ -230,9 +226,7 @@
   }  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
-    /* body{
-      font-size: 10px;
-    } */
+  
     #dashboardselect {
       width: 50%;
       height: 45px;

@@ -309,24 +309,6 @@ function mostrarTotalesGlobales() {
   }
 }
 
-// function mostrarTotalesGlobales() {
-//   const totalesContainer = document.getElementById("totalesContainer") || document.createElement("div");
-//   totalesContainer.id = "totalesContainer";
-//   totalesContainer.innerHTML = `
-//     <div style="font-size: 20px; text-align: right; right margin-top: 20px; padding: 10px; ">
-//       <p style="margin: 5px 0; font-weight: bold; color: #00796b;">Total de Entradas: ${totalEntradasGlobal.toFixed(2)}</p>
-//       <p style="margin: 5px 0; font-weight: bold; color: #d32f2f;">Total de Salidas: ${totalSalidasGlobal.toFixed(2)}</p>
-//     </div>
-//   `;
-//   // Asegurarse de que esté después de la tabla
-//   const tabla = document.getElementById("tblDetallestrasladosVerif");
-//   if (!document.getElementById("totalesContainer")) {
-//     tabla.parentNode.insertBefore(totalesContainer, tabla.nextSibling);
-//   }
-// }
-
-
-
   /////////////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////////////  
 // Función principal actualizada
