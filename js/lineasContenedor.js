@@ -746,7 +746,13 @@ function mostrarProcesoEnConstruccion() {
     
       fetch(env.API_URL + "contenedor/G" + params, myInit)
       .then((response) => response.json())     
-      .then((result) => {          
+      .then((result) => {  
+        console.log("Respuesta del SP");
+        console.log(result.contenedor);      
+
+        console.log("Respuesta Contenedor");
+        console.log(result);  
+
         if (result.msg === "SUCCESS") {
           if (result.contenedor.length != 0) {   
              // Resto del código de éxito

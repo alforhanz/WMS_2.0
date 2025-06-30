@@ -16,7 +16,22 @@ document.addEventListener("DOMContentLoaded", function () {
    //--------------------------------------------------
   validate_login();
   existeBodega();
+  localStorage.setItem("sinExistencias", "false");
+  const checkbox = document.getElementById("sinExistencias");
+  if(checkbox){
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        localStorage.setItem("sinExistencias", "true");
+      } else {
+        localStorage.setItem("sinExistencias", "false");
+      }
+    });
+  }
 });
+//-----------------------------------------------------------------------------------
+
+// Llama a la función cuando cargue la página
+// document.addEventListener("DOMContentLoaded", manejarCheckboxSinExistencias);
 //-----------------------------------------------------------------------------------
 function validate_login() {
   const user = sessionStorage.getItem("user");
@@ -37,7 +52,7 @@ function existeBodega() {
     // document.getElementById("icon-cliente").setAttribute("href", "#modal1");
   }
 }
-//-----------------------------Filtros sobre el resultado de la búsqueda------------------------------------------
+//-----------------------------Filtros sobre el resultado de la búsqueda--------------
 function FiltrarModal(IDCategoria, seccion) {
   let htm = "";
   let usuario = document.getElementById("hUsuario").value;
@@ -230,121 +245,121 @@ function FiltrarModal(IDCategoria, seccion) {
   $(".collapsible").collapsible();
 }
 //-----------------------------FILTROS MODAL------------------------------------------
-// function filtrosModal() {
-//   let htm = "", IDCategoria = "1055";
-//  // let usuario = document.getElementById("hUsuario").value;
-//   let elem = document.getElementById("modalFiltro");
-//   let instance = M.Modal.getInstance(elem);
+function filtrosModal() {
+  let htm = "", IDCategoria = "1055";
+ // let usuario = document.getElementById("hUsuario").value;
+  let elem = document.getElementById("modalFiltro");
+  let instance = M.Modal.getInstance(elem);
 
-//   if (elem.style.display === 'none') {
-//     instance.open();
-//   } else {
-//     instance.open();
-//     localStorage.removeItem('claseSelect');
-//     htm = ` <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>CLASE</div>
-//                   <div class="collapsible-body">
-//                     <div id="filtroclase" style="padding-left: 10px"></div>
-//                       <input type="hidden" value="" id="txtClaseV" name="txtClaseV">
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>MARCA</div>
-//                   <div class="collapsible-body">
-//                       <div id="filtromarca" style="padding-left: 10px"></div>
-//                         <input type="hidden" value="" id="txtMarcaV" name="txtMarcaV" >
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>TIPO</div>
-//                   <div class="collapsible-body">
-//                       <div id="filtrotipo" style="padding-left: 10px"></div>
-//                         <input type="hidden" value="" id="txtTipo" name="txtTipo" >
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO</div>
-//                   <div class="collapsible-body">
-//                       <div id="filtrosubtipo" style="padding-left: 10px"></div>
-//                         <input type="hidden" value="" id="txtSubtipo" name="txtSubtipo" >
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO2</div>
-//                   <div class="collapsible-body">
-//                       <div id="filtrosubtipo2" style="padding-left: 10px"></div>
-//                         <input type="hidden" value="" id="txtSubtipo2" name="txtSubtipo2" >
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//           <div class="row">
-//             <div class="col s12">
-//               <ul class="collapsible">
-//                 <li>
-//                   <div class="collapsible-header"><i class="material-icons">add</i>ENVASE</div>
-//                   <div class="collapsible-body">
-//                       <div id="filtroenvase" style="padding-left: 10px"></div>
-//                         <input type="hidden" value="" id="txtEnvase" name="txtEnvase" >
-//                   </div>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>`;
-//     htm += `<div class="row">
-//           <div class="col s6">
-//             <a onclick="preBusqueda();" class="btn waves-light green darken-4 expand-car">
-//               <i class="material-icons left">check</i>
-//               Aceptar
-//             </a>
-//           </div>
-//           <div class="col s6">
-//             <a onclick="LimpiarFiltroPre();" class="btn waves-light green darken-4 expand-car">
-//               <i class="material-icons left">update</i>
-//               Limpiar
-//             </a>
-//           </div>
-//         </div>`;
-//     ////console.log(htm);
-//     document.getElementById("divFiltro").innerHTML = htm;
-//     // Llamar las marcas por API
-//     getFiltros().then(() => {
-//       // Una vez que los datos estén listos, llamamos a MostrarClases()
-//       document.getElementById("filtroclase").innerHTML = MostrarClases(1);
-//     }).catch((error) => {
-//       console.error("Error:", error);
-//     });
-//     $(".collapsible").collapsible();
-//   }
-// }
+  if (elem.style.display === 'none') {
+    instance.open();
+  } else {
+    instance.open();
+    localStorage.removeItem('claseSelect');
+    htm = ` <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>CLASE</div>
+                  <div class="collapsible-body">
+                    <div id="filtroclase" style="padding-left: 10px"></div>
+                      <input type="hidden" value="" id="txtClaseV" name="txtClaseV">
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>MARCA</div>
+                  <div class="collapsible-body">
+                      <div id="filtromarca" style="padding-left: 10px"></div>
+                        <input type="hidden" value="" id="txtMarcaV" name="txtMarcaV" >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>TIPO</div>
+                  <div class="collapsible-body">
+                      <div id="filtrotipo" style="padding-left: 10px"></div>
+                        <input type="hidden" value="" id="txtTipo" name="txtTipo" >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO</div>
+                  <div class="collapsible-body">
+                      <div id="filtrosubtipo" style="padding-left: 10px"></div>
+                        <input type="hidden" value="" id="txtSubtipo" name="txtSubtipo" >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>SUBTIPO2</div>
+                  <div class="collapsible-body">
+                      <div id="filtrosubtipo2" style="padding-left: 10px"></div>
+                        <input type="hidden" value="" id="txtSubtipo2" name="txtSubtipo2" >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible">
+                <li>
+                  <div class="collapsible-header"><i class="material-icons">add</i>ENVASE</div>
+                  <div class="collapsible-body">
+                      <div id="filtroenvase" style="padding-left: 10px"></div>
+                        <input type="hidden" value="" id="txtEnvase" name="txtEnvase" >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>`;
+    htm += `<div class="row">
+          <div class="col s6">
+            <a onclick="preBusqueda();" class="btn waves-light green darken-4 expand-car">
+              <i class="material-icons left">check</i>
+              Aceptar
+            </a>
+          </div>
+          <div class="col s6">
+            <a onclick="LimpiarFiltroPre();" class="btn waves-light green darken-4 expand-car">
+              <i class="material-icons left">update</i>
+              Limpiar
+            </a>
+          </div>
+        </div>`;
+    ////console.log(htm);
+    document.getElementById("divFiltro").innerHTML = htm;
+    // Llamar las marcas por API
+    getFiltros().then(() => {
+      // Una vez que los datos estén listos, llamamos a MostrarClases()
+      document.getElementById("filtroclase").innerHTML = MostrarClases(1);
+    }).catch((error) => {
+      console.error("Error:", error);
+    });
+    $(".collapsible").collapsible();
+  }
+}
 //------------------------------------------------------------------------------------
 function cerrarModal() {
   let elem = document.getElementById("modalFiltro");
@@ -1280,15 +1295,15 @@ function preBusqueda() {
   let nPag = 0;
   let pag = 1;
   let articulo = document.getElementById("articulo").value.trim();
-  if (!articulo) {
-    Swal.fire({
-      icon: "warning",
-      title: "Advertencia",
-      text: "Por favor, ingrese un artículo para buscar.",
-      confirmButtonColor: "#28a745",
-    });
-    return;
-  }
+  // if (!articulo) {
+  //   Swal.fire({
+  //     icon: "warning",
+  //     title: "Advertencia",
+  //     text: "Por favor, ingrese un artículo para buscar.",
+  //     confirmButtonColor: "#28a745",
+  //   });
+  //   return;
+  // }
   const art = encodeURIComponent(articulo);
   let bodega = document.getElementById("bodega").value;
   let clase = localStorage.getItem('claseSelect') || '';
@@ -1297,14 +1312,15 @@ function preBusqueda() {
   let envase = localStorage.getItem('envaseSelect') || '';
   const checkbox = document.getElementById("sinExistencias");
   const sinExistencias = checkbox ? checkbox.checked : false;
+  // localStorage.setItem("sinExistencias",sinExistencias);
   let existenciaBusqueda = "";
   
   if (sinExistencias) {    
     console.log("Buscando con ítems sin existencias...");
-     existenciaBusqueda = "N"
+     existenciaBusqueda = "N";  
   } else {    
     console.log("Buscando solo ítems con existencias...");
-    existenciaBusqueda = "S"
+    existenciaBusqueda = "S";
   }
   const params =
     "?pActivos=" +
@@ -1640,6 +1656,15 @@ function mostrarResultados(desde, hasta) {
   let bodegaLabel = "";
   let url = "";
 
+      const checkbox = document.getElementById("sinExistencias");
+      let esistencias= localStorage.getItem("sinExistencias")==="true";
+          if(esistencias){
+            checkbox.checked=true;
+          }else{
+            checkbox.checked=false;
+          }
+
+
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
             <h2 style="text-align:center; text-transform: uppercase;">Resultados de la Búsqueda</h2>
@@ -1695,6 +1720,20 @@ function mostrarResultados(desde, hasta) {
       } else if (ArrayDataFiltrado[i].color === "V") {
         colorReorden = "green darken-1";
       }
+      // const checkbox = document.getElementById("sinExistencias");
+      // checkbox.checked = !!localStorage.getItem("sinExistencias");
+
+      // const checkbox = document.getElementById("sinExistencias");
+      // const existencias = localStorage.getItem("sinExistencias");
+      // checkbox.checked = existencias ? true : false;
+
+      // const checkbox = document.getElementById("sinExistencias");
+      // let esistencias= localStorage.getItem("sinExistencias");
+      // if(esistencias){
+      //    checkbox.checked=true;
+      // }else{
+      //   checkbox.checked=false;
+      // }
 
       htm += `
         <div class="container-img">
@@ -1717,6 +1756,8 @@ function mostrarResultados(desde, hasta) {
         </div>`;
     }
   }
+
+
 
   htm += "</div>"; // Cierra grid-container
   htm += "</div>"; // Cierra lista-articulo
@@ -1808,6 +1849,7 @@ function mostrarResultados(desde, hasta) {
 //   return htm;
 // }
 //-----------------------------------------------------------------------------------
+
 function paginador(nPag, pag) {
   //MUESTRA LA CANTIDAD DE PAGINA
   let selected = "";
@@ -1917,7 +1959,8 @@ function logout() {
   });
 
   // Redirigir al usuario a la página de inicio
-  window.location.href = "index.html";
+  // window.location.href = "index.html";
+  window.location.href = 'http://200.124.12.146:8108/session/close.php';
 }
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {
@@ -2238,31 +2281,70 @@ function mostrarExistencias(p_Articulo) {
       return response.json();
     })
     .then(data => {
-      var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
-      var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
-        '<thead>' +
-        '<tr style="border-bottom: 1px solid #ddd;">' +
-        '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
-        '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
-        '</tr>' +
-        '</thead>' +
-        '<tbody>';
+          console.log('Existencias')
+          console.log(data.reporte);
+          console.log('cant registros:', data.reporte.length)
+          if(data.reporte.length > 0){
+                var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
+                  var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
+                    '<thead>' +
+                    '<tr style="border-bottom: 1px solid #ddd;">' +
+                    '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
+                    '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
 
-      existenciaArticulos.forEach(articulo => {
-        tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
-          '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
-          '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
-          '</tr>';
-      });
+                  existenciaArticulos.forEach(articulo => {
+                    tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
+                      '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
+                      '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
+                      '</tr>';
+                  });
 
-      tablaHtml += '</tbody>' + '</table>';
+                  tablaHtml += '</tbody>' + '</table>';
 
-      Swal.fire({
-        title: "Artículo: " + code, // Usar decodificado
-        html: tablaHtml,
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "#55b251"
-      });
+                  Swal.fire({
+                    title: "Artículo: " + code, // Usar decodificado
+                    html: tablaHtml,
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#55b251"
+                  });
+
+          }else{
+            Swal.fire({
+                title: "Artículo: " + code, // Usar decodificado
+                text:"Sin existencias",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#55b251"
+              });
+          }
+      
+      // var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
+      // var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
+      //   '<thead>' +
+      //   '<tr style="border-bottom: 1px solid #ddd;">' +
+      //   '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
+      //   '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
+      //   '</tr>' +
+      //   '</thead>' +
+      //   '<tbody>';
+
+      // existenciaArticulos.forEach(articulo => {
+      //   tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
+      //     '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
+      //     '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
+      //     '</tr>';
+      // });
+
+      // tablaHtml += '</tbody>' + '</table>';
+
+      // Swal.fire({
+      //   title: "Artículo: " + code, // Usar decodificado
+      //   html: tablaHtml,
+      //   confirmButtonText: "Aceptar",
+      //   confirmButtonColor: "#55b251"
+      // });
     })
     .catch(error => {
       console.error('Error:', error);
@@ -2303,4 +2385,29 @@ function sucursalbremen(tienda, id_tienda) {
     }  
   }  
 }
+//-----------------------------------------------------------------------------------
+// function manejarCheckboxSinExistencias() {
+//   const checkbox = document.getElementById("sinExistencias");
+
+//   if (checkbox.checked) {
+//     localStorage.setItem("sinExistencias", "true");
+//   } else {
+//     localStorage.setItem("sinExistencias", "false");
+//   }
+
+
+// //   // Inicializa el estado desde localStorage
+// // //  checkbox.checked = !!localStorage.getItem("sinExistencias");
+
+// //   // // Escucha los cambios en el checkbox
+// //   // checkbox.addEventListener("change", () => {
+// //   //   if (checkbox.checked) {
+// //   //     localStorage.setItem("sinExistencias", "true");
+// //   //   } else {
+// //   //     localStorage.setItem("sinExistencias", "false");
+// //   //   }
+// //   // });
+// }
+
+
 

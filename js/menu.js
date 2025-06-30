@@ -13,6 +13,7 @@ let menuEnlaces = [
     { MODULO: 10, SUBMODULO: 6, ICON: "", LINK: "verificacionDePickingDetraslados.html"}, 
     { MODULO: 10, SUBMODULO: 7, ICON: "", LINK: "conteoDeInventario.html"}, 
     { MODULO: 10, SUBMODULO: 8, ICON: "", LINK: "boletaDeInventario.html"}, 
+     { MODULO: 10, SUBMODULO: 9, ICON: "", LINK: "VerificadorDeContenedores.html"}, 
 
   { MODULO: 12, SUBMODULO: 0, ICON: "feature_search", LINK: ""},//CONSULTAS
     { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"}, 
@@ -109,18 +110,27 @@ var builddata = function () {
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 var buildUL = function (items) {
+  let url_dalbos= "http://200.124.12.146:8108/home.php";
   let htm = "",
     icono = "",
     icono2 = "",
     link = "";
 //console.log(items);
-  //INICIO
+  //INICIO y DALBOS
   htm += `<li>
     <div class="collapsible-header" id="expand_morefather">
         <a href="home.html">
             <span class="margen-pedido" style="color:black;">
                 <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">home</span>
                 INICIO
+            </span>
+        </a>
+    </div>
+    <div class="collapsible-header" id="expand_morefather">
+        <a href="${url_dalbos}">
+            <span class="margen-pedido" style="color:black;">
+                <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">account_balance</span>
+                DALBOS
             </span>
         </a>
     </div>
