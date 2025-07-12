@@ -46,7 +46,7 @@ function cargarLineasTraslado(documento) {
           
           // Guardar la aplicación en localStorage
           localStorage.setItem('pAplicacion', detalleTrasladoList[0].TRASLADO_ORIGEN);
-          localStorage.setItem('destinoBodegaTraslado', detalleTrasladoList[0].BODEGA_DESTINO);
+          localStorage.setItem('origenBodegaTraslado', detalleTrasladoList[0].BODEGA_ORIGEN);
           
           // Llamar a la función para armar la tabla de verificación
           armarTablaVerificacion(detalleTrasladoList);
@@ -64,14 +64,50 @@ function cargarLineasTraslado(documento) {
     });
 }
   
-function armarTablaLectura(detalleTrasladoList) {
+// function armarTablaLectura(detalleTrasladoList) {
+//   var tbody = document.getElementById('tblbodyLectura');
+  
+//   // Limpiar el contenido del tbody antes de agregar nuevas filas
+//   tbody.innerHTML = '';
+//   // Recorrer el detalle del traslado y agregar filas si LINEAS_PREPARADAS tiene un valor
+//   detalleTrasladoList.forEach(function (detalle) {
+//     if (detalle.LINEAS_VERIFICADAS != null && detalle.LINEAS_VERIFICADAS !== ""  &&  detalle.LINEAS_VERIFICADAS > 0) {
+//       var newRow = document.createElement('tr');
+
+//       newRow.innerHTML = `
+//         <td>
+//           <span>${detalle.ARTICULO}</span>
+//         </td>
+//         <td class="codigo-barras-cell">
+//           <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.CODIGO_BARRA || ''}" onchange="validarCodigoBarras(this)" autofocus>
+//         </td>
+//         <td class="codigo-barras-cell2">
+//           <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_VERIFICADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;">
+//         </td>
+//         <td class="codigo-barras-cell2">
+//           <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
+//         </td>
+//       `;
+//       tbody.appendChild(newRow);
+//     }
+//   });
+
+//   // Guardar la tabla en el array
+//   guardarTablaEnArray();
+  
+//   // Crear una nueva fila vacía para permitir la entrada de más datos si es necesario
+//   crearNuevaFila();
+// }
+  
+  /////////VALIDA EL CODIGO LEIDO EN LA PESTAÑA LECTURA//////////////////
+ function armarTablaLectura(detalleTrasladoList) {
   var tbody = document.getElementById('tblbodyLectura');
   
   // Limpiar el contenido del tbody antes de agregar nuevas filas
   tbody.innerHTML = '';
   // Recorrer el detalle del traslado y agregar filas si LINEAS_PREPARADAS tiene un valor
   detalleTrasladoList.forEach(function (detalle) {
-    if (detalle.LINEAS_VERIFICADAS != null && detalle.LINEAS_VERIFICADAS !== ""  &&  detalle.LINEAS_VERIFICADAS > 0) {
+    if (detalle.LINEAS_PREPARADAS != null && detalle.LINEAS_PREPARADAS !== ""  &&  detalle.LINEAS_PREPARADAS > 0) {
       var newRow = document.createElement('tr');
 
       newRow.innerHTML = `
@@ -82,7 +118,7 @@ function armarTablaLectura(detalleTrasladoList) {
           <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.CODIGO_BARRA || ''}" onchange="validarCodigoBarras(this)" autofocus>
         </td>
         <td class="codigo-barras-cell2">
-          <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_VERIFICADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;">
+          <input id="cant-pedida" type="text" class="codigo-barras-input" value="${detalle.LINEAS_PREPARADAS || ''}" onchange="guardarTablaEnArray(this)" style="text-align: center;">
         </td>
         <td class="codigo-barras-cell2">
           <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
@@ -98,9 +134,6 @@ function armarTablaLectura(detalleTrasladoList) {
   // Crear una nueva fila vacía para permitir la entrada de más datos si es necesario
   crearNuevaFila();
 }
-  
-  /////////VALIDA EL CODIGO LEIDO EN LA PESTAÑA LECTURA//////////////////
- 
  
   function validarCodigoBarras(input) {
     var TrasladoList = detalleTrasladoList;
@@ -350,7 +383,7 @@ function armarTablaLectura(detalleTrasladoList) {
               <td id="articulo"><h5 id="verifica-articulo"><span class="blue-text text-darken-2">${detalle.ARTICULO}</span></h5><h6>${detalle.DESCRIPCION}</h6></td>
               <td id="codigoDeBarras">${detalle.CODIGO_BARRA || ''}</td>
               <td id="cantidadPedida">${isNaN(parseFloat(detalle.CANTIDAD_PEDIDA)) ? 0 : parseFloat(detalle.CANTIDAD_PEDIDA).toFixed(2)}</td>
-              <td id="cantidadLeida"></td> <!-- Cantidad leída, inicialmente en blanco -->
+              <td id="cantidadLeida">${isNaN(parseFloat(detalle.LINEAS_PREPARADAS)) ? 0 : parseFloat(detalle.LINEAS_PREPARADAS).toFixed(2)}</td> <!-- Cantidad leída, inicialmente en blanco -->
               <td id="verificado"></td>             
           `;  
       tbody.appendChild(newRow);
@@ -639,7 +672,7 @@ let guardarParcialHabilitado = activaGuardadoParcial();
       let pConsecutivo = localStorage.getItem('traslado');   
       let pBodega = document.getElementById('bodega').value;
       let pTipoConsecutivo = "E";    
-      let pBodegaDestino = localStorage.getItem('destinoBodegaTraslado');
+      let pBodegaDestino = localStorage.getItem('origenBodegaTraslado');
       let pAplicacion = localStorage.getItem('pAplicacion');
       let pSistema ="WMS";
       let pOpcion = "B";   

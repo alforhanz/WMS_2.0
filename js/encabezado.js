@@ -81,7 +81,7 @@ class MyHeader extends HTMLElement {
     </div>
     <!-- FIN MODAL DE LAS BODEGAS -->
 
- <!-- MENU LATERAL IZQUIERDO -->
+    <!-- MENU LATERAL IZQUIERDO -->
     <div class="sidenav" id="mobile-demo">
       <div class="row bordered">
         <div class="col s6 m6" style="display: flex; align-items: center;">

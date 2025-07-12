@@ -1959,8 +1959,8 @@ function logout() {
   });
 
   // Redirigir al usuario a la página de inicio
-  // window.location.href = "index.html";
-  window.location.href = 'http://200.124.12.146:8108/session/close.php';
+  window.location.href = "index.html";
+   // window.location.href = 'http://200.124.12.146:8108/session/close.php';
 }
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {

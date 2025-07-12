@@ -1,0 +1,20 @@
+<html>
+    <body onload="logout()"></body>
+    <script>
+        function logout() {
+            // Eliminar todas las variables de sessionStorage
+            Object.keys(sessionStorage).forEach(function (key) {
+                sessionStorage.removeItem(key);
+            });
+
+            // Eliminar todas las variables de localStorage
+            Object.keys(localStorage).forEach(function (key) {
+                localStorage.removeItem(key);
+            });
+
+            // Redirigir al usuario a la pÃ¡gina de inicio
+            //window.location.href = "index.html";
+            window.location.href = 'http://200.124.12.146:8108';
+            }           
+    </script>
+</html>

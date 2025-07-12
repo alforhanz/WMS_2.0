@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Código que se ejecuta cuando el DOM se haya cargado
-  // console.log('El DOM se ha cargado completamente.');
+  console.log('El DOM se ha cargado completamente. \nVerificacion de Traslados...');
   // Inicializar datepicker de Materialize
   var elems = document.querySelectorAll('.datepicker');
   var instances = M.Datepicker.init(elems, {
@@ -125,8 +125,8 @@ function listadoTraslados(parametros) {
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
-        // console.log("TRASLADOS");
-        // console.log(result.traslados);
+        console.log("TRASLADOS");
+        console.log(result.traslados);
         if (result.traslados.length != 0) {
           ArrayData = result.traslados;
           ArrayDataFiltrado = result.traslados;
@@ -148,7 +148,7 @@ function listadoTraslados(parametros) {
             icon: "info",
             title: "Oops...",
             text: "No tiene traslados pendientes!",
-            footer: '<a href="#">Why do I have this issue?</a>',
+            //footer: '<a href="#">Consulta a su supervisor inmediato.</a>',
             confirmButtonColor: '#28a745',
           });   
           limpiarResultadoGeneral();       
@@ -213,16 +213,18 @@ function resultadosVerificacionTraslados(desde, hasta) {
         htm += `<tr onclick="irDetalleTraslado('${ArrayDataFiltrado[i].TRASLADO}','${ArrayDataFiltrado[i].BODEGA_DESTINO}','${ArrayDataFiltrado[i].ESTADO_TRASLADO}');" style="background-color:${backgroundColor};">`;
         htm += `<td>${ArrayDataFiltrado[i].TRASLADO}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].BODEGA_ORIGEN}</td>`;
-        htm += `<td>${ArrayDataFiltrado[i].LINEAS_VERIFICADAS}</td>`;
+       // htm += `<td>${ArrayDataFiltrado[i].LINEAS_VERIFICADAS}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].LINEAS_PREPARADAS}</td>`;
+        htm += `<td>${Number(ArrayDataFiltrado[i].TOTAL_UNIDADES).toFixed(2)}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].FECHA}</td>`;
         htm += `</tr>`;  
       }else{
         htm += `<tr onclick="irDetalleTraslado('${ArrayDataFiltrado[i].TRASLADO}','${ArrayDataFiltrado[i].BODEGA_DESTINO}','${ArrayDataFiltrado[i].ESTADO_TRASLADO}');" style="background-color:${backgroundColor};">`;
         htm += `<td>${ArrayDataFiltrado[i].TRASLADO}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].BODEGA_DESTINO}</td>`;
-        htm += `<td>${ArrayDataFiltrado[i].LINEAS_VERIFICADAS}</td>`;
+        //htm += `<td>${ArrayDataFiltrado[i].LINEAS_VERIFICADAS}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].LINEAS_PREPARADAS}</td>`;
+        htm += `<td>${Number(ArrayDataFiltrado[i].TOTAL_UNIDADES).toFixed(2)}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].FECHA}</td>`;
         htm += `</tr>`;  
       }
