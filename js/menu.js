@@ -26,8 +26,8 @@ let menuEnlaces = [
    { MODULO: 3, SUBMODULO: 24, ICON: "", LINK: "reportedeInventarioGeneral.html"}, //Resumen de Conteo de Inventario General
    
   { MODULO: 4, SUBMODULO: 0, ICON: "manage_accounts", LINK: ""},//ADMINISTRACION
-  { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "ingresaCodigoBarra.html"},  
-  { MODULO: 4, SUBMODULO: 8, ICON: "", LINK: "http://200.124.12.146:8108/home.php"}, 
+  { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "barcodeGen.html"},  
+  //{ MODULO: 4, SUBMODULO: 8, ICON: "", LINK: "http://200.124.12.146:8108/home.php"}, 
 ];
  /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -118,16 +118,6 @@ var buildUL = function (items) {
 //console.log(items);
  //INICIO y DALBOS
 
-  htm += `<li>
-    <div class="collapsible-header" id="expand_morefather">
-        <a href="home.html">
-            <span class="margen-pedido" style="color:black;">
-                <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">home</span>
-                INICIO
-            </span>
-        </a>
-    </div>
-</li>`;
 //   htm += `<li>
 //     <div class="collapsible-header" id="expand_morefather">
 //         <a href="home.html">
@@ -137,15 +127,25 @@ var buildUL = function (items) {
 //             </span>
 //         </a>
 //     </div>
-//     <div class="collapsible-header" id="expand_morefather">
-//         <a href="${url_dalbos}">
-//             <span class="margen-pedido" style="color:black;">
-//                 <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">account_balance</span>
-//                 DALBOS
-//             </span>
-//         </a>
-//     </div>
 // </li>`;
+  htm += `<li>
+    <div class="collapsible-header" id="expand_morefather">
+        <a href="home.html">
+            <span class="margen-pedido" style="color:black;">
+                <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">home</span>
+                INICIO
+            </span>
+        </a>
+    </div>
+    <div class="collapsible-header" id="expand_morefather">
+        <a href="${url_dalbos}">
+            <span class="margen-pedido" style="color:black;">
+                <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">account_balance</span>
+                DALBOS
+            </span>
+        </a>
+    </div>
+</li>`;
 
   items.forEach(function (key) {
     

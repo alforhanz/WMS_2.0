@@ -669,93 +669,7 @@ function ordenarDescripcion(data) {
     return 0;
   });
 }
-//-----------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------
-// function cargarPedidos(pedido, IDCliente, NCliente) {
-//   let usuario = document.getElementById("hUsuario").value;
-//   let fechaIni = document.getElementById("fecha_ini").value;
-//   let fechaFin = document.getElementById("fecha_fin").value;
-//   let bodega = document.getElementById("bodega").value;
-//   const params =
-//     "?pedido=" +
-//     pedido +
-//     "&user=" +
-//     usuario +
-//     "&fechafin=" +
-//     fechaFin +
-//     "&fechaini=" +
-//     fechaIni +
-//     "&bodega=" +
-//     bodega;
-//   // //console.log("ESTOS SON LOS PARAMETROS QUE SE ENVIAN A PEDIDOS");
-//   // //console.log(params);
-//   fetch(env.API_URL + "pedidos/D" + params, myInit)
-//     .then((response) => response.json())
-//     .then((result) => {
-//       if (result.msg === "SUCCESS") {
-//         if (result.pedidos.length != 0) {
-//           //----guarda los articulos en cartCLSA------
-//           //console.log(result.pedidos[0].Observacion);
-//           localStorage.setItem("cartCLSA", JSON.stringify(result.pedidos));
-//           // Variable to store the initial cart item count
-//           sessionStorage.setItem(
-//             "cartItemCount",
-//             result.pedidos[0].items.length
-//           );
-//           sessionStorage.setItem("initObserv", result.pedidos[0].Observacion);
-//           sessionStorage.setItem("cliente", JSON.stringify(IDCliente));
-//           sessionStorage.setItem("Ncliente", JSON.stringify(NCliente));
-//           sessionStorage.setItem("_UpdateOrder", JSON.stringify("1"));
-//           localStorage.setItem("cargarCotizacion", "TRUE");
 
-//           let imprimir = JSON.parse(localStorage.getItem("cartCLSA"));
-//           // let cantInicial = localStorage.getItem("cartItemCount");
-//           //console.log("PEDIDO DESDE CARGAR PEDIDO");
-//           //console.log(imprimir);
-//           // localStorage.removeItem("cartItemCount");
-
-//           //console.log("RESULTADOS DE PEDIDO");
-//           //console.log(result.pedidos);
-
-//           const Toast = Swal.mixin({
-//             toast: true,
-//             position: "top-end",
-//             showConfirmButton: false,
-//             timer: 2000,
-//             timerProgressBar: true,
-//             onOpen: (toast) => {
-//               toast.addEventListener("mouseenter", Swal.stopTimer);
-//               toast.addEventListener("mouseleave", Swal.resumeTimer);
-//             },
-//           });
-//           Toast.fire({
-//             icon: "success",
-//             title: "Agregando el pedido seleccionado al carrito",
-//           }).then(function () {
-//             Swal.fire({
-//               icon: "success",
-//               title: "Agregado correctamente",
-//               text: "Su pedido fue agregado.",
-//               confirmButtonColor: "#000",
-//             });
-//           });
-//           document.getElementById("iconCard").style.display = "block";
-//           document.getElementById("icon-user").classList.remove("icon-usuario");
-//           document
-//             .getElementById("icon-user")
-//             .classList.add("icon-usuario-activo");
-//           //funcion que agrega los datos del cliente
-//           ingresarCliente(IDCliente, NCliente);
-//           //--------llamado funcion refrescarCarrito en pruebaClass.js---------
-//           cartCLSAObj.refrescarCarrito();
-//           //console.log("Ya ejecuto refrescarCarrito");
-//         }
-//         document.getElementById("carga").innerHTML = "";
-//       } else {
-//         //console.log("No se cargo los modelos, verifique la conexión");
-//       }
-//     });
-// }
 //-----------------------------------------------------------------------------------
 function MostrarRemates() {
   let cant = 0;
@@ -1059,9 +973,7 @@ function getFiltro(id, txtInput) {
     valorST = "",
     valorST2 = "",
     valorE = "";
-  // valorCLH = "",
-  // valorTH = "",
-  // valorSTH = "";
+ 
 
   let chk = "";
   //-------------------Marca-------------------------------------
@@ -1735,8 +1647,26 @@ function mostrarResultados(desde, hasta) {
       //   checkbox.checked=false;
       // }
 
-      htm += `
-        <div class="container-img">
+      // htm += `
+      //   <div class="container-img">
+      //            <div id="envoltorio">
+      //          <a ${url}>                
+      //            <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
+      //             ${bodegaLabel}
+      //          </a>
+      //          <div class="flotante-acciones ${colorReorden}">
+      //            <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+      //              <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
+      //                <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+      //              </a>             
+      //            </div>
+      //          </div>          
+      //        </div>
+      //     <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
+      //     <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>
+      //     <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
+      //   </div>`;
+      htm +=`<div class="container-img">
                  <div id="envoltorio">
                <a ${url}>                
                  <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
@@ -1746,6 +1676,11 @@ function mostrarResultados(desde, hasta) {
                  <div class="link-flotante-acciones " style="padding-bottom: 5px;">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
                      <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                   </a>             
+                 </div>
+                  <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+                   <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}')">
+                   <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22">
                    </a>             
                  </div>
                </div>          
@@ -1764,90 +1699,6 @@ function mostrarResultados(desde, hasta) {
   return htm;
 }
 
-// function mostrarResultados(desde, hasta) {
-    
-//   let htm = "",    
-//       bodegaLabel = "",
-//       url = "";
-//   // var pre = 1;
-//   htm += '<div id="lista-articulo">';
-//   htm += `<div class="col s12">
-//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-//         </div>`;
-
-//   htm += `<div class="row" id="totalregistros">
-//             <div class="col s6 m12" >
-//               <span>Total de Registros: </span>
-//               <span>${ ArrayDataFiltrado.length}</span>
-//             </div>
-//             </div>
-//             <div class="row" id="vistabusqueda">
-//             <div class="col s6">
-//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-//               <i class="material-icons right">list</i>
-//               VISTA </a>
-//             </div>
-//             <div class="col s6">
-//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-//               <i class="material-icons right">filter_list</i>
-//               FILTRAR </a>
-//             </div>
-//             </div>`;
-//   htm += '<div class="row">'; // Inicia la primera fila
-//   for (let i = desde; i < hasta; i++) {
-//     if (ArrayDataFiltrado[i]) {
-//       DArticulo = ArrayDataFiltrado[i].ARTICULO.replace("/", "-");      
-      
-//       const cantBodega = parseFloat(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA) || 0;
-//         if (cantBodega > 0) {
-//         bodegaLabel = `<span class="mi-tienda">En Bodega</span>`;
-//       } else {
-//         bodegaLabel = `<span ></span>`;
-//       }
-//       url = ` href="#"`;
-//       // Reglas
-//       let colorReorden ="";        
-//         if(ArrayDataFiltrado[i].color==='R'){//Rojo:  Si la Existencia Actual es menor o igual a la Cantidad Mínima.
-//           colorReorden = 'red accent-4';
-//         }else if(ArrayDataFiltrado[i].color==='A'){//Azul: Si la Existencia Actual es mayor que a la cantidad Maxima
-//           colorReorden = ' light-blue darken-1';
-//         }else if(ArrayDataFiltrado[i].color==='N'){//Naranja: Si la Existencia Actual es mayor a la Cantidad Mínima y Menor o igual al Punto de Reorden
-//           colorReorden = 'deep-orange accent-3';
-//         }else if(ArrayDataFiltrado[i].color==='V'){// Verde: Si la Existencia Actual es mayor al Punto de Reorden y Menor a la cantidad Maxima
-//           colorReorden = 'green darken-1';
-//         }
-      
-//       htm += `
-//       <div class="col s6 m4 l3">         
-//           <div class="container-img">
-//             <div id="envoltorio">
-//               <a ${url}>                
-//                 <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-//                  ${bodegaLabel}
-//               </a>
-//               <div class="flotante-acciones ${colorReorden}">
-//                 <div class="link-flotante-acciones " style="padding-bottom: 5px;">
-//                   <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-//                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-//                   </a>             
-//                 </div>
-//               </div>          
-//             </div>
-//             <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
-//             <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>  
-//             <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
-//            </div>         
-//       </div>`;  
-     
-//       if ((i - desde + 1) % 4 === 0 && i < hasta - 1) {
-//         htm += '</div><div class="row">';
-//       }
-//     }
-//   }
-//   htm += '</div>'; // Cierra la última fila
-//   htm += '</div>'; // Cierra lista-articulo
-//   return htm;
-// }
 //-----------------------------------------------------------------------------------
 
 function paginador(nPag, pag) {
@@ -2120,6 +1971,7 @@ function resultadosVistaLista(desde, hasta) {
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
+                <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22" onclick="impCodBar('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
               </td>`; // Puedes poner aquí el botón de acción que desees
       htm += `</tr>`;
     }
@@ -2188,12 +2040,14 @@ function cambiarVistaLista() {
   for (let i = desde; i < hasta; i++) {
     if (ArrayDataFiltrado[i]) {
       htm += `<tr>`;
+      //cambiar mostrar existencias
       htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
+                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">                
+               <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22" onclick="impCodBar('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
               </td>`;
       htm += `</tr>`;
     }
@@ -2318,33 +2172,8 @@ function mostrarExistencias(p_Articulo) {
                 confirmButtonText: "Aceptar",
                 confirmButtonColor: "#55b251"
               });
-          }
-      
-      // var existenciaArticulos = data.reporte; // Accede a la propiedad 'reporte'
-      // var tablaHtml = '<table style="border-collapse: collapse; width: 100%;">' +
-      //   '<thead>' +
-      //   '<tr style="border-bottom: 1px solid #ddd;">' +
-      //   '<th style="text-align: left; padding: 8px;"> Bodega </th>' +
-      //   '<th style="text-align: center; padding: 8px;"> Cantidad </th>' +
-      //   '</tr>' +
-      //   '</thead>' +
-      //   '<tbody>';
-
-      // existenciaArticulos.forEach(articulo => {
-      //   tablaHtml += '<tr style="border-bottom: 1px solid #ddd;">' +
-      //     '<td style="text-align: left; padding: 8px;">' + articulo.NOMBRE + '</td>' +
-      //     '<td style="text-align: center; padding: 8px;">' + parseFloat(articulo.CANTIDAD).toFixed(2) + '</td>' +
-      //     '</tr>';
-      // });
-
-      // tablaHtml += '</tbody>' + '</table>';
-
-      // Swal.fire({
-      //   title: "Artículo: " + code, // Usar decodificado
-      //   html: tablaHtml,
-      //   confirmButtonText: "Aceptar",
-      //   confirmButtonColor: "#55b251"
-      // });
+          }     
+     
     })
     .catch(error => {
       console.error('Error:', error);
@@ -2386,28 +2215,11 @@ function sucursalbremen(tienda, id_tienda) {
   }  
 }
 //-----------------------------------------------------------------------------------
-// function manejarCheckboxSinExistencias() {
-//   const checkbox = document.getElementById("sinExistencias");
 
-//   if (checkbox.checked) {
-//     localStorage.setItem("sinExistencias", "true");
-//   } else {
-//     localStorage.setItem("sinExistencias", "false");
-//   }
-
-
-// //   // Inicializa el estado desde localStorage
-// // //  checkbox.checked = !!localStorage.getItem("sinExistencias");
-
-// //   // // Escucha los cambios en el checkbox
-// //   // checkbox.addEventListener("change", () => {
-// //   //   if (checkbox.checked) {
-// //   //     localStorage.setItem("sinExistencias", "true");
-// //   //   } else {
-// //   //     localStorage.setItem("sinExistencias", "false");
-// //   //   }
-// //   // });
-// }
+function impCodBar(p_Articulo) {
+ localStorage.setItem('impCodeBar', p_Articulo);
+ window.location.href = 'barcodeGen.html';
+}
 
 
 
