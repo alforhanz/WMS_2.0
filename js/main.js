@@ -1646,7 +1646,7 @@ function mostrarResultados(desde, hasta) {
                  </div>
                   <div class="link-flotante-acciones " style="padding-bottom: 5px;">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')">
-                   <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22">
+                   <img src="./img/icon/bar-code.svg"  width="22" height="22">
                    </a>             
                  </div>
                </div>          
@@ -1937,7 +1937,7 @@ function resultadosVistaLista(desde, hasta) {
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
-                <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22" onclick="impCodBar('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
+                <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`; // Puedes poner aquí el botón de acción que desees
       htm += `</tr>`;
     }
@@ -2013,7 +2013,7 @@ function cambiarVistaLista() {
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">                
-               <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22" onclick="impCodBar('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">
+               <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`;
       htm += `</tr>`;
     }
@@ -2184,7 +2184,7 @@ function sucursalbremen(tienda, id_tienda) {
 
 function impCodBar(p_Articulo,p_Descripcion) {
  localStorage.setItem('impCodeBar', p_Articulo);
- localStorage.setItem('descripcionImpCodeBar',p_Descripcion);
+ localStorage.setItem('descripcionImpCode',p_Descripcion);
  window.location.href = 'barcodeGen.html';
 }
 

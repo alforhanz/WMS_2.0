@@ -26,8 +26,8 @@ let menuEnlaces = [
    { MODULO: 3, SUBMODULO: 24, ICON: "", LINK: "reportedeInventarioGeneral.html"}, //Resumen de Conteo de Inventario General
    
   { MODULO: 4, SUBMODULO: 0, ICON: "manage_accounts", LINK: ""},//ADMINISTRACION
-  { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "barcodeGen.html"},  
-  //{ MODULO: 4, SUBMODULO: 8, ICON: "", LINK: "http://200.124.12.146:8108/home.php"}, 
+  { MODULO: 4, SUBMODULO: 7, ICON: "", LINK: "#"},  
+ 
 ];
  /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
