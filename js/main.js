@@ -1631,41 +1631,7 @@ function mostrarResultados(desde, hasta) {
         colorReorden = "deep-orange accent-3";
       } else if (ArrayDataFiltrado[i].color === "V") {
         colorReorden = "green darken-1";
-      }
-      // const checkbox = document.getElementById("sinExistencias");
-      // checkbox.checked = !!localStorage.getItem("sinExistencias");
-
-      // const checkbox = document.getElementById("sinExistencias");
-      // const existencias = localStorage.getItem("sinExistencias");
-      // checkbox.checked = existencias ? true : false;
-
-      // const checkbox = document.getElementById("sinExistencias");
-      // let esistencias= localStorage.getItem("sinExistencias");
-      // if(esistencias){
-      //    checkbox.checked=true;
-      // }else{
-      //   checkbox.checked=false;
-      // }
-
-      // htm += `
-      //   <div class="container-img">
-      //            <div id="envoltorio">
-      //          <a ${url}>                
-      //            <img src="${env.API_IMAGE}/${DArticulo}" width="100%" data-src="' + site + 'image/displayimage/' + varArt + '" alt="' + ArrayData[i].ARTICULO + '">
-      //             ${bodegaLabel}
-      //          </a>
-      //          <div class="flotante-acciones ${colorReorden}">
-      //            <div class="link-flotante-acciones " style="padding-bottom: 5px;">
-      //              <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-      //                <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
-      //              </a>             
-      //            </div>
-      //          </div>          
-      //        </div>
-      //     <h3 class="articulo-titulo">Nombre: ${ArrayDataFiltrado[i].ARTICULO}</h3>
-      //     <h4>Descripción: ${ArrayDataFiltrado[i].DESCRIPCION}</h4>
-      //     <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
-      //   </div>`;
+      }     
       htm +=`<div class="container-img">
                  <div id="envoltorio">
                <a ${url}>                
@@ -1679,7 +1645,7 @@ function mostrarResultados(desde, hasta) {
                    </a>             
                  </div>
                   <div class="link-flotante-acciones " style="padding-bottom: 5px;">
-                   <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}')">
+                   <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')">
                    <img src="./img/icon/print_24dp_E8EAED.svg" style="filter: invert(1);" width="22" height="22">
                    </a>             
                  </div>
@@ -2216,8 +2182,9 @@ function sucursalbremen(tienda, id_tienda) {
 }
 //-----------------------------------------------------------------------------------
 
-function impCodBar(p_Articulo) {
+function impCodBar(p_Articulo,p_Descripcion) {
  localStorage.setItem('impCodeBar', p_Articulo);
+ localStorage.setItem('descripcionImpCodeBar',p_Descripcion);
  window.location.href = 'barcodeGen.html';
 }
 
