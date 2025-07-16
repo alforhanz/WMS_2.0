@@ -1639,12 +1639,12 @@ function mostrarResultados(desde, hasta) {
                   ${bodegaLabel}
                </a>
                <div class="flotante-acciones ${colorReorden}">
-                 <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+                  <div class="link-flotante-acciones " style="padding-bottom: 9px;margin-right: 5px;">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
                      <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
                    </a>             
                  </div>
-                  <div class="link-flotante-acciones " style="padding-bottom: 5px;">
+                  <div class="link-flotante-acciones " style="padding-bottom: 10px;margin-right: 3px;margin-left: 3px;">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')">
                    <img src="./img/icon/bar-code.svg"  width="22" height="22">
                    </a>             

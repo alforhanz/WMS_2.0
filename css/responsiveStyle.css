@@ -226,9 +226,13 @@
     width: 16em !important;
 }
 
-
+.barcodeGen {
+    padding-top: 20% !important;
+}
 
   }  
+
+
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
   
