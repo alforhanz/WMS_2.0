@@ -40,10 +40,11 @@
   <!--HEADER-->
   <main>
     <div id="resultadoBusqueda">
+       <h2 class="titulo-vista">Verificador de Contenedores</h2>
       <div id="contenedorLoader"></div>
       <div id="carga" class="carga-style"></div>
       <div class="container">
-        <h2 class="titulo">Verificador de Contenedores</h2>
+       
         <div class="row">
           <div id="menup">
             <!-- <label>Busqueda de contenedores</label> -->
@@ -56,7 +57,7 @@
             </div>
           </div>
 
-          <div class="input-field col s6">
+          <!-- <div class="input-field col s6">
             <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
             <label for="fecha_ini">Fecha Inicial</label>
           </div>
@@ -64,10 +65,10 @@
           <div class="input-field col s6">
             <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
             <label for="fecha_fin">Fecha Final</label>
-          </div>
+          </div> -->
           <!-- Switch Pedidos acturados y finalizados-->
           <!-- <div class="row col s12 switch-estilo" style="margin-bottom: 10px;"> -->
-            <div class="row col s12 switch-estilo">
+            <!-- <div class="row col s12 switch-estilo">
             <div class="switch">
               <label class="lblcheck">
                 <input checked="false" type="checkbox" id="toggleSwitch">
@@ -75,33 +76,34 @@
                 Contenedores Verificados
               </label>
             </div>
-          </div>
+          </div> -->
         </div>
 
-        <!-- Boton Buscar Pedidos-->
+        <!-- Boton Buscar Contenedores -->
         <div class="row col-md-12 S12">
           <button class="btn waves-effect waves-light" type="submit" onclick="validarBusquedaContenedor()">Buscar Contenedores
             <i class="material-icons right">send</i>
           </button>
         </div>
 
-        <!-- Tabla de resultados para listado de pedidos -->
+        <!-- Tabla de resultados -->
         <div class="row tblcontenedor">
           <div id="resultadoGeneral"></div>
           <table id="tblcontenedores" class="display centered">
             <thead>
               <tr class="themeColor2">
                 <th>TRASLADO</th>
-                <th>FECHA DE CREACION</th>
-                <th>ESTADO DEL PEDIDO</th>
+                <th>CANT SOLICITADA</th>
+                <th>CANT PEDIDA</th>
                 <th>BODEGA DESTINO</th>
+                 <th>FECHA DE CREACION</th>
                 
               </tr>
             </thead>
           </table>
           <div id="resultadoPaginador"></div>
         </div>
-        <!-- Cierre de tabla de resultados para listado de pedidos -->
+        <!-- Cierre de tabla de resultados -->
       </div>
     </div>
   </main>
@@ -113,7 +115,7 @@
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/busquedadecontenedores.js?v1.1" defer></script>
+  <script type="text/javascript" src="js/verificadorDeContenedores.js" defer></script>
   <script type="text/javascript" src="js/loader.js"></script>
   <script type="tex/javascript" src="js/paginacion.js"></script>
   <!--JavaScript local-->

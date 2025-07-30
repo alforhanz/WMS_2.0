@@ -13,6 +13,7 @@ let menuEnlaces = [
     { MODULO: 10, SUBMODULO: 6, ICON: "", LINK: "verificacionDePickingDetraslados.html"}, 
     { MODULO: 10, SUBMODULO: 7, ICON: "", LINK: "conteoDeInventario.html"}, 
     { MODULO: 10, SUBMODULO: 8, ICON: "", LINK: "boletaDeInventario.html"}, 
+     { MODULO: 10, SUBMODULO: 9, ICON: "", LINK: "VerificadorDeContenedores.html"}, 
 
   { MODULO: 12, SUBMODULO: 0, ICON: "feature_search", LINK: ""},//CONSULTAS
     { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"}, 

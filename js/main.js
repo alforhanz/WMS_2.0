@@ -1639,9 +1639,9 @@ function mostrarResultados(desde, hasta) {
                   ${bodegaLabel}
                </a>
                <div class="flotante-acciones ${colorReorden}">
-                  <div class="link-flotante-acciones " style="padding-bottom: 9px;margin-right: 5px;">
+                  <div class="link-flotante-acciones " style="padding-bottom: 9px;margin-right: 2px;">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
-                     <img src="./img/icon/inventario.svg" width="22" height="22" tabindex="1">
+                     <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" tabindex="1">
                    </a>             
                  </div>
                   <div class="link-flotante-acciones " style="padding-bottom: 10px;margin-right: 3px;margin-left: 3px;">
@@ -1936,7 +1936,7 @@ function resultadosVistaLista(desde, hasta) {
               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
+                <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
                 <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`; // Puedes poner aquí el botón de acción que desees
       htm += `</tr>`;
@@ -2012,7 +2012,7 @@ function cambiarVistaLista() {
               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
               <td>
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-                <img src="./img/icon/inventario.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">                
+                <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">                
                <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`;
       htm += `</tr>`;

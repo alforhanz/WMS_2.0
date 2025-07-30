@@ -23,10 +23,10 @@ document.addEventListener("DOMContentLoaded", function (){
 /////////////////////////////////////////////////////////////////////
 //busquedadecontenedores functions
 function validarBusquedaContenedor() {
-  //revisar como toma el valor
+ 
   // mostrarLoading();
   var bodega = document.getElementById("bodega").value;
-  //revisar como toma el valor
+
   if (bodega == "") {
     Swal.fire({
       icon: 'warning',
@@ -66,15 +66,16 @@ function enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConse
   //Mostrar Loader
   mostrarLoader();
 //console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
-localStorage.setItem('parametrosBusquedaContenedor', params);
-localStorage.setItem('SearchParameterFlag', 'true');
+// localStorage.setItem('parametrosBusquedaContenedor', params);
+// localStorage.setItem('SearchParameterFlag', 'true');
 
   fetch(env.API_URL + "contenedor/E" + params, myInit)
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
         if (result.contenedor.length != 0) {
-        console.log('Contenedores: \n'+result.contenedor);
+        console.log('Contenedor: \n'+ result);
+         console.log(result.contenedor);
           let cantReg = result.contenedor.length;
           let nPag = Math.ceil(cantReg / xPag);
           const tabla = document.getElementById("tblcontenedores");
@@ -116,14 +117,14 @@ localStorage.setItem('SearchParameterFlag', 'true');
           });
           document.getElementById("resultadoGeneral").innerHTML = htm;
 
-          //paginador para pedidos
+          //paginador 
           document.getElementById("resultadoPaginador").innerHTML =
             paginadorPedidos(nPag, pag, "1040");
 
           document.getElementById("carga").innerHTML = "";
           //Ocultar Loader
           ocultarLoader();
-          aplicarEstilosTablaPedidos();
+          aplicarEstilosTablaContenedor();
         }else{
           Swal.fire({
             icon: "info",
@@ -151,7 +152,7 @@ function irDetalleContenedor(pTraslado, Bodega_Solicita) {
   /////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////
 //se aplican estilos a las filas cuyos documentos comienzan con 'T'.
-function aplicarEstilosTablaPedidos() {
+function aplicarEstilosTablaContenedor() {
   $('#tblpedido tbody tr').each(function () {
     var documentoValue = $(this).find('td:eq(0)').text().trim();
 
@@ -166,30 +167,30 @@ function aplicarEstilosTablaPedidos() {
   /////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////
 // //limpiar el contenido de la busqueda cuando cambia la fecha
-const fecha_ini=document.getElementById('fecha_ini');
-fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
+// const fecha_ini=document.getElementById('fecha_ini');
+// fecha_ini.addEventListener('change', function(){
+//   limpiarResultadoGeneral();
   
-});
- /////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////
-const fecha_fin=document.getElementById('fecha_fin');
-fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
+// });
+//  /////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////
+// const fecha_fin=document.getElementById('fecha_fin');
+// fecha_ini.addEventListener('change', function(){
+//   limpiarResultadoGeneral();
   
-});
+// });
   /////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////
 ///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
-const checkbox = document.getElementById('toggleSwitch');
-/////////////// Agregar un evento de cambio al checkbox/////////////
-checkbox.addEventListener('change', function () {
-  if (checkbox.checked === false) {
-    contenedoresProcesados();
-  } else {
-  }
- limpiarResultadoGeneral();
-});
+// const checkbox = document.getElementById('toggleSwitch');
+// /////////////// Agregar un evento de cambio al checkbox/////////////
+// checkbox.addEventListener('change', function () {
+//   if (checkbox.checked === false) {
+//     contenedoresProcesados();
+//   } else {
+//   }
+//  limpiarResultadoGeneral();
+// });
   /////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////
 //Fucnion que activa el toggleSwitch para ver los contenedorers procesados

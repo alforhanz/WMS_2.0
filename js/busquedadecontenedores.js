@@ -7,15 +7,18 @@ document.addEventListener("DOMContentLoaded", function (){
   if (busqueda === "true") {
     
     const parametrosBusqueda = localStorage.getItem('parametrosBusquedaContenedor');
+    localStorage.setItem('contenedorSwitch',true);
     
     if(parametrosBusqueda){
           const params = new URLSearchParams(parametrosBusqueda);
-          const pBodega = params.get('pBodega');
-          const pFechaDesde = params.get('pFechaDesde');
-          const pFechaHasta = params.get('pFechaHasta');
+          const pSistema = params.get('pSistema')
           const pUsuario = params.get('pUsuario');
-          const pConsecutivo = params.get('pConsecutivo');
-          enviarDatosControlador(pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo );
+          const pOpcion = params.get('pOpcion');
+          const pBodegaEnvia = params.get('pBodegaEnvia');
+          const pFechaDesde = params.get('pFechaDesde');
+          const pFechaHasta = params.get('pFechaHasta');          
+         
+          enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde);
         }        
     } 
 });
@@ -34,49 +37,61 @@ function validarBusquedaContenedor() {
       text: 'Por favor, seleccione una bodega.'
     });
     return false; // Evita que se envíe el formulario
-  }
-  else {
-    var pBodega = document.getElementById("bodega").value;
-    var pConsecutivo = $('#pContenedor').val();
-    var pFechaHasta = $('#fecha_fin').val();
-    var pFechaDesde = $('#fecha_ini').val();
-    var pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
-    
-    enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo);
-  }
+  }else {     
+
+          let pSistema='WMS'
+          let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+
+          let switchContenedor = localStorage.getItem('contenedorSwitch');
+          let pOpcion = "";
+
+          if (switchContenedor === "true") {
+              pOpcion = "E";
+          } else {
+              pOpcion = "A";
+          }
+
+          let pBodegaEnvia = document.getElementById("bodega").value;
+          // let pBodegaSolicita ="";
+          // let pConsecutivo = $('#pContenedor').val();
+          // let pEstado ="";
+          let pFechaHasta = $('#fecha_fin').val();
+          let pFechaDesde = $('#fecha_ini').val();
+      enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde);    
+   }
 }
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-function enviarDatosControlador( pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo) {
-  // mostrarLoading();
-  let pag = 1;
-  // var pBodega = document.getElementById("bodega").value;
-  // var pConsecutivo = $('#pContenedor').val();
-  // var pFechaHasta = $('#fecha_fin').val();
-  // var pFechaDesde = $('#fecha_ini').val();
-  // var pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
 
-  const params =
-    "?pBodega=" +
-    pBodega +
-    "&pFechaDesde=" +
-    pFechaDesde +
-    "&pFechaHasta=" +
-    pFechaHasta +
-    "&pUsuario=" +
-    pUsuario +
-    "&pConsecutivo=" +
-    pConsecutivo;
+function  enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde) {
+  
+      const params =
+                    "?pSistema="+ 
+                    pSistema+
+                    "&pUsuario="+
+                    pUsuario +
+                    "&pOpcion="+
+                    pOpcion+
+                    "&pBodegaEnvia="+
+                    pBodegaEnvia+                    
+                    "&pFechaDesde="+
+                    pFechaDesde +
+                    "&pFechaHasta="+
+                    pFechaHasta ;
 
-  //Mostrar Loader
-  mostrarLoader();
-//console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
 localStorage.setItem('parametrosBusquedaContenedor', params);
 localStorage.setItem('SearchParameterFlag', 'true');
 
-  fetch(env.API_URL + "contenedor/E" + params, myInit)
+  let pag = 1;
+
+  mostrarLoader();
+  //console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+env.API_URL +'contenedor'+params);
+  fetch(env.API_URL +"contenedor"+params, myInit)
     .then((response) => response.json())
     .then((result) => {
+      console.log('Resultados]API:');
+      console.log(result.contenedor);
+
       if (result.msg === "SUCCESS") {
         if (result.contenedor.length != 0) {
 
@@ -99,8 +114,24 @@ localStorage.setItem('SearchParameterFlag', 'true');
             col.innerHTML = key.Contenedor;
             col = fila.appendChild(document.createElement("td"));
             col.innerHTML = key.LineaConsecutivo;
-            col = fila.appendChild(document.createElement("td"));
-            col.innerHTML = key.LineaContada;
+
+            
+            (fila.appendChild(document.createElement("td"))).innerHTML = (pOpcion === "A") ? key.LineaCargada : key.LineaContada;
+              
+            //opcion A con operador ternario para la condicion
+            // col = fila.appendChild(document.createElement("td"));
+            // col.innerHTML = (pOpcion === "A") ? key.LineaCargada : key.LineaContada;
+
+
+            //opcion B mediante if else para la condicion
+            // if(pOpcion==="A"){
+            //   col = fila.appendChild(document.createElement("td"));
+            // col.innerHTML = key.LineaCargada;
+            // }else{
+            //     col = fila.appendChild(document.createElement("td"));
+            // col.innerHTML = key.LineaContada;
+            // }
+            
             col = fila.appendChild(document.createElement("td"));
             col.innerHTML = key.Bodega_Solicita;
             col = fila.appendChild(document.createElement("td"));
@@ -145,6 +176,8 @@ localStorage.setItem('SearchParameterFlag', 'true');
     });
 ocultarLoader();
 }
+
+
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //////////////////FUNCION PARA MOSTRAR EL DETALLE DE LOS PEDIDOS///////////
@@ -194,6 +227,8 @@ checkbox.addEventListener('change', function () {
   } else {
   }
  limpiarResultadoGeneral();
+ $('#toggleSwitch').prop('checked', true);
+ localStorage.setItem('contenedorSwitch',true)
 });
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -201,7 +236,7 @@ checkbox.addEventListener('change', function () {
 function contenedoresProcesados() {
 
   Swal.fire({
-    title: '¿Desea ver solo los pedidos finalizados?',
+    title: '¿Desea ver solo los contenedores finalizados?',
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'Sí',
@@ -212,9 +247,11 @@ function contenedoresProcesados() {
     // Resultado de la acción
     if (result.isConfirmed) {
       $('#toggleSwitch').prop('checked', false);
+      localStorage.setItem('contenedorSwitch',false);
 
     } else {
       $('#toggleSwitch').prop('checked', true);
+      localStorage.setItem('contenedorSwitch',true);
     }
   });
 }

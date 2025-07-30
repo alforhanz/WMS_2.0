@@ -19,33 +19,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function cargarDetalleContenedor(contenedor, bodegaSolicita) {
-        let pSistema='WMS'
-        let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;      
-        let pOpcion = "L";
-        let pBodegaEnvia = document.getElementById("bodega").value;
-        let pBodegaSolicita =bodegaSolicita;
-        let pConsecutivo = contenedor;
-   
   // Concatena la variable con texto y asigna el valor al label documento y pedido
   document.getElementById("contenedor").innerHTML = "Número de Contenedor: " + contenedor;
   document.getElementById("bodega_solicita").innerHTML = "Bodega destino: " + bodegaSolicita;
-    
-   const params =
-                    "?pSistema="+ 
-                    pSistema+
-                    "&pUsuario="+
-                    pUsuario +
-                    "&pOpcion="+
-                    pOpcion+
-                    "&pBodegaEnvia="+
-                    pBodegaEnvia+ 
-                    "&pBodegaSolicita="+
-                    pBodegaSolicita+  
-                    "&pConsecutivo="+
-                    pConsecutivo;               
 
+  const pConsecutivo = contenedor;//Se asigna el número del peddido a una variable constante para pasarlo como parametro
+  const params =
+    "?pConsecutivo=" +
+    pConsecutivo;
 
-  fetch(env.API_URL + "contenedor" + params, myInit)//obtierne las lineas del contenedor
+  fetch(env.API_URL + "contenedor/L" + params, myInit)//obtierne las lineas del contenedor
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
@@ -348,7 +331,8 @@ function armarTablaVerificacion(detalleLineasContenedor) {
             <td id="cantidadLeida"></td> <!-- Cantidad leída, inicialmente en blanco -->
             <td id="verificado"></td> 
             <td id="articulosEliminado" hidden>${detalle.ARTICULO_ELIMINADO}</td> 
-             <td id="solicitud" hidden>${detalle.Solicitud}</td>`;
+             <td id="solicitud" hidden>${detalle.Traslado}</td> 
+        `;
         // Agregar la fila al cuerpo de la tabla
         tbody.appendChild(newRow);
     });
@@ -362,8 +346,6 @@ function armarTablaVerificacion(detalleLineasContenedor) {
     // Limpiar la variable 'mensajes' del localStorage
     guardarTablaEnArray();    
 }
-
-
 //FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
 // POR ARTICULO, COMPARA LO QUE TIENE EL ARRAY DEL LS Y VERIFICA LAS COINCIDENCIAS, PARA MOSTRARLO EN LA PESTAÑA VERIFICACION
 
@@ -622,7 +604,7 @@ function inicializarBotones() {
     const botonGuardarParcial = document.createElement('button');
 
     // Configurar propiedades de los botones
-    botonProcesar.textContent = 'Procesar';
+    botonProcesar.textContent = 'Crear Paquete';
     botonProcesar.id = 'btnProcesar';
     botonProcesar.hidden = false;
     botonProcesar.onclick = confirmaProcesar; // Agregar onclick
@@ -649,7 +631,7 @@ function inicializarBotones() {
     botonProcesar.style.color = 'white';
     botonProcesar.style.marginTop = '16px';
     botonProcesar.style.marginLeft = '6em';
-    botonProcesar.style.height = '36px';
+    botonProcesar.style.height = '40px';
     botonProcesar.style.marginbottom = '25px';
 
     // Agregar botones al contenedor
@@ -713,9 +695,8 @@ function mostrarProcesoEnConstruccion() {
 
 //FUNCION DE GUARDADO PARCIAL
      function guardaParcialMente() {
-         let pSistema='WMS'
+        //var dataArray = JSON.parse(localStorage.getItem('dataArray'));
         let pUsuario = localStorage.getItem('username');
-        let pOpcion = "G";
         var pConsecutivo = localStorage.getItem('contenedor');
         
             // Array para almacenar todas las cantidades y artículos
@@ -729,7 +710,7 @@ function mostrarProcesoEnConstruccion() {
                         let row = table.rows[i];
 
                          // Obtener lasolicitud
-                        let solicitud = row.querySelector("#solicitud").textContent.trim();
+                        let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
                         
                         // Obtener el valor del artículo
                         let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
@@ -739,6 +720,9 @@ function mostrarProcesoEnConstruccion() {
                         
                         // Obtener la cantidad leída
                         let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
+
+                       
+
 
                         // if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
                         //       cantidadLeida = 0;
@@ -757,20 +741,16 @@ function mostrarProcesoEnConstruccion() {
                     }
             // Convertir el array de objetos a formato JSON
             var jsonDetalles = JSON.stringify(detalles);
-       console.log('JSONDetalles:\n\t:'+jsonDetalles);
-    const params =
-        "?let pSistema="+
-        pSistema+
-        "&pUsuario=" +
+       
+        const params =
+        "?pUsuario=" +
         pUsuario +
-        "&pOpcion="+
-        pOpcion+
         "&pConsecutivo=" +   
         pConsecutivo +
         "&jsonDetalles=" +
         jsonDetalles ;               
     
-      fetch(env.API_URL + "contenedor" + params, myInit)
+      fetch(env.API_URL + "contenedor/G" + params, myInit)
       .then((response) => response.json())     
       .then((result) => {  
         console.log("Respuesta del SP");
@@ -921,12 +901,18 @@ function columnaEstaVacia() {
    
 //FUNCION DE PROCESAR EL CONTENEDOR
 function procesarContenedor() {
-        let pSistema='WMS'
-        let pUsuario = localStorage.getItem('username');
-        let pOpcion = "P";
-        let pConsecutivo = localStorage.getItem('contenedor');
-        let pUsuarioAutorizacion = localStorage.getItem('UsuarioAutorizacion') || null;
       
+        let pUsuario = localStorage.getItem('username');
+        let pConsecutivo = localStorage.getItem('contenedor');
+       let pUsuarioAutorizacion = localStorage.getItem('UsuarioAutorizacion') || null;
+
+
+        //  let pUsuarioAutorizacion = localStorage.getItem('UsuarioAutorizacion');
+        //  pUsuarioAutorizacion = (pUsuarioAutorizacion && pUsuarioAutorizacion.trim() !== "") 
+        //  ? pUsuarioAutorizacion.toUpperCase() 
+        //  : null;
+
+       
             // Array para almacenar todas las cantidades y artículos
             var detalles = [];
        
@@ -968,12 +954,8 @@ function procesarContenedor() {
            
        
         const params =
-        "?let pSistema="+
-        pSistema+
-        "&pUsuario=" +
+        "?pUsuario=" +
         pUsuario +
-        "&pOpcion="+
-        pOpcion+
         "&pConsecutivo=" +   
         pConsecutivo +
         "&jsonDetalles=" +
@@ -991,13 +973,12 @@ function procesarContenedor() {
                         cancelButtonColor: "#6e7881",
                     })
         }else{
-                              
-            fetch(env.API_URL + "contenedor" + params, myInit)
+             console.log('Se ha guardado con exito el contenedor...')
+                 
+            fetch(env.API_URL + "contenedor/P" + params, myInit)
             .then((response) => response.json())     
             .then((result) => {          
                 if (result.msg === "SUCCESS") {
-                    console.log('Se ha Procesado con exito el contenedor...');
-                    console.log(result);
                 if (result.contenedor.length != 0) {   
                     // Resto del código de éxito
                     Swal.fire({
