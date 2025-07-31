@@ -164,9 +164,6 @@ function ValidaOrdenesDeCompra() {
     window.location.href = 'lineasOrdenCompraProcesada.html';
 }
 
-
-
-
 // //limpiar el contenido de la busqueda
 function limpiarResultadoGeneral() {
   const tabla = document.getElementById("tblordendecompra");

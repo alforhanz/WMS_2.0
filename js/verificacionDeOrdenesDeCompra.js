@@ -150,9 +150,7 @@ function ValidaOrdenesDeCompra() {
         }
       });
   }
-  
  
-
   function irDetalleOC(pOrden, OBSERVACION) {
     localStorage.setItem("OrdenDeCompra_finalizadas", checkbox.checked); 
     localStorage.setItem("OrdenDeCompra", pOrden);

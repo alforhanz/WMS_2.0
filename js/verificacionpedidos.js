@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
               }      
             }
     });
+
 function validarFormulario() {
   //revisar como toma el valor 
   var bodega = document.getElementById("bodega").value;
@@ -150,6 +151,7 @@ function mostrarResultadosVerificacionPedidos(nPag, pag) {
   htm += paginadorTablas(nPag, pag, 'mostrarResultadosVerificacionPedidos');
   document.getElementById("resultadoPaginador").innerHTML = htm;
 }
+
 function resultadosVerificacionPedidos(desde, hasta) {
 
   const bodega = document.getElementById('bodega').value; //obtener el numero de la bodega

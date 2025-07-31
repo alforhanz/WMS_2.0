@@ -118,7 +118,7 @@ function obtenerValorParametro(parametros, nombreParametro) {
 }//Fin de ver traslados lista
 
 function listadoTraslados(parametros) {
- 
+ let pag = 1;
   mostrarLoader();
 
   fetch(env.API_URL + "wmsverificaciontraslados/E" + parametros, myInit)
@@ -140,22 +140,27 @@ function listadoTraslados(parametros) {
           </div>`;
 
           document.getElementById("resultadoGeneral").innerHTML = htm;
-          mostrarResultadosVerificacionTraslados(nPag, 1);        
+          mostrarResultadosVerificacionTraslados(nPag, pag);        
           ocultarLoader();
           aplicarEstilosTabla();
         } else {
           Swal.fire({
             icon: "info",
             title: "Oops...",
-            text: "No tiene traslados pendientes!",
-            //footer: '<a href="#">Consulta a su supervisor inmediato.</a>',
+            text: "No tiene traslados pendientes!",           
             confirmButtonColor: '#28a745',
           });   
           limpiarResultadoGeneral();       
           ocultarLoader();
         }
       } else {
-      //  console.log("Error en el SP");
+        //  console.log("Error en el SP");
+            Swal.fire({
+                  icon: "info",
+                  title: "Información",            
+                  text: "Fallo en el API",
+                  confirmButtonColor: "#28a745",
+                });
       }
     });
 }
@@ -227,12 +232,7 @@ function resultadosVerificacionTraslados(desde, hasta) {
         htm += `<td>${Number(ArrayDataFiltrado[i].TOTAL_UNIDADES).toFixed(2)}</td>`;
         htm += `<td>${ArrayDataFiltrado[i].FECHA}</td>`;
         htm += `</tr>`;  
-      }
-
-      // htm += `<td>${ArrayDataFiltrado[i].LINEAS_VERIFICADAS}</td>`;
-      // htm += `<td>${ArrayDataFiltrado[i].LINEAS_PREPARADAS}</td>`;
-      // htm += `<td>${ArrayDataFiltrado[i].FECHA}</td>`;
-      // htm += `</tr>`;     
+      }     
     }
   }
   tbody.innerHTML = htm; // Insertar el contenido generado en el tbody 

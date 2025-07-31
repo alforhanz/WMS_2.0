@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", function (){ 
-  console.log("DOM cargado...");
+  //console.log("DOM cargado...");
   const busqueda = localStorage.getItem('SearchParameterFlag');
   localStorage.setItem('switch_procesados', 'false');
   if (busqueda === "true") {
@@ -24,161 +24,213 @@ document.addEventListener("DOMContentLoaded", function (){
 });
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-//busquedadecontenedores functions
 function validarBusquedaContenedor() {
-  //revisar como toma el valor
-  // mostrarLoading();
   var bodega = document.getElementById("bodega").value;
-  //revisar como toma el valor
-  if (bodega == "") {
+  if (bodega === "") {
     Swal.fire({
       icon: 'warning',
       title: 'Advertencia',
       text: 'Por favor, seleccione una bodega.'
     });
-    return false; // Evita que se envíe el formulario
-  }else {     
+    return false;
+  }
 
-          let pSistema='WMS'
-          let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+  let pSistema = 'WMS';
+  let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+  let switchContenedor = localStorage.getItem('contenedorSwitch');
+  let pOpcion = switchContenedor === "true" ? "E" : "A";
+  let pBodegaEnvia = document.getElementById("bodega").value;
+  let pFechaHasta = $('#fecha_fin').val();
+  let pFechaDesde = $('#fecha_ini').val();
 
-          let switchContenedor = localStorage.getItem('contenedorSwitch');
-          let pOpcion = "";
-
-          if (switchContenedor === "true") {
-              pOpcion = "E";
-          } else {
-              pOpcion = "A";
-          }
-
-          let pBodegaEnvia = document.getElementById("bodega").value;
-          // let pBodegaSolicita ="";
-          // let pConsecutivo = $('#pContenedor').val();
-          // let pEstado ="";
-          let pFechaHasta = $('#fecha_fin').val();
-          let pFechaDesde = $('#fecha_ini').val();
-      enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde);    
-   }
+  enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia, pFechaHasta, pFechaDesde);
 }
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
+function enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia, pFechaHasta, pFechaDesde) {
+  const params =
+    "?pSistema=" + pSistema +
+    "&pUsuario=" + pUsuario +
+    "&pOpcion=" + pOpcion +
+    "&pBodegaEnvia=" + pBodegaEnvia +
+    "&pFechaDesde=" + pFechaDesde +
+    "&pFechaHasta=" + pFechaHasta;
 
-function  enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde) {
-  
-      const params =
-                    "?pSistema="+ 
-                    pSistema+
-                    "&pUsuario="+
-                    pUsuario +
-                    "&pOpcion="+
-                    pOpcion+
-                    "&pBodegaEnvia="+
-                    pBodegaEnvia+                    
-                    "&pFechaDesde="+
-                    pFechaDesde +
-                    "&pFechaHasta="+
-                    pFechaHasta ;
-
-localStorage.setItem('parametrosBusquedaContenedor', params);
-localStorage.setItem('SearchParameterFlag', 'true');
+  localStorage.setItem('parametrosBusquedaContenedor', params);
+  localStorage.setItem('SearchParameterFlag', 'true');
 
   let pag = 1;
 
   mostrarLoader();
-  //console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+env.API_URL +'contenedor'+params);
-  fetch(env.API_URL +"contenedor"+params, myInit)
+  fetch(env.API_URL + "contenedor" + params, myInit)
     .then((response) => response.json())
     .then((result) => {
-      console.log('Resultados]API:');
-      console.log(result.contenedor);
-
+      //console.log("Datos de la API:", result); // Depuración
       if (result.msg === "SUCCESS") {
-        if (result.contenedor.length != 0) {
+        if (result.contenedor && result.contenedor.length > 0) {
+          ArrayData = result.contenedor;
+          ArrayDataFiltrado = result.contenedor;
 
-          let cantReg = result.contenedor.length;
+          //console.log("ArrayDataFiltrado:", ArrayDataFiltrado); // Depuración
+
+          let cantReg = ArrayDataFiltrado.length;
           let nPag = Math.ceil(cantReg / xPag);
-          const tabla = document.getElementById("tblcontenedores");
-          $("#tblcontenedores tbody").remove();
-          let i = 1;
-          let htm = "";
-          htm = `<div class="row" id="totalregistros">
-            <div class="col s12"><span>Total de Registros: </span><span>${result.contenedor.length}</span></div>
-            </div>`;
-          result.contenedor.forEach(function (key) {
-            //fecha = key.FECHA_PEDIDO.split(" ");
 
-            let tblBody = document.createElement("tbody");
-            let fila = document.createElement("tr");
-            fila.setAttribute("onclick", `irDetalleContenedor('${key.Contenedor}','${key.Bodega_Solicita}');`);
-            let col = fila.appendChild(document.createElement("td"));
-            col.innerHTML = key.Contenedor;
-            col = fila.appendChild(document.createElement("td"));
-            col.innerHTML = key.LineaConsecutivo;
+          //console.log("nPag:", nPag, "cantReg:", cantReg, "xPag:", xPag); // Depuración
 
-            
-            (fila.appendChild(document.createElement("td"))).innerHTML = (pOpcion === "A") ? key.LineaCargada : key.LineaContada;
-              
-            //opcion A con operador ternario para la condicion
-            // col = fila.appendChild(document.createElement("td"));
-            // col.innerHTML = (pOpcion === "A") ? key.LineaCargada : key.LineaContada;
-
-
-            //opcion B mediante if else para la condicion
-            // if(pOpcion==="A"){
-            //   col = fila.appendChild(document.createElement("td"));
-            // col.innerHTML = key.LineaCargada;
-            // }else{
-            //     col = fila.appendChild(document.createElement("td"));
-            // col.innerHTML = key.LineaContada;
-            // }
-            
-            col = fila.appendChild(document.createElement("td"));
-            col.innerHTML = key.Bodega_Solicita;
-            col = fila.appendChild(document.createElement("td"));
-            col.innerHTML = key.Fecha_Creacion;
-
-            tblBody.appendChild(fila);
-            tabla.appendChild(tblBody);
-
-            // Aplicar estilos a las filas de la tabla
-            let rows = document.querySelectorAll("#tblcontenedores tbody tr");
-            rows.forEach((row, index) => {
-              if (index % 2 === 0) {
-                row.style.backgroundColor = "#f2f2f2";
-              } else {
-                row.style.backgroundColor = "#ffffff";
-              }
-            });
-          });
+          // Mostrar total de registros
+          const htm = `<div class="row" id="totalregistros">
+            <div class="col s12"><span>Total de Registros: </span><span>${cantReg}</span></div>
+          </div>`;
           document.getElementById("resultadoGeneral").innerHTML = htm;
 
-          //paginador para pedidos
-          document.getElementById("resultadoPaginador").innerHTML =
-            paginadorPedidos(nPag, pag, "1040");
+          // Limpiar tabla antes de renderizar
+          const tabla = document.getElementById("tblcontenedores");
+          let tbody = tabla.querySelector("tbody");
+          if (tbody) {
+            tbody.innerHTML = "";
+          } else {
+            tbody = document.createElement("tbody");
+            tabla.appendChild(tbody);
+          }
 
+          // Mostrar resultados y paginación
+          mostrarResultadosVerificacionContenedores(nPag, pag);
           document.getElementById("carga").innerHTML = "";
-          //Ocultar Loader
           ocultarLoader();
-          aplicarEstilosTablaPedidos();
-        }else{
+          aplicarEstilosTabla();
+
+          // Inicializar select de Materialize CSS
+          M.FormSelect.init(document.querySelectorAll(".paginador-select"));
+        } else {
+          document.getElementById("resultadoGeneral").innerHTML = "";
+          document.getElementById("resultadoPaginador").innerHTML = "";
           Swal.fire({
             icon: "info",
-            title: "Información",            
-            text: "No hay registros asignados para el usuario: "+pUsuario,
+            title: "Información",
+            text: "No hay registros asignados para el usuario: " + pUsuario,
             confirmButtonColor: "#28a745",
           });
+          ocultarLoader();
         }
-        document.getElementById("carga").innerHTML = "";
-        //limpiarResultadoGeneral();
+      } else {
+        document.getElementById("resultadoGeneral").innerHTML = "";
+        document.getElementById("resultadoPaginador").innerHTML = "";
+        Swal.fire({
+          icon: "info",
+          title: "Información",
+          text: "Fallo en el API",
+          confirmButtonColor: "#28a745",
+        });
+        ocultarLoader();
       }
-      else {
-      }
+    })
+    .catch((error) => {
+      console.error("Error en la solicitud fetch:", error);
+      document.getElementById("resultadoGeneral").innerHTML = "";
+      document.getElementById("resultadoPaginador").innerHTML = "";
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al consultar los datos.",
+        confirmButtonColor: "#28a745",
+      });
+      ocultarLoader();
     });
-ocultarLoader();
 }
-
-
 /////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+function mostrarResultadosVerificacionContenedores(nPag, pag) {
+  let desde = (pag - 1) * xPag;
+  let hasta = pag * xPag;
+
+  //console.log("Mostrando página:", pag, "desde:", desde, "hasta:", hasta); // Depuración
+  resultadosVerificacionContenedores(desde, hasta);
+
+  let htm = paginadorTablasContenedor(nPag, pag, 'mostrarResultadosVerificacionContenedores');
+  document.getElementById("resultadoPaginador").innerHTML = htm;
+
+  // Inicializar select de Materialize CSS
+  M.FormSelect.init(document.querySelectorAll(".paginador-select"));
+}
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+function resultadosVerificacionContenedores(desde, hasta) {
+  let parametrosBusqueda = localStorage.getItem('parametrosBusquedaContenedor');
+  let pOpcion = '';
+  if (parametrosBusqueda) {
+    const params = new URLSearchParams(parametrosBusqueda);
+    pOpcion = params.get('pOpcion');
+  }
+
+  // Asegúrate de que ArrayDataFiltrado esté definido y tenga datos
+  if (!ArrayDataFiltrado || ArrayDataFiltrado.length === 0) {
+    console.error("ArrayDataFiltrado no está definido o está vacío.");
+    return;
+  }
+
+  // Obtener la tabla y su tbody
+  const tabla = document.getElementById("tblcontenedores");
+  let tbody = tabla.querySelector("tbody");
+
+  // Limpiar el tbody existente o crear uno nuevo
+  if (tbody) {
+    tbody.innerHTML = "";
+  } else {
+    tbody = document.createElement("tbody");
+    tabla.appendChild(tbody);
+  }
+
+  let htm = "";
+  for (let i = desde; i < hasta && i < ArrayDataFiltrado.length; i++) {
+    const key = ArrayDataFiltrado[i];
+    let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
+
+    htm += `<tr onclick="irDetalleContenedor('${key.Contenedor}', '${key.Bodega_Solicita}')" style="background-color:${backgroundColor};">`;
+    htm += `<td>${key.Contenedor || ''}</td>`;
+    htm += `<td>${Number(key.LineaConsecutivo || 0).toFixed(2)}</td>`;
+    htm += `<td>${pOpcion === "A" ? Number(key.LineaCargada || 0).toFixed(2) : Number(key.LineaContada || 0).toFixed(2)}</td>`;
+    htm += `<td>${key.Bodega_Solicita || ''}</td>`;
+    htm += `<td>${key.Fecha_Creacion || ''}</td>`;
+    htm += `</tr>`;
+  }
+
+  // //console.log("HTML generado para la tabla:", htm); // Depuración
+  tbody.innerHTML = htm; // Insertar el contenido generado en el tbody
+  document.getElementById("carga").innerHTML = ""; // Limpiar el elemento carga
+}
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+function paginadorTablasContenedor(nPag, pag, dynamicFunction) {
+  let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+              <option value="" disabled selected>Páginas</option>`;
+  for (let i = 1; i <= nPag; i++) {
+    const selected = i === pag ? "selected" : "";
+    sel += `<option value="${i}" ${selected}>${i}</option>`;
+  }
+  sel += `</select>`;
+
+  const btnAtras = pag <= 1
+    ? `<a class="paginador-btn disabled">❮ Anterior</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
+
+  const btnSig = pag >= nPag
+    ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
+
+  return `
+    <div id="paginador" class="paginador-container">
+      <div class="row paginador-info">
+        <div class="col s12 center-align">Página ${pag} de ${nPag}</div>
+      </div>
+      <div class="row paginador-controls">
+        <div class="col s4 paginador-btn-container">${btnAtras}</div>
+        <div class="col s4 paginador-select-container">${sel}</div>
+        <div class="col s4 paginador-btn-container">${btnSig}</div>
+      </div>
+    </div>
+  `;
+}
 /////////////////////////////////////////////////////////////////////
 //////////////////FUNCION PARA MOSTRAR EL DETALLE DE LOS PEDIDOS///////////
 function irDetalleContenedor(pTraslado, Bodega_Solicita) {
@@ -186,10 +238,10 @@ function irDetalleContenedor(pTraslado, Bodega_Solicita) {
   localStorage.setItem("bodega_solicita", Bodega_Solicita);
   window.location.href = 'lineasContenedor.html';
 }
-/////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //se aplican estilos a las filas cuyos documentos comienzan con 'T'.
-function aplicarEstilosTablaPedidos() {
+function aplicarEstilosTabla() {
   $('#tblpedido tbody tr').each(function () {
     var documentoValue = $(this).find('td:eq(0)').text().trim();
 
@@ -206,19 +258,17 @@ function aplicarEstilosTablaPedidos() {
 // //limpiar el contenido de la busqueda cuando cambia la fecha
 const fecha_ini=document.getElementById('fecha_ini');
 fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
-  
+  limpiarResultadoGeneral();  
 });
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 const fecha_fin=document.getElementById('fecha_fin');
 fecha_ini.addEventListener('change', function(){
-  limpiarResultadoGeneral();
-  
+  limpiarResultadoGeneral();  
 });
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-///////////// Obtener el elemento toggleSwitch de entrada tipo checkbox//////////
+// Obtener el elemento toggleSwitch de entrada tipo checkbox////////
 const checkbox = document.getElementById('toggleSwitch');
 /////////////// Agregar un evento de cambio al checkbox/////////////
 checkbox.addEventListener('change', function () {
