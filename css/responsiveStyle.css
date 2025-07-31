@@ -230,6 +230,19 @@
     padding-top: 20% !important;
 }
 
+.flotante-acciones {
+    position: absolute;
+    bottom: 164px;
+    right: 9px;
+    width: 28px !important;
+    background: #bfbbbb94;
+    border-radius: 16px;
+    padding-top: 14px!important;
+    border: solid 1px #c1c1c1a8;
+    margin-left: 12em;
+}
+
+
   }  
 
 
@@ -273,20 +286,7 @@
     .row .col.m4 {
       width: 25%!important;   
   }
-  /* .flotante-acciones {
-    position: absolute;
-    top: 9em;
-    bottom: 0px;
-    right: 0px;
-    width: 22%;
-    height: 5em;
-    background: #bfbbbb94;
-    padding: 6px;
-    border-radius: 16px;
-    padding-top: 21px;
-    border: solid 1px #c1c1c1a8;
-    margin-left: 12em;
-} */
+
   .grid-container {
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas */
   }
@@ -329,13 +329,7 @@
 .grid-container {
   grid-template-columns: repeat(3, minmax(0, 1fr)); /* 2 columnas */
 }
-/* .flotante-acciones {
-  position: absolute;
-  top: 16em;
-  right: 14px;
-  width: 14%;
-  height: 5em;  
-} */
+
 
 
   }
@@ -452,13 +446,7 @@
   .grid-container {
     grid-template-columns: repeat(4, minmax(0, 1fr)); /* 2 columnas */
   }
-  /* .flotante-acciones {
-    position: absolute;
-    top: 10em;
-    right: 17px;
-    width: 16%;
-    height: 6em;
-} */
+
   }
   
   /* Large only (min-width: 64em and max-width: 74.9375em = 1024px - 1199px) */
@@ -472,13 +460,7 @@
     .grid-container {
       grid-template-columns: repeat(4, minmax(0, 1fr)); /* 2 columnas */
     }
-    /* .flotante-acciones {
-      position: absolute;
-      top: 23em;
-      right: 17px;
-      width: 14%;
-      height: 7em;    
-  } */
+
   }
   
   /* Reglas adicionales que no encajan exactamente en los rangos solicitados */

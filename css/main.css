@@ -2319,7 +2319,7 @@ font-size: 20px !important;
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 8px; /* Opcional: para estética */
+  border-radius: 8px; 
 }
 
 .articulo-titulo,
@@ -2329,20 +2329,33 @@ font-size: 20px !important;
   text-align: center;
 }
 
- /* #envoltorio {
-       bottom: 5px;   
-  } */
-
-  .flotante-acciones {
+.flotante-acciones {
     position: absolute;
     bottom: 215px;
     right: 10px;
-    width: 30px;
+    width: 37px !important;
     background: #bfbbbb94;
     border-radius: 16px;
-    padding-top: 19px;
+    padding-top: 23px!important;
     border: solid 1px #c1c1c1a8;
     margin-left: 12em;
+}
+
+.link-flotante-acciones-forklift{
+    width: 71%!important;
+    padding-bottom: 9px!important;   
+    margin-left: 5px!important;
+}
+.link-flotante-acciones-bar-code{
+    width: 78%!important;
+    padding-bottom: 10px!important;    
+    margin-left: 3px!important;
+}
+
+.link-flotante-acciones-information{
+    width: 70%!important;
+    padding-bottom: 10px!important;    
+    margin-left: 4px!important;
 }
 .mi-tienda {
   position: absolute;

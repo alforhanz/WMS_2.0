@@ -1,7 +1,7 @@
   /////////////////////////////////////////////////////////////////////
  /////////////////////////////////////////////////////////////////////
 class MyHeader extends HTMLElement {
-  connectedCallback() {
+  connectedCallback() { 
     this.innerHTML = `
 <header id="header" class="page-topbar">
     <!-- encabezado logo-->

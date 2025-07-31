@@ -190,3 +190,15 @@ function imprimeCodigo() {
         confirmButtonColor: '#55b251'
     });
 }
+  function confirmaRegresar() {
+        let nPag = 0;
+        let pag = 1;
+    let BusquedaDeArticulos = JSON.parse(localStorage.getItem("articulo-Busqueda"));
+    console.log("BusquedaDeArticulos:");
+    console.log(BusquedaDeArticulos);
+    ArrayDataFiltrado=BusquedaDeArticulos;
+     mostrarResultadosBusqueda(nPag, pag);  
+    localStorage.removeItem('mensajes');
+    //localStorage.clear();
+   //window.location.href = 'verificacionDeTraslados.html';
+  }

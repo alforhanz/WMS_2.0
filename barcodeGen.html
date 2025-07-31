@@ -19,6 +19,7 @@
     <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
     <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
     <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+   <!-- <script src="js/encabezado.js" type="text/javascript"></script> -->
     <script src="js/encabezadoImpCodBar.js" type="text/javascript"></script>
 
     <style>
@@ -73,9 +74,16 @@
     <!-- HEADER -->
     <my-header></my-header>
     <!--HEADER-->
+   
     <main class="barcodeGen">
+       <div id="resultadoBusqueda"></div>
         <div class="container">
+
             <!-- <h1>Generador de Códigos de Barras</h1> -->
+              <div>
+          <i id="retornar" class="material-icons green-text" style="cursor: pointer;"
+            onclick="confirmaRegresar()">keyboard_backspace</i>
+        </div>
             <!-- Symbology Selection -->
             <label for="symbology">Elija la simbología de código de barras:</label>
             <select id="symbology">

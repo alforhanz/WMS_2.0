@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  
+
 });
 //-----------------------------------------------------------------------------------
 
@@ -1202,20 +1205,16 @@ function BuscarBorrar(cadena, value) {
   });
   return arreglo.toString();
 }
-////////////////// BUSQUEDA DE ARTICULOS EN INVENTARIO X BODEGA /////////////////////////////////////////
+
+
+// function preBusqueda(art) {
 function preBusqueda() {
   let nPag = 0;
   let pag = 1;
+  
   let articulo = document.getElementById("articulo").value.trim();
-  // if (!articulo) {
-  //   Swal.fire({
-  //     icon: "warning",
-  //     title: "Advertencia",
-  //     text: "Por favor, ingrese un artículo para buscar.",
-  //     confirmButtonColor: "#28a745",
-  //   });
-  //   return;
-  // }
+  
+
   const art = encodeURIComponent(articulo);
   let bodega = document.getElementById("bodega").value;
   let clase = localStorage.getItem('claseSelect') || '';
@@ -1275,10 +1274,14 @@ function preBusqueda() {
       if (result && result.msg === "SUCCESS") {
         console.log('Cantidad de Registros: ', result.data.length);
         console.log(result.data);
+        
         if (result.data.length > 0) {
           ArrayData = result.data;
           ArrayDataFiltrado = result.data;
-          console.log("DATA DE BUSQUEDA...", ArrayData);
+         localStorage.setItem("articulo-Busqueda", JSON.stringify(ArrayData));
+
+
+          //console.log("DATA DE BUSQUEDA...", ArrayData);
           let totales = ArrayDataFiltrado.length;
           nPag = Math.ceil(totales / xPag);
           LimpiarFiltroPre(1);
@@ -1569,13 +1572,16 @@ function mostrarResultados(desde, hasta) {
   let url = "";
 
       const checkbox = document.getElementById("sinExistencias");
-      let esistencias= localStorage.getItem("sinExistencias")==="true";
+if(checkbox){
+let esistencias= localStorage.getItem("sinExistencias")==="true";
           if(esistencias){
             checkbox.checked=true;
           }else{
             checkbox.checked=false;
           }
+}
 
+      
 
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
@@ -1639,14 +1645,19 @@ function mostrarResultados(desde, hasta) {
                   ${bodegaLabel}
                </a>
                <div class="flotante-acciones ${colorReorden}">
-                  <div class="link-flotante-acciones " style="padding-bottom: 9px;margin-right: 2px;">
+                  <div class="link-flotante-acciones-forklift " >
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')">
                      <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" tabindex="1">
                    </a>             
                  </div>
-                  <div class="link-flotante-acciones " style="padding-bottom: 10px;margin-right: 3px;margin-left: 3px;">
+                  <div class="link-flotante-acciones-bar-code ">
                    <a id="dropbtn${i}" class="dropbtn2x" onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')">
                    <img src="./img/icon/bar-code.svg"  width="22" height="22">
+                   </a>             
+                 </div>
+                    <div class="link-flotante-acciones-information " >
+                   <a id="dropbtn${i}" class="dropbtn2x" onclick="information('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')">
+                   <img src="./img/icon/information.svg"  width="22" height="22">
                    </a>             
                  </div>
                </div>          
@@ -1657,9 +1668,6 @@ function mostrarResultados(desde, hasta) {
         </div>`;
     }
   }
-
-
-
   htm += "</div>"; // Cierra grid-container
   htm += "</div>"; // Cierra lista-articulo
   return htm;
@@ -1836,7 +1844,6 @@ function paginadorPedidos(nPag, pag, IDCategoria) {
       </div><br>`;
 }
 //-----------------------------------------------------------------------------------
-
 
 function paginadorTablas(nPag, pag, dynamicFunction) {
   // Generar el select con las páginas
@@ -2222,6 +2229,34 @@ function impCodBar(p_Articulo,p_Descripcion) {
  localStorage.setItem('impCodeBar', p_Articulo);
  localStorage.setItem('descripcionImpCode',p_Descripcion);
  window.location.href = 'barcodeGen.html';
+}
+
+function information(p_Articulo,p_Descripcion){
+ let codeArticulo;
+ let descripcion;
+  try {
+    codeArticulo = decodeURIComponent(p_Articulo); // Decodificar para el título y API
+    descripcion= decodeURIComponent(p_Descripcion);
+  } catch (e) {
+    console.error("Error decodificando código:", e);
+    code = p_Articulo; // Usar codificado como respaldo
+  }
+
+Swal.fire({
+  
+  title: "Artículo: " + codeArticulo,
+  icon:"info",
+  html: `
+    <div style="text-align: left;">
+      <h5>Descripción:${descripcion}</h5><br><br>
+      El color <span style="color:red; font-weight:bold;">rojo</span> indica existencias por debajo del punto de reorden, se recomienda hacer solicitud de este artículo o referencia.<br><br>
+      El color <span style="color:green; font-weight:bold;">verde</span> indica que el punto de reorden es estable.
+    </div>
+  `,
+  confirmButtonText: "Aceptar",
+  confirmButtonColor: "#55b251"
+});
+//SP getDetalleArticulo
 }
 
 
