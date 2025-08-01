@@ -1881,40 +1881,6 @@ function paginadorTablas(nPag, pag, dynamicFunction) {
     </div>
   `;
 }
-
-// function paginadorTablas(nPag, pag, dynamicFunction) {
-//   // Generar el select con las páginas
-//   let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
-//               <option value="" disabled selected>Páginas</option>`;
-//   for (let i = 1; i <= nPag; i++) {
-//     const selected = i === pag ? "selected" : "";
-//     sel += `<option value="${i}" ${selected}>${i}</option>`;
-//   }
-//   sel += `</select>`;
-
-//   // Botones de navegación
-//   const btnAtras = pag <= 1
-//     ? `<a class="paginador-btn disabled">❮ Anterior</a>`
-//     : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
-
-//   const btnSig = pag >= nPag
-//     ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
-//     : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
-
-//   // Retornar el HTML
-//   return `
-//     <div id="paginador" class="paginador-container">
-//       <div class="row paginador-info">
-//         <div class="col s12 center-align">Página ${pag} de ${nPag}</div>
-//       </div>
-//       <div class="row paginador-controls">
-//         <div class="col s4 paginador-btn-container">${btnAtras}</div>
-//         <div class="col s4 paginador-select-container">${sel}</div>
-//         <div class="col s4 paginador-btn-container">${btnSig}</div>
-//       </div>
-//     </div>
-//   `;
-// }
 //---------------------------------------------------------------------------
 function cambiarVistaMosaico() {
   mostrarResultadosBusqueda(4, 1);
@@ -2499,4 +2465,20 @@ function imprimeCodigo() {
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#55b251'
     });
+}
+
+function information(codeArticulo,descripcion){
+  Swal.fire({
+  title: "Artículo: " + codeArticulo,
+  html: `
+    <div style="text-align: left;">
+      ${descripcion}<br><br>
+      El color <span style="color:red; font-weight:bold;">rojo</span> indica existencias por debajo del punto de reorden, se recomienda hacer solicitud de este artículo o referencia.<br><br>
+      El color <span style="color:green; font-weight:bold;">verde</span> indica que el punto de reorden es estable.
+    </div>
+  `,
+  confirmButtonText: "Aceptar",
+  confirmButtonColor: "#55b251"
+});
+
 }
