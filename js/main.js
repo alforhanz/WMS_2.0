@@ -2234,12 +2234,11 @@ function impCodBar(p_Articulo,p_Descripcion) {
 mostrarModalGeneradorCodigoBarras();
 }
 function mostrarModalGeneradorCodigoBarras() {
-  const descripcion = localStorage.getItem('descripcionImpCode') || '';
+  const esPantallaPequena = window.matchMedia("(max-width: 600px)").matches;
   
   Swal.fire({
     title: 'Generador de Códigos de Barras',
-    width: '60%',
-    padding: '2em',
+    width: esPantallaPequena ? '100%' : '60%',     padding: '2em',
     showConfirmButton: false,
     showCloseButton: true,
     html: `
@@ -2272,6 +2271,13 @@ function mostrarModalGeneradorCodigoBarras() {
         #printBarcode {
           width: 35%;
         }
+          /* Small only */
+        @media screen and (max-width: 39.9375em) {
+        
+         #printBarcode {
+          width: 100%!important;
+        }
+        }   
       </style>            
       <div class="container">
         <label for="symbology">Elija la simbología de código de barras:</label>
@@ -2306,10 +2312,6 @@ function mostrarModalGeneradorCodigoBarras() {
   };
   document.body.appendChild(script);
 }
-
-    // didOpen: () => {
-    //   inicializarGenerador();
-    // }
   });
 }
 function inicializarGenerador() {
