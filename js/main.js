@@ -1621,9 +1621,7 @@ let esistencias= localStorage.getItem("sinExistencias")==="true";
 
       // URL de la imagen (manejo de FOTO = "S" o "N")
       const imagenUrl =
-        ArrayDataFiltrado[i].FOTO === "S"
-          ? `${env.API_IMAGE}/${DArticulo}`
-          : "https://via.placeholder.com/150?text=Sin+Imagen"; // Imagen por defecto si FOTO = "N"
+        ArrayDataFiltrado[i].FOTO === "S"? `${env.API_IMAGE}/${DArticulo}` : "https://via.placeholder.com/150?text=Sin+Imagen"; // Imagen por defecto si FOTO = "N"
 
       url = `href="#"`;
 
@@ -1944,7 +1942,7 @@ function resultadosVistaLista(desde, hasta) {
               <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
               <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
               <td>
-                <i class="material-symbols-outlined" onclick="mostrarImagen('${ArrayDataFiltrado[i].ARTICULO}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
+                <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
                 <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`; // Puedes poner aquí el botón de acción que desees
@@ -2054,13 +2052,13 @@ function mostrarImagen(codigo, descripcion) {
     console.error("Error decodificando código:", e);
     code = codigo; // Usar codificado como respaldo
   }
-
+  //console.log(env.API_IMAGE+"/"+code.replace("/", "-"));
   Swal.fire({
     confirmButtonColor: "#28a745",
     html: `
       <div>
         <h3>${code}</h3>
-        <img src="${env.API_IMAGE}/${codigo}" alt="Imagen" width="200" height="200">
+        <img src="${env.API_IMAGE}/${code.replace("/", "-")}" alt="Imagen" width="200" height="200">
         <p>${descripcion}</p>
       </div>
     `,
