@@ -33,10 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 //-----------------------------------------------------------------------------------
-
-// Llama a la función cuando cargue la página
-// document.addEventListener("DOMContentLoaded", manejarCheckboxSinExistencias);
-//-----------------------------------------------------------------------------------
 function validate_login() {
   const user = sessionStorage.getItem("user");
   if (user) {
@@ -627,7 +623,7 @@ function message(info, titulo, mensaje) {
     confirmButtonColor: "#000",
   });
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function validate_error(mensaje) {
   let message = mensaje;
   Swal.fire({
@@ -637,31 +633,31 @@ function validate_error(mensaje) {
     confirmButtonColor: "#000",
   });
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function existe_Usuario() {
   const usuario = sessionStorage.getItem("user");
   return JSON.parse(usuario) || [];
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function expand(id) {
   let ids = document.getElementById(id);
   if (ids.style.display === "none") ids.style.display = "table-row-group";
   else ids.style.display = "none";
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function closetooltips() {
   document.querySelectorAll(".tooltips-luciano").forEach(function (el) {
     el.style.display = "none";
   });
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function CerrarModal(key) {
   //console.log(key);
   elem = document.getElementById(key);
   let instance = M.Modal.getInstance(elem);
   instance.close();
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function ordenarDescripcion(data) {
   return data.sort(function (a, b) {
     if (a.DESCRIPCION > b.DESCRIPCION) {
@@ -673,8 +669,7 @@ function ordenarDescripcion(data) {
     return 0;
   });
 }
-
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function MostrarRemates() {
   let cant = 0;
   for (const item of ArrayData) {
@@ -684,7 +679,7 @@ function MostrarRemates() {
   }
   return cant;
 }
-//--------------------------------Mostrar Marcas-------------------------------------
+//--------------------------------Mostrar Marcas---------------------------------------
 function MostrarMarcas(opt) {
   const result = [];
   const map = new Map();
@@ -746,7 +741,7 @@ function MostrarClases(opt) {
   }
   return claseHTML;
 }
-//--------------------------------Mostrar Tipos---------------------------------------
+//--------------------------------Mostrar Tipos----------------------------------------
 function MostrarTipos(opt) {
   const result = [];
   const map = new Map();
@@ -777,7 +772,7 @@ function MostrarTipos(opt) {
   }
   return tipoHTML;
 }
-//--------------------------------Mostrar SubTipos---------------------------------------
+//--------------------------------Mostrar SubTipos-------------------------------------
 function MostrarSubTipos(opt) {
   const result = [];
   const map = new Map();
@@ -808,7 +803,7 @@ function MostrarSubTipos(opt) {
   }
   return subtipoHTML;
 }
-//--------------------------------Mostrar SubTipos2---------------------------------------
+//--------------------------------Mostrar SubTipos2------------------------------------
 function MostrarSubTipos2(opt) {
   const result = [];
   const map = new Map();
@@ -839,7 +834,7 @@ function MostrarSubTipos2(opt) {
   }
   return subtipo2HTML;
 }
-//--------------------------------Mostrar Envases---------------------------------------
+//--------------------------------Mostrar Envases--------------------------------------
 function MostrarEnvases(opt) {
   const result = [];
   const map = new Map();
@@ -870,7 +865,7 @@ function MostrarEnvases(opt) {
   }
   return envaseHTML;
 }
-//-----------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function mostrarFiltro(data, id, opt) {
   data = ordenarDescripcion(data);
   let claseSelect, marcaSelect, tipoSelect, subtipoSelect, subtipo2Select;
@@ -965,11 +960,11 @@ function mostrarFiltro(data, id, opt) {
     return htm;
   } else return "<label >Filtro no existe</label>";
 }
-//--------------------------Guardar Envase Seleccionado------------------------------
+//--------------------------Guardar Envase Seleccionado-------------------------------
 function guardarEnvaseSelect(envaseSelect) {
   localStorage.setItem('envaseSelect', envaseSelect);
 }
-//-----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function getFiltro(id, txtInput) {
   let valorM = "",
     valorC = "",
@@ -1206,9 +1201,7 @@ function BuscarBorrar(cadena, value) {
   });
   return arreglo.toString();
 }
-
-
-// function preBusqueda(art) {
+//------------------------------------------------------------------------------------
 function preBusqueda() {
   let nPag = 0;
   let pag = 1;
@@ -1309,7 +1302,7 @@ function preBusqueda() {
       }
     });
 }
-//------------------------------Filtrado Post Busqueda para los resultados--------------------------------
+//------------------------------Filtrado Post Busqueda para los resultados------------
 function Filtrar(IDCategoria, seccion) {
   let pag = 1;
   idCat = document.getElementById("txtCategoria").value;
@@ -1424,7 +1417,7 @@ function Filtrar(IDCategoria, seccion) {
   ////console.log(ArrayDataFiltrado);
   //ArrayData;
 }
-//-----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function getFiltrarResultado(filtradoPor) {
   //console.log("Estas pasando por getFiltrarResultado");
   //console.log(ArrayData);
@@ -1516,7 +1509,7 @@ function LimpiarFiltroPre(opt) {
     });
   }
 }
-//------------------------Limpiar Filtros Post Busqueda--------------------------------
+//------------------------Limpiar Filtros Post Busqueda-------------------------------
 function LimpiarFiltro(IDCategoria) {
   Swal.fire({
     title: "¿Deseas limpiar toda la información?",
@@ -1541,7 +1534,7 @@ function LimpiarFiltro(IDCategoria) {
     }
   });
 }
-//-----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 function mostrarResultadosBusqueda(nPag, pag) {
   let htm = "";
   let desde = (pag - 1) * xPag;
@@ -1670,9 +1663,7 @@ let esistencias= localStorage.getItem("sinExistencias")==="true";
   htm += "</div>"; // Cierra lista-articulo
   return htm;
 }
-
-//-----------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------------
 function paginador(nPag, pag) {
   //MUESTRA LA CANTIDAD DE PAGINA
   let selected = "";
@@ -1720,7 +1711,7 @@ function paginador(nPag, pag) {
         </div>
       </div><br>`;
 }
-//---------------------------------MODAL LATERAL-------------------------------------
+//---------------------------------MODAL LATERAL--------------------------------------
 $(document).ready(function () {
   $("#bodega-sucursal").click(function () {
     const usuario = existe_Usuario();
@@ -1768,8 +1759,8 @@ $(document).ready(function () {
   });
   //---------------------------------------------------------------------------------
 });
-/////////////////////////////////////// LOGOUT //////////////////////////------------
-//-----------------------------------------------------------------------------------
+/////////////////////////////////////// LOGOUT //////////////////////////-------------
+//------------------------------------------------------------------------------------
 function logout() {
   // Eliminar todas las variables de sessionStorage
   Object.keys(sessionStorage).forEach(function (key) {
@@ -1790,7 +1781,7 @@ function mostrarLoading() {
   $('.loading').show();
   document.querySelector('.loading').style.display = 'block';
 }
-//---------------FUNCION PAGINADOR PARA BUSQUEDA PEDIDOS/COTIZACIONES------------------
+//---------------FUNCION PAGINADOR PARA BUSQUEDA PEDIDOS/COTIZACIONES-----------------
 function paginadorPedidos(nPag, pag, IDCategoria) {
   //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
   //console.log("nPag:" + nPag + "- pag:" + pag);
@@ -1841,8 +1832,7 @@ function paginadorPedidos(nPag, pag, IDCategoria) {
         </div>
       </div><br>`;
 }
-//-----------------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------------
 function paginadorTablas(nPag, pag, dynamicFunction) {
   // Generar el select con las páginas
   let selected = "";
@@ -1879,7 +1869,7 @@ function paginadorTablas(nPag, pag, dynamicFunction) {
     </div>
   `;
 }
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 function cambiarVistaMosaico() {
   mostrarResultadosBusqueda(4, 1);
 }
@@ -1945,6 +1935,7 @@ function resultadosVistaLista(desde, hasta) {
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
                 <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
+                <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`; // Puedes poner aquí el botón de acción que desees
       htm += `</tr>`;
     }
@@ -1965,7 +1956,7 @@ function resultadosVistaLista(desde, hasta) {
     1000
   );
 }
-//-----------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 function cambiarVistaLista() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   let bodegaCod = bodega[0].BODEGA;
@@ -2021,6 +2012,7 @@ function cambiarVistaLista() {
                 <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
                 <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}')" tabindex="1">                
                <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
+               <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
               </td>`;
       htm += `</tr>`;
     }
@@ -2188,15 +2180,13 @@ function sucursalbremen(tienda, id_tienda) {
   }  
 }
 //-----------------------------------------------------------------------------------
-
-//////////////////////////////////////////////////////////////////////////
-
 function impCodBar(p_Articulo,p_Descripcion) {
  localStorage.setItem('impCodeBar', p_Articulo);
  localStorage.setItem('descripcionImpCode',p_Descripcion);
  //window.location.href = 'barcodeGen.html';
 mostrarModalGeneradorCodigoBarras();
 }
+//-----------------------------------------------------------------------------------
 function mostrarModalGeneradorCodigoBarras() {
   const esPantallaPequena = window.matchMedia("(max-width: 600px)").matches;
   
@@ -2278,6 +2268,7 @@ function mostrarModalGeneradorCodigoBarras() {
 }
   });
 }
+//-----------------------------------------------------------------------------------
 function inicializarGenerador() {
   const codigo = localStorage.getItem('impCodeBar');
   //const descripcion = localStorage.getItem('descripcionImpCode');
@@ -2301,7 +2292,7 @@ function inicializarGenerador() {
   M.FormSelect.init(document.querySelectorAll('select'));
 
 }
-
+//-----------------------------------------------------------------------------------
 function generateBarcode() {
     const symbology = document.getElementById('symbology').value;
     const data = document.getElementById('data').value;
@@ -2336,7 +2327,7 @@ function generateBarcode() {
 
     barcodeContainer.appendChild(wrapper);
 }
-
+//-----------------------------------------------------------------------------------
 function generate1DBarcode(format, data, size, container) {
     const canvas = document.createElement('canvas');
     JsBarcode(canvas, data, {
@@ -2347,7 +2338,7 @@ function generate1DBarcode(format, data, size, container) {
     });
     container.appendChild(canvas);
 }
-
+//-----------------------------------------------------------------------------------
 function generateQRCode(data, size, container) {
     const qrContainer = document.createElement('div');
     new QRCode(qrContainer, {
@@ -2357,7 +2348,7 @@ function generateQRCode(data, size, container) {
     });
     container.appendChild(qrContainer);
 }
-
+//-----------------------------------------------------------------------------------
 function imprimeCodigo() {
     const data = document.getElementById('data').value;
     const symbology = document.getElementById('symbology').value;
@@ -2464,19 +2455,39 @@ function imprimeCodigo() {
         confirmButtonColor: '#55b251'
     });
 }
-
+//-----------------------------------------------------------------------------------
 function information(codeArticulo,descripcion){
-  Swal.fire({
-  title: "Artículo: " + codeArticulo,
-  html: `
-    <div style="text-align: left;">
-      ${descripcion}<br><br>
-      El color <span style="color:red; font-weight:bold;">rojo</span> indica existencias por debajo del punto de reorden, se recomienda hacer solicitud de este artículo o referencia.<br><br>
-      El color <span style="color:green; font-weight:bold;">verde</span> indica que el punto de reorden es estable.
-    </div>
-  `,
-  confirmButtonText: "Aceptar",
-  confirmButtonColor: "#55b251"
-});
 
+let pUsuario = localStorage.getItem('username');
+const params =
+    "?pUsuario=" +
+    pUsuario +
+    "&pCodigo=" +
+    codeArticulo;
+  
+  // Realizar la petición para obtener el detalle de los traslados
+  fetch(env.API_URL + "detallearticulo" + params, myInit)
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.msg === "SUCCESS") {
+        if (result.resultado.length !== 0) {
+          //console.log("Detalle del traslado:", result.resultado[0].NOTAS);
+          Swal.fire({
+                title: "Artículo: " + codeArticulo,
+                html: `
+                  <div style="text-align: left;">Descripción:
+                    ${descripcion}<br><br>
+                    El color <span style="color:red; font-weight:bold;">rojo</span> indica existencias por debajo del punto de reorden, se recomienda hacer solicitud de este artículo o referencia.<br><br>
+                    El color <span style="color:green; font-weight:bold;">verde</span> indica que el punto de reorden es estable.
+                    <br><br>
+                    <h5>DETALLE</h5>
+                    <p style="text-align: justify;">${result.resultado[0].NOTAS}</p>
+                  </div>
+                `,
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#55b251"
+              });
+        }        
+      }
+    });
 }
