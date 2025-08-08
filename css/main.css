@@ -2412,3 +2412,6 @@ label[for="sinExistencias"] {
 #sinExistencias + span {
   color: #fafafa; /* Mantener color del texto del label */
 }
+#verifica-contenedores{
+  width: 40%;
+}

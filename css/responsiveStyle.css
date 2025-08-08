@@ -241,11 +241,10 @@
     border: solid 1px #c1c1c1a8;
     margin-left: 12em;
 }
-
-
-  }  
-
-
+#verifica-contenedores{
+  width: 100%;
+}
+}  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
   
