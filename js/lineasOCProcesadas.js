@@ -321,7 +321,7 @@ function handleBodegaChange(event) {
     localStorage.setItem('bodega_Destino_OC',event.target.value)
   }
   // Obtener el elemento <select> y agregar el evento onchange
-  document.getElementById('bodegaSelectOC').addEventListener('change', handleBodegaChange);
+document.getElementById('bodegaSelectOC').addEventListener('change', handleBodegaChange);
 
 
 /////////   CAMBIAR LA BODEGA DESTINO EN LA OC          /////////////////////////////////
@@ -444,51 +444,3 @@ function cambiarBodegaDestino(bodDestino, embarque, ordenDeCompra) {
             }
         });
 }
-
-
-// function cambiarBodegaDestino(bodDestino, embarque, ordenDeCompra){
-//     const params =
-//         "?Bodega=" +
-//         bodDestino +
-//         "&Embarque=" +      
-//         embarque+
-//         "&OrdenCompra="+
-//         ordenDeCompra;
-  
-//     fetch(env.API_URL + "wmscambiaboddestinooc" + params, myInit)
-//       .then((response) => response.json())
-//       .then((result) => {
-//         if (result.msg === "SUCCESS") {
-//                  console.log(result.message);   
-//                  console.log(result.respuesta); 
-//                  console.log(result.respuesta.length); 
-//                  if (result.respuesta.length > 0) {
-//                     // Construir el contenido del mensaje como una lista o tabla
-//                     let contenidoHTML = '<ul>';
-//                     result.respuesta.forEach(ref => {
-//                         // contenidoHTML += `<li><strong>Item:</strong> ${ref.ITEM}, <strong>Artículo:</strong> ${ref.ARTICULO}, <strong>Descripción:</strong> ${ref.DESCRIPCION}</li>`;
-//                         contenidoHTML += `<li><strong>${ref.ITEM}:</strong> ${ref.ARTICULO}</li>`;
-//                     });
-//                     contenidoHTML += '</ul>';
-                
-//                     Swal.fire({
-//                         icon: 'warning',
-//                         title: 'Aviso',
-//                         html: `
-//                             <p>Existen ${result.respuesta.length} referencias que no están asociadas a la bodega de destino seleccionada:</p>
-//                             ${contenidoHTML}
-//                         `,
-//                         confirmButtonText: 'Aceptar',
-//                         confirmButtonColor: "#28a745"
-//                     });
-//                 }else{              
-//                     Swal.fire({
-//                         icon: 'success',
-//                         title: 'Cambio de bodega exitoso',
-//                         text: 'Cambio de bodega Exitoso',                     
-//                         confirmButtonText: 'Aceptar',
-//                         confirmButtonColor: "#28a745"
-//                     });
-//                 }          
-//         }});
-//   }

@@ -28,12 +28,12 @@ function cargarDetalleContenedor(contenedor, bodegaSolicita) {
     "?pConsecutivo=" +
     pConsecutivo;
 
-  fetch(env.API_URL + "contenedor/L" + params, myInit)//obtierne las lineas del contenedor
+  fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra" + params, myInit)//obtierne las lineas del contenedor
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
-        if (result.contenedor.length != 0) {        
-          detalleLineasContenedor=result.contenedor;       
+        if (result.respuesta.length != 0) {        
+          detalleLineasContenedor=result.respuesta;       
            console.log('Lineas de Contenedor:');
             console.log(detalleLineasContenedor);
             // Verificar si todas las cantidades verificadas tienen un valor
@@ -329,6 +329,7 @@ function armarTablaVerificacion(detalleLineasContenedor) {
             <td id="codigoDeBarras">${detalle.Codigo_Barra || ''}</td>
             <td id="cantidadPedida">${isNaN(parseFloat(detalle.LineaConsecutivo)) ? 0 : parseFloat(detalle.LineaConsecutivo).toFixed(2)}</td>
             <td id="cantidadLeida"></td> <!-- Cantidad leída, inicialmente en blanco -->
+            <td id="camion"></td>
             <td id="verificado"></td> 
             <td id="articulosEliminado" hidden>${detalle.ARTICULO_ELIMINADO}</td> 
              <td id="solicitud" hidden>${detalle.Traslado}</td> 

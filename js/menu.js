@@ -116,19 +116,9 @@ var buildUL = function (items) {
     icono = "",
     icono2 = "",
     link = "";
-//console.log(items);
+
  //INICIO y DALBOS
 
-//   htm += `<li>
-//     <div class="collapsible-header" id="expand_morefather">
-//         <a href="home.html">
-//             <span class="margen-pedido" style="color:black;">
-//                 <span id="inicio" class="material-symbols-outlined left " style="margin-top: 13px; margin-right: 15px;color:black;">home</span>
-//                 INICIO
-//             </span>
-//         </a>
-//     </div>
-// </li>`;
   htm += `<li>
     <div class="collapsible-header" id="expand_morefather">
         <a href="home.html">

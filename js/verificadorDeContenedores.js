@@ -39,17 +39,17 @@ function validarBusquedaContenedor() {
   }
   else {
     let pSistema ="WMS";
-    // let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
-     let pUsuario = "PRUEBAPMA";
+    let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+    //let pUsuario = "PRUEBAPMA";
     let pOpcion ="A";
-    // let pBodegaEnvia = document.getElementById("bodega").value;
-    // let pBodegaDestino = document.getElementById("bodegaSelectOC").value;
-    let pBodegaEnvia = "B-81"
-    let pBodegaDestino = "B-01"
+    let pBodegaEnvia = document.getElementById("bodega").value;
+    let pBodegaDestino = document.getElementById("bodegaSelectOC").value;
+    //let pBodegaEnvia = "B-81"
+    //let pBodegaDestino = "B-01"
     //let pConsecutivo = $('#pContenedor').val();
     let pEstado ="AW"
-    // let pFechaDesde = $('#fecha_ini').val();
-    let pFechaDesde = "2025-01-01"
+    let pFechaDesde = $('#fecha_ini').val();
+    //let pFechaDesde = "2025-01-01"
 
    const params =
   "?pSistema="+
@@ -403,23 +403,21 @@ function armarTablaVerificacion(detalleLineasContenedores) {
     detalleLineasContenedores.forEach(function (detalle) {
         // Crear una nueva fila
         var newRow = document.createElement('tr');
-
         // Construir el contenido de la fila usando variables HTML
         newRow.innerHTML = `
-            <td id="contenedor">${detalle.Contenedor}</td>
-            <td id="articulo">${detalle.Articulo || ''}</td>
-            <td id="descripcion">${detalle.Descripcion}</td>
-            <td id="cantidadPedida">${detalle.Cant_Pedida}</td>
-            <td id="cantidadPreparada">${detalle.Cant_Verificada}</td>            
-            <td id="cantidadLeida"></td> <!-- Cantidad leída, inicialmente en blanco --> 
-            <td id="verificado"></td>            
+           <td id="contenedor" style="text-align: left;">${detalle.Contenedor}</td>
+           <td id="articulo"><h5><span class="blue-text text-darken-2">${detalle.Articulo}</span></h5><h6 style="text-align:left; vertical-align:middle;" >${detalle.Descripcion}</h6></td>           
+           <td id="cantidadPedida" style="text-align: left;">${isNaN(parseFloat(detalle.Cant_Pedida)) ? 0 : parseFloat(detalle.Cant_Pedida).toFixed(2)}</td>        
+           <td id="cantidadPreparada" style="text-align: left;">${isNaN(parseFloat(detalle.Cant_Verificada)) ? 0 : parseFloat(detalle.Cant_Verificada).toFixed(2)}</td>
+           <td id="cantidadLeida" style="text-align: left;"></td> <!-- Cantidad leída, inicialmente en blanco --> 
+           <td id="verificado" style="text-align: left;"></td>            
         `;
         // Agregar la fila al cuerpo de la tabla
         tbody.appendChild(newRow);
     });
 }
-// //FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
-// // POR ARTICULO, COMPARA LO QUE TIENE EL ARRAY DEL LS Y VERIFICA LAS COINCIDENCIAS, PARA MOSTRARLO EN LA PESTAÑA VERIFICACION
+ //FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
+// POR ARTICULO, COMPARA LO QUE TIENE EL ARRAY DEL LS Y VERIFICA LAS COINCIDENCIAS, PARA MOSTRARLO EN LA PESTAÑA VERIFICACION
 function verificacion() {
 
 var dataArray = JSON.parse(localStorage.getItem('dataArray'));
@@ -503,33 +501,25 @@ dataArray.forEach(function (item) {
                     );
          
          if (encontrado) {
-                  // Código si es verdadero
-
-                 console.log(`✅ Coincidencia encontrada para ${resultado.ARTICULO}`);
-             // Buscar la tabla por su ID
+                // Código si es verdadero
+               // console.log(`✅ Coincidencia encontrada para ${resultado.ARTICULO}`);
+              // Buscar la tabla por su ID
              const tabla = document.getElementById('tblcontenedores');
-
              // Verificar si la tabla existe
              if (tabla) {
                  // Obtener el tbody de la tabla
                  const tbody = tabla.querySelector('tbody');
-
                  // Buscar todas las filas (tr) dentro del tbody
                  const filas = tbody.querySelectorAll('tr');
-
-
                  // Iterar a través de las filas
                  filas.forEach(fila => {
                      // Encontrar la celda (td) con el valor de ARTICULO
-
-                     const celdaARTICULO = fila.querySelector('#articulo');
-
+                     const celdaARTICULO = fila.querySelector('h5');
                      // Verificar si la celda contiene el mismo valor que resultado.ARTICULO
                      //compara la cantidad del detalle del contenedor con la cantidad de lo leido.
                      if (celdaARTICULO && celdaARTICULO.textContent === resultado.ARTICULO ) {
                          // Encontrar la celda con el id "verificado"
                          const celdaVerificado = fila.querySelector('#verificado');
-
                          // Agregar el "Verificado" en la celda
                          if (celdaVerificado) {
                              celdaVerificado.textContent = '';
@@ -546,38 +536,31 @@ dataArray.forEach(function (item) {
                         // const cantidadVerificadaCell = fila.querySelector('[id="cantidadLeida"]');
                          const cantidadVerificadaCell = fila.querySelector('#cantidadLeida');
                          if (cantidadVerificadaCell) {
-
                             cantidadVerificadaCell.textContent = resultado.CANTIDAD_LEIDA;
                          }
                      }
                  });
              }
              limpiarMensajes();
-         }else {
-          
-              // Código si es falso
-              console.log(`❌ No encontrado: ${resultado.ARTICULO}`);
+         }else {          
+               // Código si es falso
+              // console.log(`❌ No encontrado: ${resultado.ARTICULO}`);
              // Buscar la tabla por su ID
              const tabla = document.getElementById('tblcontenedores');
              // Array para almacenar mensajes de verificación
                  if (tabla) {
                  // Obtener el tbody de la tabla
                  const tbody = tabla.querySelector('tbody');
-
                  // Buscar todas las filas (tr) dentro del tbody
                  const filas = tbody.querySelectorAll('tr');
-
                  // Iterar a través de las filas
                  filas.forEach(fila => {
                      // Encontrar la celda (td) con el valor de ARTICULO
-
-                     const celdaARTICULO = fila.querySelector('#articulo');
-
+                     const celdaARTICULO = fila.querySelector('h5');
                      // Verificar si la celda contiene el mismo valor que resultado.ARTICULO en la fila correspondiente
                      if (celdaARTICULO && celdaARTICULO.textContent === resultado.ARTICULO) {
                          // Encontrar la celda con el id "verificado"
-                         const celdaVerificado = fila.querySelector('#verificado');
-                  
+                         const celdaVerificado = fila.querySelector('#verificado');                  
                          // Encuentra la celda de "CANT VERIF" en cada fila segun el codigo del artículo
                          const cantPedida = fila.querySelector('#cantidadPreparada');
                          const cantidadVerificadaCell = fila.querySelector('#cantidadLeida');
@@ -586,15 +569,12 @@ dataArray.forEach(function (item) {
                          console.log(cantidadVerificadaCell);
                          if (parseFloat(resultado.CANTIDAD_LEIDA) > parseFloat(cantPedida.textContent)) {
                              var resultadoOperacion = '+' + (resultado.CANTIDAD_LEIDA - parseFloat(cantPedida.textContent)).toString();
-
                              celdaVerificado.textContent = resultadoOperacion;
                              // Agregar el mensaje directamente al textarea
                                 const mensaje = `*La cantidad verificada del artículo ${resultado.ARTICULO} es mayor a la solicitada.`;
-                                mensajesArray.push(mensaje);                               
-                                
+                                mensajesArray.push(mensaje);                                                               
                          } else if (resultado.CANTIDAD_LEIDA < parseFloat(cantPedida.textContent)) {
                              var resultadoOperacion = (resultado.CANTIDAD_LEIDA - parseFloat(cantPedida.textContent)).toString();
-
                              celdaVerificado.textContent = resultadoOperacion;
                               // Agregar el mensaje directamente al textarea                              
                                 const mensaje = `>La cantidad verificada del artículo ${resultado.ARTICULO} es menor a la solicitada.`;
@@ -610,61 +590,65 @@ dataArray.forEach(function (item) {
              }
          }
 
-     });
-
-         // Después de realizar la verificación, habilitar o deshabilitar el botón DE PROCESAR      
-    //      const estadoPedidoElement = document.getElementById("estadoPedido");
-    //      const estadoPedidoText = estadoPedidoElement.textContent;
-    //      const estadoPedidoParts = estadoPedidoText.split(':'); // Dividir el texto por los dos puntos
-    //      const estadoPedido = estadoPedidoParts.length > 1 ? estadoPedidoParts[1].trim() : ''; // Obtener la parte después de los dos puntos y eliminar espacios en blanco
-                
-       
-    //  const procesarHabilitado = todasLasFilasVerificadas() ;
-
-    // //const procesarHabilitado = todasLasFilasVerificadas();
-   
-    // if (procesarHabilitado) {
-    //     // Habilitar el botón "Procesar"
-    //     document.getElementById('btnProcesar').removeAttribute('hidden');
-    // } else {
-    //     // Deshabilitar el botón "Procesar"
-    //     document.getElementById('btnProcesar').setAttribute('hidden', 'hidden');
-    // }
-
-    // // Después de realizar la verificación, habilitar o deshabilitar el botón "DE GUARDADO PARCIAL"
-    // const guardarParcialHabilitado = activaGuardadoParcial();
-    // if (guardarParcialHabilitado) {
-    //     // Deshabilitar el botón "Procesar"
-    //     document.getElementById('btnGuardar').setAttribute('hidden', 'hidden');
-    // } else {
-    //     // Habilitar el botón "Procesar"
-    //     document.getElementById('btnGuardar').removeAttribute('hidden');
-    // }    
-    //activaDevolverArticulo();
+     });                   
  }//FIN DE VERIFICACION
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//FUNCION QUE VERIFICA LAS CANTIDASDES LEIDAS Y DEL PEDIDO PÁRA ACTIVAR EL BOTON DE GUARDADO PARCIAL
-// function activaGuardadoParcial() {
-//     // Obtener todas las filas de la tabla de verificación
-//     const filas = document.querySelectorAll('#myTableVerificacion tbody tr');
+function inicializarBotones() {
+    // Crear los botones y el contenedor
+    const contenedorBotones = document.createElement('div');
+    const botonProcesar = document.createElement('button');
+    const botonGuardarParcial = document.createElement('button');
 
-//     for (let i = 0; i < filas.length; i++) {
-//         const fila = filas[i];
+    // Configurar propiedades de los botones
+    botonProcesar.textContent = 'Crear Paquete';
+    botonProcesar.id = 'btnProcesar';
+    botonProcesar.hidden = false;
+    botonProcesar.onclick = confirmaProcesar; // Agregar onclick
 
-//         // Obtener las celdas de "CANT PEDIDA" y "CANT LEIDA" en la fila actual
-//         const celdaCantidadPedida = fila.querySelector('td#cantidadPedida');
-//         const celdaCantidadLeida = fila.querySelector('td#cantidadLeida');
+    botonGuardarParcial.textContent = 'Guardar';
+    botonGuardarParcial.id = 'btnGuardar';  
+    botonGuardarParcial.hidden = false; 
+    botonGuardarParcial.onclick = confirmarGuardadoParcial; // Agregar onclick
 
-//         // Verificar si la cantidad leída es mayor que la cantidad pedida en al menos una fila
-//         if (parseFloat(celdaCantidadLeida.textContent) > parseFloat(celdaCantidadPedida.textContent)) {
-//             // Si encontramos una fila donde la cantidad leída es mayor, retornamos true
-//             return true;
-//         }
-//     }
-//     // Si ninguna fila tiene cantidad leída mayor que cantidad pedida, retornamos false
-//     return false;
-// }
+    // Aplicar estilos al botón de guardado parcial
+    botonGuardarParcial.style.backgroundColor = '#28a745';
+    botonGuardarParcial.style.borderRadius = '5px';
+    botonGuardarParcial.style.color = 'white';
+    botonGuardarParcial.style.marginTop = '16px';
+    botonGuardarParcial.style.marginLeft = '16px';
+    botonGuardarParcial.style.marginRight = '16px';
+    botonGuardarParcial.style.height = '36px';
+    botonGuardarParcial.style.width = '100px';
+
+    // Aplicar estilos al botón de Procesar
+    botonProcesar.style.width = '100px';
+    botonProcesar.style.backgroundColor = '#28a745';
+    botonProcesar.style.borderRadius = '5px';
+    botonProcesar.style.color = 'white';
+    botonProcesar.style.marginTop = '16px';
+    botonProcesar.style.marginLeft = '6em';
+    botonProcesar.style.height = '40px';
+    botonProcesar.style.marginbottom = '25px';
+
+    // Agregar botones al contenedor
+    contenedorBotones.appendChild(botonGuardarParcial);
+    contenedorBotones.appendChild(botonProcesar);
+   
+
+    // Obtener tabla de verificación
+    const tablaVerificacion = document.getElementById('tblcontenedores');
+
+    // Insertar contenedor de botones después de la tabla de verificación
+    tablaVerificacion.parentNode.insertBefore(contenedorBotones, tablaVerificacion.nextSibling);
+
+      // Media query para pantallas grandes
+      const mediaQuery = window.matchMedia('(min-width: 64em)');
+      if (mediaQuery.matches) {
+          // Aplicar estilos específicos para pantallas grandes
+          botonGuardarParcial.style.marginLeft = '200px';
+          botonProcesar.style.marginLeft = '500px';
+      }
+}
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para mostrar los mensajes almacenados en el localStorage en el textarea
 function mostrarMensajesLocalStorage() {
@@ -682,304 +666,218 @@ function mostrarMensajesLocalStorage() {
 }
 //Llama a la función mostrarMensajesLocalStorage cuando se hace clic en la pestaña "Verificación"
 document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click', mostrarMensajesLocalStorage);
-
-// function inicializarBotones() {
-//     // Crear los botones y el contenedor
-//     const contenedorBotones = document.createElement('div');
-//     const botonProcesar = document.createElement('button');
-//     const botonGuardarParcial = document.createElement('button');
-
-//     // Configurar propiedades de los botones
-//     botonProcesar.textContent = 'Crear Paquete';
-//     botonProcesar.id = 'btnProcesar';
-//     botonProcesar.hidden = false;
-//     botonProcesar.onclick = confirmaProcesar; // Agregar onclick
-
-//     botonGuardarParcial.textContent = 'Guardar';
-//     botonGuardarParcial.id = 'btnGuardar';  
-//     botonGuardarParcial.hidden = false; 
-//     botonGuardarParcial.onclick = confirmarGuardadoParcial; // Agregar onclick
-
-//     // Aplicar estilos al botón de guardado parcial
-//     botonGuardarParcial.style.backgroundColor = '#28a745';
-//     botonGuardarParcial.style.borderRadius = '5px';
-//     botonGuardarParcial.style.color = 'white';
-//     botonGuardarParcial.style.marginTop = '16px';
-//     botonGuardarParcial.style.marginLeft = '16px';
-//     botonGuardarParcial.style.marginRight = '16px';
-//     botonGuardarParcial.style.height = '36px';
-//     botonGuardarParcial.style.width = '100px';
-
-//     // Aplicar estilos al botón de Procesar
-//     botonProcesar.style.width = '100px';
-//     botonProcesar.style.backgroundColor = '#28a745';
-//     botonProcesar.style.borderRadius = '5px';
-//     botonProcesar.style.color = 'white';
-//     botonProcesar.style.marginTop = '16px';
-//     botonProcesar.style.marginLeft = '6em';
-//     botonProcesar.style.height = '40px';
-//     botonProcesar.style.marginbottom = '25px';
-
-//     // Agregar botones al contenedor
-//     contenedorBotones.appendChild(botonGuardarParcial);
-//     contenedorBotones.appendChild(botonProcesar);
-   
-
-//     // Obtener tabla de verificación
-//     const tablaVerificacion = document.getElementById('myTableVerificacion');
-
-//     // Insertar contenedor de botones después de la tabla de verificación
-//     tablaVerificacion.parentNode.insertBefore(contenedorBotones, tablaVerificacion.nextSibling);
-
-//       // Media query para pantallas grandes
-//       const mediaQuery = window.matchMedia('(min-width: 64em)');
-//       if (mediaQuery.matches) {
-//           // Aplicar estilos específicos para pantallas grandes
-//           botonGuardarParcial.style.marginLeft = '200px';
-//           botonProcesar.style.marginLeft = '500px';
-//       }
-// }
-
-
-// // Llamar a la función para cargar y mostrar los mensajes desde el localStorage al cargar la página
-// window.onload = function() {
-//    // inicializarBotones();
-//     guardarTablaEnArray();
-      
-// };
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
- //Funcion de confirmación del guardado parcial
-//  function confirmarGuardadoParcial() {
-//     Swal.fire({
-//         icon: 'info',
-//         title: '¿A continuación se guardaran los datos leidos del contenedor...?',
-//         showCancelButton: true,
-//         confirmButtonText: 'Continuar',
-//         cancelButtonText: 'Cancelar',
-//         confirmButtonColor: "#28a745",
-//         cancelButtonColor: "#6e7881",
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             guardaParcialMente();
-//            Swal.fire({
-//             icon: 'info',
-//             title: 'Guardado',
-//             text: 'Esta guardado.'
-//           });
-//         }
-//     });
-// }
-
-// //FUNCION DE GUARDADO PARCIAL
-//      function guardaParcialMente() {
-//         //var dataArray = JSON.parse(localStorage.getItem('dataArray'));
-//         let pUsuario = localStorage.getItem('username');
-//         var pConsecutivo = localStorage.getItem('contenedor');
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//Funcion de confirmación del guardado parcial
+ function confirmarGuardadoParcial() {
+    Swal.fire({
+        icon: 'info',
+        title: '¿A continuación se guardaran los datos leidos del contenedor...?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6e7881",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            guardaParcialMente();
+           Swal.fire({
+            icon: 'info',
+            title: 'Guardado',
+            text: 'Esta guardado.'
+          });
+        }
+    });
+}
+//FUNCION DE GUARDADO PARCIAL
+function guardaParcialMente() {
+        //var dataArray = JSON.parse(localStorage.getItem('dataArray'));
+        let pUsuario = localStorage.getItem('username');
+        var pConsecutivo = localStorage.getItem('contenedor');
         
-//             // Array para almacenar todas las cantidades y artículos
-//             var detalles = [];
+            // Array para almacenar todas las cantidades y artículos
+            var detalles = [];
        
-//                             // Obtener la tabla
-//                     let table = document.getElementById("myTableVerificacion");
+                            // Obtener la tabla
+                    let table = document.getElementById("myTableVerificacion");
 
-//                     // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-//                     for (let i = 1; i < table.rows.length; i++) {
-//                         let row = table.rows[i];
+                    // Iterar sobre las filas de la tabla (excluyendo el encabezado)
+                    for (let i = 1; i < table.rows.length; i++) {
+                        let row = table.rows[i];
 
-//                          // Obtener lasolicitud
-//                         let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
+                         // Obtener lasolicitud
+                        let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
                         
-//                         // Obtener el valor del artículo
-//                         let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
+                        // Obtener el valor del artículo
+                        let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
                         
-//                         // Obtener la cantidad pedida
-//                         let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
+                        // Obtener la cantidad pedida
+                        let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
                         
-//                         // Obtener la cantidad leída
-//                         let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
+                        // Obtener la cantidad leída
+                        let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
 
                        
 
 
-//                         // if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
-//                         //       cantidadLeida = 0;
-//                         //   }
+                        // if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
+                        //       cantidadLeida = 0;
+                        //   }
 
-//                             // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
-//                             var detalle = {
-//                                 SOLICITUD: solicitud,
-//                                 ARTICULO: articulo,
-//                                 CANT_CONSEC: cantidadPedida,
-//                                 CANT_LEIDA: cantidadLeida                               
-//                             };
+                            // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
+                            var detalle = {
+                                SOLICITUD: solicitud,
+                                ARTICULO: articulo,
+                                CANT_CONSEC: cantidadPedida,
+                                CANT_LEIDA: cantidadLeida                               
+                            };
 
-//                             // Agregar el objeto al array
-//                             detalles.push(detalle);
-//                     }
-//             // Convertir el array de objetos a formato JSON
-//             var jsonDetalles = JSON.stringify(detalles);
+                            // Agregar el objeto al array
+                            detalles.push(detalle);
+                    }
+            // Convertir el array de objetos a formato JSON
+            var jsonDetalles = JSON.stringify(detalles);
        
-//         const params =
-//         "?pUsuario=" +
-//         pUsuario +
-//         "&pConsecutivo=" +   
-//         pConsecutivo +
-//         "&jsonDetalles=" +
-//         jsonDetalles ;               
+        const params =
+        "?pUsuario=" +
+        pUsuario +
+        "&pConsecutivo=" +   
+        pConsecutivo +
+        "&jsonDetalles=" +
+        jsonDetalles ;               
     
-//       fetch(env.API_URL + "contenedor/G" + params, myInit)
-//       .then((response) => response.json())     
-//       .then((result) => {  
-//         console.log("Respuesta del SP");
-//         console.log(result.contenedor);      
+      fetch(env.API_URL + "contenedor/G" + params, myInit)
+      .then((response) => response.json())     
+      .then((result) => {  
+        console.log("Respuesta del SP");
+        console.log(result.contenedor);      
 
-//         console.log("Respuesta Contenedor");
-//         console.log(result);  
+        console.log("Respuesta Contenedor");
+        console.log(result);  
 
-//         if (result.msg === "SUCCESS") {
-//           if (result.contenedor.length != 0) {   
-//              // Resto del código de éxito
-//             Swal.fire({
-//                 icon: "success",
-//                 title: "Datos guardados correctamente",
-//                 confirmButtonText: "Aceptar",
-//                 confirmButtonColor: "#28a745",
-//                 cancelButtonColor: "#6e7881",
-//             }).then((result) => {
-//                 if (result.isConfirmed) {
-//                     // Redirecciona a tu otra vista aquí
-//                     window.location.href = 'BusquedaDeContenedores.html';                 
-//                 }
-//             });
-//           }          
-//         } 
-//         else{            
-//         }
-//       });      
+        if (result.msg === "SUCCESS") {
+          if (result.contenedor.length != 0) {   
+             // Resto del código de éxito
+            Swal.fire({
+                icon: "success",
+                title: "Datos guardados correctamente",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#6e7881",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirecciona a tu otra vista aquí
+                    window.location.href = 'BusquedaDeContenedores.html';                 
+                }
+            });
+          }          
+        } 
+        else{            
+        }
+      });      
     
-// }//fin fn
-      
-// ///////FUNCION PARA PROCESAR//////       
-// function confirmaProcesar() {
-//  // Obtener todas las celdas de verificación
-//  //var celdasVerificacion = document.querySelectorAll('#tblbodyLineasContenedor td#verificado');
-
-//     Swal.fire({
-//         icon: 'warning',
-//         title: '¿Desea procesar el contenedor?',
-//         showCancelButton: true,
-//         confirmButtonText: 'Continuar',
-//         cancelButtonText: 'Cancelar',
-//         confirmButtonColor: "#28a745",
-//         cancelButtonColor: "#6e7881",
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-
-//           // Verificar si todas las celdas de verificación están marcadas
-//           if(validarVerificacion()) {
-//             // Si todas están marcadas, procesar el contenedor
-//              localStorage.removeItem("UsuarioAutorizacion");
-//             procesarContenedor();
-//         } else {
-//                 Swal.fire({
-//                 title: "Ingrese sus credenciales",
-//                 html:
-//                 '<input id="swal-input1" class="swal2-input" placeholder="Usuario" autocomplete="off">' +
-//                 '<input id="swal-input2" class="swal2-input" placeholder="Contraseña" type="password" autocomplete="off">',
-//                 focusConfirm: false,
-//                 showCancelButton: true,
-//                 confirmButtonText: 'Aprobar',
-//                 cancelButtonText: 'Cancelar',
-//                 confirmButtonColor: "#28a745",
-//                 cancelButtonColor: "#6e7881",
-//                 preConfirm: () => {
-//                     const usuario = document.getElementById('swal-input1').value.toUpperCase();
-//                     const contraseña = document.getElementById('swal-input2').value;
-//                     return { usuario: usuario, contraseña: contraseña };
-//                 }
-//             }).then((result) => {
-//                 if (!result.isDismissed && result.value && result.value.usuario && result.value.contraseña) {
-//                     fetch(env.API_URL + "wmsautorizacioncontenedor")
-//                     .then((response) => response.json())     
-//                     .then((resultado) => {    
-//                         console.log('Autorizacion Resultado: ');
-//                         console.log(resultado.respuesta);      
-//                         const respuesta = resultado.respuesta[0];
-//                         if (respuesta && respuesta.USUARIO === result.value.usuario && respuesta.PIN === result.value.contraseña) {
-//                             console.log("Credenciales válidas");
-//                             console.log(respuesta.USUARIO);
-//                             localStorage.setItem('UsuarioAutorizacion',respuesta.USUARIO);
-//                             // Realiza la acción deseada, como procesar el contenedor
-//                            procesarContenedor();
-//                         } else {
-//                             console.log("Credenciales inválidas");
-//                             Swal.fire({
-//                                 icon: 'error',
-//                                 title: 'Error',
-//                                 text: 'Credenciales inválidas'
-//                             });
-//                         }
-//                     }).catch((error) => {
-//                         console.error('Error al obtener los datos del API:', error);
-//                         Swal.fire({
-//                             icon: 'error',
-//                             title: 'Error',
-//                             text: 'No se pudo obtener los datos del API'
-//                         });
-//                     }); 
-//                 } else {
-//                     console.error('Error: No se pudieron obtener los valores de usuario y contraseña del Swal');
-//                     Swal.fire({
-//                         icon: 'error',
-//                         title: 'Error',
-//                         text: 'No se pudieron obtener los valores de usuario y contraseña del Swal'
-//                     });
-//                 }
-//             });
-//             }
+}//fin fn   
+///////FUNCION PARA PROCESAR//////       
+function confirmaProcesar() { 
+    Swal.fire({
+        icon: 'warning',
+        title: '¿Desea crear el paquete?',
+        showCancelButton: true,
+        confirmButtonText: 'Continuar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#6e7881",
+    }).then((result) => {
+        if (result.isConfirmed) {
+          // Verificar si todas las celdas de verificación están marcadas
+          if(validarVerificacion()) {
+            // Si todas están marcadas, procesar el contenedor
+             localStorage.removeItem("UsuarioAutorizacion");
+             procesarContenedor();
+        } else {
+                Swal.fire({
+                title: "Ingrese sus credenciales",
+                html:
+                '<input id="swal-input1" class="swal2-input" placeholder="Usuario" autocomplete="off">' +
+                '<input id="swal-input2" class="swal2-input" placeholder="Contraseña" type="password" autocomplete="off">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Aprobar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#6e7881",
+                preConfirm: () => {
+                    const usuario = document.getElementById('swal-input1').value.toUpperCase();
+                    const contraseña = document.getElementById('swal-input2').value;
+                    return { usuario: usuario, contraseña: contraseña };
+                }
+            }).then((result) => {
+                if (!result.isDismissed && result.value && result.value.usuario && result.value.contraseña) {
+                    fetch(env.API_URL + "wmsautorizacioncontenedor")
+                    .then((response) => response.json())     
+                    .then((resultado) => {    
+                        console.log('Autorizacion Resultado: ');
+                        console.log(resultado.respuesta);      
+                        const respuesta = resultado.respuesta[0];
+                        if (respuesta && respuesta.USUARIO === result.value.usuario && respuesta.PIN === result.value.contraseña) {
+                            console.log("Credenciales válidas");
+                            console.log(respuesta.USUARIO);
+                            localStorage.setItem('UsuarioAutorizacion',respuesta.USUARIO);
+                            // Realiza la acción deseada, como procesar el contenedor
+                           procesarContenedor();
+                        } else {
+                            console.log("Credenciales inválidas");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Credenciales inválidas'
+                            });
+                        }
+                    }).catch((error) => {
+                        console.error('Error al obtener los datos del API:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se pudo obtener los datos del API'
+                        });
+                    }); 
+                } else {
+                    // console.error('Error: No se pudieron obtener los valores de usuario y contraseña del Swal');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron obtener los valores de usuario y contraseña del Swal'
+                    });
+                }
+            });
+            }
                 
             
-//         }
-//     });
-// }
+        }
+    });
+}   
+//FUNCION DE PROCESAR EL CONTENEDOR
 
-// ///// FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
-// function validarVerificacion() {
-//     // Obtener todas las celdas de verificación
-//     var celdasVerificacion = document.querySelectorAll('#tblbodyLineasContenedor td#verificado');
+function procesarContenedor() {
+        let vacia = columnaEstaVacia();
+        if(vacia){          
+              Swal.fire({
+                        icon: "warning",
+                        title: "La columna Cant. Desp. esta vacia",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#28a745",
+                        cancelButtonColor: "#6e7881",
+                    })
+        }else{             
+               Swal.fire({
+                        icon: "warning",
+                        title: "Se ha creado el paquete exito...a",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#28a745",
+                        cancelButtonColor: "#6e7881",
+                    })           
+            }
+}
 
-//     // Iterar sobre cada celda de verificación
-//     for (var i = 0; i < celdasVerificacion.length; i++) {
-//         // Obtener el span dentro de la celda
-//         var spanVerificacion = celdasVerificacion[i].querySelector('span.material-icons');
-//         // Verificar si el span no está presente o su contenido no es 'done_all'
-//         if (!spanVerificacion || spanVerificacion.textContent !== 'done_all') {
-//             // Si encuentra una celda sin verificar, retorna false
-//             return false;
-//         }
-//     } 
-//     // Si todas las celdas están verificadas, retorna true
-//     return true;
-// }
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// function columnaEstaVacia() {
-//     // Selecciona todas las celdas con id "cantidadLeida" dentro del cuerpo de la tabla
-//     var celdasCantidadLeida = document.querySelectorAll('#tblbodyLineasContenedor td#cantidadLeida');
-
-//     // Recorremos cada celda y verificamos si alguna tiene contenido
-//     for (var i = 0; i < celdasCantidadLeida.length; i++) {
-//         if (celdasCantidadLeida[i].textContent.trim() !== '') {
-//             return false; // Al menos una celda tiene datos
-//         }
-//     }
-
-//     return true; // Todas las celdas están vacías
-// }
-   
-// //FUNCION DE PROCESAR EL CONTENEDOR
 // function procesarContenedor() {
       
 //         let pUsuario = localStorage.getItem('username');
@@ -997,7 +895,7 @@ document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click'
 //             var detalles = [];
        
 //                         // Obtener la tabla
-//                 let table = document.getElementById("myTableVerificacion");
+//                 let table = document.getElementById("tblcontenedores");
 
 //                 // Iterar sobre las filas de la tabla (excluyendo el encabezado)
 //                 for (let i = 1; i < table.rows.length; i++) {
@@ -1007,7 +905,7 @@ document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click'
 //                     let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
                     
 //                     // Obtener el valor del artículo
-//                     let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
+//                     let articulo = row.querySelector("#articulo").textContent.trim();
                     
 //                     // Obtener la cantidad pedida
 //                     let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
@@ -1084,70 +982,41 @@ document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click'
 
 // }
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// // Función para devolver un artículo eliminado del contenedor
-// function devolverArticulo(articulo) {
 
-// let table = document.getElementById("myTableVerificacion");
-// let pPedido = localStorage.getItem('contenedorSelect');
-// let pArticulo = articulo;
-   
-//     // Mostrar mensaje con swal.fire
-//     swal.fire({
-//         title: "Devolver Artículo",
-//         text: "¿Estás seguro de devolver el artículo " + pArticulo + " del contenedor número " + pPedido + "?",
-//         icon: "question",
-//         showCancelButton: true,
-//         confirmButtonText: "Sí, devolver",
-//         cancelButtonText: "Cancelar"
-//     }).then((result) => {
-//         // Si se hace clic en "Sí, devolver"
-//         if (result.isConfirmed) {
-//             const params =
-//             "?pPedido=" +
-//             pPedido +
-//             "&pArticulo=" +   
-//             pArticulo;  
+///// FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
 
-//             fetch(env.API_URL + "devolverarticulo/D" + params, myInit)
-//             .then((response) => response.json())     
-//             .then((result) => {          
-//             if (result.msg === "SUCCESS") {
-//                 if (result.articulodevuelto.length != 0) {                                
-//                 Swal.fire({
-//                     icon: 'warning',
-//                     title: 'Articulo Devuelto con exito',
-//                     showCancelButton: true,
-//                     confirmButtonText: 'Continuar',
-//                     cancelButtonText: 'Cancelar'
-//                 })
-//                        // Iterar a través de las filas de la tabla (ignorando la fila de encabezado)
-//                     for (var i = 1; i < table.rows.length; i++) {
-                       
-//                         var articuloEnFila = table.rows[i].cells[0].querySelector("h5#verifica-articulo span").innerText.trim();
+function validarVerificacion() {
+    // Obtener todas las celdas de verificación
+    var celdasVerificacion = document.querySelectorAll('#tblbodyLineasContenedor td#verificado');
+    // Iterar sobre cada celda de verificación
+    for (var i = 0; i < celdasVerificacion.length; i++) {
+        // Obtener el span dentro de la celda
+        var spanVerificacion = celdasVerificacion[i].querySelector('span.material-icons');
+        // Verificar si el span no está presente o su contenido no es 'done_all'
+        if (!spanVerificacion || spanVerificacion.textContent !== 'done_all') {
+            // Si encuentra una celda sin verificar, retorna false
+            return false;
+        }
+    } 
+    // Si todas las celdas están verificadas, retorna true
+    return true;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+function columnaEstaVacia() {
+    // Selecciona todas las celdas con id "cantidadLeida" dentro del cuerpo de la tabla
+    var celdasCantidadLeida = document.querySelectorAll('#tblbodyLineasContenedor td#cantidadLeida');
 
-//                         // Verificar si el artículo en la fila coincide con el artículo a devolver
-//                         if (articuloEnFila === articulo) {
-//                             // Eliminar la fila
-//                             table.deleteRow(i);
+    // Recorremos cada celda y verificamos si alguna tiene contenido
+    for (var i = 0; i < celdasCantidadLeida.length; i++) {
+        if (celdasCantidadLeida[i].textContent.trim() !== '') {
+            return false; // Al menos una celda tiene datos
+        }
+    }
 
-//                             // Mostrar mensaje de éxito
-//                             swal.fire("Éxito", "Artículo devuelto correctamente.", "success");
-//                             break; // Salir del bucle después de eliminar la fila
-//                         }
-//                     }       
-//                 }          
-//             } 
-//             else{                 
-//                 Swal.fire({
-//                         icon: 'error',
-//                         title: 'Error al procesar el contenedor',
-//                         showCancelButton: true,
-//                         confirmButtonText: 'Continuar',
-//                         cancelButtonText: 'Cancelar'
-//                     })        
-//             }
-//             });
-//         }
-//     });
-// }
+    return true; // Todas las celdas están vacías
+}   
+// Llamar a la función para cargar y mostrar los mensajes desde el localStorage al cargar la página
+window.onload = function() {
+   inicializarBotones();
+    guardarTablaEnArray();      
+};
