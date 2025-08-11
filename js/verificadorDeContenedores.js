@@ -5,6 +5,7 @@ var detalleLineasContenedoreses=[];
 document.addEventListener("DOMContentLoaded", function (){ 
   cargarBodegas();
   console.log("Verificador de contenedores DOM cargado...");
+// permisoCrearPaquete();
   // const busqueda = localStorage.getItem('SearchParameterFlag');
   // localStorage.setItem('switch_procesados', 'false');
   // if (busqueda === "true") {
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function (){
 function validarBusquedaContenedor() {
  
   // mostrarLoading();
-  var bodega = document.getElementById("bodega").value;
+  //var bodega = document.getElementById("bodega").value;
 
   if (bodega == "") {
     Swal.fire({
@@ -39,17 +40,17 @@ function validarBusquedaContenedor() {
   }
   else {
     let pSistema ="WMS";
-    let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
-    //let pUsuario = "PRUEBAPMA";
+    //let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
+    let pUsuario = "PRUEBAPMA";
     let pOpcion ="A";
-    let pBodegaEnvia = document.getElementById("bodega").value;
-    let pBodegaDestino = document.getElementById("bodegaSelectOC").value;
-    //let pBodegaEnvia = "B-81"
-    //let pBodegaDestino = "B-01"
+    //let pBodegaEnvia = document.getElementById("bodega").value;
+    //let pBodegaDestino = document.getElementById("bodegaSelectOC").value;
+    let pBodegaEnvia = "B-81"
+    let pBodegaDestino = "B-01"
     //let pConsecutivo = $('#pContenedor').val();
     let pEstado ="AW"
-    let pFechaDesde = $('#fecha_ini').val();
-    //let pFechaDesde = "2025-01-01"
+    //let pFechaDesde = $('#fecha_ini').val();
+    let pFechaDesde = "2025-01-01"
 
    const params =
   "?pSistema="+
@@ -405,8 +406,9 @@ function armarTablaVerificacion(detalleLineasContenedores) {
         var newRow = document.createElement('tr');
         // Construir el contenido de la fila usando variables HTML
         newRow.innerHTML = `
+           <td id="solicitud" hidden>${detalle.Traslado}</td>        
            <td id="contenedor" style="text-align: left;">${detalle.Contenedor}</td>
-           <td id="articulo"><h5><span class="blue-text text-darken-2">${detalle.Articulo}</span></h5><h6 style="text-align:left; vertical-align:middle;" >${detalle.Descripcion}</h6></td>           
+           <td id="articulo"><h5  id="verifica-articulo"><span class="blue-text text-darken-2">${detalle.Articulo}</span></h5><h6 style="text-align:left; vertical-align:middle;" >${detalle.Descripcion}</h6></td>           
            <td id="cantidadPedida" style="text-align: left;">${isNaN(parseFloat(detalle.Cant_Pedida)) ? 0 : parseFloat(detalle.Cant_Pedida).toFixed(2)}</td>        
            <td id="cantidadPreparada" style="text-align: left;">${isNaN(parseFloat(detalle.Cant_Verificada)) ? 0 : parseFloat(detalle.Cant_Verificada).toFixed(2)}</td>
            <td id="cantidadLeida" style="text-align: left;"></td> <!-- Cantidad leída, inicialmente en blanco --> 
@@ -564,9 +566,9 @@ dataArray.forEach(function (item) {
                          // Encuentra la celda de "CANT VERIF" en cada fila segun el codigo del artículo
                          const cantPedida = fila.querySelector('#cantidadPreparada');
                          const cantidadVerificadaCell = fila.querySelector('#cantidadLeida');
-                         console.log("OPERACION:");   
-                         console.log(cantPedida );
-                         console.log(cantidadVerificadaCell);
+                        //  console.log("OPERACION:");   
+                        //  console.log(cantPedida );
+                        //  console.log(cantidadVerificadaCell);
                          if (parseFloat(resultado.CANTIDAD_LEIDA) > parseFloat(cantPedida.textContent)) {
                              var resultadoOperacion = '+' + (resultado.CANTIDAD_LEIDA - parseFloat(cantPedida.textContent)).toString();
                              celdaVerificado.textContent = resultadoOperacion;
@@ -671,7 +673,7 @@ document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click'
  function confirmarGuardadoParcial() {
     Swal.fire({
         icon: 'info',
-        title: '¿A continuación se guardaran los datos leidos del contenedor...?',
+        title: '¿A continuación se guardaran los datos leidos de la pestaña verificación...?',
         showCancelButton: true,
         confirmButtonText: 'Continuar',
         cancelButtonText: 'Cancelar',
@@ -680,29 +682,41 @@ document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click'
     }).then((result) => {
         if (result.isConfirmed) {
             guardaParcialMente();
-           Swal.fire({
-            icon: 'info',
-            title: 'Guardado',
-            text: 'Esta guardado.'
-          });
+        //    Swal.fire({
+        //     icon: 'info',
+        //     title: 'Guardado',
+        //     text: 'Cuardando...'
+        //   });
         }
     });
 }
 //FUNCION DE GUARDADO PARCIAL
 function guardaParcialMente() {
         //var dataArray = JSON.parse(localStorage.getItem('dataArray'));
+        let pSistema = "WMS";        
         let pUsuario = localStorage.getItem('username');
-        var pConsecutivo = localStorage.getItem('contenedor');
+        let pOpcion = "L";
+        let pBodegaOrigen= document.getElementById("bodega").value;
+        // let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
+         let pBodegaDestino ="B-01";
+        let pFecha = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD   
+        let placa = document.getElementById("placa-camion").value;     
+        let pPlaca= "447537";
+        let pReferencia="Ref o null";
+        let pComentario="Comentario o null";
         
             // Array para almacenar todas las cantidades y artículos
             var detalles = [];
        
                             // Obtener la tabla
-                    let table = document.getElementById("myTableVerificacion");
+                    let table = document.getElementById("tblcontenedores");
 
                     // Iterar sobre las filas de la tabla (excluyendo el encabezado)
                     for (let i = 1; i < table.rows.length; i++) {
                         let row = table.rows[i];
+
+                          // Obtener el consecutivo del contenedor
+                        let contenedor = row.querySelector("#contenedor").textContent.trim() || 0;
 
                          // Obtener lasolicitud
                         let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
@@ -725,6 +739,7 @@ function guardaParcialMente() {
 
                             // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
                             var detalle = {
+                                CONTENEDOR: contenedor,
                                 SOLICITUD: solicitud,
                                 ARTICULO: articulo,
                                 CANT_CONSEC: cantidadPedida,
@@ -735,49 +750,73 @@ function guardaParcialMente() {
                             detalles.push(detalle);
                     }
             // Convertir el array de objetos a formato JSON
-            var jsonDetalles = JSON.stringify(detalles);
-       
+            var jsonPaquete = JSON.stringify(detalles);
+    //    console.log("jsonPaquetes:\n"+jsonPaquete);
+
         const params =
-        "?pUsuario=" +
+        "?pSistema="+
+        pSistema+
+        "&pUsuario=" +
         pUsuario +
-        "&pConsecutivo=" +   
-        pConsecutivo +
-        "&jsonDetalles=" +
-        jsonDetalles ;               
-    
-      fetch(env.API_URL + "contenedor/G" + params, myInit)
-      .then((response) => response.json())     
-      .then((result) => {  
-        console.log("Respuesta del SP");
-        console.log(result.contenedor);      
-
-        console.log("Respuesta Contenedor");
-        console.log(result);  
-
-        if (result.msg === "SUCCESS") {
-          if (result.contenedor.length != 0) {   
-             // Resto del código de éxito
-            Swal.fire({
+        "&pOpcion="+
+        pOpcion+
+        "&pBodegaOrigen="+
+        pBodegaOrigen+
+        "&pBodegaDestino="+
+        pBodegaDestino+
+        "&pFecha="+
+        pFecha+
+        "&pPlaca="+
+        pPlaca+
+        "&jsonPaquete=" +
+        jsonPaquete+
+        "&pReferencia="+
+        pReferencia+
+        "&pComentario="+
+        pComentario ; 
+         console.log("Params:\n"+params);
+          Swal.fire({
                 icon: "success",
-                title: "Datos guardados correctamente",
+                title: "Guardando...:",
                 confirmButtonText: "Aceptar",
                 confirmButtonColor: "#28a745",
                 cancelButtonColor: "#6e7881",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Redirecciona a tu otra vista aquí
-                    window.location.href = 'BusquedaDeContenedores.html';                 
-                }
             });
-          }          
-        } 
-        else{            
-        }
-      });      
+        
+    
+    //   fetch(env.API_URL + "contenedor/G" + params, myInit)
+    //   .then((response) => response.json())     
+    //   .then((result) => {  
+    //     console.log("Respuesta del SP");
+    //     console.log(result.contenedor);      
+
+    //     console.log("Respuesta Contenedor");
+    //     console.log(result);  
+
+    //     if (result.msg === "SUCCESS") {
+    //       if (result.contenedor.length != 0) {   
+    //          // Resto del código de éxito
+    //         Swal.fire({
+    //             icon: "success",
+    //             title: "Datos guardados correctamente",
+    //             confirmButtonText: "Aceptar",
+    //             confirmButtonColor: "#28a745",
+    //             cancelButtonColor: "#6e7881",
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 // Redirecciona a tu otra vista aquí
+    //                 window.location.href = 'BusquedaDeContenedores.html';                 
+    //             }
+    //         });
+    //       }          
+    //     } 
+    //     else{            
+    //     }
+    //   });      
     
 }//fin fn   
 ///////FUNCION PARA PROCESAR//////       
-function confirmaProcesar() { 
+function confirmaProcesar() {   
     Swal.fire({
         icon: 'warning',
         title: '¿Desea crear el paquete?',
@@ -815,17 +854,17 @@ function confirmaProcesar() {
                     fetch(env.API_URL + "wmsautorizacioncontenedor")
                     .then((response) => response.json())     
                     .then((resultado) => {    
-                        console.log('Autorizacion Resultado: ');
-                        console.log(resultado.respuesta);      
+                        // console.log('Autorizacion Resultado: ');
+                        // console.log(resultado.respuesta);      
                         const respuesta = resultado.respuesta[0];
                         if (respuesta && respuesta.USUARIO === result.value.usuario && respuesta.PIN === result.value.contraseña) {
-                            console.log("Credenciales válidas");
-                            console.log(respuesta.USUARIO);
+                            // console.log("Credenciales válidas");
+                            // console.log(respuesta.USUARIO);
                             localStorage.setItem('UsuarioAutorizacion',respuesta.USUARIO);
                             // Realiza la acción deseada, como procesar el contenedor
                            procesarContenedor();
                         } else {
-                            console.log("Credenciales inválidas");
+                            // console.log("Credenciales inválidas");
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
@@ -833,7 +872,7 @@ function confirmaProcesar() {
                             });
                         }
                     }).catch((error) => {
-                        console.error('Error al obtener los datos del API:', error);
+                        // console.error('Error al obtener los datos del API:', error);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -1020,3 +1059,32 @@ window.onload = function() {
    inicializarBotones();
     guardarTablaEnArray();      
 };
+function permisoCrearPaquete(){
+   let user = sessionStorage.getItem('user')?.trim() || '';
+       user = user.replace(/^["'](.*)["']$/, '$1');
+
+    if(user==="JOSENAVA"){
+        Swal.fire({
+              icon: 'info',
+              title: 'Permisos',
+              text:"permiso consedido",
+              showCancelButton: true,
+              confirmButtonText: 'Continuar',
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: "#28a745",
+              cancelButtonColor: "#6e7881",
+            })
+    }else{
+            Swal.fire({
+              icon: 'info',
+              title: 'Ñagare',
+              text:"permiso  no consedido",
+              showCancelButton: true,
+              confirmButtonText: 'Continuar',
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: "#28a745",
+              cancelButtonColor: "#6e7881",
+            });
+    }
+      
+}
