@@ -21,7 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
 function cargarDetalleContenedor(contenedor, bodegaSolicita) {
         let pSistema='WMS'
         let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;      
+        let opcion = localStorage.getItem('contenDetalleOPC');
         let pOpcion = "L";
+        if(opcion==="A"){
+            pOpcion="LW"
+        }
+        
         let pBodegaEnvia = document.getElementById("bodega").value;
         let pBodegaSolicita =bodegaSolicita;
         let pConsecutivo = contenedor;
@@ -43,7 +48,7 @@ function cargarDetalleContenedor(contenedor, bodegaSolicita) {
                     pBodegaSolicita+  
                     "&pConsecutivo="+
                     pConsecutivo;               
-
+console.log("Parametros Detalle contenedor\n"+params);
 
   fetch(env.API_URL + "contenedor" + params, myInit)//obtierne las lineas del contenedor
     .then((response) => response.json())

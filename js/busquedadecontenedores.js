@@ -38,7 +38,7 @@ function validarBusquedaContenedor() {
   let pSistema = 'WMS';
   let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
   let switchContenedor = localStorage.getItem('contenedorSwitch');
-  let pOpcion = switchContenedor === "true" ? "E" : "A";
+  let pOpcion = switchContenedor === "false" ? "A" : "E";
   let pBodegaEnvia = document.getElementById("bodega").value;
   let pFechaHasta = $('#fecha_fin').val();
   let pFechaDesde = $('#fecha_ini').val();
@@ -71,7 +71,7 @@ function enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia, pFech
           ArrayData = result.contenedor;
           ArrayDataFiltrado = result.contenedor;
 
-          //console.log("ArrayDataFiltrado:", ArrayDataFiltrado); // Depuración
+          console.log("ArrayDataFiltrado:", ArrayDataFiltrado); // Depuración
 
           let cantReg = ArrayDataFiltrado.length;
           let nPag = Math.ceil(cantReg / xPag);
@@ -186,16 +186,19 @@ function resultadosVerificacionContenedores(desde, hasta) {
     const key = ArrayDataFiltrado[i];
     let backgroundColor = i % 2 === 0 ? "" : "#D7D5D5";
 
-    htm += `<tr onclick="irDetalleContenedor('${key.Contenedor}', '${key.Bodega_Solicita}')" style="background-color:${backgroundColor};">`;
+    htm += `<tr onclick="irDetalleContenedor('${key.Contenedor}','${pOpcion}', '${key.Bodega_Solicita}')" style="background-color:${backgroundColor};">`;
+   //CONTENEDOR
     htm += `<td>${key.Contenedor || ''}</td>`;
+   //CANT SOLICITADA 
     htm += `<td>${Number(key.LineaConsecutivo || 0).toFixed(2)}</td>`;
-    htm += `<td>${pOpcion === "A" ? Number(key.LineaCargada || 0).toFixed(2) : Number(key.LineaContada || 0).toFixed(2)}</td>`;
+    // //informacion de columna CANT LEIDAquemada, en espera de LineaAprobada Vitalio agregar al SP 
+    //  htm += `<td>${Number(key.LineaContada || 0).toFixed(2)}</td>`;
+    //CANT PREPADADA //informacion quemada, en espera de LineaAprobada Vitalio agregar al SP    
+    htm += `<td>${pOpcion === "A" ? Number(key.LineaPreparada || 0).toFixed(2) : Number(key.LineaContada || 0).toFixed(2)}</td>`;
     htm += `<td>${key.Bodega_Solicita || ''}</td>`;
     htm += `<td>${key.Fecha_Creacion || ''}</td>`;
     htm += `</tr>`;
   }
-
-  // //console.log("HTML generado para la tabla:", htm); // Depuración
   tbody.innerHTML = htm; // Insertar el contenido generado en el tbody
   document.getElementById("carga").innerHTML = ""; // Limpiar el elemento carga
 }
@@ -233,9 +236,11 @@ function paginadorTablasContenedor(nPag, pag, dynamicFunction) {
 }
 /////////////////////////////////////////////////////////////////////
 //////////////////FUNCION PARA MOSTRAR EL DETALLE DE LOS PEDIDOS///////////
-function irDetalleContenedor(pTraslado, Bodega_Solicita) {
+function irDetalleContenedor(pTraslado,pOpcion, Bodega_Solicita) {
   localStorage.setItem("contenedor", pTraslado);
   localStorage.setItem("bodega_solicita", Bodega_Solicita);
+  localStorage.setItem("contenDetalleOPC",pOpcion);
+  console.log('contenDetalleOPC',pOpcion);
   window.location.href = 'lineasContenedor.html';
 }
   /////////////////////////////////////////////////////////////////////

@@ -5,23 +5,7 @@ var detalleLineasContenedoreses=[];
 document.addEventListener("DOMContentLoaded", function (){ 
   cargarBodegas();
   console.log("Verificador de contenedores DOM cargado...");
-// permisoCrearPaquete();
-  // const busqueda = localStorage.getItem('SearchParameterFlag');
-  // localStorage.setItem('switch_procesados', 'false');
-  // if (busqueda === "true") {
-    
-  //   const parametrosBusqueda = localStorage.getItem('parametrosBusquedaContenedor');
-    
-  //   if(parametrosBusqueda){
-  //         const params = new URLSearchParams(parametrosBusqueda);
-  //         const pBodega = params.get('pBodega');
-  //         const pFechaDesde = params.get('pFechaDesde');
-  //         const pFechaHasta = params.get('pFechaHasta');
-  //         const pUsuario = params.get('pUsuario');
-  //         const pConsecutivo = params.get('pConsecutivo');
-  //         enviarDatosControlador(pBodega,pFechaDesde,pFechaHasta,pUsuario,pConsecutivo );
-  //       }        
-  //   } 
+    //permisoCrearPaquete();  
 });
  /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -40,17 +24,20 @@ function validarBusquedaContenedor() {
   }
   else {
     let pSistema ="WMS";
-    //let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
-    let pUsuario = "PRUEBAPMA";
+    let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;    
     let pOpcion ="A";
-    //let pBodegaEnvia = document.getElementById("bodega").value;
-    //let pBodegaDestino = document.getElementById("bodegaSelectOC").value;
-    let pBodegaEnvia = "B-81"
-    let pBodegaDestino = "B-01"
-    //let pConsecutivo = $('#pContenedor').val();
+    let pBodegaEnvia = document.getElementById("bodega").value;
+    let pBodegaDestino = document.getElementById("bodegaSelectOC").value;  
+    let pConsecutivo = $('#pContenedor').val();  
     let pEstado ="AW"
-    //let pFechaDesde = $('#fecha_ini').val();
-    let pFechaDesde = "2025-01-01"
+    let pFechaDesde = $('#fecha_ini').val();
+    
+    //parametros quemados
+    //let pUsuario = "PRUEBAPMA";
+    //let pBodegaEnvia = "B-81"
+    //let pBodegaDestino = "B-01"
+    //let pConsecutivo = $('#pContenedor').val();
+    //let pFechaDesde = "2025-01-01"
 
    const params =
   "?pSistema="+
@@ -63,8 +50,8 @@ function validarBusquedaContenedor() {
     pBodegaEnvia+
     "&pBodegaDestino=" +
     pBodegaDestino+ 
-    // "&pConsecutivo=" +
-    // pConsecutivo+
+    "&pContenedor=" +
+    pConsecutivo+
     "&pEstado="+
     pEstado+
     "&pFechaDesde=" +
@@ -81,7 +68,7 @@ function enviarDatosControlador(params) {
   
 //Mostrar Loader
   mostrarLoader();
-//console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
+console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
  localStorage.setItem('parametrosBusquedaContenedor', params);
 // localStorage.setItem('SearchParameterFlag', 'true');
 
@@ -91,6 +78,8 @@ function enviarDatosControlador(params) {
       if (result.msg === "SUCCESS") {
          detalleLineasContenedoreses=result.respuesta; 
         if (result.respuesta.length != 0) {
+          armarTablaLectura(detalleLineasContenedoreses);
+          guardarTablaEnArray();  
           armarTablaVerificacion(detalleLineasContenedoreses);
           console.log('REsultados:');
           console.log(detalleLineasContenedoreses);
@@ -138,6 +127,21 @@ localStorage.removeItem('SearchParameterFlag');
 localStorage.removeItem('parametrosBusquedaContenedor');
 
 }
+function limpiarTblLectura() {
+  const tabla = document.getElementById("myTableLectura");
+
+// Limpiar el contenido del tbody de la tabla si la tabla existe
+if (tabla) {
+  let tbody = tabla.querySelector("tbody");
+  if (tbody) {
+    tbody.innerHTML = "";
+  }
+}
+
+localStorage.removeItem('SearchParameterFlag');
+localStorage.removeItem('parametrosBusquedaContenedor');
+
+}
 // Función para cargar las bodegas
 function cargarBodegas() {
 fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra")
@@ -167,8 +171,45 @@ fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra")
   /////////////////////////////////////////////////////////////////////////////////////////////////////
  //////////       LECTURA Y VERIFICACION                                          ////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////// ARMA LA TABLA LECTURA //////////////////////////////////////////////////////////////////////////
+function armarTablaLectura(detalleLineasContenedor) {
+    var tbody = document.getElementById('tblbodyLectura');  
 
-//////////FUNCIONES PARA LA PESTAÑA LECTURA - VALIDA EL CODIGO LEIDO//////////////////
+    // Agregar la clase deseada a la tabla
+    tbody.classList.add("display", "centered");
+
+    tbody.innerHTML = '';
+
+    detalleLineasContenedor.forEach(function (detalle) {
+        if (detalle.Cant_leida != null && detalle.Cant_leida !== "") { // Verificar si CANTIDAD_VERIFICADA tiene un valor
+            if(detalle.Cant_leida!=0){
+            var newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                <td>
+                    <span style="display: block; text-align: center;">${detalle.Articulo}</span>
+                </td>
+                <td class="codigo-barras-cell" style="text-align: center;">
+                    <input id="codigo-barras" type="text" class="codigo-barras-input" value="${detalle.Codigo_Barra || ''}" onchange="validarCodigoBarras(this)" autofocus>
+                </td>
+                <td class="codigo-barras-cell2" style="text-align: center;">
+                    <input id="cant-pedida" style="text-align: center;" type="text" class="codigo-barras-input" value="${detalle.Cant_leida || ''}" onchange="guardarTablaEnArray(this)">
+                </td>
+                <td class="codigo-barras-cell2" style="text-align: center;">
+                <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            }
+         
+        }
+    });
+
+    guardarTablaEnArray();
+    crearNuevaFila();
+}
+
+//////////     FUNCIONES PARA LA PESTAÑA LECTURA - VALIDA EL CODIGO LEIDO   ///////////////////////
 ///// Funcion que valida el codigo leido en el imput ////////////
 function validarCodigoBarras(input) {
     const LineasContenedor = detalleLineasContenedoreses;
@@ -214,7 +255,7 @@ function validarCodigoBarras(input) {
         });
     }
 }
-///// Funcion que crea la nueva fila en la pestaña lectura ////////////
+///////////////   Funcion que crea la nueva fila en la pestaña lectura ////////////////
 function crearNuevaFila() {
   const tableBody = document.querySelector('#tblbodyLectura');
 
@@ -281,8 +322,7 @@ function guardarTablaEnArray() {
 
   return dataArray;
 }
-
-///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
+///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO/////////////////////////
 function agrupar() {
   // Obtener el arreglo almacenado en localStorage
   var dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
@@ -319,8 +359,7 @@ function agrupar() {
   // Actualizar el arreglo en localStorage con los resultados consolidados
   localStorage.setItem("dataArray", JSON.stringify(newArray));
 }
-
-// Funcion que elimina filas en la pestaña lectura
+/////// Funcion que elimina filas en la pestaña lectura  //////////////////////////////////////////////////
 function eliminarFila(icon) {
 
     var row = icon.closest('tr');
@@ -386,7 +425,6 @@ function eliminarFila(icon) {
     // Limpiar la variable 'mensajes' del localStorage
     guardarTablaEnArray();    
 }
-
 ///FUNCION QUE ARMA LA TABLA DE LA PESTAÑA VERIFICACION
 function armarTablaVerificacion(detalleLineasContenedores) {
     // Obtener la referencia del cuerpo de la tabla
@@ -697,11 +735,11 @@ function guardaParcialMente() {
         let pUsuario = localStorage.getItem('username');
         let pOpcion = "L";
         let pBodegaOrigen= document.getElementById("bodega").value;
-        // let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
-         let pBodegaDestino ="B-01";
+        let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
+        //let pBodegaDestino ="B-04";
         let pFecha = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD   
-        let placa = document.getElementById("placa-camion").value;     
-        let pPlaca= "447537";
+        let pPlaca = document.getElementById("placa-camion").value;     
+        //let pPlaca= "447537";
         let pReferencia="Ref o null";
         let pComentario="Comentario o null";
         
@@ -726,32 +764,30 @@ function guardaParcialMente() {
                         
                         // Obtener la cantidad pedida
                         let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
+                         // Obtener la cantidad pedida
+                        let cantidadPreparada = row.querySelector("#cantidadPreparada").textContent.trim();
                         
                         // Obtener la cantidad leída
                         let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
 
-                       
-
-
-                        // if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
-                        //       cantidadLeida = 0;
-                        //   }
-
+                        if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
+                              cantidadLeida = 0;
+                          }
                             // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
                             var detalle = {
                                 CONTENEDOR: contenedor,
                                 SOLICITUD: solicitud,
                                 ARTICULO: articulo,
                                 CANT_CONSEC: cantidadPedida,
+                                CANT_PREPARADA: cantidadPreparada,
                                 CANT_LEIDA: cantidadLeida                               
                             };
-
-                            // Agregar el objeto al array
+                           // Agregar el objeto al array
                             detalles.push(detalle);
                     }
-            // Convertir el array de objetos a formato JSON
-            var jsonPaquete = JSON.stringify(detalles);
-    //    console.log("jsonPaquetes:\n"+jsonPaquete);
+                    //Convertir el array de objetos a formato JSON
+                    var jsonPaquete = JSON.stringify(detalles);
+                    //console.log("jsonPaquetes:\n"+jsonPaquete);
 
         const params =
         "?pSistema="+
@@ -784,37 +820,33 @@ function guardaParcialMente() {
             });
         
     
-    //   fetch(env.API_URL + "contenedor/G" + params, myInit)
-    //   .then((response) => response.json())     
-    //   .then((result) => {  
-    //     console.log("Respuesta del SP");
-    //     console.log(result.contenedor);      
-
-    //     console.log("Respuesta Contenedor");
-    //     console.log(result);  
-
-    //     if (result.msg === "SUCCESS") {
-    //       if (result.contenedor.length != 0) {   
-    //          // Resto del código de éxito
-    //         Swal.fire({
-    //             icon: "success",
-    //             title: "Datos guardados correctamente",
-    //             confirmButtonText: "Aceptar",
-    //             confirmButtonColor: "#28a745",
-    //             cancelButtonColor: "#6e7881",
-    //         }).then((result) => {
-    //             if (result.isConfirmed) {
-    //                 // Redirecciona a tu otra vista aquí
-    //                 window.location.href = 'BusquedaDeContenedores.html';                 
-    //             }
-    //         });
-    //       }          
-    //     } 
-    //     else{            
-    //     }
-    //   });      
+fetch(env.API_URL + "guardacreapaquete" + params, myInit)
+ .then((response) => response.json())     
+  .then((result) => {  
+    console.log("Respuesta del SP");
+    console.log(result.respuesta);      
+    if (result.msg === "SUCCESS") {
+      if (result.respuesta.length != 0) {           
+        Swal.fire({
+            icon: "success",
+            title: "Datos guardados correctamente",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#28a745",
+            cancelButtonColor: "#6e7881",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirecciona a tu otra vista aquí
+               // window.location.href = 'BusquedaDeContenedores.html';                 
+            }
+        });
+      }          
+    } 
+    else{            
+    }
+  });      
     
 }//fin fn   
+
 ///////FUNCION PARA PROCESAR//////       
 function confirmaProcesar() {   
     Swal.fire({
@@ -897,24 +929,122 @@ function confirmaProcesar() {
 //FUNCION DE PROCESAR EL CONTENEDOR
 
 function procesarContenedor() {
-        let vacia = columnaEstaVacia();
-        if(vacia){          
-              Swal.fire({
-                        icon: "warning",
-                        title: "La columna Cant. Desp. esta vacia",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#28a745",
-                        cancelButtonColor: "#6e7881",
-                    })
-        }else{             
-               Swal.fire({
-                        icon: "warning",
-                        title: "Se ha creado el paquete exito...a",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#28a745",
-                        cancelButtonColor: "#6e7881",
-                    })           
+        let pSistema = "WMS";        
+        let pUsuario = localStorage.getItem('username');
+        let pOpcion = "R";
+        let pBodegaOrigen= document.getElementById("bodega").value;
+        let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
+        //let pBodegaDestino ="B-04";
+        let pFecha = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD   
+        let pPlaca = document.getElementById("placa-camion").value;     
+        //let pPlaca= "447537";
+        let pReferencia="Ref o null";
+        let pComentario="Comentario o null";
+        
+            // Array para almacenar todas las cantidades y artículos
+            var detalles = [];
+       
+                            // Obtener la tabla
+                    let table = document.getElementById("tblcontenedores");
+
+                    // Iterar sobre las filas de la tabla (excluyendo el encabezado)
+                    for (let i = 1; i < table.rows.length; i++) {
+                        let row = table.rows[i];
+
+                          // Obtener el consecutivo del contenedor
+                        let contenedor = row.querySelector("#contenedor").textContent.trim() || 0;
+
+                         // Obtener lasolicitud
+                        let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
+                        
+                        // Obtener el valor del artículo
+                        let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
+                        
+                        // Obtener la cantidad pedida
+                        let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
+                         // Obtener la cantidad pedida
+                        let cantidadPreparada = row.querySelector("#cantidadPreparada").textContent.trim();
+                        
+                        // Obtener la cantidad leída
+                        let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
+
+                        if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
+                              cantidadLeida = 0;
+                          }
+                            // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
+                            var detalle = {
+                                CONTENEDOR: contenedor,
+                                SOLICITUD: solicitud,
+                                ARTICULO: articulo,
+                                CANT_CONSEC: cantidadPedida,
+                                CANT_PREPARADA: cantidadPreparada,
+                                CANT_LEIDA: cantidadLeida                               
+                            };
+                           // Agregar el objeto al array
+                            detalles.push(detalle);
+                    }
+                    //Convertir el array de objetos a formato JSON
+                    var jsonPaquete = JSON.stringify(detalles);
+                    //console.log("jsonPaquetes:\n"+jsonPaquete);
+
+        const params =
+        "?pSistema="+
+        pSistema+
+        "&pUsuario=" +
+        pUsuario +
+        "&pOpcion="+
+        pOpcion+
+        "&pBodegaOrigen="+
+        pBodegaOrigen+
+        "&pBodegaDestino="+
+        pBodegaDestino+
+        "&pFecha="+
+        pFecha+
+        "&pPlaca="+
+        pPlaca+
+        "&jsonPaquete=" +
+        jsonPaquete+
+        "&pReferencia="+
+        pReferencia+
+        "&pComentario="+
+        pComentario ; 
+         console.log("Params:\n"+params);
+        //   Swal.fire({
+        //         icon: "success",
+        //         title: "Guardando...:",
+        //         confirmButtonText: "Aceptar",
+        //         confirmButtonColor: "#28a745",
+        //         cancelButtonColor: "#6e7881",
+        //     });
+fetch(env.API_URL + "guardacreapaquete" + params, myInit)
+ .then((response) => response.json())     
+  .then((result) => {  
+    console.log("Respuesta del SP");
+    console.log(result.respuesta);      
+    if (result.msg === "SUCCESS") {
+      if (result.respuesta.length != 0) {  
+                 console.log("Respuesta del API:\n"+result.respuesta[0].Respuesta)
+        Swal.fire({
+            icon: "success",
+            // title: "PAQUETE CREADO CORRECTAMENTE",
+            title: result.respuesta[0].Respuesta,
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#28a745",
+            cancelButtonColor: "#6e7881",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+                // limpiarResultadoGeneral();
+                // limpiarTblLectura();
+                // Redirecciona a tu otra vista aquí
+               // window.location.href = 'BusquedaDeContenedores.html';                 
             }
+        });
+      }          
+    } 
+    else{            
+    }
+  }); 
 }
 
 // function procesarContenedor() {
@@ -1054,7 +1184,7 @@ function columnaEstaVacia() {
 
     return true; // Todas las celdas están vacías
 }   
-// Llamar a la función para cargar y mostrar los mensajes desde el localStorage al cargar la página
+/////// Llamar a la función para cargar y mostrar los mensajes desde el localStorage al cargar la página
 window.onload = function() {
    inicializarBotones();
     guardarTablaEnArray();      
