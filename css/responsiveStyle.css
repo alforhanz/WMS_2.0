@@ -244,6 +244,11 @@
 #verifica-contenedores{
   width: 100%;
 }
+
+#totalregistros {   
+    margin-left: 0!important;
+}
+
 }  
   /* Medium and up (min-width: 40em = 640px) */
   @media screen and (min-width: 40em) {
@@ -329,7 +334,9 @@
   grid-template-columns: repeat(3, minmax(0, 1fr)); /* 2 columnas */
 }
 
-
+#totalregistros {   
+    margin-left: 90px!important;
+}
 
   }
   

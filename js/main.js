@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
    //--------------------------------------------------
   validate_login();
   existeBodega();
-   //cargarJsBarcode();
   localStorage.setItem("sinExistencias", "false");
   const checkbox = document.getElementById("sinExistencias");
   if(checkbox){
@@ -89,8 +88,7 @@ $(document).ready(function () {
           } else {
             alert("Else de condición");
           }
-        } else {
-          //console.log("Get bodegas no cargadas, verifique la conexión");
+        } else {         
         }
       });
   }); 
@@ -113,8 +111,6 @@ function logout() {
   window.location.href = "index.html";
    // window.location.href = 'http://200.124.12.146:8108/session/close.php';
 }
-
-
 //-----------------------------------------------------------------------------------
 function enlace(link) {
   window.location.href = link;
@@ -126,8 +122,7 @@ function existeBodega() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
   if (bodega) {
     document.getElementById("bodega-sucursal").innerHTML = bodega[0].NOMBRE;
-    document.getElementById("bodega").value = bodega[0].BODEGA;
-    // document.getElementById("icon-cliente").setAttribute("href", "#modal1");
+    document.getElementById("bodega").value = bodega[0].BODEGA;   
   }
 }
 //--------------------FILTROS MODAL DEL BUSCADOR-------------------------------------
@@ -391,8 +386,6 @@ function formatData(data) {
     }
   });
 }
-
-
 //-----------------------------------------------------------------------------------
 function cerrarModal() {
   let elem = document.getElementById("modalFiltro");
@@ -478,10 +471,11 @@ $(document).ready(function () {
   $("#fecha_ini").val(date);
   $("#fecha_fin").val(date);
 });
-
+//-----------------------------------------------------------------------------------
+//-----------------BUSQUEDA REGULAR -------------------------------------------------
 //-----------------------------------------------------------------------------------
 function preBusqueda() {
-  let nPag = 0;
+  // let nPag = 0;
   let pag = 1;
   
   let articulo = document.getElementById("articulo").value.trim();
@@ -553,12 +547,11 @@ localStorage.removeItem('mostrarEnBodega');
           ArrayData2 = result.data;
          localStorage.setItem("articulo-Busqueda", JSON.stringify(ArrayData));
 
-
           //console.log("DATA DE BUSQUEDA...", ArrayData);
           let totales = ArrayDataFiltrado.length;
           nPag = Math.ceil(totales / xPag);
           LimpiarFiltroPre(1);
-          mostrarResultadosBusqueda(nPag, pag);
+          mostrarResultadosBusqueda(nPag, pag);        
           ocultarLoader();
         } else {
           Swal.fire({
@@ -583,6 +576,7 @@ localStorage.removeItem('mostrarEnBodega');
 }
 //-----------------------------------------------------------------------------------
 function mostrarResultadosBusqueda(nPag, pag) {
+ 
   let htm = "";
   let desde = (pag - 1) * xPag;
   let hasta = Math.min(pag * xPag, ArrayDataFiltrado.length);
@@ -606,8 +600,7 @@ function mostrarResultadosBusqueda(nPag, pag) {
   $("select").formSelect();
   $(".dropdown-trigger").dropdown();
 }
-// -----------------------------------------------------------------------------------
-//                MUESTRA LOS RESULTADOS DE LA BUSQUEDA                   ////////////
+//-----------------------------------------------------------------------------------
 function mostrarResultados(desde, hasta) {
   let htm = "";
   let bodegaLabel = "";
@@ -631,33 +624,33 @@ let esistencias= localStorage.getItem("sinExistencias")==="true";
           
           `;
 
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6 m12">
-              <span>Total de Registros: </span>
-              <span>${ArrayDataFiltrado.length}</span>
-            </div>
-            <div class="col s6 m12">
+htm += `<div class="row" id="totalregistros">        
+          <div class="col s6 valign-wrapper">
             <label>
               <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
               <span>Mostrar En Bodega</span>
             </label>
           </div>
+            <div class="col s6 valign-wrapper">
+            <span>Total de Registros: </span>
+            <span>${ArrayDataFiltrado.length}</span>
           </div>
-          
-          <div class="row" id="vistabusqueda">
-            <div class="col s6">
-              <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
-                <i class="material-icons right">list</i>
-                VISTA
-              </a>
-            </div>
-            <div class="col s6">
-              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-                <i class="material-icons right">filter_list</i>
-                FILTRAR
-              </a>
-            </div>
-          </div>`;
+        </div>
+        
+        <div class="row" id="vistabusqueda">
+          <div class="col s6">
+            <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaLista();">
+              <i class="material-icons right">list</i>
+              VISTA
+            </a>
+          </div>
+          <div class="col s6">
+            <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+              <i class="material-icons right">filter_list</i>
+              FILTRAR
+            </a>
+          </div>
+        </div>`;
 
   htm += '<div class="grid-container">'; // Contenedor de la cuadrícula
 
@@ -768,9 +761,6 @@ function paginador(nPag, pag) {
         </div>
       </div><br>`;
 }
-
-
-
 //-----------------------------------------------------------------------------------
 function expand(id) {
   let ids = document.getElementById(id);
@@ -802,10 +792,9 @@ function ordenarDescripcion(data) {
     return 0;
   });
 }
-
-
-
+//-----------------------------------------------------------------------------------
 //--------------------FILTROS SOBRE LOS RESULTADOS-----------------------------------
+//-----------------------------------------------------------------------------------
 function FiltrarModal(IDCategoria, seccion) {
   let htm = "";  
   let elem = document.getElementById("modalFiltro");
@@ -1757,14 +1746,12 @@ function LimpiarFiltro(IDCategoria) {
     }
   });
 }
-
-
-
 //------------------Mostrar el loading antes de enviar la solicitud-------------------
 function mostrarLoading() {
   $('.loading').show();
   document.querySelector('.loading').style.display = 'block';
 }
+
 //---------------FUNCION PAGINADOR PARA BUSQUEDA PEDIDOS/COTIZACIONES-----------------
 function paginadorPedidos(nPag, pag, IDCategoria) {
   //console.log("desde: " + (pag - 1) * xPag + " hasta: " + pag * xPag);
@@ -1816,129 +1803,14 @@ function paginadorPedidos(nPag, pag, IDCategoria) {
         </div>
       </div><br>`;
 }
-//------------------------------------------------------------------------------------
-function paginadorTablas(nPag, pag, dynamicFunction) {
-  // Generar el select con las páginas
-  let selected = "";
-  let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
-              <option value="" disabled>Páginas</option>`;
-  for (let i = 0; i < nPag; i++) {
-    selected = i + 1 === pag ? "selected" : "";
-    if (nPag !== 1) {
-      sel += `<option value="${i + 1}" ${selected}>${i + 1}</option>`;
-    }
-  }
-  sel += `</select>`;
-
-  // Botones de navegación
-  const btnAtras = pag <= 1
-    ? `<a class="paginador-btn disabled">❮ Anterior</a>`
-    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
-
-  const btnSig = pag >= nPag
-    ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
-    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
-
-  // Retornar el HTML con clases en lugar de estilos inline
-  return `
-    <div id="paginador" class="paginador-container">
-      <div class="row paginador-info">
-        <div class="col s12 center-align">${pag}/${nPag}</div>
-      </div>
-      <div class="row paginador-controls">
-        <div class="col s4 paginador-btn-container">${btnAtras}</div>
-        <div class="col s4 paginador-select-container">${sel}</div>
-        <div class="col s4 paginador-btn-container">${btnSig}</div>
-      </div>
-    </div>
-  `;
-}
 //-----------------------------------------------------------------------------------
-function cambiarVistaMosaico() {
-  mostrarResultadosBusqueda(4, 1);
-}
+//---------------------- cambio de vista      ---------------------------------------
 //-----------------------------------------------------------------------------------
-function mostrarResultadosVistaLista(nPag, pag) {
-  let htm = "";
-  let desde = (pag - 1) * xPag;
-  let hasta = pag * xPag;
- 
-  resultadosVistaLista(desde, hasta);
-  htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaLista');
-  document.getElementById("resultadoPaginador").innerHTML = htm;
-}
 //-----------------------------------------------------------------------------------
-function resultadosVistaLista(desde, hasta) {
-  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-  let bodegaCod = bodega[0].BODEGA;
-  let totalRegistros = 0, htm = "";
-  totalRegistros = ArrayDataFiltrado.length;
-  // let nPag = Math.ceil(totalRegistros / xPag);
-
-  htm += '<div id="lista-articulo">';
-  htm += `<div class="col s12">
-          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-          </div>`;
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6">
-              <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s6">
-                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico();">
-              <i class="material-icons right">apps</i>
-              VISTA </a>
-            </div>
-            <div class="col s6">
-              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
-              <i class="material-icons right">filter_list</i>
-              FILTRAR </a>
-            </div>
-          </div>`;
-
-  htm += `<table class="striped centered" style="margin-top:5%;">
-  <thead style="background:#28a745;color:white;">
-    <tr>
-      <th style="width:30%;">CODIGO</th>
-      <th style="width:30%;">CODIGO DE BARRAS</th>
-      <th style="width:10%;">EN ${bodegaCod}</th>
-      <th style="width:30%;">ACTION</th>
-    </tr>
-  </thead>
-  <tbody>`;
-
-  for (let i = desde; i < hasta; i++) {
-    if (ArrayDataFiltrado[i]) {
-      htm += `<tr>`;
-      htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
-              <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
-              <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
-              <td>
-                <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
-                <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
-                <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
-                <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
-              </td>`; // Puedes poner aquí el botón de acción que desees
-      htm += `</tr>`;
-    }
-  }
-
-  htm += `</tbody>
-          </table>`;
-
-  htm += `<div id="resultadoPaginador">`;
-  htm += `</div>`;
-  htm += "</div>";
-
-  document.getElementById("resultadoBusqueda").innerHTML = htm;
-  $("html, body").animate(
-    {
-      scrollTop: $("#resultadoBusqueda").offset().top - 140,
-    },
-    1000
-  );
+function cambiarVistaMosaico(){
+   let totales = ArrayDataFiltrado.length;
+          nPag = Math.ceil(totales / xPag);       
+          mostrarResultadosBusqueda(nPag, 1);
 }
 //-----------------------------------------------------------------------------------
 function cambiarVistaLista() {
@@ -1955,16 +1827,18 @@ function cambiarVistaLista() {
   htm += `<div class="col s12">
           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
           </div>`;
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6">
-              <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
-            </div>
-              <div class="col s6 m12">
+
+
+  htm += `<div class="row" id="totalregistros">          
+            <div class="col s6 valign-wrapper">
               <label>
                 <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
                 <span>Mostrar En Bodega</span>
               </label>
+            </div>
+            <div class="col s6 valign-wrapper">
+              <span>Total de Registros: </span>
+              <span>${totalRegistros}</span>
             </div>
           </div>
           <div class="row">
@@ -2025,6 +1899,150 @@ function cambiarVistaLista() {
     1000
   );
 }
+//-----------------------------------------------------------------------------------
+function mostrarResultadosVistaLista(nPag, pag) {
+  let htm = "";
+  let desde = (pag - 1) * xPag;
+  let hasta = pag * xPag;
+ 
+  resultadosVistaLista(desde, hasta);
+  htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaLista');
+  document.getElementById("resultadoPaginador").innerHTML = htm;
+}
+//-----------------------------------------------------------------------------------
+function resultadosVistaLista(desde, hasta) {
+  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+  let bodegaCod = bodega[0].BODEGA;
+  let totalRegistros = 0, htm = "";
+  totalRegistros = ArrayDataFiltrado.length;
+  // let nPag = Math.ceil(totalRegistros / xPag);
+
+  htm += '<div id="lista-articulo">';
+  htm += `<div class="col s12">
+          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+          </div>`;
+         
+  
+          htm += `<div class="row" id="totalregistros">           
+             <div class="col s6 valign-wrapper">
+              <label>
+                <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
+                <span>Mostrar En Bodega</span>
+              </label>
+            </div>
+             <div class="col s6 valign-wrapper">
+              <span>Total de Registros: </span>
+              <span>${totalRegistros}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaico(${desde},${hasta});">
+              <i class="material-icons right">apps</i>
+              VISTA </a>
+            </div>
+            <div class="col s6">
+              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModal();">
+              <i class="material-icons right">filter_list</i>
+              FILTRAR </a>
+            </div>
+          </div>`;
+
+  htm += `<table class="striped centered" style="margin-top:5%;">
+  <thead style="background:#28a745;color:white;">
+    <tr>
+      <th style="width:30%;">CODIGO</th>
+      <th style="width:30%;">CODIGO DE BARRAS</th>
+      <th style="width:10%;">EN ${bodegaCod}</th>
+      <th style="width:30%;">ACTION</th>
+    </tr>
+  </thead>
+  <tbody>`;
+
+  for (let i = desde; i < hasta; i++) {
+    if (ArrayDataFiltrado[i]) {
+      htm += `<tr>`;
+      htm += `<td class="sticky-column text-align:center"><h5 style="font-size:12px; text-align:left; color:orangered;">${ArrayDataFiltrado[i].ARTICULO}</h5><h6 style="font-size: 10px; text-align: left;">${ArrayDataFiltrado[i].DESCRIPCION}</td>
+              <td>${ArrayDataFiltrado[i].CODIGO_BARRAS_INVT ? ArrayDataFiltrado[i].CODIGO_BARRAS_INVT : ''}</td>
+              <td>${Math.floor(ArrayDataFiltrado[i].TOTAL_CANTIDAD_BODEGA)}</td>
+              <td>
+                <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(ArrayDataFiltrado[i].ARTICULO)}', '${ArrayDataFiltrado[i].DESCRIPCION}')">visibility</i>              
+                <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${ArrayDataFiltrado[i].ARTICULO}')" tabindex="1">
+                <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
+                <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${ArrayDataFiltrado[i].ARTICULO}','${ArrayDataFiltrado[i].DESCRIPCION}')" tabindex="1">
+              </td>`; // Puedes poner aquí el botón de acción que desees
+      htm += `</tr>`;
+    }
+  }
+
+  htm += `</tbody>
+          </table>`;
+
+  htm += `<div id="resultadoPaginador">`;
+  htm += `</div>`;
+  htm += "</div>";
+
+  document.getElementById("resultadoBusqueda").innerHTML = htm;
+  $("html, body").animate(
+    {
+      scrollTop: $("#resultadoBusqueda").offset().top - 140,
+    },
+    1000
+  );
+}
+//------------------------------------------------------------------------------------
+function paginadorTablas(nPag, pag, dynamicFunction) {
+  // Generar el select con las páginas
+  let selected = "";
+  let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+              <option value="" disabled>Páginas</option>`;
+
+          for (var i = 0; i < nPag; i++) {
+              if (i + 1 == pag) {
+                selected = "selected";
+              } else {
+                selected = "";
+              }
+              if (nPag != 1) {
+                sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+                  }</option>`;
+              }
+            }
+              // for (let i = 0; i < nPag; i++) {
+  //   selected = i + 1 === pag ? "selected" : "";
+  //   if (nPag !== 1) {
+  //     sel += `<option value="${i + 1}" ${selected}>${i + 1}</option>`;
+  //   }
+  // }
+  sel += `</select>`;
+
+  // Botones de navegación
+  const btnAtras = pag <= 1
+    ? `<a class="paginador-btn disabled">❮ Anterior</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
+
+  const btnSig = pag >= nPag
+    ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
+
+  // Retornar el HTML con clases en lugar de estilos inline
+  return `
+    <div id="paginador" class="paginador-container">
+      <div class="row paginador-info">
+        <div class="col s12 center-align">${pag}/${nPag}</div>
+      </div>
+      <div class="row paginador-controls">
+        <div class="col s4 paginador-btn-container">${btnAtras}</div>
+        <div class="col s4 paginador-select-container">${sel}</div>
+        <div class="col s4 paginador-btn-container">${btnSig}</div>
+      </div>
+    </div>
+  `;
+}
+
+//-----------------------------------------------------------------------------------
+//---------------------- Otras funcionalidades     ----------------------------------
+//-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 function mostrarImagen(codigo, descripcion) {
   let code;
@@ -2484,13 +2502,13 @@ const params =
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////MOSTRAR RESULTADOS EN BODEGA ////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-//-----------------------------------------------------------------------------------
+// ////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////MOSTRAR RESULTADOS EN BODEGA ////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////////////////////
+// //-----------------------------------------------------------------------------------
 var articulosConExistencia = new Array();
-//-----------------------------Filtros sobre el resultado de la búsqueda--------------
-// Evento de cambio del checkbox
+// //-----------------------------Filtros sobre el resultado de la búsqueda--------------
+// // Evento de cambio del checkbox
 function toggleMostrarEnBodega() {
     const check = document.getElementById("miCheckbox");
     const isChecked = check.checked;
@@ -2499,32 +2517,31 @@ function toggleMostrarEnBodega() {
     localStorage.setItem("mostrarEnBodega", isChecked ? "1" : "0");
 
     if (isChecked) {
-        mostrarArticulosEnBodega();      
-       FiltrarModalEnBodega();
-        cerrarModal();
-    } else {
-        cambiarVistaMosaico();       
-        FiltrarModal();
-        cerrarModal();
-    }
-}
-function mostrarArticulosEnBodega(){
-    // Filtrar artículos con existencia en bodega > 0
-    articulosConExistencia = ArrayData2.filter(item => 
-        parseFloat(item.TOTAL_CANTIDAD_BODEGA) > 0
-    );
-
+        // Filtrar artículos con existencia en bodega > 0
+    articulosConExistencia = ArrayData2.filter(item =>parseFloat(item.TOTAL_CANTIDAD_BODEGA) > 0);
     let nPag = Math.ceil(articulosConExistencia.length / xPag);  
     let pag = 1;
 
-    // Pasamos el array filtrado a la siguiente función
-    mostrarResultadosBusquedaEnBodega(nPag, pag, articulosConExistencia);
-    ocultarLoader();
-    
+        
+        mostrarResultadosBusquedaEnBodega(nPag, pag);
+        ocultarLoader();     
+        //FiltrarModalEnBodega();
+        
+    } else {
+          let pag = 1;
+          let totales = ArrayDataFiltrado.length;
+          let nPag = Math.ceil(totales / xPag);
+          LimpiarFiltroPre(1);
+          mostrarResultadosBusqueda(nPag, pag);        
+          ocultarLoader();        
+         // FiltrarModal();       
+    }
 }
-//-----------------------------------------------------------------------------------
-function mostrarResultadosBusquedaEnBodega(nPag, pag, data){
+// //-----------------------------------------------------------------------------------
+function mostrarResultadosBusquedaEnBodega(nPag, pag){
+  let htm = "";
     let desde = (pag - 1) * xPag;
+    let data = articulosConExistencia;
     let hasta = Math.min(pag * xPag, data.length);
 
     if (desde >= data.length) {
@@ -2533,8 +2550,8 @@ function mostrarResultadosBusquedaEnBodega(nPag, pag, data){
         pag = 1;
     }
 
-    let htm = mostrarResultadosEnBodega(desde, hasta, data);
-    htm += paginador(nPag, pag);
+    htm = mostrarResultadosEnBodega(desde, hasta, data);
+    htm += paginadorEnBodega(nPag, pag);
 
     document.getElementById("resultadoBusqueda").innerHTML = htm;
     $("html, body").animate(
@@ -2543,8 +2560,15 @@ function mostrarResultadosBusquedaEnBodega(nPag, pag, data){
     );
     $("select").formSelect();
     $(".dropdown-trigger").dropdown();
+
+     const estado = localStorage.getItem("mostrarEnBodega");
+        if (estado === "1") {
+            document.getElementById("miCheckbox").checked = true;
+        } else {
+            document.getElementById("miCheckbox").checked = false;
+        }
 }
-//-----------------------------------------------------------------------------------
+// //-----------------------------------------------------------------------------------
 function mostrarResultadosEnBodega(desde, hasta, data) {
     let htm = "";
     let bodegaLabel = "";
@@ -2556,19 +2580,19 @@ function mostrarResultadosEnBodega(desde, hasta, data) {
                          
             `;
 
-    htm += `<div class="row" id="totalregistros">
-              <div class="col s6 m12">
-                <span>Total de Registros: </span>
-                <span>${data.length}</span>
-              </div>
-              <div class="col s6 m12">
+            
+    htm += `<div class="row" id="totalregistros">              
+              <div class="col s6 valign-wrapper">
               <label>
                 <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
                 <span>Mostrar En Bodega</span>
               </label>
             </div>   
-            </div>
-            
+            <div class="col s6 valign-wrapper">
+                <span>Total de Registros: </span>
+                <span>${data.length}</span>
+              </div>
+            </div>            
             <div class="row" id="vistabusqueda">
               <div class="col s6">
                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaListaEnBodega();">
@@ -2629,11 +2653,80 @@ function mostrarResultadosEnBodega(desde, hasta, data) {
               <h4>Cantidad: ${cantBodega.toFixed(2)}</h4>
             </div>`;
         }
+       
     }
-
+      // const estado = localStorage.getItem("mostrarEnBodega");
+      //   if (estado === "1") {
+      //       document.getElementById("miCheckbox").checked = true;
+      //   } else {
+      //       document.getElementById("miCheckbox").checked = false;
+      //   }
     htm += "</div></div>";
+  
     return htm;
+
+ 
 }
+//-----------------------------------------------------------------------------------
+function paginadorEnBodega(nPag, pag) {
+  //MUESTRA LA CANTIDAD DE PAGINA
+  let selected = "";
+  sel = `<select class="browser-default" onchange="mostrarResultadosBusquedaEnBodega(${nPag}, this.value)">
+        <option value="" disabled>Páginas</option>`;
+  for (var i = 0; i < nPag; i++) {
+    if (i + 1 == pag) {
+      selected = "selected";
+    } else {
+      selected = "";
+    }
+    if (nPag != 1) {
+      sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+        }</option>`;
+    }
+  }
+  sel += `</select>`;
+
+  if (pag <= 1) btnAtras = `<a style="color: #aba7a7;">❮ Anterior</a>`;
+  else
+    btnAtras = `<a onclick="mostrarResultadosBusquedaEnBodega(${nPag} , ${parseInt(pag) - 1
+      });">❮ Anterior</a>`;
+
+  if (pag >= nPag) btnSig = `<a style="color: #aba7a7;"> Siguiente ❯ </a>`;
+  else
+    btnSig = `<a onclick="mostrarResultadosBusquedaEnBodega(${nPag},${parseInt(pag) + 1
+      })">Siguiente ❯</a>`;
+
+  return `<div id="paginador">
+        <div class="row">
+          <div class="col s4"></div>
+          <div class="col s4" style="text-align: center">${pag}/${nPag}</div>
+          <div class="col s4"></div>
+        </div>
+        <div class="row" style="width:fit-content !important;">
+            <div class="col s4" id="btnAtras" style="width:fit-content !important;">
+              ${btnAtras}
+            </div>
+          <div class="col s4">
+            ${sel}
+          </div>
+          <div class="col s4" id="btnSig" style="width:fit-content !important;">
+            ${btnSig}
+          </div>
+        </div>
+      </div><br>`;
+}
+// ////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////MOSTRAR RESULTADOS Tabla lista  EN BODEGA ////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//-----------------------------------------------------------------------------------
+function cambiarVistaMosaicoEnBodega(){
+  let totales = articulosConExistencia.length;
+          nPag = Math.ceil(totales / xPag);       
+          mostrarResultadosBusquedaEnBodega(nPag, 1);   
+}
+
 //-----------------------------------------------------------------------------------
 function cambiarVistaListaEnBodega() {
   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
@@ -2653,30 +2746,33 @@ function cambiarVistaListaEnBodega() {
 
   htm += '<div id="lista-articulo">';
   htm += `<div class="col s12">
-          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+          <h2 style="text-align:center; text-transform: uppercase;">Resultados de la Búsqueda</h2>
           </div>`;
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6">
-              <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
-            </div>
-              <div class="col s6">
+          
+  htm += `<div class="row" id="totalregistros">           
+            <div class="col s6 valign-wrapper">
               <label>
                 <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
                 <span>Mostrar En Bodega</span>
               </label>
             </div>
+            <div class="col s6 valign-wrapper">
+              <span>Total de Registros: </span>
+              <span>${totalRegistros}</span>
+            </div>
           </div>
           <div class="row">
             <div class="col s6">
-                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaicoEnBodega();">
-              <i class="material-icons right">apps</i>
-              VISTA </a>
+              <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaicoEnBodega();">
+                <i class="material-icons right">apps</i>
+                VISTA
+              </a>
             </div>
             <div class="col s6">
               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModalEnBodega();">
-              <i class="material-icons right">filter_list</i>
-              FILTRAR </a>
+                <i class="material-icons right">filter_list</i>
+                FILTRAR
+              </a>
             </div>
           </div>`;
 
@@ -2689,7 +2785,7 @@ function cambiarVistaListaEnBodega() {
       <th style="width:30%;">ACTION</th>
     </tr>
   </thead>
-  <tbody>`;
+  <tbody id="tablaBodyEnBodega">`;
 
   for (let i = desde; i < hasta; i++) {
     if (articulosConExistencia[i]) {
@@ -2703,8 +2799,8 @@ function cambiarVistaListaEnBodega() {
         <td>
           <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(articulosConExistencia[i].ARTICULO)}', '${articulosConExistencia[i].DESCRIPCION}')">visibility</i>
           <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(articulosConExistencia[i].ARTICULO)}')" tabindex="1">
-          <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
-          <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
+          <img src="./img/icon/bar-code.svg" width="22" height="22" onclick="impCodBar('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
+          <img src="./img/icon/information.svg" width="22" height="22" onclick="information('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
         </td>
       </tr>`;
     }
@@ -2712,7 +2808,7 @@ function cambiarVistaListaEnBodega() {
 
   htm += `</tbody></table>`;
   htm += `<div id="resultadoPaginador">`;
-  htm += paginadorTablas(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
+  htm += paginadorTablasEnBodega(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
   htm += `</div></div>`;
 
   document.getElementById("resultadoBusqueda").innerHTML = htm;
@@ -2721,69 +2817,60 @@ function cambiarVistaListaEnBodega() {
     1000
   );
 
+  const estado = localStorage.getItem("mostrarEnBodega");
+  if (estado === "1") {
+    document.getElementById("miCheckbox").checked = true;
+  } else {
+    document.getElementById("miCheckbox").checked = false;
+  }
+
   // Guardar array filtrado para la paginación
   window.ArticulosBodegaFiltrados = articulosConExistencia;
 }
+
 //-----------------------------------------------------------------------------------
 function mostrarResultadosVistaListaEnBodega(nPag, pag) {
   let desde = (pag - 1) * xPag;
-  let hasta = pag * xPag;
+  const data = window.ArticulosBodegaFiltrados || [];
+  let hasta = Math.min(pag * xPag, data.length);
+
+  if (desde >= data.length) {
+    desde = 0;
+    hasta = Math.min(xPag, data.length);
+    pag = 1;
+  }
+
+  // Actualizar el cuerpo de la tabla
   resultadosVistaListaEnBodega(desde, hasta);
-  let htm = paginadorTablas(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
-  document.getElementById("resultadoPaginador").innerHTML = htm;
+
+  // Actualizar la paginación
+  const paginadorHtml = paginadorTablasEnBodega(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
+  const paginadorElement = document.getElementById("resultadoPaginador");
+  if (paginadorElement) {
+    paginadorElement.innerHTML = paginadorHtml;
+  } else {
+    console.error("Elemento 'resultadoPaginador' no encontrado en el DOM");
+    // Opcional: Crear el elemento si no existe
+    const nuevoPaginador = document.createElement("div");
+    nuevoPaginador.id = "resultadoPaginador";
+    nuevoPaginador.innerHTML = paginadorHtml;
+    document.getElementById("lista-articulo").appendChild(nuevoPaginador);
+  }
+
+  $("html, body").animate(
+    { scrollTop: $("#resultadoBusqueda").offset().top - 140 },
+    1000
+  );
 }
+
 //-----------------------------------------------------------------------------------
 function resultadosVistaListaEnBodega(desde, hasta) {
-  const bodega = JSON.parse(sessionStorage.getItem("bodega"));
-  let bodegaCod = bodega[0].BODEGA;
-
-  const data = window.ArticulosBodegaFiltrados || []; // Usar filtrados
-  let totalRegistros = data.length;
-  let htm = "";
-
-  htm += '<div id="lista-articulo">';
-  htm += `<div class="col s12">
-          <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
-          </div>`;
-  htm += `<div class="row" id="totalregistros">
-            <div class="col s6">
-              <span>Total de Registros: </span>
-              <span>${totalRegistros}</span>
-            </div>
-              <div class="col s6">
-              <label>
-                <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
-                <span>Mostrar En Bodega</span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s6">
-                <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaicoEnBodega();">
-              <i class="material-icons right">apps</i>
-              VISTA </a>
-            </div>
-            <div class="col s6">
-              <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModalEnBodega();">
-              <i class="material-icons right">filter_list</i>
-              FILTRAR </a>
-            </div>
-          </div>`;
-
-  htm += `<table class="striped centered" style="margin-top:5%;">
-  <thead style="background:#28a745;color:white;">
-    <tr>
-      <th style="width:30%;">CODIGO</th>
-      <th style="width:30%;">CODIGO DE BARRAS</th>
-      <th style="width:10%;">EN ${bodegaCod}</th>
-      <th style="width:30%;">ACTION</th>
-    </tr>
-  </thead>
-  <tbody>`;
+  const data = window.ArticulosBodegaFiltrados || [];
+  let rows = "";
 
   for (let i = desde; i < hasta; i++) {
     if (data[i]) {
-      htm += `<tr>
+      rows += `<tr>
         <td class="sticky-column text-align:center">
           <h5 style="font-size:12px; text-align:left; color:orangered;">${data[i].ARTICULO}</h5>
           <h6 style="font-size: 10px; text-align: left;">${data[i].DESCRIPCION}</h6>
@@ -2792,27 +2879,319 @@ function resultadosVistaListaEnBodega(desde, hasta) {
         <td>${Math.floor(data[i].TOTAL_CANTIDAD_BODEGA)}</td>
         <td>
           <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(data[i].ARTICULO)}', '${data[i].DESCRIPCION}')">visibility</i>
-          <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${data[i].ARTICULO}')" tabindex="1">
-          <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
-          <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
+          <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(data[i].ARTICULO)}')" tabindex="1">
+          <img src="./img/icon/bar-code.svg" width="22" height="22" onclick="impCodBar('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
+          <img src="./img/icon/information.svg" width="22" height="22" onclick="information('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
         </td>
       </tr>`;
     }
   }
 
-  htm += `</tbody></table></div>`;
+  const tablaBody = document.getElementById("tablaBodyEnBodega");
+  if (tablaBody) {
+    tablaBody.innerHTML = rows;
+  } else {
+    console.error("Elemento 'tablaBodyEnBodega' no encontrado en el DOM");
+  }
+}
 
-  document.getElementById("resultadoBusqueda").innerHTML = htm;
-  $("html, body").animate(
-    { scrollTop: $("#resultadoBusqueda").offset().top - 140 },
-    1000
-  );
-}
 //-----------------------------------------------------------------------------------
-function cambiarVistaMosaicoEnBodega(){
-   mostrarArticulosEnBodega();
+function paginadorTablasEnBodega(nPag, pag, dynamicFunction) {
+  let selected = "";
+  let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+              <option value="" disabled>Páginas</option>`;
+
+          for (var i = 0; i < nPag; i++) {
+              if (i + 1 == pag) {
+                selected = "selected";
+              } else {
+                selected = "";
+              }
+              if (nPag != 1) {
+                sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+                  }</option>`;
+              }
+            }
+  sel += `</select>`;
+
+
+  // let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+  //             <option value="" disabled>Páginas</option>`;
+
+  // for (let i = 0; i < nPag; i++) {
+  //   if (i + 1 === pag) {
+  //     selected = "selected";
+  //   } else {
+  //     selected = "";
+  //   }
+  //   if (nPag !== 1) {
+  //     sel += `<option value="${i + 1}" ${selected}>${i + 1}</option>`;
+  //   }
+  // }
+  // sel += `</select>`;
+
+  const btnAtras = pag <= 1
+    ? `<a class="paginador-btn disabled">❮ Anterior</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
+
+  const btnSig = pag >= nPag
+    ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
+    : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
+
+  return `
+    <div id="paginador" class="paginador-container">
+      <div class="row paginador-info">
+        <div class="col s12 center-align">${pag}/${nPag}</div>
+      </div>
+      <div class="row paginador-controls">
+        <div class="col s4 paginador-btn-container">${btnAtras}</div>
+        <div class="col s4 paginador-select-container">${sel}</div>
+        <div class="col s4 paginador-btn-container">${btnSig}</div>
+      </div>
+    </div>
+  `;
 }
+
+
+
+
+
+
 //-----------------------------------------------------------------------------------
+// function cambiarVistaListaEnBodega() {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+
+//   // Filtrar solo artículos con existencia en bodega
+//   const articulosConExistencia = ArrayDataFiltrado.filter(item =>
+//     parseFloat(item.TOTAL_CANTIDAD_BODEGA) > 0
+//   );
+
+//   let totalRegistros = articulosConExistencia.length;
+//   let pag = 1; // Página inicial
+//   let desde = (pag - 1) * xPag;
+//   let hasta = Math.min(pag * xPag, totalRegistros);
+//   let nPag = Math.ceil(totalRegistros / xPag);
+//   let htm = "";
+
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//           </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6">
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div>
+//               <div class="col s6">
+//               <label>
+//                 <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
+//                 <span>Mostrar En Bodega</span>
+//               </label>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaicoEnBodega();">
+//               <i class="material-icons right">apps</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModalEnBodega();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//           </div>`;
+
+//   htm += `<table class="striped centered" style="margin-top:5%;">
+//   <thead style="background:#28a745;color:white;">
+//     <tr>
+//       <th style="width:30%;">CODIGO</th>
+//       <th style="width:30%;">CODIGO DE BARRAS</th>
+//       <th style="width:10%;">EN ${bodegaCod}</th>
+//       <th style="width:30%;">ACTION</th>
+//     </tr>
+//   </thead>
+//   <tbody>`;
+
+//   for (let i = desde; i < hasta; i++) {
+//     if (articulosConExistencia[i]) {
+//       htm += `<tr>
+//         <td class="sticky-column text-align:center">
+//           <h5 style="font-size:12px; text-align:left; color:orangered;">${articulosConExistencia[i].ARTICULO}</h5>
+//           <h6 style="font-size: 10px; text-align: left;">${articulosConExistencia[i].DESCRIPCION}</h6>
+//         </td>
+//         <td>${articulosConExistencia[i].CODIGO_BARRAS_INVT || ''}</td>
+//         <td>${Math.floor(articulosConExistencia[i].TOTAL_CANTIDAD_BODEGA)}</td>
+//         <td>
+//           <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(articulosConExistencia[i].ARTICULO)}', '${articulosConExistencia[i].DESCRIPCION}')">visibility</i>
+//           <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${encodeURIComponent(articulosConExistencia[i].ARTICULO)}')" tabindex="1">
+//           <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
+//           <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${articulosConExistencia[i].ARTICULO}','${articulosConExistencia[i].DESCRIPCION}')" tabindex="1">
+//         </td>
+//       </tr>`;
+//     }
+//   }
+
+//   htm += `</tbody></table>`;
+//   htm += `<div id="resultadoPaginador">`;
+//   htm += paginadorTablasEnBodega(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
+//   htm += `</div></div>`;
+
+//   document.getElementById("resultadoBusqueda").innerHTML = htm;
+//   $("html, body").animate(
+//     { scrollTop: $("#resultadoBusqueda").offset().top - 140 },
+//     1000
+//   );
+
+//    const estado = localStorage.getItem("mostrarEnBodega");
+//   if (estado === "1") {
+//       document.getElementById("miCheckbox").checked = true;
+//   } else {
+//       document.getElementById("miCheckbox").checked = false;
+//   }
+
+//   // Guardar array filtrado para la paginación
+//   window.ArticulosBodegaFiltrados = articulosConExistencia;
+// }
+// //-----------------------------------------------------------------------------------
+// function mostrarResultadosVistaListaEnBodega(nPag, pag) {
+//   let htm = "";
+//   let desde = (pag - 1) * xPag;
+//   let hasta = pag * xPag;
+//   resultadosVistaListaEnBodega(desde, hasta);
+//   htm += paginadorTablasEnBodega(nPag, pag, 'mostrarResultadosVistaListaEnBodega');
+//   document.getElementById("resultadoPaginador").innerHTML = htm;
+// }
+// //-----------------------------------------------------------------------------------
+// function resultadosVistaListaEnBodega(desde, hasta) {
+//   const bodega = JSON.parse(sessionStorage.getItem("bodega"));
+//   let bodegaCod = bodega[0].BODEGA;
+
+//   const data = window.ArticulosBodegaFiltrados || []; // Usar filtrados
+//   let totalRegistros = data.length;
+//   let htm = "";
+
+//   htm += '<div id="lista-articulo">';
+//   htm += `<div class="col s12">
+//           <h2 style="text-align:center ; text-transform: uppercase;">Resultados de la Búsqueda</h2>
+//           </div>`;
+//   htm += `<div class="row" id="totalregistros">
+//             <div class="col s6">
+//               <span>Total de Registros: </span>
+//               <span>${totalRegistros}</span>
+//             </div>
+//               <div class="col s6">
+//               <label>
+//                 <input type="checkbox" id="miCheckbox" onchange="toggleMostrarEnBodega()">
+//                 <span>Mostrar En Bodega</span>
+//               </label>
+//             </div>
+//           </div>
+//           <div class="row">
+//             <div class="col s6">
+//                 <a style="background: #535162 !important;" class="btn browser-default" href="javascript:void(0);" onclick="cambiarVistaMosaicoEnBodega();">
+//               <i class="material-icons right">apps</i>
+//               VISTA </a>
+//             </div>
+//             <div class="col s6">
+//               <a class="btn browser-default" href="javascript:void(0);" onclick="FiltrarModalEnBodega();">
+//               <i class="material-icons right">filter_list</i>
+//               FILTRAR </a>
+//             </div>
+//           </div>`;
+
+//   htm += `<table class="striped centered" style="margin-top:5%;">
+//   <thead style="background:#28a745;color:white;">
+//     <tr>
+//       <th style="width:30%;">CODIGO</th>
+//       <th style="width:30%;">CODIGO DE BARRAS</th>
+//       <th style="width:10%;">EN ${bodegaCod}</th>
+//       <th style="width:30%;">ACTION</th>
+//     </tr>
+//   </thead>
+//   <tbody>`;
+//  const estado = localStorage.getItem("mostrarEnBodega");
+//         if (estado === "1") {
+//             document.getElementById("miCheckbox").checked = true;
+//         } else {
+//             document.getElementById("miCheckbox").checked = false;
+//         }
+//   for (let i = desde; i < hasta; i++) {
+//     if (data[i]) {
+//       htm += `<tr>
+//         <td class="sticky-column text-align:center">
+//           <h5 style="font-size:12px; text-align:left; color:orangered;">${data[i].ARTICULO}</h5>
+//           <h6 style="font-size: 10px; text-align: left;">${data[i].DESCRIPCION}</h6>
+//         </td>
+//         <td>${data[i].CODIGO_BARRAS_INVT || ''}</td>
+//         <td>${Math.floor(data[i].TOTAL_CANTIDAD_BODEGA)}</td>
+//         <td>
+//           <i class="material-symbols-outlined" onclick="mostrarImagen('${encodeURIComponent(data[i].ARTICULO)}', '${data[i].DESCRIPCION}')">visibility</i>
+//           <img src="./img/icon/forklift-1-svgrepo-com.svg" width="22" height="22" onclick="mostrarExistencias('${data[i].ARTICULO}')" tabindex="1">
+//           <img src="./img/icon/bar-code.svg"  width="22" height="22"  onclick="impCodBar('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
+//           <img src="./img/icon/information.svg"  width="22" height="22"  onclick="information('${data[i].ARTICULO}','${data[i].DESCRIPCION}')" tabindex="1">
+//         </td>
+//       </tr>`;
+//     }
+//   }
+
+//   htm += `</tbody></table></div>`;
+
+//   document.getElementById("resultadoBusqueda").innerHTML = htm;
+//   $("html, body").animate(
+//     { scrollTop: $("#resultadoBusqueda").offset().top - 140 },
+//     1000
+//   );   
+// }
+// //------------------------------------------------------------------------------------
+
+// function paginadorTablasEnBodega(nPag, pag, dynamicFunction) {
+//   // Generar el select con las páginas
+//   let selected = "";
+//   let sel = `<select class="browser-default paginador-select" onchange="${dynamicFunction}(${nPag}, this.value)">
+//               <option value="" disabled>Páginas</option>`;
+
+//           for (var i = 0; i < nPag; i++) {
+//               if (i + 1 == pag) {
+//                 selected = "selected";
+//               } else {
+//                 selected = "";
+//               }
+//               if (nPag != 1) {
+//                 sel += `<option  value="${parseInt(i) + 1}" ${selected}> ${parseInt(i) + 1
+//                   }</option>`;
+//               }
+//             }
+//   sel += `</select>`;
+
+//   // Botones de navegación
+//   const btnAtras = pag <= 1
+//     ? `<a class="paginador-btn disabled">❮ Anterior</a>`
+//     : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag - 1})">❮ Anterior</a>`;
+
+//   const btnSig = pag >= nPag
+//     ? `<a class="paginador-btn disabled">Siguiente ❯</a>`
+//     : `<a class="paginador-btn" onclick="${dynamicFunction}(${nPag}, ${pag + 1})">Siguiente ❯</a>`;
+
+//   // Retornar el HTML con clases en lugar de estilos inline
+//   return `
+//     <div id="paginador" class="paginador-container">
+//       <div class="row paginador-info">
+//         <div class="col s12 center-align">${pag}/${nPag}</div>
+//       </div>
+//       <div class="row paginador-controls">
+//         <div class="col s4 paginador-btn-container">${btnAtras}</div>
+//         <div class="col s4 paginador-select-container">${sel}</div>
+//         <div class="col s4 paginador-btn-container">${btnSig}</div>
+//       </div>
+//     </div>
+//   `;
+// }
+
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------  FILTROS --------------------------------------------
 function FiltrarModalEnBodega(IDCategoria, seccion) {
   let htm = "";  
   let elem = document.getElementById("modalFiltro");
@@ -3012,7 +3391,6 @@ function FiltrarModalEnBodega(IDCategoria, seccion) {
   }
 
 }
-
 function FiltrarEnBodega(IDCategoria, seccion) {
   let pag = 1;
   idCat = document.getElementById("txtCategoria").value;
@@ -3343,7 +3721,7 @@ function mostrarFiltroEnBodega(data, id, opt) {
   var htm = "";
   var i = parseInt(1);
   if (data.length > 0) {
-    data.forEach(function (key, index) {
+    data.forEach(function (key) {
       if (key.VALOR != null && key.DESCRIPCION != null) {
         switch (opt) {
           //Clase
@@ -3430,7 +3808,6 @@ function mostrarFiltroEnBodega(data, id, opt) {
     return htm;
   } else return "<label >Filtro no existe</label>";
 }
-
 (function() {
     const originalAddEventListener = EventTarget.prototype.addEventListener;
     EventTarget.prototype.addEventListener = function(type, listener, options) {
@@ -3444,3 +3821,4 @@ function mostrarFiltroEnBodega(data, id, opt) {
         return originalAddEventListener.call(this, type, listener, options);
     };
 })();
+
