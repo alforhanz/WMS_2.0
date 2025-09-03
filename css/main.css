@@ -2415,3 +2415,17 @@ label[for="sinExistencias"] {
 #verifica-contenedores{
   width: 40%;
 }
+
+.total-row {
+    font-weight: 900px; 
+    background-color: #f5f5f5; 
+    font-size: 1.1em; 
+    color: #090984;
+}
+.total-row td {
+  
+    padding: 10px;
+}
+.total-row .totales-label {
+    text-align: right !important;
+}

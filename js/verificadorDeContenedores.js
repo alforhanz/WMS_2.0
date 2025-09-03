@@ -12,21 +12,22 @@ document.addEventListener("DOMContentLoaded", function (){
 function validarBusquedaContenedor() {
  
   // mostrarLoading();
-  //var bodega = document.getElementById("bodega").value;
+  var bodega = document.getElementById("bodega").value;
+   let pPlaca = document.getElementById("placa-camion").value;   
 
-  if (bodega == "") {
+  if (pPlaca==="") {
     Swal.fire({
       icon: 'warning',
       title: 'Advertencia',
-      text: 'Por favor, seleccione una bodega.'
-    });
-    return false; // Evita que se envíe el formulario
+      text: 'Por favor, ingrese la placa del camión.'
+    });    
   }
   else {
     let pSistema ="WMS";
     let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;    
     let pOpcion ="A";
-    let pBodegaEnvia = document.getElementById("bodega").value;
+    // let pBodegaEnvia = document.getElementById("bodega").value;
+     let pBodegaEnvia = bodega;
     let pBodegaDestino = document.getElementById("bodegaSelectOC").value;  
     let pConsecutivo = $('#pContenedor').val();  
     let pEstado ="AW"
@@ -62,15 +63,11 @@ function validarBusquedaContenedor() {
 }
  /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-function enviarDatosControlador(params) {
-  // mostrarLoading();
-  let pag = 1;
-  
+function enviarDatosControlador(params) {  
 //Mostrar Loader
   mostrarLoader();
 console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
  localStorage.setItem('parametrosBusquedaContenedor', params);
-// localStorage.setItem('SearchParameterFlag', 'true');
 
   fetch(env.API_URL + "verificadordecontenedores" + params, myInit)
     .then((response) => response.json())
@@ -87,14 +84,19 @@ console.log('BUSQUEDA CONTENEDOR PARAMETROS\n '+params);
           Swal.fire({
             icon: "info",
             title: "Información",            
-            text: "No hay registros asignados para el usuario:",
+            text: "No hay registros asignados para el usuario",
             confirmButtonColor: "#28a745",
           });
         }
-        document.getElementById("carga").innerHTML = "";
-        //limpiarResultadoGeneral();
+        document.getElementById("carga").innerHTML = "";        
       }
       else {
+        Swal.fire({
+            icon: "error",
+            title: "error",            
+            text: "Se registro un error en la aplicación",
+            confirmButtonColor: "#28a745",
+          });
       }
     });
 ocultarLoader();
@@ -168,23 +170,21 @@ fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra")
     })
     .catch(error => console.error('Error al cargar las bodegas:', error));
 }
-  /////////////////////////////////////////////////////////////////////////////////////////////////////
- //////////       LECTURA Y VERIFICACION                                          ////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////// ARMA LA TABLA LECTURA //////////////////////////////////////////////////////////////////////////
+/////////                       LECTURA Y VERIFICACION                          ////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////// ARMA LA TABLA LECTURA ///////////////////////////////////////////////////////////
 function armarTablaLectura(detalleLineasContenedor) {
     var tbody = document.getElementById('tblbodyLectura');  
-
-    // Agregar la clase deseada a la tabla
+ 
     tbody.classList.add("display", "centered");
 
     tbody.innerHTML = '';
 
     detalleLineasContenedor.forEach(function (detalle) {
-        if (detalle.Cant_leida != null && detalle.Cant_leida !== "") { // Verificar si CANTIDAD_VERIFICADA tiene un valor
+        if (detalle.Cant_leida != null && detalle.Cant_leida !== "") { 
             if(detalle.Cant_leida!=0){
             var newRow = document.createElement('tr');
-
             newRow.innerHTML = `
                 <td>
                     <span style="display: block; text-align: center;">${detalle.Articulo}</span>
@@ -200,15 +200,12 @@ function armarTablaLectura(detalleLineasContenedor) {
                 </td>
             `;
             tbody.appendChild(newRow);
-            }
-         
+            }         
         }
     });
-
     guardarTablaEnArray();
     crearNuevaFila();
 }
-
 //////////     FUNCIONES PARA LA PESTAÑA LECTURA - VALIDA EL CODIGO LEIDO   ///////////////////////
 ///// Funcion que valida el codigo leido en el imput ////////////
 function validarCodigoBarras(input) {
@@ -220,27 +217,19 @@ function validarCodigoBarras(input) {
     const siguienteTd = row.querySelector('.codigo-barras-cell2');
     const cantFila = siguienteTd.querySelector('.codigo-barras-input');
 
-    const codigoValido = LineasContenedor.some(item => {
-        // Normaliza valores para evitar errores si son null/undefined
+const codigoValido = LineasContenedor.some(item => {       
         const articulo = item.Articulo ? item.Articulo.toUpperCase() : '';
         const codigoBarra = item.Codigo_Barra ? item.Codigo_Barra.toUpperCase() : '';
-
-        if (articulo === codbarra || codigoBarra === codbarra) {
-            span.textContent = item.Articulo;
-            cantFila.value = 1;
-
-            // Bloquear el input
-            input.setAttribute('readonly', 'readonly');
-
-            // Crear nueva fila y guardar en el array
-            crearNuevaFila();
-            guardarTablaEnArray();
-
-            return true; // Detiene el some()
-        }
-
-        return false;
-    });
+            if (articulo === codbarra || codigoBarra === codbarra) {
+                span.textContent = item.Articulo;
+                cantFila.value = 1;            
+                input.setAttribute('readonly', 'readonly');            
+                crearNuevaFila();
+                guardarTablaEnArray();
+                return true; 
+            }
+            return false;
+        });
 
     if (!codigoValido) {
         const codigoBarrasCell = row.querySelector('.codigo-barras-cell');
@@ -258,8 +247,7 @@ function validarCodigoBarras(input) {
 ///////////////   Funcion que crea la nueva fila en la pestaña lectura ////////////////
 function crearNuevaFila() {
   const tableBody = document.querySelector('#tblbodyLectura');
-
-  // Agregar la clase deseada a la tabla
+ 
   tableBody.classList.add("display", "centered");
 
   const nuevaFilaHTML =
@@ -416,7 +404,6 @@ function eliminarFila(icon) {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////VALIDA EL CONTENIDO DE LA PESTAÑA LECTURA CONTRA LA TABLA VERIFICACION//////////////////
-
 // //Funcion que limpia el area de mensajes de error
   function limpiarMensajes() {
     localStorage.removeItem("mensajes");
@@ -463,7 +450,7 @@ function verificacion() {
 var dataArray = JSON.parse(localStorage.getItem('dataArray'));
 
     // Obtener la tabla verificacion por su ID
-    const tabla = document.getElementById('myTableVerificacion');
+    const tabla = document.getElementById('tblcontenedores');
 
     // Verificar si la tabla existe
     if (tabla) {
@@ -626,13 +613,17 @@ dataArray.forEach(function (item) {
                          }
                      }
                  });//fin del forEach                
-                    localStorage.setItem("mensajes", JSON.stringify(mensajesArray));
+                    
              }
          }
+     });     
+     localStorage.setItem("mensajes", JSON.stringify(mensajesArray));
 
-     });                   
+    //  const celdaVacia = columnaEstaVacia();
+    //     celdaVacia ?null: mostrarMensajesLocalStorage();
+
+
  }//FIN DE VERIFICACION
-
 function inicializarBotones() {
     // Crear los botones y el contenedor
     const contenedorBotones = document.createElement('div');
@@ -846,7 +837,6 @@ fetch(env.API_URL + "guardacreapaquete" + params, myInit)
   });      
     
 }//fin fn   
-
 ///////FUNCION PARA PROCESAR//////       
 function confirmaProcesar() {   
     Swal.fire({
@@ -926,7 +916,31 @@ function confirmaProcesar() {
         }
     });
 }   
-//FUNCION DE PROCESAR EL CONTENEDOR
+//FUNCION PARA CREAR EL PAQUETE
+////procesar quemado para priuebas
+// function procesarContenedor() {
+//         let result = "TRAS81-0000031075";        
+//        if (result.toUpperCase().startsWith("TRAS")) {
+//                 console.log("Respuesta del API:\n" + result);
+//                 Swal.fire({
+//                             icon: "success",
+//                             title: "Se creó el paquete N° " + result+ " con éxito",
+//                             showDenyButton: true,                // <- activamos botón extra
+//                             confirmButtonText: "Aceptar",
+//                             denyButtonText: "Imprimir",
+//                             confirmButtonColor: "#28a745",       // verde aceptar
+//                             denyButtonColor: "#007bff",          // azul imprimir
+//                             cancelButtonColor: "#6e7881",
+//                         }).then((resultSwal) => {
+//                             if (resultSwal.isConfirmed) {
+//                                // location.reload();               // recarga página
+//                             } else if (resultSwal.isDenied) {
+//                                 imprimirPaqueteReporte(result);        // llama tu función
+//                                 //location.reload(); 
+//                             }
+//                         });           
+//                 }
+// }
 
 function procesarContenedor() {
         let pSistema = "WMS";        
@@ -948,7 +962,7 @@ function procesarContenedor() {
                     let table = document.getElementById("tblcontenedores");
 
                     // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-                    for (let i = 1; i < table.rows.length; i++) {
+                for (let i = 1; i < table.rows.length; i++) {
                         let row = table.rows[i];
 
                           // Obtener el consecutivo del contenedor
@@ -972,7 +986,7 @@ function procesarContenedor() {
                               cantidadLeida = 0;
                           }
                             // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
-                            var detalle = {
+                        var detalle = {
                                 CONTENEDOR: contenedor,
                                 SOLICITUD: solicitud,
                                 ARTICULO: articulo,
@@ -984,7 +998,7 @@ function procesarContenedor() {
                             detalles.push(detalle);
                     }
                     //Convertir el array de objetos a formato JSON
-                    var jsonPaquete = JSON.stringify(detalles);
+                var jsonPaquete = JSON.stringify(detalles);
                     //console.log("jsonPaquetes:\n"+jsonPaquete);
 
         const params =
@@ -1009,150 +1023,50 @@ function procesarContenedor() {
         "&pComentario="+
         pComentario ; 
          console.log("Params:\n"+params);
-        //   Swal.fire({
-        //         icon: "success",
-        //         title: "Guardando...:",
-        //         confirmButtonText: "Aceptar",
-        //         confirmButtonColor: "#28a745",
-        //         cancelButtonColor: "#6e7881",
-        //     });
-fetch(env.API_URL + "guardacreapaquete" + params, myInit)
- .then((response) => response.json())     
-  .then((result) => {  
-    console.log("Respuesta del SP");
-    console.log(result.respuesta);      
-    if (result.msg === "SUCCESS") {
-      if (result.respuesta.length != 0) {  
-                 console.log("Respuesta del API:\n"+result.respuesta[0].Respuesta)
-        Swal.fire({
-            icon: "success",
-            // title: "PAQUETE CREADO CORRECTAMENTE",
-            title: result.respuesta[0].Respuesta,
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#28a745",
-            cancelButtonColor: "#6e7881",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.reload();
-                // limpiarResultadoGeneral();
-                // limpiarTblLectura();
-                // Redirecciona a tu otra vista aquí
-               // window.location.href = 'BusquedaDeContenedores.html';                 
+        fetch(env.API_URL + "guardacreapaquete" + params, myInit)
+        .then((response) => response.json())
+        .then((result) => {
+            console.log("Respuesta del SP");
+            console.log(result.respuesta);
+        if (result.msg === "SUCCESS") {
+            if (result.respuesta.length != 0) {
+                let respuesta=result.respuesta[0].Respuesta;
+                console.log("Respuesta del API:\n" + result.respuesta[0].Respuesta);
+                if (result.respuesta[0].Respuesta.toUpperCase().startsWith("TRAS")) {
+                    Swal.fire({
+                                icon: "success",
+                                title: "Se creó el paquete N° " + respuesta+ " con éxito",
+                                showDenyButton: true,                
+                                confirmButtonText: "Aceptar",
+                                denyButtonText: "Imprimir",
+                                confirmButtonColor: "#28a745",       
+                                denyButtonColor: "#007bff",          
+                                cancelButtonColor: "#6e7881",
+                            }).then((resultSwal) => {
+                                if (resultSwal.isConfirmed) {
+                                //location.reload();               
+                                } else if (resultSwal.isDenied) {
+                                    imprimirPaqueteReporte(respuesta);        
+                                    //location.reload(); 
+                                }
+                                });                
+                }else{
+                       Swal.fire({
+                            icon: "error",                                                      
+                            title: result.respuesta[0].Respuesta,
+                            confirmButtonText: "Aceptar",                           
+                            confirmButtonColor: "#28a745",
+                        })
+                }
+            }else{
+                console.log("El API no devolvio nada");
             }
-        });
-      }          
-    } 
-    else{            
-    }
-  }); 
+         } else {
+            }
+        }); 
 }
 
-// function procesarContenedor() {
-      
-//         let pUsuario = localStorage.getItem('username');
-//         let pConsecutivo = localStorage.getItem('contenedor');
-//        let pUsuarioAutorizacion = localStorage.getItem('UsuarioAutorizacion') || null;
-
-
-//         //  let pUsuarioAutorizacion = localStorage.getItem('UsuarioAutorizacion');
-//         //  pUsuarioAutorizacion = (pUsuarioAutorizacion && pUsuarioAutorizacion.trim() !== "") 
-//         //  ? pUsuarioAutorizacion.toUpperCase() 
-//         //  : null;
-
-       
-//             // Array para almacenar todas las cantidades y artículos
-//             var detalles = [];
-       
-//                         // Obtener la tabla
-//                 let table = document.getElementById("tblcontenedores");
-
-//                 // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-//                 for (let i = 1; i < table.rows.length; i++) {
-//                     let row = table.rows[i];
-
-//                     // Obtener lasolicitud
-//                     let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
-                    
-//                     // Obtener el valor del artículo
-//                     let articulo = row.querySelector("#articulo").textContent.trim();
-                    
-//                     // Obtener la cantidad pedida
-//                     let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
-                    
-//                     // Obtener la cantidad leída
-//                     let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
-
-
-//                         // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
-//                         var detalle = {
-//                             SOLICITUD: solicitud,
-//                             ARTICULO: articulo,
-//                             CANT_CONSEC: cantidadPedida,
-//                             CANT_LEIDA: cantidadLeida
-//                         };
-
-//                         // Agregar el objeto al array
-//                         detalles.push(detalle);
-//                 }
-
-//             // Convertir el array de objetos a formato JSON
-//             var jsonDetalles = JSON.stringify(detalles);
-
-           
-       
-//         const params =
-//         "?pUsuario=" +
-//         pUsuario +
-//         "&pConsecutivo=" +   
-//         pConsecutivo +
-//         "&jsonDetalles=" +
-//         jsonDetalles+
-//         "&pUsuarioAutorizacion="+
-//         pUsuarioAutorizacion;
-//         let vacia = columnaEstaVacia();
-//         if(vacia){
-//            console.log('la columna de cantidad leida esta vacia...')
-//               Swal.fire({
-//                         icon: "warning",
-//                         title: "La columna de cantidad leida esta vacia",
-//                         confirmButtonText: "Aceptar",
-//                         confirmButtonColor: "#28a745",
-//                         cancelButtonColor: "#6e7881",
-//                     })
-//         }else{
-//              console.log('Se ha guardado con exito el contenedor...')
-                 
-//             fetch(env.API_URL + "contenedor/P" + params, myInit)
-//             .then((response) => response.json())     
-//             .then((result) => {          
-//                 if (result.msg === "SUCCESS") {
-//                 if (result.contenedor.length != 0) {   
-//                     // Resto del código de éxito
-//                     Swal.fire({
-//                         icon: "success",
-//                         title: "Datos procesados con éxito",
-//                         confirmButtonText: "Aceptar",
-//                         confirmButtonColor: "#28a745",
-//                         cancelButtonColor: "#6e7881",
-//                     }).then((result) => {
-//                         if (result.isConfirmed) {
-//                             // Redirecciona a tu otra vista aquí
-//                             window.location.href = 'BusquedaDeContenedores.html';   
-                           
-       
-//                         }
-//                     });
-//                 }          
-//                 } 
-//                 else{            
-//                 }
-//             });            
-//         }
-
-// }
-
-
-///// FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
+//FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
 
 function validarVerificacion() {
     // Obtener todas las celdas de verificación
@@ -1218,3 +1132,96 @@ function permisoCrearPaquete(){
     }
       
 }
+
+async function imprimirPaqueteReporte(respuesta) {
+    let pSistema = "WMS";        
+    let pUsuario = localStorage.getItem('username');
+    let pTipoConsulta = "L";
+    let pPaquete = respuesta;
+
+    const params =
+        "?pSistema=" + pSistema +
+        "&pUsuario=" + pUsuario +
+        "&pTipoConsulta=" + pTipoConsulta +        
+        "&pPaquete=" + pPaquete;
+
+    console.log("Params:\n" + params);
+
+    // const response = await fetch(env.API_URL + "imprimepaquete" + params, myInit);
+    // const result = await response.json();
+fetch(env.API_URL + "imprimepaquete" + params, myInit)
+    .then((response) => response.json())
+    .then((result) => {
+    if (result.msg === "SUCCESS" && result.respuesta.length > 0) {
+        console.log("REPORTE CREACION DE PAQUETE", result.respuesta);
+
+        // Crear PDF (p = portrait / vertical)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("l", "pt", "a4");
+
+        // Encabezado
+        doc.setFontSize(16);
+        doc.setFont("helvetica", "bold");
+        doc.text("CENTRAL DE LUBRICANTES", doc.internal.pageSize.getWidth() / 2, 40, { align: "center" });
+        
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "normal");
+        doc.text("CREACIÓN DE PAQUETES", doc.internal.pageSize.getWidth() / 2, 60, { align: "center" });
+
+        doc.setFontSize(12);
+        doc.text("Reporte de Paquete: " + pPaquete, 40, 90);
+        doc.text("Camión: " + (result.respuesta[0].REFERENCIA || "N/A"), 40, 110);
+
+        // Definir columnas (encabezados)
+        const columnas = [           
+            "ARTICULO",
+            "DESCRIPCIÓN",
+            "CANT-SOLICIT",
+            "CANT PREP",
+            "CANT APROB",  
+            "CONTENEDOR",          
+            "USUARIO APLICA",
+            "FECHA APLICACION"           
+        ];
+
+        // Mapear los datos a filas
+        const filas = result.respuesta.map(item => [           
+            item.articulo, 
+            item.descripcion,           
+            item.LineaConsecutivo,           
+            item.LineaAprobada,
+            item.LineaVerificada,    
+            item.Contenedor,        
+            item.Usuario_Aplicacion,
+            item.Fecha_Aplicacion                     
+        ]);
+
+                // Generar tabla debajo del encabezado
+            doc.autoTable({
+                head: [columnas],
+                body: filas,
+                startY: 140,
+                styles: { fontSize: 8, cellWidth: "wrap" },
+                headStyles: { fillColor: [40, 167, 69] }
+            });
+
+            console.log("Se generó el pdf");
+
+// Descargar PDF
+        doc.save("Reporte_Paquete_" + pPaquete + ".pdf");
+
+            // // Forzar impresión directa
+            // doc.autoPrint();
+
+            // // Convertir a blob y abrir en pestaña nueva
+            // const pdfBlob = doc.output("blob");
+            // const pdfUrl = URL.createObjectURL(new Blob([pdfBlob], { type: "application/pdf" }));
+            // window.open(pdfUrl, "_blank");
+
+    } else {
+        console.log("El API no devolvió nada");
+    }
+});
+}
+
+

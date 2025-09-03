@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 });
-
 function cargarDetalleContenedor(contenedor, bodegaSolicita) {
         let pSistema='WMS'
         let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;      
@@ -75,7 +74,6 @@ console.log("Parametros Detalle contenedor\n"+params);
       } 
     });
 }
-
 //////////////// ARMA LA TABLA LECTURA //////////////////////////////////////////////////////////////////////////
 function armarTablaLectura(detalleLineasContenedor) {
     var tbody = document.getElementById('tblbodyLectura');  
@@ -113,7 +111,6 @@ function armarTablaLectura(detalleLineasContenedor) {
     guardarTablaEnArray();
     crearNuevaFila();
 }
-
 ///////VALIDA EL CODIGO LEIDO EN LA PESTAÑA LECTURA//////////////////
 function validarCodigoBarras(input) {
   var LineasContenedor = detalleLineasContenedor;
@@ -130,20 +127,30 @@ function validarCodigoBarras(input) {
 
   for (var i = 0; i < LineasContenedor.length; i++) {      
       if ((LineasContenedor[i].Articulo && LineasContenedor[i].Articulo.toUpperCase() === codbarra) || (LineasContenedor[i].Codigo_Barra && LineasContenedor[i].Codigo_Barra.toUpperCase() === codbarra)){
-          span.textContent = LineasContenedor[i].Articulo;
-          cantFila.value = 1;
-
-          // Bloquear la celda del código de barras
-          input.setAttribute('readonly', 'readonly');
-
-          // Aquí se genera una fila nueva vacía
-          crearNuevaFila();
-
-          // Llamar función que guarda artículos en la tabla
-          guardarTablaEnArray();          
-
-          codigoValido = true;
-          break;
+               if(LineasContenedor[i].total_cedi > 0){
+                    span.textContent = LineasContenedor[i].Articulo;
+                    cantFila.value = 1;
+                    // Bloquear la celda del código de barras
+                    input.setAttribute('readonly', 'readonly');
+                    // Aquí se genera una fila nueva vacía
+                    crearNuevaFila();
+                    // Llamar función que guarda artículos en la tabla
+                    guardarTablaEnArray();          
+                    codigoValido = true;
+                    break;
+               }else{                 
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '¡Articulo sin Existencias!',
+                            text: 'La referencia '+LineasContenedor[i].Articulo+' no cuenta con existencias',
+                            confirmButtonColor: '#28a745',
+                        });
+                          codigoValido = true;
+                                const codigoBarrasCell = row.querySelector('.codigo-barras-cell');
+                                const codigoBarrasInput = codigoBarrasCell.querySelector('.codigo-barras-input');
+                                codigoBarrasInput.value = '';
+                         break;
+               }
       }
   }
 
@@ -161,9 +168,7 @@ function validarCodigoBarras(input) {
       });
   }
 }
-
  ///// Funcion que crea la nueva fila en la pestaña lectura ////////////
-
 function crearNuevaFila() {
   const tableBody = document.querySelector('#tblbodyLectura');
 
@@ -188,13 +193,11 @@ function crearNuevaFila() {
       nuevoCodigoBarrasInput.focus();
   }
 }
-
 ///////////vALIDA LO QUE SE LEE CONTRA EL PEDIDO./////////
 function validarCantidadPedida() {
   //Llamado a guardar datos en la variable arrray en el LS
   guardarTablaEnArray();
 }
-
 function guardarTablaEnArray() {
   var dataArray = [];
 
@@ -232,7 +235,6 @@ function guardarTablaEnArray() {
 
   return dataArray;
 }
-
 ///////////////////////FUNCION QUE AGRUPA EL DATA ARRAY CON LAS LECTURAS DEL PEDIDO////////////////////
 function agrupar() {
   // Obtener el arreglo almacenado en localStorage
@@ -270,7 +272,6 @@ function agrupar() {
   // Actualizar el arreglo en localStorage con los resultados consolidados
   localStorage.setItem("dataArray", JSON.stringify(newArray));
 }
-
 // Funcion que elimina filas en la pestaña lectura
 function eliminarFila(icon) {
 
@@ -326,7 +327,6 @@ function eliminarFila(icon) {
         }
     });    
 }
-
 ///FUNCION QUE ARMA LA TABLA DE LA PESTAÑA VERIFICACION
 function armarTablaVerificacion(detalleLineasContenedor) {
     // Obtener la referencia del cuerpo de la tabla
@@ -345,6 +345,7 @@ function armarTablaVerificacion(detalleLineasContenedor) {
         // Crear una nueva fila
         var newRow = document.createElement('tr');
 
+      if(detalle.total_cedi>0 ){
         // Construir el contenido de la fila usando variables HTML
         newRow.innerHTML = `
             <td id="articulo"><h5 id="verifica-articulo"><span class="blue-text text-darken-2 centered">${detalle.Articulo}</span></h5><h6>${detalle.Descripcion}</h6></td>
@@ -356,18 +357,30 @@ function armarTablaVerificacion(detalleLineasContenedor) {
              <td id="solicitud" hidden>${detalle.Solicitud}</td>`;
         // Agregar la fila al cuerpo de la tabla
         tbody.appendChild(newRow);
+      }else{// Construir el contenido de la fila usando variables HTML
+            newRow.innerHTML = `
+                <td id="articulo" contenteditable="false"><h5 id="verifica-articulo"><span class="red-text text-darken-4 centered">${detalle.Articulo}</span></h5><h6 class="red-text text-darken-4">${detalle.Descripcion}</h6></td>
+                <td id="codigoDeBarras" contenteditable="false" class="red-text text-darken-4">${detalle.Codigo_Barra || ''}</td>
+                <td id="cantidadPedida" contenteditable="false" class="red-text text-darken-4">${isNaN(parseFloat(detalle.LineaConsecutivo)) ? 0 : parseFloat(detalle.LineaConsecutivo).toFixed(2)}</td>
+                <td id="cantidadLeida" contenteditable="false" class="red-text text-darken-4"></td> <!-- Cantidad leída, inicialmente en blanco -->
+                <td id="verificado" contenteditable="false"></td> 
+                <td id="articulosEliminado" hidden>${detalle.ARTICULO_ELIMINADO}</td> 
+                <td id="solicitud" hidden>${detalle.Solicitud}</td>`;
+            // Agregar la fila al cuerpo de la tabla
+            tbody.appendChild(newRow);
+      }
+
+
     });
 }
-
 //Funcion que limpia el area de mensajes de error
-  function limpiarMensajes() {
+function limpiarMensajes() {
     localStorage.removeItem("mensajes");
     const mensajeTextArea = document.getElementById('mensajeText');
     mensajeTextArea.value = '';
     // Limpiar la variable 'mensajes' del localStorage
     guardarTablaEnArray();    
 }
-
 
 //FUNCION QUE VERIFICA LAS COINCIDENCIAS,TOMA LOS VALORES DE LAS CANTIDADES
 // POR ARTICULO, COMPARA LO QUE TIENE EL ARRAY DEL LS Y VERIFICA LAS COINCIDENCIAS, PARA MOSTRARLO EN LA PESTAÑA VERIFICACION
@@ -545,39 +558,108 @@ dataArray.forEach(function (item) {
              }
          }
 
-     });
-
-         // Después de realizar la verificación, habilitar o deshabilitar el botón DE PROCESAR      
-    //      const estadoPedidoElement = document.getElementById("estadoPedido");
-    //      const estadoPedidoText = estadoPedidoElement.textContent;
-    //      const estadoPedidoParts = estadoPedidoText.split(':'); // Dividir el texto por los dos puntos
-    //      const estadoPedido = estadoPedidoParts.length > 1 ? estadoPedidoParts[1].trim() : ''; // Obtener la parte después de los dos puntos y eliminar espacios en blanco
-                
-       
-    //  const procesarHabilitado = todasLasFilasVerificadas() ;
-
-    // //const procesarHabilitado = todasLasFilasVerificadas();
-   
-    // if (procesarHabilitado) {
-    //     // Habilitar el botón "Procesar"
-    //     document.getElementById('btnProcesar').removeAttribute('hidden');
-    // } else {
-    //     // Deshabilitar el botón "Procesar"
-    //     document.getElementById('btnProcesar').setAttribute('hidden', 'hidden');
-    // }
-
-    // // Después de realizar la verificación, habilitar o deshabilitar el botón "DE GUARDADO PARCIAL"
-    // const guardarParcialHabilitado = activaGuardadoParcial();
-    // if (guardarParcialHabilitado) {
-    //     // Deshabilitar el botón "Procesar"
-    //     document.getElementById('btnGuardar').setAttribute('hidden', 'hidden');
-    // } else {
-    //     // Habilitar el botón "Procesar"
-    //     document.getElementById('btnGuardar').removeAttribute('hidden');
-    // }    
-    //activaDevolverArticulo();
+     });       
+    actualizarTotalesTablaVerificacion(detalleLineasContenedor);
  }//FIN DE VERIFICACION
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function actualizarTotalesTablaVerificacion(detalleLineasContenedor) {
+    // Obtener la referencia del cuerpo de la tabla
+    var tbody = document.getElementById('tblbodyLineasContenedor');
 
+    // Verificar que el tbody exista
+    if (!tbody) {
+        console.error("Elemento 'tblbodyLineasContenedor' no encontrado en el DOM");
+        return;
+    }
+
+    // Calcular total de cantidadPedida desde detalleLineasContenedor
+    let totalPedida = 0;
+    detalleLineasContenedor.forEach(function (detalle) {
+        let cantidadPedida = parseFloat(detalle.LineaConsecutivo) || 0;
+        totalPedida += isNaN(cantidadPedida) ? 0 : cantidadPedida;
+    });
+
+    // Calcular total de cantidadLeida desde las celdas del DOM
+    let totalLeida = 0;
+    const celdasCantidadLeida = tbody.querySelectorAll('td[id="cantidadLeida"]');
+    celdasCantidadLeida.forEach(celda => {
+        let valor = parseFloat(celda.textContent) || 0;
+        totalLeida += isNaN(valor) ? 0 : valor;
+    });
+
+    // Buscar si ya existe una fila de totales
+    let totalRow = tbody.querySelector('.total-row');
+
+    // Si no existe, crear una nueva fila
+    if (!totalRow) {
+        totalRow = document.createElement('tr');
+        totalRow.className = 'total-row';
+        tbody.appendChild(totalRow);
+    }
+
+    // Calcular diferencia
+    let diferencia = totalPedida - totalLeida;
+
+    // Actualizar el contenido de la fila de totales
+    totalRow.innerHTML = `
+        <td colspan="2" class="totales-label"><em>Totales</em></td>
+        <td><em>${totalPedida.toFixed(2)}</em></td>
+        <td><em>${totalLeida.toFixed(2)}</em></td>
+        
+        <td><em>${diferencia !== 0 ? diferencia.toFixed(2) : ''}</em></td> <!-- Diferencia solo si existe -->
+        <td hidden></td> <!-- Celda oculta para articulosEliminado -->
+        <td hidden></td> <!-- Celda oculta para solicitud -->
+    `;
+}
+
+
+
+// function actualizarTotalesTablaVerificacion(detalleLineasContenedor) {
+//     // Obtener la referencia del cuerpo de la tabla
+//     var tbody = document.getElementById('tblbodyLineasContenedor');
+
+//     // Verificar que el tbody exista
+//     if (!tbody) {
+//         console.error("Elemento 'tblbodyLineasContenedor' no encontrado en el DOM");
+//         return;
+//     }
+
+//     // Calcular total de cantidadPedida desde detalleLineasContenedor
+//     let totalPedida = 0;
+//     detalleLineasContenedor.forEach(function (detalle) {
+//         let cantidadPedida = parseFloat(detalle.LineaConsecutivo) || 0;
+//         totalPedida += isNaN(cantidadPedida) ? 0 : cantidadPedida;
+//     });
+
+//     // Calcular total de cantidadLeida desde las celdas del DOM
+//     let totalLeida = 0;
+//     const celdasCantidadLeida = tbody.querySelectorAll('td[id="cantidadLeida"]');
+//     celdasCantidadLeida.forEach(celda => {
+//         let valor = parseFloat(celda.textContent) || 0;
+//         totalLeida += isNaN(valor) ? 0 : valor;
+//     });
+
+//     // Buscar si ya existe una fila de totales
+//     let totalRow = tbody.querySelector('.total-row');
+
+//     // Si no existe, crear una nueva fila
+//     if (!totalRow) {
+//         totalRow = document.createElement('tr');
+//         totalRow.className = 'total-row';
+//         tbody.appendChild(totalRow);
+//     }
+
+//     // Actualizar el contenido de la fila de totales
+//     totalRow.innerHTML = `
+//         <td colspan="2" class="totales-label"><em>Totales</em></td>
+//         <td><em>${totalPedida.toFixed(2)}</em></td>
+//         <td><em>${totalLeida.toFixed(2)}</em></td>
+
+//         <td></td> <!-- Celda vacía para Verificado -->
+//         <td hidden></td> <!-- Celda oculta para articulosEliminado -->
+//         <td hidden></td> <!-- Celda oculta para solicitud -->
+//     `;
+// }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //FUNCION QUE VERIFICA LAS CANTIDASDES LEIDAS Y DEL PEDIDO PÁRA ACTIVAR EL BOTON DE GUARDADO PARCIAL
 function activaGuardadoParcial() {
@@ -600,7 +682,6 @@ function activaGuardadoParcial() {
     // Si ninguna fila tiene cantidad leída mayor que cantidad pedida, retornamos false
     return false;
 }
-
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Función para mostrar los mensajes almacenados en el localStorage en el textarea
 function mostrarMensajesLocalStorage() {
@@ -616,10 +697,8 @@ function mostrarMensajesLocalStorage() {
         }
     }
 }
-
 //Llama a la función mostrarMensajesLocalStorage cuando se hace clic en la pestaña "Verificación"
 document.querySelector('a[href="#tabla-verificacion"]').addEventListener('click', mostrarMensajesLocalStorage);
-
 function inicializarBotones() {
     // Crear los botones y el contenedor
     const contenedorBotones = document.createElement('div');
@@ -730,7 +809,7 @@ function mostrarProcesoEnConstruccion() {
                     let table = document.getElementById("myTableVerificacion");
 
                     // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-                    for (let i = 1; i < table.rows.length; i++) {
+                    for (let i = 1; i < table.rows.length-1; i++) {
                         let row = table.rows[i];
 
                          // Obtener lasolicitud
@@ -939,7 +1018,7 @@ function procesarContenedor() {
                 let table = document.getElementById("myTableVerificacion");
 
                 // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-                for (let i = 1; i < table.rows.length; i++) {
+                for (let i = 1; i < table.rows.length-1; i++) {
                     let row = table.rows[i];
 
                     // Obtener lasolicitud
