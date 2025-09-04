@@ -917,156 +917,157 @@ function confirmaProcesar() {
     });
 }   
 //FUNCION PARA CREAR EL PAQUETE
-////procesar quemado para priuebas
-// function procesarContenedor() {
-//         let result = "TRAS81-0000031075";        
-//        if (result.toUpperCase().startsWith("TRAS")) {
-//                 console.log("Respuesta del API:\n" + result);
-//                 Swal.fire({
-//                             icon: "success",
-//                             title: "Se creó el paquete N° " + result+ " con éxito",
-//                             showDenyButton: true,                // <- activamos botón extra
-//                             confirmButtonText: "Aceptar",
-//                             denyButtonText: "Imprimir",
-//                             confirmButtonColor: "#28a745",       // verde aceptar
-//                             denyButtonColor: "#007bff",          // azul imprimir
-//                             cancelButtonColor: "#6e7881",
-//                         }).then((resultSwal) => {
-//                             if (resultSwal.isConfirmed) {
-//                                // location.reload();               // recarga página
-//                             } else if (resultSwal.isDenied) {
-//                                 imprimirPaqueteReporte(result);        // llama tu función
-//                                 //location.reload(); 
-//                             }
-//                         });           
-//                 }
-// }
-
+//procesar quemado para priuebas
 function procesarContenedor() {
-        let pSistema = "WMS";        
-        let pUsuario = localStorage.getItem('username');
-        let pOpcion = "R";
-        let pBodegaOrigen= document.getElementById("bodega").value;
-        let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
-        //let pBodegaDestino ="B-04";
-        let pFecha = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD   
-        let pPlaca = document.getElementById("placa-camion").value;     
-        //let pPlaca= "447537";
-        let pReferencia="Ref o null";
-        let pComentario="Comentario o null";
-        
-            // Array para almacenar todas las cantidades y artículos
-            var detalles = [];
-       
-                            // Obtener la tabla
-                    let table = document.getElementById("tblcontenedores");
-
-                    // Iterar sobre las filas de la tabla (excluyendo el encabezado)
-                for (let i = 1; i < table.rows.length; i++) {
-                        let row = table.rows[i];
-
-                          // Obtener el consecutivo del contenedor
-                        let contenedor = row.querySelector("#contenedor").textContent.trim() || 0;
-
-                         // Obtener lasolicitud
-                        let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
-                        
-                        // Obtener el valor del artículo
-                        let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
-                        
-                        // Obtener la cantidad pedida
-                        let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
-                         // Obtener la cantidad pedida
-                        let cantidadPreparada = row.querySelector("#cantidadPreparada").textContent.trim();
-                        
-                        // Obtener la cantidad leída
-                        let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
-
-                        if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
-                              cantidadLeida = 0;
-                          }
-                            // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
-                        var detalle = {
-                                CONTENEDOR: contenedor,
-                                SOLICITUD: solicitud,
-                                ARTICULO: articulo,
-                                CANT_CONSEC: cantidadPedida,
-                                CANT_PREPARADA: cantidadPreparada,
-                                CANT_LEIDA: cantidadLeida                               
-                            };
-                           // Agregar el objeto al array
-                            detalles.push(detalle);
-                    }
-                    //Convertir el array de objetos a formato JSON
-                var jsonPaquete = JSON.stringify(detalles);
-                    //console.log("jsonPaquetes:\n"+jsonPaquete);
-
-        const params =
-        "?pSistema="+
-        pSistema+
-        "&pUsuario=" +
-        pUsuario +
-        "&pOpcion="+
-        pOpcion+
-        "&pBodegaOrigen="+
-        pBodegaOrigen+
-        "&pBodegaDestino="+
-        pBodegaDestino+
-        "&pFecha="+
-        pFecha+
-        "&pPlaca="+
-        pPlaca+
-        "&jsonPaquete=" +
-        jsonPaquete+
-        "&pReferencia="+
-        pReferencia+
-        "&pComentario="+
-        pComentario ; 
-         console.log("Params:\n"+params);
-        fetch(env.API_URL + "guardacreapaquete" + params, myInit)
-        .then((response) => response.json())
-        .then((result) => {
-            console.log("Respuesta del SP");
-            console.log(result.respuesta);
-        if (result.msg === "SUCCESS") {
-            if (result.respuesta.length != 0) {
-                let respuesta=result.respuesta[0].Respuesta;
-                console.log("Respuesta del API:\n" + result.respuesta[0].Respuesta);
-                if (result.respuesta[0].Respuesta.toUpperCase().startsWith("TRAS")) {
-                    Swal.fire({
-                                icon: "success",
-                                title: "Se creó el paquete N° " + respuesta+ " con éxito",
-                                showDenyButton: true,                
-                                confirmButtonText: "Aceptar",
-                                denyButtonText: "Imprimir",
-                                confirmButtonColor: "#28a745",       
-                                denyButtonColor: "#007bff",          
-                                cancelButtonColor: "#6e7881",
-                            }).then((resultSwal) => {
-                                if (resultSwal.isConfirmed) {
-                                //location.reload();               
-                                } else if (resultSwal.isDenied) {
-                                    imprimirPaqueteReporte(respuesta);        
-                                    //location.reload(); 
-                                }
-                                });                
-                }else{
-                       Swal.fire({
-                            icon: "error",                                                      
-                            title: result.respuesta[0].Respuesta,
-                            confirmButtonText: "Aceptar",                           
-                            confirmButtonColor: "#28a745",
-                        })
+        let result = "TRAS81-0000031075";        
+       if (result.toUpperCase().startsWith("TRAS")) {
+                console.log("Respuesta del API:\n" + result);
+                Swal.fire({
+                            icon: "success",
+                            title: "Se creó el paquete N° " + result+ " con éxito",
+                            showDenyButton: true,                // <- activamos botón extra
+                            confirmButtonText: "Aceptar",
+                            denyButtonText: "Imprimir",
+                            confirmButtonColor: "#28a745",       // verde aceptar
+                            denyButtonColor: "#007bff",          // azul imprimir
+                            cancelButtonColor: "#6e7881",
+                        }).then((resultSwal) => {
+                            if (resultSwal.isConfirmed) {
+                            //   location.reload();               // recarga página
+                            } else if (resultSwal.isDenied) {
+                                imprimirPaqueteReporte(result);        // llama tu función
+                                limpiarResultadoGeneral();
+                               // location.reload(); 
+                            }
+                        });           
                 }
-            }else{
-                console.log("El API no devolvio nada");
-            }
-         } else {
-            }
-        }); 
 }
 
-//FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
+// function procesarContenedor() {
+//         let pSistema = "WMS";        
+//         let pUsuario = localStorage.getItem('username');
+//         let pOpcion = "R";
+//         let pBodegaOrigen= document.getElementById("bodega").value;
+//         let pBodegaDestino =document.getElementById("bodegaSelectOC").value;
+//         //let pBodegaDestino ="B-04";
+//         let pFecha = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD   
+//         let pPlaca = document.getElementById("placa-camion").value;     
+//         //let pPlaca= "447537";
+//         let pReferencia="Ref o null";
+//         let pComentario="Comentario o null";
+        
+//             // Array para almacenar todas las cantidades y artículos
+//             var detalles = [];
+       
+//                             // Obtener la tabla
+//                     let table = document.getElementById("tblcontenedores");
+
+//                     // Iterar sobre las filas de la tabla (excluyendo el encabezado)
+//                 for (let i = 1; i < table.rows.length; i++) {
+//                         let row = table.rows[i];
+
+//                           // Obtener el consecutivo del contenedor
+//                         let contenedor = row.querySelector("#contenedor").textContent.trim() || 0;
+
+//                          // Obtener lasolicitud
+//                         let solicitud = row.querySelector("#solicitud").textContent.trim() || 0;
+                        
+//                         // Obtener el valor del artículo
+//                         let articulo = row.querySelector("#verifica-articulo span").textContent.trim();
+                        
+//                         // Obtener la cantidad pedida
+//                         let cantidadPedida = row.querySelector("#cantidadPedida").textContent.trim();
+//                          // Obtener la cantidad pedida
+//                         let cantidadPreparada = row.querySelector("#cantidadPreparada").textContent.trim();
+                        
+//                         // Obtener la cantidad leída
+//                         let cantidadLeida = row.querySelector("#cantidadLeida").textContent.trim() || 0;
+
+//                         if (isNaN(cantidadLeida) || cantidadLeida == undefined || cantidadLeida == null || cantidadLeida == "") {
+//                               cantidadLeida = 0;
+//                           }
+//                             // Crear un objeto para cada fila con las propiedades ARTICULO y CANTCONSEC
+//                         var detalle = {
+//                                 CONTENEDOR: contenedor,
+//                                 SOLICITUD: solicitud,
+//                                 ARTICULO: articulo,
+//                                 CANT_CONSEC: cantidadPedida,
+//                                 CANT_PREPARADA: cantidadPreparada,
+//                                 CANT_LEIDA: cantidadLeida                               
+//                             };
+//                            // Agregar el objeto al array
+//                             detalles.push(detalle);
+//                     }
+//                     //Convertir el array de objetos a formato JSON
+//                 var jsonPaquete = JSON.stringify(detalles);
+//                     //console.log("jsonPaquetes:\n"+jsonPaquete);
+
+//         const params =
+//         "?pSistema="+
+//         pSistema+
+//         "&pUsuario=" +
+//         pUsuario +
+//         "&pOpcion="+
+//         pOpcion+
+//         "&pBodegaOrigen="+
+//         pBodegaOrigen+
+//         "&pBodegaDestino="+
+//         pBodegaDestino+
+//         "&pFecha="+
+//         pFecha+
+//         "&pPlaca="+
+//         pPlaca+
+//         "&jsonPaquete=" +
+//         jsonPaquete+
+//         "&pReferencia="+
+//         pReferencia+
+//         "&pComentario="+
+//         pComentario ; 
+//          console.log("Params:\n"+params);
+//         fetch(env.API_URL + "guardacreapaquete" + params, myInit)
+//         .then((response) => response.json())
+//         .then((result) => {
+//             console.log("Respuesta del SP");
+//             console.log(result.respuesta);
+//         if (result.msg === "SUCCESS") {
+//             if (result.respuesta.length != 0) {
+//                 let respuesta=result.respuesta[0].Respuesta;
+//                 console.log("Respuesta del API:\n" + result.respuesta[0].Respuesta);
+//                 if (result.respuesta[0].Respuesta.toUpperCase().startsWith("TRAS")) {
+//                     Swal.fire({
+//                                 icon: "success",
+//                                 title: "Se creó el paquete N° " + respuesta+ " con éxito",
+//                                 showDenyButton: true,                
+//                                 confirmButtonText: "Aceptar",
+//                                 denyButtonText: "Imprimir",
+//                                 confirmButtonColor: "#28a745",       
+//                                 denyButtonColor: "#007bff",          
+//                                 cancelButtonColor: "#6e7881",
+//                             }).then((resultSwal) => {
+//                                 if (resultSwal.isConfirmed) {
+//                                 //location.reload();               
+//                                 } else if (resultSwal.isDenied) {
+//                                     imprimirPaqueteReporte(respuesta);        
+//                                     //location.reload(); 
+//                                 }
+//                                 });                
+//                 }else{
+//                        Swal.fire({
+//                             icon: "error",                                                      
+//                             title: result.respuesta[0].Respuesta,
+//                             confirmButtonText: "Aceptar",                           
+//                             confirmButtonColor: "#28a745",
+//                         })
+//                 }
+//             }else{
+//                 console.log("El API no devolvio nada");
+//             }
+//          } else {
+//             }
+//         }); 
+// }
+
+// FUNCION PARA VERIFICAR EL CHECK EN LA COLUNA DE VERIFICACO
 
 function validarVerificacion() {
     // Obtener todas las celdas de verificación
@@ -1136,7 +1137,7 @@ function permisoCrearPaquete(){
 async function imprimirPaqueteReporte(respuesta) {
     let pSistema = "WMS";        
     let pUsuario = localStorage.getItem('username');
-    let pTipoConsulta = "L";
+    let pTipoConsulta = "l";
     let pPaquete = respuesta;
 
     const params =
@@ -1157,42 +1158,39 @@ fetch(env.API_URL + "imprimepaquete" + params, myInit)
 
         // Crear PDF (p = portrait / vertical)
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF("l", "pt", "a4");
+        const doc = new jsPDF("P", "pt", "a4");
 
         // Encabezado
         doc.setFontSize(16);
         doc.setFont("helvetica", "bold");
-        doc.text("CENTRAL DE LUBRICANTES", doc.internal.pageSize.getWidth() / 2, 40, { align: "center" });
+        doc.text("CREACIÓN DE PAQUETES", doc.internal.pageSize.getWidth() / 2, 40, { align: "center" });
         
         doc.setFontSize(14);
         doc.setFont("helvetica", "normal");
-        doc.text("CREACIÓN DE PAQUETES", doc.internal.pageSize.getWidth() / 2, 60, { align: "center" });
+        doc.text("PAQUETE: " + pPaquete, doc.internal.pageSize.getWidth() / 2, 60, { align: "center" });
 
-        doc.setFontSize(12);
-        doc.text("Reporte de Paquete: " + pPaquete, 40, 90);
-        doc.text("Camión: " + (result.respuesta[0].REFERENCIA || "N/A"), 40, 110);
+        doc.setFontSize(12);        
+        doc.text("Camión: " + (result.respuesta[0].REFERENCIA || "N/A"), 40, 90);
 
         // Definir columnas (encabezados)
         const columnas = [           
-            "ARTICULO",
-            "DESCRIPCIÓN",
-            "CANT-SOLICIT",
-            "CANT PREP",
-            "CANT APROB",  
-            "CONTENEDOR",          
-            "USUARIO APLICA",
-            "FECHA APLICACION"           
+            "ARTÍCULO",  
+            "CÓDIGO\nBARRAS",         
+            "CANT\nSOLI",
+            "CANT\nPREP.",
+            "CANT\nVERIF.",  
+            "CONSECUTIVO\nCONTENEDOR",
+            "FECHA\nCREACIÓN"           
         ];
 
         // Mapear los datos a filas
         const filas = result.respuesta.map(item => [           
-            item.articulo, 
-            item.descripcion,           
+            `${item.articulo}\n${item.descripcion}`,        
+            item.Codigo_Barra,
             item.LineaConsecutivo,           
             item.LineaAprobada,
             item.LineaVerificada,    
-            item.Contenedor,        
-            item.Usuario_Aplicacion,
+            item.Contenedor,                    
             item.Fecha_Aplicacion                     
         ]);
 
@@ -1208,10 +1206,10 @@ fetch(env.API_URL + "imprimepaquete" + params, myInit)
             console.log("Se generó el pdf");
 
 // Descargar PDF
-        doc.save("Reporte_Paquete_" + pPaquete + ".pdf");
+       doc.save("Reporte_Paquete_" + pPaquete + ".pdf");
 
             // // Forzar impresión directa
-            // doc.autoPrint();
+           //
 
             // // Convertir a blob y abrir en pestaña nueva
             // const pdfBlob = doc.output("blob");
