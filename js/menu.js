@@ -6,14 +6,14 @@ let menuEnlaces = [
   //CONSULTA
   { MODULO: 10, SUBMODULO: 0, ICON: "manufacturing", LINK: ""},//PROCESOS
     { MODULO: 10, SUBMODULO: 1, ICON: "", LINK: "verificacionDePedidos.html"},//VERIFICACION DE PEDIDOS
-    { MODULO: 10, SUBMODULO: 2, ICON: "", LINK: "verificacionDeOrdenesDeCompra.html"},// ORDENES DE COMPRAS
+    { MODULO: 10, SUBMODULO: 2, ICON: "", LINK: "verificacionDePicking.html"},// ORDENES DE COMPRAS
     { MODULO: 10, SUBMODULO: 3, ICON: "", LINK: "BusquedaDeContenedores.html"},//
-    { MODULO: 10, SUBMODULO: 4, ICON: "", LINK: "verificacionDePicking.html"},   
+    { MODULO: 10, SUBMODULO: 4, ICON: "", LINK: "VerificadorDeContenedores.html"},   
     { MODULO: 10, SUBMODULO: 5, ICON: "", LINK: "verificacionDeTraslados.html"}, 
     { MODULO: 10, SUBMODULO: 6, ICON: "", LINK: "verificacionDePickingDetraslados.html"}, 
     { MODULO: 10, SUBMODULO: 7, ICON: "", LINK: "conteoDeInventario.html"}, 
     { MODULO: 10, SUBMODULO: 8, ICON: "", LINK: "boletaDeInventario.html"}, 
-     { MODULO: 10, SUBMODULO: 9, ICON: "", LINK: "VerificadorDeContenedores.html"}, 
+    { MODULO: 10, SUBMODULO: 9, ICON: "", LINK: "verificacionDeOrdenesDeCompra.html"}, 
 
   { MODULO: 12, SUBMODULO: 0, ICON: "feature_search", LINK: ""},//CONSULTAS
     { MODULO: 12, SUBMODULO: 1, ICON: "", LINK: "verificacionDeOrdenesDeCompraProcesadas.html"}, 

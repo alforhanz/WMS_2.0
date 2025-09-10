@@ -145,6 +145,19 @@ $routes->get('getnuevosProductos', 'GetNuevosProductos::index');
 // RUTA PARA CONSULTAR CATEGORIA DEL CLIENTE AL USAR BUSCADOR GENERAL
 $routes->get('categorias', 'GetCategorias::index');
 
+// RUTA PARA GENERAR TIPOS DE INFORME EN GESTION DE ACTIVIDAD
+//$routes->get('/tipos-informe', 'TipoInformeController::index');
+$routes->get('/tipos-informe', 'TipoInforme::index');
+
+// RUTA PARA APROBAR PEDIDOS DE CREDITOS
+$routes->get('aprobarP/R', 'AprobarPedido::index');
+$routes->post('aprobarP/aprobar', 'AprobarPedido::aprobar');
+
+ //RUTA PARA ACTUALIZAR PEDIDOS DE CREDITOS
+$routes->post('actualizar', 'ActualizarPedido::actualizar');
+
+
+
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
  /////////			  RUTAS DEL WMS 	 				    ////////////
@@ -156,6 +169,7 @@ $routes->get('wmsgetdashinfo/(:num)', 'WMSGetDashInfo::show/$1');
 $routes->get('filtroswms', 'GetFiltrosWMS::index');
 $routes->get('wmsbusquedaarticulos/(:any)', 'WMSbusquedaArticulos::show/$1');//Establece la ruta al controlador de la búsqueda de articulos
 $routes->get('wmsexistenciaarticulosporbodega/(:any)', 'WMSExistenciasArticuloBodegas::show/$1');//Establece la ruta al controlador de las existencias de los articulos por bodega
+$routes->get('detallearticulo', 'WMSGetDetalleArticulo::articuloDetalleNota');//Ruta al controlador que obtiene el detalle del articulo y la nota de este.
 
 //VERIFICACION DE PEDIDOS
 $routes->get('wmsverificacionpedidos/(:any)', 'WMSgetVerificacionPedidos::show/$1'); //Ruta al controlador GetVerificacion
@@ -163,9 +177,14 @@ $routes->get('wmsguardadopedidos/(:any)', 'WMSgetGuardadoParcialPedidos::show/$1
 $routes->get('devolverarticulo/(:any)', 'GetDevolverArticulo::show/$1');//Ruta al controlador GetDevolverArticulo
 $routes->get('wmsguardadopicking/(:any)', 'WMSgetGuardadoParcialPicking::show/$1');//Ruta al controlador para Guardado Parcial,  Procesar Pedidos y actualizar filas eliminadas
 
-//CONTENEDOR
-$routes->get('contenedor/(:any)', 'GetContenedores::show/$1');//Ruta al controlador GetContenedor
+//BUSQUEDA DE CONTENEDORES
+$routes->get('contenedor', 'WMSGetContenedores::buscaContenedores');//Ruta al controlador GetContenedor
 $routes->get('wmsautorizacioncontenedor', 'WMSgetTrasladoAutorizacion::show');//Ruta al controlador que autoriza el cierre de un contenedor
+// $routes->get('verificadordecontenedores', 'WMSGetVerificaContenedores::verificaContenedores');//Ruta al controlador GetContenedor
+$routes->get('verificadordecontenedores', 'WMSVerificadorDeContenedores::verificaContenedor');//Ruta al controlador GetContenedor
+$routes->get('guardacreapaquete', 'WMSVerificadorDeContenedores::guardaCreaPaquete');
+$routes->get('imprimepaquete', 'WMSVerificadorDeContenedores::impPaqueteReporte');
+
 
 //ORDENES DE COMPRA
 $routes->get('wmsordenesdecompras/(:any)', 'WMSordenesDeCompras::show_OrdenesDeCompras/$1');//Ruta al controlador que trae la lista de las ordenes de compras
@@ -194,6 +213,7 @@ $routes->get('wmseliminadatosinventario', 'WMSdeleteDatosInventario::delDatosinv
 //$routes->get('wmsclasificacionesreporte','WMSgetClasificacionesReporte::reporteclasificaciones');//Obtiene las clasificaciones de clase marca tipo etc...
 $routes->get('wmsclasificacionesreporteinventario', 'WMSgetClasificacionesReporte::getClasificacion');//Obtiene las clasificaciones de clase marca tipo etc...
 $routes->get('wmsreporteinventariogeneral', 'WMSreporteInventarioGeneral::ResumenInventarioGeneral');
+
 //CREACIÓN DE BOLETAS
 $routes->get('wmspresentaciondeboletas', 'WMScreacionDeBoletas::presentarBoleta');
 $routes->get('wmsactualizacostosinv', 'WMScreacionDeBoletas::actualizaCostos');

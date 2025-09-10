@@ -53,6 +53,7 @@ console.log("Parametros Detalle contenedor\n"+params);
     .then((response) => response.json())
     .then((result) => {
       if (result.msg === "SUCCESS") {
+        console.log("Respuesta del API:\n"+"Contenedor-Array:"+result.contenedor.length+"\nmsg: "+result.msg+"\nmessage: "+result.message);
         if (result.contenedor.length != 0) {        
           detalleLineasContenedor=result.contenedor;       
            console.log('Lineas de Contenedor:');
@@ -68,8 +69,16 @@ console.log("Parametros Detalle contenedor\n"+params);
             guardarTablaEnArray();
            //console.log("guardado parcial");
           } 
+           armarTablaVerificacion(detalleLineasContenedor);
+        }else{
+              Swal.fire({
+          icon: 'warning',
+          title: '¡Contenedor sin lineas!',
+          text: 'El contenedor '+contenedor+' no cuenta con lineas para verificar',
+          confirmButtonColor: '#28a745',
+      });
         }
-        armarTablaVerificacion(detalleLineasContenedor);
+       
         //document.getElementById("carga").innerHTML = "";
       } 
     });
