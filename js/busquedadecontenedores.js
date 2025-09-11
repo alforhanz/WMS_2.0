@@ -15,13 +15,43 @@ document.addEventListener("DOMContentLoaded", function (){
           const pUsuario = params.get('pUsuario');
           const pOpcion = params.get('pOpcion');
           const pBodegaEnvia = params.get('pBodegaEnvia');
+          const pBodegaDestino= params.get('pBodegaDestino');
           const pFechaDesde = params.get('pFechaDesde');
           const pFechaHasta = params.get('pFechaHasta');          
          
-          enviarDatosControlador(pSistema,pUsuario,pOpcion,pBodegaEnvia,pFechaHasta,pFechaDesde);
+          enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia,pBodegaDestino,pFechaDesde,pFechaHasta);
         }        
-    } 
+    }
+    cargarBodegas(); 
 });
+// Función para cargar las bodegas
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+function cargarBodegas() {
+fetch(env.API_URL + "wmsmostarbodegasconsultaordencompra")
+    .then(response => response.json())
+    .then(data => {
+    const bodegasSelect = document.getElementById('bodegaSelectOC');
+    if (data.respuesta && Array.isArray(data.respuesta)) {
+        // Limpiar las opciones existentes
+        bodegasSelect.innerHTML = '<option value="" disabled selected>Seleccione una bodega</option>';
+        
+        // Agregar opciones nuevas
+        data.respuesta.forEach(bodega => {
+        const option = document.createElement('option');
+        option.value = bodega.BODEGA;
+        option.textContent = bodega.NOMBRE;
+        bodegasSelect.appendChild(option);
+        });
+
+        // Re-inicializar el select para aplicar los cambios
+        M.FormSelect.init(bodegasSelect);
+    } else {
+        console.error('No se encontraron bodegas.');
+    }
+    })
+    .catch(error => console.error('Error al cargar las bodegas:', error));
+}
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 function validarBusquedaContenedor() {
@@ -35,24 +65,27 @@ function validarBusquedaContenedor() {
     return false;
   }
 
-  let pSistema = 'WMS';
-  let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML;
   let switchContenedor = localStorage.getItem('contenedorSwitch');
+  let pSistema = 'WMS';
+  let pUsuario = document.getElementById("usuario").innerText || document.getElementById("usuario").innerHTML; 
   let pOpcion = switchContenedor === "false" ? "A" : "E";
   let pBodegaEnvia = document.getElementById("bodega").value;
-  let pFechaHasta = $('#fecha_fin').val();
+  let pBodegaDestino=  document.getElementById("bodegaSelectOC").value;
   let pFechaDesde = $('#fecha_ini').val();
+  let pFechaHasta = $('#fecha_fin').val();
 
-  enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia, pFechaHasta, pFechaDesde);
+
+  enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia,pBodegaDestino, pFechaDesde, pFechaHasta);
 }
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-function enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia, pFechaHasta, pFechaDesde) {
+function enviarDatosControlador(pSistema, pUsuario, pOpcion, pBodegaEnvia,pBodegaDestino, pFechaDesde, pFechaHasta) {
   const params =
     "?pSistema=" + pSistema +
     "&pUsuario=" + pUsuario +
     "&pOpcion=" + pOpcion +
     "&pBodegaEnvia=" + pBodegaEnvia +
+    "&pBodegaSolicita="+ pBodegaDestino+
     "&pFechaDesde=" + pFechaDesde +
     "&pFechaHasta=" + pFechaHasta;
 
