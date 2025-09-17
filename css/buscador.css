@@ -42,11 +42,11 @@
 }
 
 .buscador .search-action {
-  background-color: #535162 !important;
-  background: #535162;
-  border-radius: 0px 5px 5px 0px;
+  background-color: #28a745 !important;
+  background: #28a745;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
+  border-radius: 0px 5px 5px 0px;  
   border: 1px solid #535162;
   padding: 5px 0 5px 25%;
   height: 35px;
@@ -54,32 +54,16 @@
   border-color: #535162 !important;
   color: white;
 }
-/* @font-face {
-  font-family: "Material Icons";
-  font-style: normal;
-  font-weight: 400;
-  src: url(fonts/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
-} */
-
-/* .buscador input {
-  border: 1px solid #000 !important;
-  margin: 0 !important;
-  padding-left: 8px !important;
-  height: 44px !important;
-  border-radius: 5px 0px 0px 5px !important;
-  -moz-border-radius: 5px 0px 0px 5px !important;
-  -webkit-border-radius: 5px 0px 0px 5px !important;
-  border: 0px solid #000000;
-  top: -1px;  
-  left: -10px;
-} */
+.location {
+    width: 3.666667%;
+}
 
 .buscador #articulo {
+  -webkit-border-radius: 5px 0px 0px 5px !important;
   background: #fff !important;     
   padding-left: 8px !important;
   height: 45px !important;
-  border-radius: 5px 0px 0px 5px !important;
-  -webkit-border-radius: 5px 0px 0px 5px !important; 
+  border-radius: 5px 0px 0px 5px !important;   
 }
 .buscador .ui-input-text {
   border: 0 !important;
@@ -148,9 +132,9 @@
   border-width: 0px 0 !important;
 }
 .contenedor-buscador {
-  background-color: #28a745 !important;
-  border: 1px solid #28a745 !important ;
-  box-shadow: 0 0 0 #fff !important;
+    background-color: #2a3f54 !important;
+    border: 1px solid #2a3f54 !important;
+    box-shadow: 0 0 0 #fff !important;
 }
 .logo {
   padding-bottom: 0 !important;
@@ -191,9 +175,10 @@
   border-radius: 0 !important;
   height: 35px !important;
   margin-top: 5px !important;
-  border-radius: 5px 0px 0px 5px !important;
-  -moz-border-radius: 5px 0px 0px 5px !important;
+    -moz-border-radius: 5px 0px 0px 5px !important;
   -webkit-border-radius: 5px 0px 0px 5px !important;
+  border-radius: 5px 0px 0px 5px !important;
+
 }
 #s12-m10 {
   width: 101% !important;
@@ -209,9 +194,9 @@
   margin: 42px !important;
   padding-left: 8px !important;
   height: 43px !important;
-  border-radius: 5px 0px 0px 5px !important;
-  -moz-border-radius: 5px 0px 0px 5px !important;
+    -moz-border-radius: 5px 0px 0px 5px !important;
   -webkit-border-radius: 5px 0px 0px 5px !important;
+  border-radius: 5px 0px 0px 5px !important;
   border: 0px solid #000000;
   top: -1px;
   position: relative;

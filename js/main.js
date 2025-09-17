@@ -216,13 +216,13 @@ function filtrosModal() {
           </div>`;
     htm += `<div class="row">
           <div class="col s6">
-            <a onclick="preBusqueda();" class="btn waves-light green darken-4 expand-car">
+            <a onclick="preBusqueda();" class="btn ">
               <i class="material-icons left">check</i>
               Aceptar
             </a>
           </div>
           <div class="col s6">
-            <a onclick="LimpiarFiltroPre();" class="btn waves-light green darken-4 expand-car">
+            <a onclick="LimpiarFiltroPre();" class="btn">
               <i class="material-icons left">update</i>
               Limpiar
             </a>
@@ -632,7 +632,7 @@ htm += `<div class="row" id="totalregistros">
             </label>
           </div>
             <div class="col s6 valign-wrapper">
-            <span>Total de Registros: </span>
+            <span>Total de Registros:  </span>
             <span>${ArrayDataFiltrado.length}</span>
           </div>
         </div>
