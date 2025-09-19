@@ -51,7 +51,7 @@ class MyHeader extends HTMLElement {
     <!--UBICACION-->
     <div class="row shop-bodegas">
       <a>
-        <div class="col location">
+        <div class="col s2">
           <div class="img">
             <img src="img/icon/location.svg?SDdd" alt="">
           </div>

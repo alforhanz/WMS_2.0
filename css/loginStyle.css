@@ -7,11 +7,20 @@ html {
   box-sizing: inherit;
 }
 body {
-  
-  background: linear-gradient(#757575, #2a3f54);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* font-family: "Arial", "sans-serif", "HelveticaNeue", Helvetica; */
+  font-family: "Jura", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-size: 14px;
+  font-weight: bolder;
+  background: linear-gradient(#f7f7f7, #184321);
 }
 main {
   position: relative;
+  /* padding-top: 50%;
+  padding-bottom: 66px; */
   min-height: 645px;
 }
 .container {

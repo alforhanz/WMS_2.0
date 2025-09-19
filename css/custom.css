@@ -188,13 +188,10 @@ th {
   padding: 10px 5px !important;
 }
 #usuario {
-  font-size: 15px;
   font-weight: bold;
 }
 #mobile-demo .collapsible li {
   position: relative;
-  margin-bottom: 15px;
-  margin-left: 50px;
 }
 #mobile-demo .sidenav #submenu li > a.btn-floating {
   margin-top: -35px !important;
@@ -206,20 +203,20 @@ th {
   margin-top: -40px;
   background-color: white;
 }
-/* #mobile-demo .collapsible li {
+#mobile-demo .collapsible li {
   margin-bottom: 15px;
-} */
+}
 #mobile-demo .collapsible li:first-child {
   margin-bottom: 0;
 }
 #mobile-demo .sub-header {
   padding: 15px 0 0 0;
 }
-/* #mobile-demo .collapsible-header,
+#mobile-demo .collapsible-header,
 #mobile-demo .collapsible li,
 #mobile-demo .collection a {
   font-weight: bold;
-} */
+}
 nav a.sidenav-trigger {
   display: block;
 }
@@ -293,7 +290,7 @@ nav a.sidenav-trigger {
   padding: 24px !important;
 }
 .header-sucursal {
-  background: #2a3f54;
+  background: #28a745;
   color: #fff;
   padding: 5px;
   margin: 0;

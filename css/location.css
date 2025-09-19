@@ -1,5 +1,17 @@
+/* #popupMenu-popup {
+  overflow-y: scroll;
+  height: 100%;
+  position: fixed;
+  left: 0 !important;
+  top: 0 !important;
+}
+#popupMenu .close-car,
+#popupMenu {
+  border: 0 !important;
+  border-radius: 0 !important;
+} */
 .shop-bodegas {
-  background: #2a3f54;
+  background: #28a745;
   border-top: solid 1px #ffffff70;
   padding: 4px 0 !important ;
 }
@@ -79,4 +91,10 @@
 }
 .reset-info-bodega {
   padding-left: 0 !important;
+}
+
+.shop-bodegas {
+  background: #28a745;
+  border-top: solid 1px #ffffff70;
+  padding: 5px 0;
 }

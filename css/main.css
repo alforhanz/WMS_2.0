@@ -6,13 +6,14 @@ html {
 *:before {
   box-sizing: inherit;
 }
-body{  
+body {
   margin: 0;
-  padding: 0;
   overflow-x: hidden;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  /* font-weight: bolder;     */
+  /* font-family: "Arial", "sans-serif", "HelveticaNeue", Helvetica; */
+  font-family: "Jura", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-size: 14px;
+  font-weight: bolder;
 }
 main {
   position: relative;
@@ -44,20 +45,20 @@ h6{
   background: linear-gradient(45deg, #757575, #212121) !important;
 }
 .green {
-  background-color: #2a3f54 !important;
+  background-color: #28a745 !important;
 }
 a {
   color: #0a0a0a;
   text-decoration: none;
 }
 .green.darken-4 {
-  background-color: #2a3f54 !important;
+  background-color: #28a745 !important;
 }
 .green-text {
-  color:#28a745 !important
+  color: #28a745 !important;
 }
 .datepicker-date-display {
-  background-color: #26a69a;
+  background-color: #28a745;
 }
 .datepicker-table td.is-selected {
   background-color: #000;
@@ -183,7 +184,7 @@ input[type="search"]:not(.browser-default):focus:not([readonly]) {
 .menu-text span {
   color: #000;
   font-weight: 600;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Orbitron", sans-serif;
 }
 
 #menup a {
@@ -1174,7 +1175,11 @@ th {
 #busquedapedido .input-field .prefix ~ label {
   margin-left: 0rem;
 }
-
+#totalregistros {
+  padding-bottom: 8px;
+  font-weight: bold;
+  margin-left: 377px;
+}
 #divcontado .btn-large {
   height: 37px;
   line-height: 42px;
@@ -1441,7 +1446,7 @@ th {
   margin: 0;
   font-size: 12px;
 }
-/*//////////////////////////////////////////////////////////////////////////////////*/
+
 .codigo-barras-input
 {
   border-bottom: 1px solid #48a013 !important;
@@ -1450,6 +1455,7 @@ th {
 #myTableVerificacion {
   border-collapse: collapse !important; /* Combina los bordes de las celdas */
 }
+
 #myTableVerificacion th,
 #myTableVerificacion td {
   /*border: 1px solid rgb(24, 21, 202);*/ /* Añade un borde de 1px sólido en todas las celdas */
@@ -1511,7 +1517,7 @@ th {
 }
 
 .sidenav{
-    background-color: #2a3f54 !important;
+    background-color: #4c4e4e !important;
     width: 349px;
   }
 
@@ -1530,8 +1536,8 @@ th {
   color: #fff !important;
 }
 #expand_morefather {
-    background-color: #2a3f54;
-    color: #fff !important;
+  background-color: #4c4e4e;
+  color: #fff !important;
 }
 .margen-pedido{
   color: #fff !important;
@@ -1540,9 +1546,8 @@ th {
   color: #fff !important;
 }
 
-#submenu {
-    background-color: #2a3f54;
-    font-size: 12px;
+#submenu{
+      background-color: #4c4e4e;
 }
 
 #tblcontenedores {
@@ -1598,8 +1603,8 @@ th {
 }
 
 .titulo-vista{
-  text-align:center!important ;
-  text-transform: uppercase!important;
+  text-align:center ;
+  text-transform: uppercase;
 }
 
 .switch-button{
@@ -1621,7 +1626,7 @@ th {
 
 
 #myTableresumen {
-font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
@@ -1662,7 +1667,7 @@ font-family: Arial, Helvetica, sans-serif;
   flex-direction: column;
  /* align-items: center;*/
   margin: 10px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 /* Estilo del label */
@@ -1720,7 +1725,7 @@ font-family: Arial, Helvetica, sans-serif;
   color: white;
   height: 36px;
   border: none;
- font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -2064,7 +2069,7 @@ font-size: 20px !important;
   color: white;
   height: 36px;
   border: none;
-font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -2080,7 +2085,7 @@ font-family: Arial, Helvetica, sans-serif;
 #myTableBoleta {
   width: 100%;
   border-collapse: collapse;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 14px;
   margin-top: 20px;
 }
@@ -2120,7 +2125,7 @@ font-family: Arial, Helvetica, sans-serif;
 
 #tblbodyBoleta td.boleta-number {
   text-align: right !important;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace;
   font-weight: normal;
 }
 
@@ -2293,11 +2298,7 @@ font-family: Arial, Helvetica, sans-serif;
 #lista-articulo {
   padding: 0 10px;
 }
-#totalregistros {
-  padding-bottom: 8px;
-  font-weight: bold;
-  margin-left: 377px;
-}
+
 #totalregistros,
 #vistabusqueda {
   margin-bottom: 20px;
