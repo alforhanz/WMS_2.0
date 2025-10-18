@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
- 
+
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet"
@@ -16,10 +16,10 @@
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <!-- FONTS -->
   <style>
@@ -40,79 +40,79 @@
   <!--HEADER-->
   <main>
     <div id="resultadoBusqueda"></div>
-      <div id="contenedorLoader"></div>
-      <div id="carga" class="carga-style"></div>
-      <div class="container">
-        <h2 class="titulo-vista">Búsqueda de contenedores</h2>
+    <div id="contenedorLoader"></div>
+    <div id="carga" class="carga-style"></div>
+    <div class="container">
+      <h2 class="titulo-vista">Búsqueda de contenedores</h2>
+      <div class="row">
+        <div id="menup">
+          <!-- <label>Busqueda de contenedores</label> -->
+        </div>
         <div class="row">
-          <div id="menup">
-            <!-- <label>Busqueda de contenedores</label> -->
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input placeholder="Ingrese el número de contenedor" id="pContenedor" type="text" class="validate">
-             
-              <label for="first_name"></label>
-            </div>
-          </div>
+          <div class="input-field col s12">
+            <input placeholder="Ingrese el número de contenedor" id="pContenedor" type="text" class="validate">
 
-          <div class="input-field col s6">
-            <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
-            <label for="fecha_ini">Fecha Inicial</label>
-          </div>
-
-          <div class="input-field col s6">
-            <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
-            <label for="fecha_fin">Fecha Final</label>
-          </div>
-          <!-- Switch Pedidos acturados y finalizados-->        
-            <div class="row col s12 switch-estilo">
-            <div class="switch">
-              <label class="lblcheck">
-                <input checked="false" type="checkbox" id="toggleSwitch">
-                <span class="lever"></span>
-                Contenedores preparados
-              </label>
-            </div>
+            <label for="first_name"></label>
           </div>
         </div>
 
-         <!-- BODEGA DE DESTINO -->
-        <label id="lbl_bodega_destino" for="bodegaSelectOC">Bodega de destino</label>
-        <!-- <div class="row" style="display: flex; align-items: center;"> -->
-          <div class=" bodega-destino-container row">
-          <div class="col-md-6">
-            <select id="bodegaSelectOC" class="browser-default">
-              <option value="" disabled selected>Seleccione una bodega</option>
-            </select>
+        <div class="input-field col s6">
+          <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
+          <label for="fecha_ini">Fecha Inicial</label>
+        </div>
+
+        <div class="input-field col s6">
+          <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
+          <label for="fecha_fin">Fecha Final</label>
+        </div>
+        <!-- Switch Pedidos acturados y finalizados-->
+        <div class="row col s12 switch-estilo">
+          <div class="switch">
+            <label class="lblcheck">
+              <input checked="false" type="checkbox" id="toggleSwitch">
+              <span class="lever"></span>
+              Contenedores preparados
+            </label>
           </div>
-          </div><br>
-
-        <!-- Boton Buscar Pedidos-->
-        <div class="row col-md-12 S12">
-          <button class="btn waves-effect waves-light" type="submit" onclick="validarBusquedaContenedor()">Buscar
-            <i class="material-icons right">send</i>
-          </button>
         </div>
-
-        <!-- Tabla de resultados para listado de pedidos -->
-        <div class="row tblcontenedor">
-          <div id="resultadoGeneral"></div>
-          <table id="tblcontenedores" class="display centered">
-            <thead>
-              <tr class="themeColor2">
-                <th>CONTENEDOR</th>
-                <th>CANT SOLICITADA</th>
-                <th>CANT LEIDA</th>              
-                <th>BODEGA DESTINO</th>
-                <th>FECHA DE CREACIÓN</th>
-              </tr>
-            </thead>
-          </table>
-          <div id="resultadoPaginador"></div>
-        </div>
-        <!-- Cierre de tabla de resultados para listado de pedidos -->
       </div>
+
+      <!-- BODEGA DE DESTINO -->
+      <label id="lbl_bodega_destino" for="bodegaSelectOC">Bodega de destino</label>
+      <!-- <div class="row" style="display: flex; align-items: center;"> -->
+      <div class=" bodega-destino-container row">
+        <div class="col-md-6">
+          <select id="bodegaSelectOC" class="browser-default">
+            <option value="" disabled selected>Seleccione una bodega</option>
+          </select>
+        </div>
+      </div><br>
+
+      <!-- Boton Buscar Pedidos-->
+      <div class="row col-md-12 S12">
+        <button class="btn waves-effect waves-light" type="submit" onclick="validarBusquedaContenedor()">Buscar
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+      <!-- Tabla de resultados para listado de pedidos -->
+      <div class="row tblcontenedor">
+        <div id="resultadoGeneral"></div>
+        <table id="tblcontenedores" class="display centered">
+          <thead>
+            <tr class="themeColor2">
+              <th>CONTENEDOR</th>
+              <th>CANT SOLICITADA</th>
+              <th>CANT LEIDA</th>
+              <th>BODEGA DESTINO</th>
+              <th>FECHA DE CREACIÓN</th>
+            </tr>
+          </thead>
+        </table>
+        <div id="resultadoPaginador"></div>
+      </div>
+      <!-- Cierre de tabla de resultados para listado de pedidos -->
+    </div>
     </div>
   </main>
 
@@ -129,7 +129,7 @@
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/busquedadecontenedores.js?v1.1" defer></script>
   <script type="tex/javascript" src="js/paginacion.js"></script>
-  <script type="text/javascript" src="js/loader.js"></script> 
+  <script type="text/javascript" src="js/loader.js"></script>
   <!--JavaScript local-->
 </body>
 

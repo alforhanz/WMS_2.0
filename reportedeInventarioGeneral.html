@@ -11,18 +11,18 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-  
+
   <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/loadingstyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
 
   <!-- FONTS -->
   <style>
@@ -43,27 +43,33 @@
       margin-top: 0px;
       margin-left: 3em;
     }
+
     /* Estilo para el legend */
     .checkbox-container legend {
       font-size: 1rem;
       color: #060606;
       font-weight: bold;
-      padding: 0 10px; /* Espaciado alrededor del texto */
+      padding: 0 10px;
+      /* Espaciado alrededor del texto */
     }
+
     /* Estilos para las filas de checkboxes */
     .checkbox-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
     }
+
     /* Ajustes para los checkboxes */
     .checkbox-container .input-field {
-      margin-bottom: 5px; /* Espaciado entre checkboxes */
+      margin-bottom: 5px;
+      /* Espaciado entre checkboxes */
     }
 
-    .input-field>label{
-      position:unset;
+    .input-field>label {
+      position: unset;
     }
+
     /* Asegurar que las etiquetas de los checkboxes sean consistentes */
     @media screen and (max-width: 39.9375em) {
       .checkbox-container {
@@ -73,63 +79,90 @@
         margin-bottom: 2em;
       }
     }
+
     /* Responsividad para pantallas pequeñas */
     @media screen and (max-width: 39.9375em) {
       .checkbox-container {
-        margin-top: 10px; /* Menos margen en pantallas pequeñas */
-        padding: 10px; /* Menos padding */
+        margin-top: 10px;
+        /* Menos margen en pantallas pequeñas */
+        padding: 10px;
+        /* Menos padding */
       }
+
       .checkbox-row {
-        flex-direction: column; /* Apila los checkboxes verticalmente */
+        flex-direction: column;
+        /* Apila los checkboxes verticalmente */
       }
+
       .checkbox-container .input-field {
-        margin-bottom: 10px; /* Mayor espaciado entre checkboxes */
+        margin-bottom: 10px;
+        /* Mayor espaciado entre checkboxes */
       }
     }
+
     /* Ajustes para pantallas medianas y grandes */
     @media screen and (min-width: 40em) {
       .checkbox-container {
         min-height: 163px;
         width: 78%;
       }
+
       .checkbox-row {
-        flex-wrap: nowrap; /* Evita que los checkboxes se envuelvan en la misma fila */
+        flex-wrap: nowrap;
+        /* Evita que los checkboxes se envuelvan en la misma fila */
       }
+
       .checkbox-row .input-field {
-        flex: 1; /* Distribuye el espacio equitativamente */
-        text-align: left; /* Alinea el texto a la izquierda */
+        flex: 1;
+        /* Distribuye el espacio equitativamente */
+        text-align: left;
+        /* Alinea el texto a la izquierda */
       }
     }
+
     /* Estilos responsivos para la pestaña de Clasificación */
     @media screen and (max-width: 1060px) {
       #tab-clasificacion .row {
-            display: flex;
-            align-items: baseline;
-            /* align-content: center; */
-            flex-wrap: nowrap;
-            flex-direction: column;
-        }
-      #tab-clasificacion .input-field {
-        width: 100%; /* Ocupa todo el ancho */
-        max-width: 100%;
-        margin-bottom: 20px; /* Más espacio entre elementos */
-        padding: 0 15px; /* Padding lateral para mejor presentación */
+        display: flex;
+        align-items: baseline;
+        /* align-content: center; */
+        flex-wrap: nowrap;
+        flex-direction: column;
       }
+
+      #tab-clasificacion .input-field {
+        width: 100%;
+        /* Ocupa todo el ancho */
+        max-width: 100%;
+        margin-bottom: 20px;
+        /* Más espacio entre elementos */
+        padding: 0 15px;
+        /* Padding lateral para mejor presentación */
+      }
+
       #tab-clasificacion .input-field.col.s3,
       #tab-clasificacion .input-field.col.s1 {
-        width: 100%!important; /* Forzar ancho completo para apilar */
+        width: 100% !important;
+        /* Forzar ancho completo para apilar */
         max-width: 100%;
       }
+
       #tab-clasificacion select {
-        font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+        font-size: 0.9rem;
+        /* Tamaño de fuente más pequeño */
       }
+
       #tab-clasificacion label {
-        font-size: 0.9rem; /* Ajustar tamaño de etiquetas */
+        font-size: 0.9rem;
+        /* Ajustar tamaño de etiquetas */
       }
-      #tab-clasificacion .input-field [type="checkbox"] + span {
-        font-size: 0.9rem; /* Ajustar tamaño de texto de checkboxes */
+
+      #tab-clasificacion .input-field [type="checkbox"]+span {
+        font-size: 0.9rem;
+        /* Ajustar tamaño de texto de checkboxes */
       }
     }
+
     /* Ajustes para pantallas grandes */
     @media screen and (min-width: 1061px) {
       #tab-clasificacion .row {
@@ -137,11 +170,15 @@
         flex-wrap: wrap;
         justify-content: space-between;
       }
+
       #tab-clasificacion .input-field.col.s3 {
-        width: 25%!important; /* Mantener el diseño de 3 columnas para selects */
+        width: 25% !important;
+        /* Mantener el diseño de 3 columnas para selects */
       }
+
       #tab-clasificacion .input-field.col.s1 {
-        width: 8.33%; /* Mantener el diseño de checkboxes */
+        width: 8.33%;
+        /* Mantener el diseño de checkboxes */
       }
     }
   </style>
@@ -156,27 +193,27 @@
   <my-header></my-header>
   <!--HEADER-->
   <main>
-        <div id="contenedorLoader"></div>
-    <div id="resultadoBusqueda">     
+    <div id="contenedorLoader"></div>
+    <div id="resultadoBusqueda">
       <div id="carga" class="carga-style"></div>
       <div class="container">
 
         <!-- Fecha -->
         <div id="fechaInventario" class=" input-field col s3">
-          <select id="fecha_ini" onchange="limpiarTabla()"></select>        
+          <select id="fecha_ini" onchange="limpiarTabla()"></select>
           <label for="fecha_ini" class="inventario-general-fecha-estilo">Fecha</label>
-        </div>      
+        </div>
 
         <ul id="tabs-swipe-demo" class="tabs">
-          <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
-          <li class="tab col s3"><a href="#tab-clasificacion" >Clasificación</a></li>
+          <li class="tab col s3"><a class="active" href="#tab-datos-basicos">Datos Básicos</a></li>
+          <li class="tab col s3"><a href="#tab-clasificacion">Clasificación</a></li>
         </ul>
 
-         <!-- DATOS BÁSICOS -->
-         <div id="tab-datos-basicos" class="row btnReportes">  
+        <!-- DATOS BÁSICOS -->
+        <div id="tab-datos-basicos" class="row btnReportes">
           <div class="container">
             <!-- Títulos -->
-            <div class="row">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+            <div class="row">
               <div class="col s4">
                 <h5>Tipo de Búsqueda:</h5>
               </div>
@@ -187,51 +224,57 @@
                 <strong>Según artículos:</strong>
               </div>
             </div>
-          
+
             <!-- Radio Buttons y Checkboxes -->
             <div class="row">
               <!-- Tipo de Búsqueda -->
               <div class="col s4">
                 <label>
-                  <input type="radio" name="tipoBusqueda" id="tipoResumido" value="resumido" checked onchange="limpiarTabla()"/>
+                  <input type="radio" name="tipoBusqueda" id="tipoResumido" value="resumido" checked
+                    onchange="limpiarTabla()" />
                   <span>Resumido</span>
                 </label>
                 <br />
                 <label>
-                  <input type="radio" name="tipoBusqueda" id="tipoDetallado" value="detallado" onchange="limpiarTabla()"/>
+                  <input type="radio" name="tipoBusqueda" id="tipoDetallado" value="detallado"
+                    onchange="limpiarTabla()" />
                   <span>Detallado</span>
                 </label>
               </div>
-          
+
               <!-- Agrupado por -->
               <div class="col s4">
                 <label>
-                  <input type="checkbox" name="agrupadoPor" id="agrupadoClase" value="clase" checked onchange="limpiarTabla()"/>
+                  <input type="checkbox" name="agrupadoPor" id="agrupadoClase" value="clase" checked
+                    onchange="limpiarTabla()" />
                   <span>Clase</span>
                 </label>
                 <br />
                 <label>
-                  <input type="checkbox" name="agrupadoPor" id="agrupadoMarca" value="marca" onchange="limpiarTabla()"/>
+                  <input type="checkbox" name="agrupadoPor" id="agrupadoMarca" value="marca"
+                    onchange="limpiarTabla()" />
                   <span>Marca</span>
                 </label>
               </div>
-          
+
               <!-- Según artículos -->
               <div class="col s4">
                 <label>
-                  <input type="radio" name="segunArticulos" id="articulosContados" value="contados" checked onchange="limpiarTabla()"/>
+                  <input type="radio" name="segunArticulos" id="articulosContados" value="contados" checked
+                    onchange="limpiarTabla()" />
                   <span>Contados</span>
                 </label>
                 <br />
                 <label>
-                  <input type="radio" name="segunArticulos" id="articulosTodos" value="todos" onchange="limpiarTabla()"/>
+                  <input type="radio" name="segunArticulos" id="articulosTodos" value="todos"
+                    onchange="limpiarTabla()" />
                   <span>Todos</span>
                 </label>
               </div>
             </div>
-          </div>     
+          </div>
         </div>
-      
+
         <!-- Contenedor de los elementos de la pestaña de Clasificación -->
         <div id="tab-clasificacion" class="row btnReportes">
           <div class="container">
@@ -239,91 +282,91 @@
               <!-- Fila 1 -->
               <!-- Clase -->
               <div class="input-field col s1">
-                  <label for="clase-todas">
-                    <input type="checkbox" id="clase-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="clase-todas">
+                  <input type="checkbox" id="clase-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="claseReporte">Clase</label>
                 <select id="claseReporte" onchange="cargarClasificacionesMarca()">
                   <option value="null" disabled selected>Seleccionar Clase</option>
-                </select>          
+                </select>
               </div>
-          
+
               <!-- Marca -->
               <div class="input-field col s1">
-                  <label for="marca-todas">
-                    <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="marca-todas">
+                  <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="marcaReporte">Marca</label>
                 <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
                   <option value="" disabled selected>Seleccionar Marca</option>
-                </select>         
+                </select>
               </div>
-              
+
               <!-- Tipo -->
               <div class="input-field col s1">
-                  <label for="tipo-todas">
-                    <input type="checkbox" id="tipo-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="tipo-todas">
+                  <input type="checkbox" id="tipo-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="tipoReporte">Tipo</label>
                 <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
                   <option value="" disabled selected>Seleccionar Tipo</option>
-                </select>          
+                </select>
               </div>
-            
+
             </div>
             <!-- Fila 2 -->
             <div class="row">
               <!-- Ventas -->
               <div class="input-field col s1">
-                  <label for="ventas-todas">
-                    <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="ventas-todas">
+                  <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="ventasReporte">Ventas</label>
                 <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
                   <option value="" disabled selected>Seleccionar Ventas</option>
-                </select>         
+                </select>
               </div>
-            
+
               <!-- Envase -->
               <div class="input-field col s1">
-                  <label for="envase-todas">
-                    <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="envase-todas">
+                  <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="envaseReporte">Envase</label>
                 <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
                   <option value="" disabled selected>Seleccionar Envase</option>
-                </select>         
+                </select>
               </div>
-              
+
               <!-- Seis -->
               <div class="input-field col s1">
-                  <label for="seis-todas">
-                    <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
-                    <span>Todas</span>
-                  </label>
-                </div>
+                <label for="seis-todas">
+                  <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
               <div class="input-field col s3">
                 <label for="seisReporte">6</label>
                 <select id="seisReporte">
                   <option value="" disabled selected>Seleccionar 6</option>
-                </select>        
+                </select>
               </div>
-          
+
             </div>
           </div>
         </div>
@@ -332,152 +375,154 @@
 
         <div class="row container">
           <div id="contenedorLoader"></div>
-        <div class="resumen-general input-field col s6">
-          <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
-            Mostrar Reporte<i class="material-icons right">send</i>
-        </button>
-        </div>
-          <div class="btn-container-conteo">                     
+          <div class="resumen-general input-field col s6">
+            <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
+              Mostrar Reporte<i class="material-icons right">send</i>
+            </button>
+          </div>
+          <div class="btn-container-conteo">
             <div class="row btnReportes">
               <div class="col s12">
-                  <div class="btn-container-conteo">
-                      <!-- Botón de Excel (ícono en formato PNG) -->
-                      <div class="impexcel">
-                          <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
-                              <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                          </button>
-                          <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
-                      </div>
-          
-                      <!-- Botón de PDF (ícono en formato PNG) -->
-                      <div class="imppdf">
-                          <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
-                              <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                          </button>
-                          <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
-                      </div>
+                <div class="btn-container-conteo">
+                  <!-- Botón de Excel (ícono en formato PNG) -->
+                  <div class="impexcel">
+                    <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                      <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                    </button>
+                    <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
                   </div>
+
+                  <!-- Botón de PDF (ícono en formato PNG) -->
+                  <div class="imppdf">
+                    <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                      <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                    </button>
+                    <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
-      </div>
-        </div>  
-          
+        </div>
+
         <!--Tabla Resumen  -->
         <div id="tabla-resumen" class="tablaReGeneralReporte col s12">
           <label id="cantidadDeRegistros"></label>
           <div class="row">
-              <div id="resultadoGeneral"></div>
-              <div id="contentRestaurarColumnas">
-                <button type="button" id="btnRestaurarColumnas" class="btn-guardar-conteo" hidden onclick="restaurarColumnas()">
-                  Mostrar columnas ocultas
+            <div id="resultadoGeneral"></div>
+            <div id="contentRestaurarColumnas">
+              <button type="button" id="btnRestaurarColumnas" class="btn-guardar-conteo" hidden
+                onclick="restaurarColumnas()">
+                Mostrar columnas ocultas
               </button>
-              </div>
-              <table id="myTableresumen" class="display centered">
-                  <thead></thead>
-                  <tbody id="tblbodyRersumen">                    
-                  </tbody>
-              </table>
-          </div>             
-      </div>
-              <!-- Reporte #1 Resumido Agrupado por Clase y Marca Solo Contados -->
-              <div id="reporteInventarioRCM" class="reporteUno">
-                <p>Agrupado por: Clase y Marca, solo contados</p>
-                <table>
-                    <thead>
-                        <tr class="repo1head">
-                            <th >Marca</th>
-                            <th>Sistema</th>
-                            <th>Conteo</th>
-                            <th>Diferencia</th>
-                            <th>Cant.Sistema</th>
-                            <th>Cant.Contada</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaReporteRCM"></tbody>
-                    <tfoot>
-                        <tr>                        
-                        </tr>
-                    </tfoot>
-                </table>
-              </div>
+            </div>
+            <table id="myTableresumen" class="display centered">
+              <thead></thead>
+              <tbody id="tblbodyRersumen">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Reporte #1 Resumido Agrupado por Clase y Marca Solo Contados -->
+        <div id="reporteInventarioRCM" class="reporteUno">
+          <p>Agrupado por: Clase y Marca, solo contados</p>
+          <table>
+            <thead>
+              <tr class="repo1head">
+                <th>Marca</th>
+                <th>Sistema</th>
+                <th>Conteo</th>
+                <th>Diferencia</th>
+                <th>Cant.Sistema</th>
+                <th>Cant.Contada</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReporteRCM"></tbody>
+            <tfoot>
+              <tr>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-                  <!-- Reporte #2 Resumido Agrupado por Marca Solo Contados -->
-                  <div id="reporteInventarioRM" class="reporteUno">
-                    <p>Agrupado por: Marca, solo contados</p>
-                    <table>
-                        <thead>
-                            <tr class="repo1head">
-                                <th >Marca</th>
-                                <th>Sistema</th>
-                                <th>Conteo</th>
-                                <th>Diferencia</th>
-                                <th>Cant.Sistema</th>
-                                <th>Cant.Contada</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaReporteRM"></tbody>
-                        <tfoot>
-                            <tr>                        
-                            </tr>
-                        </tfoot>
-                    </table>
-                  </div>
+        <!-- Reporte #2 Resumido Agrupado por Marca Solo Contados -->
+        <div id="reporteInventarioRM" class="reporteUno">
+          <p>Agrupado por: Marca, solo contados</p>
+          <table>
+            <thead>
+              <tr class="repo1head">
+                <th>Marca</th>
+                <th>Sistema</th>
+                <th>Conteo</th>
+                <th>Diferencia</th>
+                <th>Cant.Sistema</th>
+                <th>Cant.Contada</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReporteRM"></tbody>
+            <tfoot>
+              <tr>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-                  <!-- Reporte #3 Resumido Agrupado por Clase Solo Contados -->
-                  <div id="reporteInventarioRC" class="reporteUno">
-                    <p>Agrupado por: Clase, solo contados</p>
-                    <table>
-                        <thead>
-                            <tr class="repo1head">
-                                <th >Marca</th>
-                                <th>Sistema</th>
-                                <th>Conteo</th>
-                                <th>Diferencia</th>
-                                <th>Cant.Sistema</th>
-                                <th>Cant.Contada</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaReporteRC"></tbody>
-                        <tfoot>
-                            <tr>                        
-                            </tr>
-                        </tfoot>
-                    </table>
-                  </div>    
+        <!-- Reporte #3 Resumido Agrupado por Clase Solo Contados -->
+        <div id="reporteInventarioRC" class="reporteUno">
+          <p>Agrupado por: Clase, solo contados</p>
+          <table>
+            <thead>
+              <tr class="repo1head">
+                <th>Marca</th>
+                <th>Sistema</th>
+                <th>Conteo</th>
+                <th>Diferencia</th>
+                <th>Cant.Sistema</th>
+                <th>Cant.Contada</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReporteRC"></tbody>
+            <tfoot>
+              <tr>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-                    <!-- Reporte #4 Destallado Agrupado por Clase Solo Contados -->
-                    <div id="reporteInventarioD" class="reporteUno">
-                      <p>Agrupado por: Clase y Marca, Segun Artículos: Contados</p>
-                      <table>
-                          <thead>
-                              <tr class="repo1head">
-                                  <th >Articulo</th>
-                                  <th>Descripcion</th>
-                                  <th>Sistema</th>
-                                  <th>Conteo</th>
-                                  <th>Diferencia</th>
-                                  <th>Cant.Sistema</th>
-                                  <th>Cant.Contada</th>                                  
-                              </tr>
-                          </thead>
-                          <tbody id="tablaReporteD"></tbody>
-                          <tfoot>
-                              <tr>                        
-                              </tr>
-                          </tfoot>
-                      </table>
-                    </div>  
+        <!-- Reporte #4 Destallado Agrupado por Clase Solo Contados -->
+        <div id="reporteInventarioD" class="reporteUno">
+          <p>Agrupado por: Clase y Marca, Segun Artículos: Contados</p>
+          <table>
+            <thead>
+              <tr class="repo1head">
+                <th>Articulo</th>
+                <th>Descripcion</th>
+                <th>Sistema</th>
+                <th>Conteo</th>
+                <th>Diferencia</th>
+                <th>Cant.Sistema</th>
+                <th>Cant.Contada</th>
+              </tr>
+            </thead>
+            <tbody id="tablaReporteD"></tbody>
+            <tfoot>
+              <tr>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
 
         <div class="resumen-paginador">
-        <div id="pagination" class="invPagination"></div>   <!-- Los botones de paginación se agregarán aquí dinámicamente -->
-        </div> 
+          <div id="pagination" class="invPagination"></div>
+          <!-- Los botones de paginación se agregarán aquí dinámicamente -->
+        </div>
       </div>
-    </div> 
+    </div>
 
 
   </main>
-     <!-- IMprimir Código de barra -->
+  <!-- IMprimir Código de barra -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <!-- <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script> -->
   <!--JavaScript at end of body for optimized loading-->
@@ -488,12 +533,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
   <!-- Incluir la biblioteca de jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
   <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/loader.js?v1.1" defer></script>
   <script type="text/javascript" src="js/reportedeInventarioGeneral.js" defer></script>
-   <b></b>
+  <b></b>
 </body>
+
 </html>

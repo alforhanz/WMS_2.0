@@ -11,15 +11,15 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-  
+
   <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
 
@@ -50,39 +50,39 @@
 
         <!-- Fecha -->
         <div class="input-field col s4">
-          <select id="fecha_ini">           
+          <select id="fecha_ini">
           </select>
           <!-- <label for="fecha_ini" style="color: #4CAF50; top: -36px">Fecha</label> -->
           <label for="fecha_ini" class="inventario-fecha-estilo">Fecha</label>
-        </div>  
+        </div>
 
 
-        <div class="row btnReportes">         
+        <div class="row btnReportes">
           <!-- Contenedor del botónes -->
-          <div class="btn-container-conteo">     
-              <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
-                Mostrar Resumen<i class="material-icons right">send</i></button>
-                <div class="row btnReportes">
-                  <div class="col s12">
-                      <div class="btn-container-conteo">
-                          <!-- Botón de Excel (ícono en formato PNG) -->
-                          <div class="impexcel">
-                              <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
-                                  <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                              </button>
-                              <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel"  hidden>Descargar Excel</label>
-                          </div>
-              
-                          <!-- Botón de PDF (ícono en formato PNG) -->
-                          <div class="imppdf">
-                              <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
-                                  <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                              </button>
-                              <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf"  hidden>Descargar PDF</label>
-                          </div>
-                      </div>
+          <div class="btn-container-conteo">
+            <button type="button" id="btnResumenGeneral" class="btn-guardar-conteo" onclick="resumenGeneral()">
+              Mostrar Resumen<i class="material-icons right">send</i></button>
+            <div class="row btnReportes">
+              <div class="col s12">
+                <div class="btn-container-conteo">
+                  <!-- Botón de Excel (ícono en formato PNG) -->
+                  <div class="impexcel">
+                    <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                      <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                    </button>
+                    <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar Excel</label>
                   </div>
+
+                  <!-- Botón de PDF (ícono en formato PNG) -->
+                  <div class="imppdf">
+                    <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                      <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                    </button>
+                    <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
         </div>
         <!-- <div id="tabla-resumen" class="col s12" style="overflow: hidden;"> -->
@@ -100,13 +100,14 @@
           </div>
         </div>
         <div class="resumen-paginador">
-          <div id="pagination" class="invPagination"></div>   <!-- Los botones de paginación se agregarán aquí dinámicamente -->
-          </div>      
+          <div id="pagination" class="invPagination"></div>
+          <!-- Los botones de paginación se agregarán aquí dinámicamente -->
+        </div>
       </div>
     </div>
     </div>
     <!-- <div class="row" id="observaciones-container" style="display:none;"> -->
-      <div class="row obs-container" id="observaciones-container">
+    <div class="row obs-container" id="observaciones-container">
       <div class="input-field col s12">
         <label id="lblObservaciones" for="observaciones">Observaciones</label>
         <textarea placeholder="Observaciones" id="observaciones" type="text"></textarea>
@@ -114,7 +115,7 @@
     </div>
   </main>
 
-    <!-- IMprimir Código de barra -->
+  <!-- IMprimir Código de barra -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <!-- <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script> -->
   <!--JavaScript at end of body for optimized loading-->
@@ -129,6 +130,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
   <!-- Incluir la biblioteca de jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </body>
+
 </html>

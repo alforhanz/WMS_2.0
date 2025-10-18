@@ -2,151 +2,156 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-  <!--Import Materialize Icons-->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  <!--Import materialize.css-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <!--Import Materialize Icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-  <!-- mis estilos css -->
-  <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <!-- <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" /> -->
-  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/loadingstyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
+    <!-- mis estilos css -->
+    <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
+    <!--  -->
+    <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/loadingstyle.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
 
-  <!-- FONTS -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&family=Roboto&display=swap');
-  </style>
-  <!-- FONTS -->
-  <link rel="icon" type="image/x-icon" href="/img/wms.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="js/encabezadoBoletaDeInventario.js" type="text/javascript"></script>
+    <!-- FONTS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&family=Roboto&display=swap');
+    </style>
+    <!-- FONTS -->
+    <link rel="icon" type="image/x-icon" href="/img/wms.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/encabezadoBoletaDeInventario.js" type="text/javascript"></script>
 
-  <!-- <meta name="theme-color" content=""> -->
-  <title>Boleta de Inventario General - WMS</title>
+    <!-- <meta name="theme-color" content=""> -->
+    <title>Boleta de Inventario General - WMS</title>
 
 </head>
 
 <body id="home" tabindex="-1">
-  <!-- HEADER -->
-  <my-header></my-header>
-  <!--HEADER-->
-<main>
-    <div id="carga" class="carga-style"></div>
+    <!-- HEADER -->
+    <my-header></my-header>
+    <!--HEADER-->
+    <main>
+        <div id="carga" class="carga-style"></div>
+        <div class="row boleta">
+            <div class="input-field col s3">
+                <select id="fecha_ini" onchange="limpiarTabla()"></select>
+                <label for="fecha_ini" class="inventario-fecha-estilo">Fecha de inventario</label>
+            </div>
+            <div class="input-field col s6">
+                <h5>Búsqueda por:</h5>
+                <div>
+                    <label>
+                        <input type="radio" name="tipoBusqueda" id="soloDiferencias" value="S" checked
+                            onchange="limpiarTabla()" />
+                        <span>Solo Diferencias</span>
+                    </label>
+                    <br />
+                    <label>
+                        <input type="radio" name="tipoBusqueda" id="contIgualaCero" value=""
+                            onchange="limpiarTabla()" />
+                        <span>Conteo igual a cero</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row container">
             <div class="row boleta">
-                <div class="input-field col s3">
-                    <select id="fecha_ini" onchange="limpiarTabla()"></select>
-                    <label for="fecha_ini" class="inventario-fecha-estilo">Fecha de inventario</label>
-                </div> 
-                <div class="input-field col s6">
-                    <h5>Búsqueda por:</h5>
-                    <div>
-                        <label>
-                            <input type="radio" name="tipoBusqueda" id="soloDiferencias" value="S" checked
-                                onchange="limpiarTabla()" />
-                            <span>Solo Diferencias</span>
-                        </label>
-                        <br />
-                        <label>
-                            <input type="radio" name="tipoBusqueda" id="contIgualaCero" value="" onchange="limpiarTabla()" />
-                            <span>Conteo igual a cero</span>
-                        </label>
+                <div class="col s3">
+                    <div class="btn-container-boleta">
+                        <button type="button" id="btnPresentar" class="btn-guardar-boleta"
+                            onclick="presentarBoleta()">Presentar</button>
                     </div>
-                </div>            
-            </div>
-            <div class="row container">
-                <div class="row boleta">
-                    <div class="col s3">
-                        <div class="btn-container-boleta">
-                            <button type="button" id="btnPresentar" class="btn-guardar-boleta" onclick="presentarBoleta()">Presentar</button>
-                        </div>
+                </div>
+                <div class="col s3">
+                    <div class="btn-container-boleta">
+                        <button type="button" id="btnValidarBoleta" class="btn-guardar-boleta" onclick="validarBoleta()"
+                            disabled>Validar
+                            Boleta</button>
                     </div>
-                    <div class="col s3">
-                        <div class="btn-container-boleta">
-                            <button type="button" id="btnValidarBoleta" class="btn-guardar-boleta" onclick="validarBoleta()" disabled>Validar
-                                Boleta</button>
-                        </div>
+                </div>
+                <div class="col s3">
+                    <div class="btn-container-boleta">
+                        <button type="button" id="btnCrearBoleta" class="btn-guardar-boleta" onclick="actualizaCostos()"
+                            disabled>Crear Boleta</button>
                     </div>
-                    <div class="col s3">
-                        <div class="btn-container-boleta">
-                            <button type="button" id="btnCrearBoleta" class="btn-guardar-boleta" onclick="actualizaCostos()" disabled >Crear Boleta</button>
+                </div>
+                <div class="col s3">
+                    <div class="btn-descarga-boleta">
+                        <div class="impexcel">
+                            <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden>
+                                <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
+                            </button>
+                            <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar
+                                Excel</label>
                         </div>
-                    </div>              
-                    <div class="col s3">
-                        <div class="btn-descarga-boleta">
-                            <div class="impexcel">
-                                <button id="btnDescargarExcel" class="btn-descarga" onclick="descargarExcel()" hidden >
-                                    <img src="img/excel.png" alt="Descargar Excel" class="btn-icon">
-                                </button>
-                                <label id="lblExcel" for="btnDescargarExcel" class="btnimpexcel" hidden>Descargar
-                                    Excel</label>
-                            </div>
-                            <div class="imppdf">
-                                <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
-                                    <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
-                                </button>
-                                <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf"hidden >Descargar PDF</label>
-                            </div>
+                        <div class="imppdf">
+                            <button id="btnDescargarPDF" class="btn-descarga" onclick="descargarPDF()" hidden>
+                                <img src="img/pdf.png" alt="Descargar PDF" class="btn-icon">
+                            </button>
+                            <label id="lblPDF" for="btnDescargarPDF" class="btnimppdf" hidden>Descargar PDF</label>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <div class="row">
-                <div id="contenedorLoader"></div>
-                <div class="btn-container-conteo">
-                    <div class="row btnReportes">
-                       
-                        <div class="row">
-                            <label id="cantidadDeRegistros"></label>
-                            <div id="tabla-boleta" class="col s12">
-                                <div class="row">
-                                    <div id="resultadoGeneral"></div>
-                                    <table id="myTableBoleta">
-                                        <thead>
-                                        </thead>
-                                        <tbody id="tblbodyBoleta">
-            
-                                        </tbody>
-                                    </table>
-                                </div>
+        <div class="row">
+            <div id="contenedorLoader"></div>
+            <div class="btn-container-conteo">
+                <div class="row btnReportes">
+
+                    <div class="row">
+                        <label id="cantidadDeRegistros"></label>
+                        <div id="tabla-boleta" class="col s12">
+                            <div class="row">
+                                <div id="resultadoGeneral"></div>
+                                <table id="myTableBoleta">
+                                    <thead>
+                                    </thead>
+                                    <tbody id="tblbodyBoleta">
+
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="resumen-paginador">
-                                <div id="pagination" class="invPagination"></div>
-                            </div>
+                        </div>
+                        <div class="resumen-paginador">
+                            <div id="pagination" class="invPagination"></div>
                         </div>
                     </div>
                 </div>
-            </div>           
-</main>
-  <!-- IMprimir Código de barra -->
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-  <!-- <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script> -->
-  <!--JavaScript at end of body for optimized loading-->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Incluir la biblioteca de XLSX -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-  <!-- Incluir la biblioteca de jsPDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
-  <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/main.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/loader.js?v1.1" defer></script>
-  <script type="text/javascript" src="js/boletaDeInventario.js" defer></script>
-   
+            </div>
+        </div>
+    </main>
+    <!-- IMprimir Código de barra -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <!-- <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script> -->
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Incluir la biblioteca de XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <!-- Incluir la biblioteca de jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script type="text/javascript" src="js/environment.js?v1.1" defer></script>
+    <script type="text/javascript" src="js/main.js?v1.1" defer></script>
+    <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
+    <script type="text/javascript" src="js/loader.js?v1.1" defer></script>
+    <script type="text/javascript" src="js/boletaDeInventario.js" defer></script>
+
 </body>
+
 </html>

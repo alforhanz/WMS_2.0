@@ -1,114 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Import Materialize Icons-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--Import Personalize css-->
-    <link type="text/css" rel="stylesheet" href="css/main.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
-    <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
-   <!-- <script src="js/encabezado.js" type="text/javascript"></script> -->
-    <script src="js/encabezadoImpCodBar.js" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Import Materialize Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!--Import Personalize css-->
+  <link type="text/css" rel="stylesheet" href="css/main.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
 
-    <style>
-      .barcodeGen {
-        padding-top: 11%;
-      }
-    
-      .bodegaslocation {
-        width: 16.6666666667% !important;
-      }
-    
-      .container {
-        text-align: center;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-    
-      label {
-        margin: 10px 0 5px 0;
-        font-weight: bold;
-      }
-    
-      input,
-      select {
-        margin-bottom: 15px;
-        padding: 10px;
-        width: 100%;
-        max-width: 300px;
-        box-sizing: border-box;
-        text-align: center;
-      }
-    
-      #barcode {
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-      }
-    
-      #printBarcode {
-        width: 50%;
-      }
-    </style>
+  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <!-- <script src="js/encabezado.js" type="text/javascript"></script> -->
+  <script src="js/encabezadoImpCodBar.js" type="text/javascript"></script>
+
+  <style>
+    .barcodeGen {
+      padding-top: 11%;
+    }
+
+    .bodegaslocation {
+      width: 16.6666666667% !important;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      margin: 10px 0 5px 0;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      margin-bottom: 15px;
+      padding: 10px;
+      width: 100%;
+      max-width: 300px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    #barcode {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #printBarcode {
+      width: 50%;
+    }
+  </style>
   <link rel="icon" type="image/x-icon" href="/img/wms.ico" />
-    <title>Barcode Generator</title>
+  <title>Barcode Generator</title>
 </head>
-<body>
-    <!-- HEADER -->
-    <my-header></my-header>
-    <!--HEADER-->
-   
-    <main class="barcodeGen">
-          <div id="contenedorLoader"></div>
-       <div id="resultadoBusqueda"></div>
-        <div class="container">
 
-            <!-- <h1>Generador de Códigos de Barras</h1> -->
-              <div>
-          <i id="retornar" class="material-icons green-text" style="cursor: pointer;"
-            onclick="confirmaRegresar()">keyboard_backspace</i>
-        </div>
-            <!-- Symbology Selection -->
-            <label for="symbology">Elija la simbología de código de barras:</label>
-            <select id="symbology">
-                <option value="CODE128">Codigo de 128</option>
-                <option value="QR">Código QR</option>
-            </select>
-            <!-- Data Input -->
-            <label for="data">Enter Data to Encode:</label>
-            <input type="text" id="data" placeholder="Enter data here">
-            <!-- Size Selection -->
-            <label for="size">Seleccione el tamaño Size:</label>
-            <select id="size">
-                <option value="0.75">75%</option>
-                <option value="1">100%</option>
-                <option value="2">200%</option>
-            </select>
-            <!-- Barcode Display -->
-            <div id="barcode"></div>
-            <!-- Print Button -->
-            <button id="printBarcode" class="btn waves-effect waves-light" onclick="imprimeCodigo()"><i class="material-icons left">print</i>Imprimir Código</button>
-        </div>
-    </main>
-    <!-- Script Includes -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+<body>
+  <!-- HEADER -->
+  <my-header></my-header>
+  <!--HEADER-->
+
+  <main class="barcodeGen">
+    <div id="contenedorLoader"></div>
+    <div id="resultadoBusqueda"></div>
+    <div class="container">
+
+      <!-- <h1>Generador de Códigos de Barras</h1> -->
+      <div>
+        <i id="retornar" class="material-icons green-text" style="cursor: pointer;"
+          onclick="confirmaRegresar()">keyboard_backspace</i>
+      </div>
+      <!-- Symbology Selection -->
+      <label for="symbology">Elija la simbología de código de barras:</label>
+      <select id="symbology">
+        <option value="CODE128">Codigo de 128</option>
+        <option value="QR">Código QR</option>
+      </select>
+      <!-- Data Input -->
+      <label for="data">Enter Data to Encode:</label>
+      <input type="text" id="data" placeholder="Enter data here">
+      <!-- Size Selection -->
+      <label for="size">Seleccione el tamaño Size:</label>
+      <select id="size">
+        <option value="0.75">75%</option>
+        <option value="1">100%</option>
+        <option value="2">200%</option>
+      </select>
+      <!-- Barcode Display -->
+      <div id="barcode"></div>
+      <!-- Print Button -->
+      <button id="printBarcode" class="btn waves-effect waves-light" onclick="imprimeCodigo()"><i
+          class="material-icons left">print</i>Imprimir Código</button>
+    </div>
+  </main>
+  <!-- Script Includes -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -119,7 +123,7 @@
     <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script>
     <script type="text/javascript" src="js/loader.js"></script>
     <script type="text/javascript" src="js/paginacion.js"></script> -->
-    <!-- <script>
+  <!-- <script>
       $.fn.pageMe = function (opts) {
         var $this = this,
           defaults = {
@@ -213,4 +217,5 @@
     </script> -->
 
 </body>
+
 </html>

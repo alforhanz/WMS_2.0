@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
- 
+
   <!--Import Materialize Icons-->
-  <link  href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!--Import materialize.css-->
@@ -16,10 +16,10 @@
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <!-- FONTS -->
   <style>
@@ -41,11 +41,11 @@
   <main>
     <div id="contenedorLoader"></div>
     <div id="resultadoBusqueda">
-       <h2 class="titulo-vista">Verificador de Contenedores</h2>
+      <h2 class="titulo-vista">Verificador de Contenedores</h2>
       <div id="contenedorLoader"></div>
       <div id="carga" class="carga-style"></div>
       <div class="container">
-       
+
         <div class="row">
           <div id="menup">
             <!-- <label>Busqueda de contenedores</label> -->
@@ -53,7 +53,7 @@
           <div class="row">
             <div class="input-field col s12">
               <input placeholder="Ingrese el número de contenedor" id="pContenedor" type="text" class="validate">
-             
+
               <label for="first_name"></label>
             </div>
           </div>
@@ -61,110 +61,113 @@
           <div class="input-field col s6">
             <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
             <label for="fecha_ini">Fecha Desde</label>
-          </div>       
-               <div class="input-field col s6">
-            <input placeholder="" id="placa-camion" type="text" >
+          </div>
+          <div class="input-field col s6">
+            <input placeholder="" id="placa-camion" type="text">
             <label for="placa-camion">Placa Camión</label>
-          </div> 
+          </div>
         </div>
         <!-- BODEGA DE DESTINO -->
         <label id="lbl_bodega_destino" for="bodegaSelectOC">Cambiar bodega de destino</label>
         <!-- <div class="row" style="display: flex; align-items: center;"> -->
-          <div class=" bodega-destino-container row">
+        <div class=" bodega-destino-container row">
           <div class="col-md-6">
             <select id="bodegaSelectOC" class="browser-default">
               <option value="" disabled selected>Seleccione una bodega</option>
             </select>
           </div><br>
-       
 
-        <!-- Boton Buscar Contenedores -->
-        <div class="row col-md-12 S12">
-          <button id="verifica-contenedores" class="btn waves-effect waves-light" type="submit" onclick="validarBusquedaContenedor()">Cargar Lineas de Contenedores
-            <i class="material-icons right">send</i>
-          </button>
-        </div>
 
-   <div class="row">
-          <ul id="tabs-swipe-demo" class="tabs">
-            <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a></li>
-            <li class="tab col s3"><a href="#tabla-verificacion" onclick="verificacion()">VERFICACIÓN</a></li>
-          </ul>
-          <div id="tabla-lectura" class="col s12">
-            <div class="row">
-              <div id="resultadoGeneral"></div>
-              <table id="myTableLectura" class="display">
-                <thead>
-                  <tr class="themeColor">
-                    <th style="width: 30%;">ARTICULO</th>
-                    <th id="codigoBarrasHeader" style="width: 30%;">COD</th>
-                    <th style="width: 20%;">CANT</th>
-                    <th style="width: 10%;">CL</th>
-                  </tr>
-                </thead>
-                <tbody id="tblbodyLectura">
-                  <tr>
-                    <td>
-                      <span display: inline-block;"></span>
-                    </td>
-                    <td class="codigo-barras-cell">
-                      <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
-                        onchange="validarCodigoBarras(this)" autofocus>
-                    </td>
-                    <td class="codigo-barras-cell2">
-                      <input id="cant-pedida" type="text" class="codigo-barras-input" value=""
-                        onchange="actualizaLectura(this)">
-                    </td>
-                    <td class="codigo-barras-cell2">
-                      <i class="material-icons red-text" style="cursor: pointer;" onclick="eliminarFila(this)">clear</i>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <!-- Boton Buscar Contenedores -->
+          <div class="row col-md-12 S12">
+            <button id="verifica-contenedores" class="btn waves-effect waves-light" type="submit"
+              onclick="validarBusquedaContenedor()">Cargar Lineas de Contenedores
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+
+          <div class="row">
+            <ul id="tabs-swipe-demo" class="tabs">
+              <li class="tab col s3"><a class="active" href="#tabla-lectura" onclick="limpiarMensajes()">LECTURA</a>
+              </li>
+              <li class="tab col s3"><a href="#tabla-verificacion" onclick="verificacion()">VERFICACIÓN</a></li>
+            </ul>
+            <div id="tabla-lectura" class="col s12">
+              <div class="row">
+                <div id="resultadoGeneral"></div>
+                <table id="myTableLectura" class="display">
+                  <thead>
+                    <tr class="themeColor">
+                      <th style="width: 30%;">ARTICULO</th>
+                      <th id="codigoBarrasHeader" style="width: 30%;">COD</th>
+                      <th style="width: 20%;">CANT</th>
+                      <th style="width: 10%;">CL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tblbodyLectura">
+                    <tr>
+                      <td>
+                        <span display: inline-block;"></span>
+                      </td>
+                      <td class="codigo-barras-cell">
+                        <input id="codigo-barras" type="text" class="codigo-barras-input" value=""
+                          onchange="validarCodigoBarras(this)" autofocus>
+                      </td>
+                      <td class="codigo-barras-cell2">
+                        <input id="cant-pedida" type="text" class="codigo-barras-input" value=""
+                          onchange="actualizaLectura(this)">
+                      </td>
+                      <td class="codigo-barras-cell2">
+                        <i class="material-icons red-text" style="cursor: pointer;"
+                          onclick="eliminarFila(this)">clear</i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div id="tabla-verificacion" class="col s12">
+              <label id="cantidadDeRegistros"> Registros:</label>
+              <div class="row">
+                <div id="resultadoGeneral"></div>
+                <table id="tblcontenedores" class="display centered">
+                  <thead>
+                    <tr class="themeColor2">
+                      <th style="text-align: left;">Conten</th>
+                      <th style="text-align: center;">Artí.</th>
+                      <th style="text-align: left;">Cant. Ped.</th>
+                      <th style="text-align: left;">Cant. Prep.</th>
+                      <th style="text-align: left;">Cant. Desp.</th>
+                      <th style="text-align: left;">Verif</th>
+                      <th class="width: 10%;" style="text-align: left;" hidden>DEL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tblbodyLineasContenedor">
+                    <tr>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="resultadoPaginador"></div>
+              </div>
             </div>
           </div>
-          <div id="tabla-verificacion" class="col s12">
-            <label id="cantidadDeRegistros"> Registros:</label>
-            <div class="row">
-              <div id="resultadoGeneral"></div>
-           <table id="tblcontenedores" class="display centered">
-            <thead>
-              <tr class="themeColor2">
-                <th style="text-align: left;">Conten</th>
-                <th style="text-align: center;">Artí.</th>                
-                <th style="text-align: left;">Cant. Ped.</th>
-                <th style="text-align: left;">Cant. Prep.</th>  
-                <th style="text-align: left;">Cant. Desp.</th> 
-                <th style="text-align: left;">Verif</th>      
-                <th class="width: 10%;" style="text-align: left;" hidden>DEL</th>          
-              </tr>
-            </thead>
-               <tbody id="tblbodyLineasContenedor">
-                  <tr>
-                  </tr>
-                </tbody>
-          </table>
-          <div id="resultadoPaginador"></div>
+          <!-- Cierre de tabla de resultados -->
+          <!--Text area para los mensajes-->
+          <div id="mensajes" class="container">
+            <div class="centered col s12">
+              <textarea id="mensajeText"></textarea>
             </div>
           </div>
-        </div>       
-        <!-- Cierre de tabla de resultados -->
-      <!--Text area para los mensajes-->
-        <div id="mensajes" class="container">
-          <div class="centered col s12">
-            <textarea id="mensajeText"></textarea>
-          </div>
-        </div>
 
+        </div>
       </div>
-    </div>
   </main>
 
   <!-- Incluir la biblioteca de jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
   <!-- IMprimir Código de barra -->
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>  
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -173,8 +176,9 @@
   <script type="text/javascript" src="js/main.js?v1.1" defer></script>
   <script type="text/javascript" src="js/menu.js?v1.1" defer></script>
   <script type="text/javascript" src="js/verificadorDeContenedores.js" defer></script>
-  <script type="tex/javascript" src="js/paginacion.js"></script>  
+  <script type="tex/javascript" src="js/paginacion.js"></script>
   <script type="text/javascript" src="js/loader.js"></script>
   <!--JavaScript local-->
 </body>
+
 </html>

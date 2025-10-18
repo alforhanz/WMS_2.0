@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!--Import Materialize Icons-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <!--Import Personalize css-->
@@ -14,10 +16,10 @@
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
   <!-- FONTS -->
   <style>
@@ -38,87 +40,117 @@
       margin-top: 0px;
       margin-left: 3em;
     }
+
     /* Estilo para el legend */
     .checkbox-container legend {
       font-size: 1rem;
       color: #060606;
       font-weight: bold;
-      padding: 0 10px; /* Espaciado alrededor del texto */
+      padding: 0 10px;
+      /* Espaciado alrededor del texto */
     }
+
     /* Estilos para las filas de checkboxes */
     .checkbox-row {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
     }
+
     /* Ajustes para los checkboxes */
     .checkbox-container .input-field {
-      margin-bottom: 5px; /* Espaciado entre checkboxes */
+      margin-bottom: 5px;
+      /* Espaciado entre checkboxes */
     }
 
-    .input-field>label{
-      position:unset;
+    .input-field>label {
+      position: unset;
     }
+
     /* Asegurar que las etiquetas de los checkboxes sean consistentes */
     @media screen and (max-width: 39.9375em) {
-       .checkbox-container {       
+      .checkbox-container {
         height: 16em;
         margin-bottom: 2em;
       }
     }
+
     /* Responsividad para pantallas pequeñas */
-    @media screen and (max-width: 39.9375em) {     
+    @media screen and (max-width: 39.9375em) {
       .checkbox-row {
-        flex-direction: column; /* Apila los checkboxes verticalmente */
+        flex-direction: column;
+        /* Apila los checkboxes verticalmente */
       }
+
       .checkbox-container .input-field {
-        margin-bottom: 10px; /* Mayor espaciado entre checkboxes */
+        margin-bottom: 10px;
+        /* Mayor espaciado entre checkboxes */
       }
     }
+
     /* Ajustes para pantallas medianas y grandes */
     @media screen and (min-width: 40em) {
       .checkbox-container {
         min-height: 163px;
         width: 78%;
       }
+
       .checkbox-row {
-        flex-wrap: nowrap; /* Evita que los checkboxes se envuelvan en la misma fila */
+        flex-wrap: nowrap;
+        /* Evita que los checkboxes se envuelvan en la misma fila */
       }
+
       .checkbox-row .input-field {
-        flex: 1; /* Distribuye el espacio equitativamente */
-        text-align: left; /* Alinea el texto a la izquierda */
+        flex: 1;
+        /* Distribuye el espacio equitativamente */
+        text-align: left;
+        /* Alinea el texto a la izquierda */
       }
     }
+
     /* Estilos responsivos para la pestaña de Clasificación */
     @media screen and (max-width: 1060px) {
       #tab-clasificacion .row {
-            display: flex;
-            align-items: baseline;
-            /* align-content: center; */
-            flex-wrap: nowrap;
-            flex-direction: column;
-        }
-      #tab-clasificacion .input-field {
-        width: 100%; /* Ocupa todo el ancho */
-        max-width: 100%;
-        margin-bottom: 20px; /* Más espacio entre elementos */
-        padding: 0 15px; /* Padding lateral para mejor presentación */
+        display: flex;
+        align-items: baseline;
+        /* align-content: center; */
+        flex-wrap: nowrap;
+        flex-direction: column;
       }
+
+      #tab-clasificacion .input-field {
+        width: 100%;
+        /* Ocupa todo el ancho */
+        max-width: 100%;
+        margin-bottom: 20px;
+        /* Más espacio entre elementos */
+        padding: 0 15px;
+        /* Padding lateral para mejor presentación */
+      }
+
       #tab-clasificacion .input-field.col.s3,
       #tab-clasificacion .input-field.col.s1 {
-        width: 100%!important; /* Forzar ancho completo para apilar */
+        width: 100% !important;
+        /* Forzar ancho completo para apilar */
         max-width: 100%;
       }
+
       #tab-clasificacion select {
-        font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+        font-size: 0.9rem;
+        /* Tamaño de fuente más pequeño */
       }
+
       #tab-clasificacion label {
-        font-size: 0.9rem; /* Ajustar tamaño de etiquetas */
+        font-size: 0.9rem;
+        /* Ajustar tamaño de etiquetas */
       }
-      #tab-clasificacion .input-field [type="checkbox"] + span {
-        font-size: 0.9rem; /* Ajustar tamaño de texto de checkboxes */
+
+      #tab-clasificacion .input-field [type="checkbox"]+span {
+        font-size: 0.9rem;
+        /* Ajustar tamaño de texto de checkboxes */
       }
     }
+
     /* Ajustes para pantallas grandes */
     @media screen and (min-width: 1061px) {
       #tab-clasificacion .row {
@@ -126,11 +158,15 @@
         flex-wrap: wrap;
         justify-content: space-between;
       }
+
       #tab-clasificacion .input-field.col.s3 {
-        width: 25%!important; /* Mantener el diseño de 3 columnas para selects */
+        width: 25% !important;
+        /* Mantener el diseño de 3 columnas para selects */
       }
+
       #tab-clasificacion .input-field.col.s1 {
-        width: 8.33%; /* Mantener el diseño de checkboxes */
+        width: 8.33%;
+        /* Mantener el diseño de checkboxes */
       }
     }
   </style>
@@ -142,19 +178,19 @@
   <my-header></my-header>
   <!--HEADER-->
   <main>
-      <div id="contenedorLoader"></div>
-    <div id="resultadoBusqueda">    
+    <div id="contenedorLoader"></div>
+    <div id="resultadoBusqueda">
       <div id="carga"></div>
-      <div class="container">     
+      <div class="container">
 
         <h2 class="titulo-vista">Detalle de Transacciones Verificadas</h2>
 
         <!-- Tabs Datos básicos y clasificaciones -->
         <ul id="tabs-swipe-demo" class="tabs">
-          <li class="tab col s3"><a class="active" href="#tab-datos-basicos" >Datos Básicos</a></li>
-          <li class="tab col s3"><a href="#tab-clasificacion" >Clasificaciones</a></li>
+          <li class="tab col s3"><a class="active" href="#tab-datos-basicos">Datos Básicos</a></li>
+          <li class="tab col s3"><a href="#tab-clasificacion">Clasificaciones</a></li>
         </ul>
-        
+
         <!-- DATOS BÁSICOS -->
         <div id="tab-datos-basicos" class="row btnReportes">
           <div class="row col s12 detalles-Style">
@@ -174,11 +210,13 @@
               <!-- Traslado, Artículo, Entrada, Salida -->
               <div class="row">
                 <div class="input-field col s12 m4">
-                  <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                  <input placeholder="Ingrese el número de traslado" id="pTaslado" type="text" class="validate"
+                    onchange="aplicarEstilosTabla()">
                   <label for="pTaslado"></label>
                 </div>
                 <div class="input-field col s12 m4">
-                  <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate" onchange="aplicarEstilosTabla()">
+                  <input placeholder="Ingrese el código de artículo" id="pArticulo" type="text" class="validate"
+                    onchange="aplicarEstilosTabla()">
                   <label for="pArticulo"></label>
                 </div>
                 <div class="input-field col s12 m2">
@@ -224,105 +262,106 @@
           </div>
         </div>
 
-          <!-- Contenedor de los elementos de la pestaña de Clasificación -->
-  <div id="tab-clasificacion" class="row btnReportes">
-    <div class="container">
-      <div class="row">
-        <!-- Fila 1 -->
-        <!-- Clase -->
-        <div class="input-field col s1">
-            <label for="clase-todas">
-              <input type="checkbox" id="clase-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
+        <!-- Contenedor de los elementos de la pestaña de Clasificación -->
+        <div id="tab-clasificacion" class="row btnReportes">
+          <div class="container">
+            <div class="row">
+              <!-- Fila 1 -->
+              <!-- Clase -->
+              <div class="input-field col s1">
+                <label for="clase-todas">
+                  <input type="checkbox" id="clase-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="claseReporte">Clase</label>
+                <select id="claseReporte" onchange="cargarClasificacionesMarca()">
+                  <option value="null" disabled selected>Seleccionar Clase</option>
+                </select>
+              </div>
+
+              <!-- Marca -->
+              <div class="input-field col s1">
+                <label for="marca-todas">
+                  <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="marcaReporte">Marca</label>
+                <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
+                  <option value="" disabled selected>Seleccionar Marca</option>
+                </select>
+              </div>
+
+              <!-- Tipo -->
+              <div class="input-field col s1">
+                <label for="tipo-todas">
+                  <input type="checkbox" id="tipo-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="tipoReporte">Tipo</label>
+                <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
+                  <option value="" disabled selected>Seleccionar Tipo</option>
+                </select>
+              </div>
+
+            </div>
+            <!-- Fila 2 -->
+            <div class="row">
+              <!-- Ventas -->
+              <div class="input-field col s1">
+                <label for="ventas-todas">
+                  <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="ventasReporte">Ventas</label>
+                <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
+                  <option value="" disabled selected>Seleccionar Ventas</option>
+                </select>
+              </div>
+
+              <!-- Envase -->
+              <div class="input-field col s1">
+                <label for="envase-todas">
+                  <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="envaseReporte">Envase</label>
+                <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
+                  <option value="" disabled selected>Seleccionar Envase</option>
+                </select>
+              </div>
+
+              <!-- Seis -->
+              <div class="input-field col s1">
+                <label for="seis-todas">
+                  <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
+                  <span>Todas</span>
+                </label>
+              </div>
+              <div class="input-field col s3">
+                <label for="seisReporte">6</label>
+                <select id="seisReporte">
+                  <option value="" disabled selected>Seleccionar 6</option>
+                </select>
+              </div>
+
+            </div>
           </div>
-        <div class="input-field col s3">
-          <label for="claseReporte">Clase</label>
-          <select id="claseReporte" onchange="cargarClasificacionesMarca()">
-            <option value="null" disabled selected>Seleccionar Clase</option>
-          </select>          
         </div>
-     
-        <!-- Marca -->
-        <div class="input-field col s1">
-            <label for="marca-todas">
-              <input type="checkbox" id="marca-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
-          </div>
-        <div class="input-field col s3">
-          <label for="marcaReporte">Marca</label>
-          <select id="marcaReporte" onchange="cargarClasificacionesTipo()">
-            <option value="" disabled selected>Seleccionar Marca</option>
-          </select>         
-        </div>
-        
-        <!-- Tipo -->
-        <div class="input-field col s1">
-            <label for="tipo-todas">
-              <input type="checkbox" id="tipo-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
-          </div>
-        <div class="input-field col s3">
-          <label for="tipoReporte">Tipo</label>
-          <select id="tipoReporte" onchange="cargarClasificacionesVenta()">
-            <option value="" disabled selected>Seleccionar Tipo</option>
-          </select>          
-        </div>
-      
-      </div>
-      <!-- Fila 2 -->
-      <div class="row">
-        <!-- Ventas -->
-        <div class="input-field col s1">
-            <label for="ventas-todas">
-              <input type="checkbox" id="ventas-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
-          </div>
-        <div class="input-field col s3">
-          <label for="ventasReporte">Ventas</label>
-          <select id="ventasReporte" onchange="cargarClasificacionesEnvase()">
-            <option value="" disabled selected>Seleccionar Ventas</option>
-          </select>         
-        </div>
-       
-        <!-- Envase -->
-        <div class="input-field col s1">
-            <label for="envase-todas">
-              <input type="checkbox" id="envase-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
-          </div>
-        <div class="input-field col s3">
-          <label for="envaseReporte">Envase</label>
-          <select id="envaseReporte" onchange="cargarClasificacionesSeis()">
-            <option value="" disabled selected>Seleccionar Envase</option>
-          </select>         
-        </div>
-        
-        <!-- Seis -->
-        <div class="input-field col s1">
-            <label for="seis-todas">
-              <input type="checkbox" id="seis-todas" checked onchange="limpiarResultadoGeneral()" />
-              <span>Todas</span>
-            </label>
-          </div>
-        <div class="input-field col s3">
-          <label for="seisReporte">6</label>
-          <select id="seisReporte">
-            <option value="" disabled selected>Seleccionar 6</option>
-          </select>        
-        </div>
-     
-      </div>
-    </div>
-  </div>
 
         <div class="row col-md-12 s12">
           <div id="trasladoVerifyButton">
-            <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit" onclick="verTrasladosLista()">
+            <button id="btnDetalleTrasladosVerif" class="btn waves-effect waves-light" type="submit"
+              onclick="verTrasladosLista()">
               Buscar
               <i class="material-icons right">send</i>
             </button>
@@ -352,7 +391,7 @@
               <!-- Los encabezados se generarán dinámicamente -->
             </thead>
             <tbody id="busqueda_result" class="striped"></tbody>
-          </table>     
+          </table>
           <div id="resultadoPaginador"></div>
         </div>
       </div>
@@ -362,7 +401,7 @@
   <!-- IMprimir Código de barra -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <!-- <script type="text/javascript" src="js/impBarCode.js?v1.1" defer></script> -->
-  
+
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -380,4 +419,5 @@
   <script type="text/javascript" src="js/loader.js?v1.1"></script>
   <script type="tex/javascript" src="js/paginacion.js?v1.1"></script>
 </body>
+
 </html>

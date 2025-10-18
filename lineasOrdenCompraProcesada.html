@@ -11,16 +11,16 @@
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
- 
+
   <link type="text/css" rel="stylesheet" href="css/header.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" /> 
+
+  <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/main.css?v2.01" media="screen,projection" />
   <!-- FONTS -->
   <style>
@@ -41,7 +41,7 @@
   <my-header></my-header>
   <!--HEADER-->
   <main>
-        <div id="contenedorLoader"></div>
+    <div id="contenedorLoader"></div>
     <div id="resultadoBusqueda">
       <!-- <div id="carga" style="margin-top: -7px;"></div> -->
       <div id="carga" class="carga-style"></div>
@@ -55,14 +55,14 @@
         <!-- Seleccionar la bodega de destino de la OC -->
         <label id="lbl_bodega_destino" for="bodegaSelectOC">Cambiar bodega de destino</label>
         <!-- <div class="row" style="display: flex; align-items: center;"> -->
-          <div class=" bodega-destino-container row">
+        <div class=" bodega-destino-container row">
           <div class="col-md-6">
             <select id="bodegaSelectOC" class="browser-default">
               <option value="" disabled selected>Seleccione una bodega</option>
             </select>
           </div>
           <!-- <div class="col-md-6" style="margin-left: 1em;"> -->
-            <div class="margen col-md-6">
+          <div class="margen col-md-6">
             <button class="btn waves-effect waves-light" id="bodegaButtonOC" onclick="validaCambioBodegaDestino()">
               Aplicar
               <i class="material-icons right">send</i>
@@ -109,7 +109,7 @@
     </div>
     <!--Text area para los mensajes-->
     <div id="mensajes" class="container">
-      <div class="centered col s12">       
+      <div class="centered col s12">
         <textarea id="mensajeText"></textarea>
         <label id="mensaje" for="mensajeText">Mensajes:</label>
       </div>

@@ -16,16 +16,16 @@
   <link type="text/css" rel="stylesheet" href="css/menu.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/location.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/buscador.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/tabla.css?v1.01" media="screen,projection" />
+
   <link type="text/css" rel="stylesheet" href="css/custom.css?v1.01" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="css/homestyle.css?v1.01" media="screen,projection" />
-  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" /> 
-  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" /> 
-  <link type="text/css" rel="stylesheet" href="css/footer.css" media="screen,projection" /> 
-  
+  <link type="text/css" rel="stylesheet" href="css/responsiveStyle.css?v1.01" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/themecolor.css" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="css/footer.css" media="screen,projection" />
+
 
   <!-- FONTS -->
-  <style>   
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Jura&family=Orbitron&family=Oswald&display=swap');
   </style>
   <!-- FONTS -->
@@ -37,18 +37,19 @@
 </head>
 
 <!-- <body id="home" tabindex="-1"> -->
-  <body id="home">
+
+<body id="home">
   <!-- HEADER -->
   <my-header></my-header>
- <!-- Main -->
+  <!-- Main -->
   <main>
     <div id="contenedorLoader"></div>
     <div id="resultadoBusqueda">
       <h2 class="titulo-vista">Verificación de pedidos</h2>
-       
+
       <div id="carga"></div>
       <div class="container">
-  
+
         <div class="row">
           <div id="menup">
           </div>
@@ -58,18 +59,18 @@
               <label for="first_name">Número de Pedido</label>
             </div>
           </div>
-  
+
           <div class="input-field col s6">
             <input placeholder="Desde" id="fecha_ini" type="text" class="datepicker">
             <label for="fecha_ini">Fecha Inicial</label>
           </div>
-  
+
           <div class="input-field col s6">
             <input placeholder="Hasta" id="fecha_fin" type="text" class="datepicker">
             <label for="fecha_fin">Fecha Final</label>
           </div>
 
-          <!-- Switch Pedidos acturados y finalizados-->  
+          <!-- Switch Pedidos acturados y finalizados-->
           <div class="row col s12 switch-button">
             <div class="switch">
               <label class="label-button-switch">
@@ -80,14 +81,14 @@
             </div>
           </div>
         </div>
-          
+
         <!-- Boton Buscar Pedidos-->
         <div class="row col-md-12 S12">
           <button class="btn waves-effect waves-light" type="submit" onclick="validarFormulario()">Buscar
             <i class="material-icons right">send</i>
           </button>
         </div>
-  
+
         <!-- Tabla de resultados para listado de pedidos -->
         <div class="row">
           <div id="resultadoGeneral"></div>
